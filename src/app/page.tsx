@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, Badge, Avatar, StatusBadge } from "@/components/ui";
+import { Button, Card, Badge, Avatar, StatusBadge, CaseStudyCard } from "@/components/ui";
 
 const colorScales = [
   { name: "Blue", prefix: "blue", shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
@@ -111,6 +111,33 @@ export default function Home() {
             <Badge>Mobile App</Badge>
             <Badge>Branding</Badge>
             <Badge>Design System</Badge>
+          </div>
+        </section>
+
+        {/* CaseStudyCard */}
+        <section className="space-y-4">
+          <h2 className="font-brand text-22 font-bold text-text-primary">
+            CaseStudyCard
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <CaseStudyCard
+              title="Water.day"
+              summary="A platform that teaches Gen Z better habits through daily stories, habits and facts."
+              coverUrl="/cover-placeholder.svg"
+              slug="water-day"
+            />
+            <CaseStudyCard
+              title="Yummy Labs"
+              summary="A food-tech platform connecting local chefs with hungry customers."
+              coverUrl="/cover-placeholder.svg"
+              slug="yummy-labs"
+            />
+            <CaseStudyCard
+              title="Design System v2"
+              summary="A comprehensive design system with tokens, components, and patterns."
+              coverUrl="/cover-placeholder.svg"
+              slug="design-system"
+            />
           </div>
         </section>
 

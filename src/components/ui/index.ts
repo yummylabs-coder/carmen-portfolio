@@ -12,3 +12,6 @@ export type { AvatarProps } from "./Avatar";
 
 export { StatusBadge } from "./StatusBadge";
 export type { StatusBadgeProps } from "./StatusBadge";
+
+export { CaseStudyCard } from "./CaseStudyCard";
+export type { CaseStudyCardProps } from "./CaseStudyCard";
