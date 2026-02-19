@@ -169,14 +169,14 @@ export const modeButtons: { id: ModeId; emoji: string; label: string }[] = [
   { id: "redesign", emoji: "\uD83D\uDD27", label: "Redesign" },
 ];
 
-// ─── Color maps ───
+// ─── Color maps (dark-bg optimised) ───
 export const barColors: Record<PhaseType, { bg: string; border: string; text: string }> = {
-  research: { bg: "bg-neutral-100", border: "border-neutral-200", text: "text-neutral-600" },
-  design:   { bg: "bg-blue-100",    border: "border-[#c7c4ff]", text: "text-blue-700" },
-  code:     { bg: "bg-[#ccfbf1]",   border: "border-[#99f6e4]", text: "text-[#0d9488]" },
-  test:     { bg: "bg-[#ffedd5]",   border: "border-[#fed7aa]", text: "text-[#f97316]" },
-  ship:     { bg: "bg-[#dcfce7]",   border: "border-[#bbf7d0]", text: "text-[#22c55e]" },
-  system:   { bg: "bg-[#ede9fe]",   border: "border-[#ddd6fe]", text: "text-[#8b5cf6]" },
+  research: { bg: "bg-white/[0.08]",  border: "border-white/[0.15]", text: "text-white/90" },
+  design:   { bg: "bg-[#4f46e5]/20", border: "border-[#6d63ff]/40", text: "text-[#d4d1ff]" },
+  code:     { bg: "bg-[#10b981]/15", border: "border-[#34d399]/30", text: "text-[#a7f3d0]" },
+  test:     { bg: "bg-[#f59e0b]/15", border: "border-[#fbbf24]/30", text: "text-[#fde68a]" },
+  ship:     { bg: "bg-[#22c55e]/15", border: "border-[#4ade80]/30", text: "text-[#86efac]" },
+  system:   { bg: "bg-[#8b5cf6]/15", border: "border-[#a78bfa]/30", text: "text-[#e9d5ff]" },
 };
 
 export const badgeColors: Record<PhaseType, string> = {
@@ -189,10 +189,10 @@ export const badgeColors: Record<PhaseType, string> = {
 };
 
 export const legendItems: { type: PhaseType; label: string; color: string }[] = [
-  { type: "research", label: "Research", color: "bg-neutral-200" },
-  { type: "design", label: "Design", color: "bg-[#c7c4ff]" },
-  { type: "code", label: "Code", color: "bg-[#99f6e4]" },
-  { type: "test", label: "Testing", color: "bg-[#fed7aa]" },
-  { type: "system", label: "Systems", color: "bg-[#ddd6fe]" },
-  { type: "ship", label: "Ship", color: "bg-[#bbf7d0]" },
+  { type: "research", label: "Research", color: "bg-white/40" },
+  { type: "design", label: "Design", color: "bg-[#6d63ff]" },
+  { type: "code", label: "Code", color: "bg-[#34d399]" },
+  { type: "test", label: "Testing", color: "bg-[#fbbf24]" },
+  { type: "system", label: "Systems", color: "bg-[#a78bfa]" },
+  { type: "ship", label: "Ship", color: "bg-[#4ade80]" },
 ];
