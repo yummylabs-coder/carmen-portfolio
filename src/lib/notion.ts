@@ -1,7 +1,7 @@
 import "server-only";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import type { CaseStudy } from "./types";
+import type { CaseStudy, AboutPhoto, Favorite } from "./types";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID!;
@@ -115,6 +115,62 @@ export async function getAllProjects(): Promise<CaseStudy[]> {
       .map(parsePage);
   } catch (error) {
     console.error("Failed to fetch projects from Notion:", error);
+    return [];
+  }
+}
+
+// ─── About Photos ───
+const photosDbId = process.env.NOTION_PHOTOS_DB_ID;
+
+export async function getAboutPhotos(): Promise<AboutPhoto[]> {
+  if (!photosDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: photosDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 20,
+    });
+
+    return response.results
+      .filter((p): p is PageObjectResponse => "properties" in p)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        const label = getPlainText(props.Label, "rich_text") || getPlainText(props.Name, "title");
+        const imageUrl = getFiles(props.Image);
+        const size = getSelect(props.Size) as AboutPhoto["size"] || "normal";
+        const order = getNumber(props.Order);
+        return { id: page.id, label, imageUrl, size, order };
+      });
+  } catch (error) {
+    console.error("Failed to fetch about photos from Notion:", error);
+    return [];
+  }
+}
+
+// ─── Current Favorites ───
+const favoritesDbId = process.env.NOTION_FAVORITES_DB_ID;
+
+export async function getCurrentFavorites(): Promise<Favorite[]> {
+  if (!favoritesDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: favoritesDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 10,
+    });
+
+    return response.results
+      .filter((p): p is PageObjectResponse => "properties" in p)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        const title = getPlainText(props.Name, "title");
+        const category = getSelect(props.Category) as Favorite["category"] || "reading";
+        const subtitle = getPlainText(props.Subtitle, "rich_text");
+        const order = getNumber(props.Order);
+        return { id: page.id, title, category, subtitle, order };
+      });
+  } catch (error) {
+    console.error("Failed to fetch favorites from Notion:", error);
     return [];
   }
 }

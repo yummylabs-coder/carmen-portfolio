@@ -16,3 +16,19 @@ export interface ActivityItem {
   timestamp: string;
   icon: "update" | "publish" | "welcome";
 }
+
+export interface AboutPhoto {
+  id: string;
+  label: string;
+  imageUrl: string;
+  size: "normal" | "tall" | "wide";
+  order: number;
+}
+
+export interface Favorite {
+  id: string;
+  title: string;
+  category: "reading" | "watching" | "listening" | "cooking";
+  subtitle: string;
+  order: number;
+}
