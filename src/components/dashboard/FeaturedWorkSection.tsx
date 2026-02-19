@@ -16,7 +16,7 @@ export function FeaturedWorkSection({ caseStudies }: FeaturedWorkSectionProps) {
         style={{ background: "var(--bg-page)" }}
       >
         <h2 className="mb-6 max-w-[700px] font-brand text-17 font-semibold leading-[1.3] text-brand-ink">
-          Featured work
+          Latest work
         </h2>
 
         <div className="-mx-2 flex gap-6 overflow-x-auto px-2 pb-4 pt-2 scrollbar-hide">
