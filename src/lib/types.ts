@@ -4,6 +4,9 @@ export interface CaseStudy {
   summary: string;
   coverUrl: string;
   slug: string;
+  tags?: string[];
+  isFeatured?: boolean;
+  sortOrder?: number;
 }
 
 export interface ActivityItem {

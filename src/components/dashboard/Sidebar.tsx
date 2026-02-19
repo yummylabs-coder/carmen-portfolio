@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/icons/LogoMark";
 import {
   HomeIcon,
@@ -31,14 +32,12 @@ interface NavLinkProps {
   label: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   active?: boolean;
-  onClick?: () => void;
 }
 
-function NavLink({ href, label, icon: Icon, active, onClick }: NavLinkProps) {
+function NavLink({ href, label, icon: Icon, active }: NavLinkProps) {
   return (
     <Link
       href={href}
-      onClick={onClick}
       className={`flex h-[42px] items-center gap-1 rounded-md px-2 py-[7px] text-13 transition-colors ${
         active
           ? "bg-blue-50 font-semibold text-blue-700"
@@ -56,10 +55,12 @@ interface SidebarProps {
 }
 
 export function Sidebar({ className = "" }: SidebarProps) {
+  const pathname = usePathname();
+
   return (
     <aside
-      className={`flex w-[240px] shrink-0 flex-col self-stretch border-r border-neutral-200 bg-white pb-[3px] ${className}`}
-      style={{ borderRadius: "16px" }}
+      className={`fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col border-r border-neutral-200 bg-white pb-[3px] ${className}`}
+      style={{ borderRadius: "0 16px 16px 0" }}
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-neutral-100 px-4 pb-[17px] pt-4">
@@ -75,7 +76,7 @@ export function Sidebar({ className = "" }: SidebarProps) {
       </div>
 
       {/* Primary nav */}
-      <nav className="flex flex-1 flex-col p-2">
+      <nav className="flex flex-1 flex-col overflow-y-auto p-2">
         <div className="flex flex-col">
           {primaryNav.map((item) => (
             <NavLink
@@ -83,7 +84,7 @@ export function Sidebar({ className = "" }: SidebarProps) {
               href={item.href}
               label={item.label}
               icon={item.icon}
-              active={item.href === "/"}
+              active={pathname === item.href}
             />
           ))}
         </div>
@@ -99,6 +100,7 @@ export function Sidebar({ className = "" }: SidebarProps) {
               href={item.href}
               label={item.label}
               icon={item.icon}
+              active={pathname === item.href}
             />
           ))}
         </div>
@@ -114,7 +116,7 @@ export function Sidebar({ className = "" }: SidebarProps) {
               Let&apos;s talk!
             </p>
             <p className="text-13 text-neutral-500">
-              hello@carmen.design
+              carmenrincon92@gmail.com
             </p>
           </div>
 

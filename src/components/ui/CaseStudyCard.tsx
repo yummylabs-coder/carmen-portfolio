@@ -9,6 +9,7 @@ interface CaseStudyCardProps {
   summary: string;
   coverUrl: string;
   slug: string;
+  tags?: string[];
   className?: string;
 }
 
@@ -17,6 +18,7 @@ function CaseStudyCard({
   summary,
   coverUrl,
   slug,
+  tags,
   className = "",
 }: CaseStudyCardProps) {
   return (
@@ -24,7 +26,7 @@ function CaseStudyCard({
       <motion.article
         whileHover={{ y: -2 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border-default bg-bg-surface"
+        className="group flex h-full w-full flex-col overflow-hidden rounded-3xl border border-neutral-50 bg-bg-surface"
         style={{
           borderWidth: "0.68px",
           boxShadow:
@@ -52,6 +54,20 @@ function CaseStudyCard({
               {summary}
             </p>
           </div>
+
+          {/* Tags */}
+          {tags && tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-neutral-50 px-[10px] py-1 text-11 font-medium text-text-tertiary"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* CTA button */}
           <button
