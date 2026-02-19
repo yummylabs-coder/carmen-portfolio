@@ -19,6 +19,53 @@
   --blue-800: #0E0966;
   --blue-900: #070433;
 
+  /* Green */
+  --green-50: #ECFDF5;
+  --green-100: #D1FAE5;
+  --green-200: #A7F3D0;
+  --green-300: #6EE7B7;
+  --green-400: #34D399;
+  --green-500: #10B981;
+  --green-600: #059669;
+  --green-700: #047857;
+  --green-800: #065F46;
+  --green-900: #064E3B;
+
+  /* Red */
+  --red-50: #FEF2F2;
+  --red-100: #FDE8E8;
+  --red-200: #FDDCDC;
+  --red-300: #FCA5A5;
+  --red-400: #F87171;
+  --red-500: #EF4444;
+  --red-600: #DC2626;
+  --red-700: #C81E1E;
+  --red-800: #B71C1C;
+  --red-900: #991B1B;
+
+  /* Amber */
+  --amber-50: #FFFBEB;
+  --amber-100: #FEF3C7;
+  --amber-200: #FDE68A;
+  --amber-300: #FCD34D;
+  --amber-400: #FBBF24;
+  --amber-500: #F59E0B;
+  --amber-600: #D97706;
+  --amber-700: #B45309;
+  --amber-800: #92400E;
+  --amber-900: #78350F;
+
+  /* Orange */
+  --orange-50: #FFF4EB;
+  --orange-100: #FFE4CC;
+  --orange-200: #FFCFA3;
+  --orange-300: #FFB575;
+  --orange-400: #FFA050;
+  --orange-500: #F58E39;
+  --orange-600: #D97520;
+  --orange-700: #B85C10;
+  --orange-800: #8C4508;
+
   /* Neutral */
   --neutral-0: #FAFAF9;
   --neutral-50: #F5F5F3;
@@ -37,20 +84,46 @@
   --bg-surface: #FFFFFF;
   --bg-muted: var(--neutral-50);
   --bg-hover: var(--neutral-100);
+  --bg-active: var(--neutral-200);
   --bg-accent: var(--blue-50);
 
   /* Semantic – Text */
   --text-primary: var(--brand-ink);
   --text-secondary: var(--neutral-600);
   --text-tertiary: var(--neutral-500);
+  --text-accent: var(--blue-500);
+  --text-disabled: var(--neutral-300);
+  --text-on-dark: var(--brand-canvas);
 
   /* Semantic – Actions */
   --action-primary: var(--blue-500);
   --action-primary-hover: var(--blue-600);
+  --action-primary-active: var(--blue-700);
+  --action-secondary: var(--neutral-50);
+  --action-secondary-hover: var(--neutral-100);
+  --action-danger: var(--red-600);
+  --action-danger-hover: var(--red-700);
+  --action-success: var(--green-600);
+  --action-success-hover: var(--green-700);
 
   /* Semantic – Borders */
   --border-default: var(--neutral-200);
   --border-strong: var(--neutral-300);
+  --border-focus: var(--blue-500);
+
+  /* Semantic – Status */
+  --status-error-base: var(--red-600);
+  --status-error-strong: var(--red-500);
+  --status-error-tint: var(--red-50);
+  --status-info-base: var(--blue-500);
+  --status-info-strong: var(--blue-400);
+  --status-info-tint: var(--blue-50);
+  --status-success-base: var(--green-600);
+  --status-success-strong: var(--green-500);
+  --status-success-tint: var(--green-50);
+  --status-warning-base: var(--amber-600);
+  --status-warning-strong: var(--amber-500);
+  --status-warning-tint: var(--amber-50);
 
   /* Fonts */
   --font-brand: 'Plus Jakarta Sans', sans-serif;
@@ -59,6 +132,7 @@
 
   /* Spacing (4px base) */
   --space-0: 0;
+  --space-px: 1px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
