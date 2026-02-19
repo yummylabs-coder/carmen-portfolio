@@ -1,25 +1,21 @@
 "use client";
 
+import { PixelAvatar } from "./PixelAvatar";
+
 export function HeroCard() {
   return (
     <div
-      className="flex items-center gap-6 rounded-3xl p-6"
+      className="flex flex-col items-center gap-6 rounded-3xl px-6 pb-8 pt-8"
       style={{
         background:
           "linear-gradient(135deg, #300101 0%, #1a0101 50%, #300101 100%)",
       }}
     >
-      {/* Avatar */}
-      <div className="flex h-[100px] w-[100px] shrink-0 items-center justify-center rounded-full border-[3px] border-white/20 text-[50px] shadow-lg"
-        style={{
-          background: "linear-gradient(135deg, var(--blue-100) 0%, #ede9fe 100%)",
-        }}
-      >
-        <span role="img" aria-label="avatar">👩🏻‍🎨</span>
-      </div>
+      {/* Pixel Avatar */}
+      <PixelAvatar />
 
       {/* Text */}
-      <div>
+      <div className="text-center">
         <h2 className="mb-2 font-brand text-[20px] font-bold text-white">
           Hey, I&apos;m Carmen 👋
         </h2>
