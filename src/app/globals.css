@@ -3,25 +3,90 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Brand */
+  --brand-ink: #300101;
+  --brand-canvas: #FFFEFC;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Blue (Primary) */
+  --blue-50: #EEEDFF;
+  --blue-100: #D4D1FF;
+  --blue-200: #AEA8FF;
+  --blue-300: #8278FF;
+  --blue-400: #5A4FFF;
+  --blue-500: #2216FF;
+  --blue-600: #1B11CC;
+  --blue-700: #140D99;
+  --blue-800: #0E0966;
+  --blue-900: #070433;
+
+  /* Neutral */
+  --neutral-0: #FAFAF9;
+  --neutral-50: #F5F5F3;
+  --neutral-100: #EDEDEA;
+  --neutral-200: #E0E0DC;
+  --neutral-300: #D0D0CB;
+  --neutral-400: #ABABAA;
+  --neutral-500: #878784;
+  --neutral-600: #64645F;
+  --neutral-700: #484844;
+  --neutral-800: #323230;
+  --neutral-900: #1C1C1A;
+
+  /* Semantic – Backgrounds */
+  --bg-page: var(--brand-canvas);
+  --bg-surface: #FFFFFF;
+  --bg-muted: var(--neutral-50);
+  --bg-hover: var(--neutral-100);
+  --bg-accent: var(--blue-50);
+
+  /* Semantic – Text */
+  --text-primary: var(--brand-ink);
+  --text-secondary: var(--neutral-600);
+  --text-tertiary: var(--neutral-500);
+
+  /* Semantic – Actions */
+  --action-primary: var(--blue-500);
+  --action-primary-hover: var(--blue-600);
+
+  /* Semantic – Borders */
+  --border-default: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+
+  /* Fonts */
+  --font-brand: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'SF Mono', monospace;
+
+  /* Spacing (4px base) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Radius */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  color: var(--text-primary);
+  background: var(--bg-page);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
