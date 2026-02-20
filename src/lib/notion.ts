@@ -1,7 +1,7 @@
 import "server-only";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import type { CaseStudy, AboutPhoto, Favorite } from "./types";
+import type { CaseStudy, AboutPhoto, Favorite, ExperienceEntry } from "./types";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID!;
@@ -171,6 +171,77 @@ export async function getCurrentFavorites(): Promise<Favorite[]> {
       });
   } catch (error) {
     console.error("Failed to fetch favorites from Notion:", error);
+    return [];
+  }
+}
+
+// ─── Experience ───
+const experienceDbId = process.env.NOTION_EXPERIENCE_DB_ID;
+
+function parseRoles(rolesStr: string): ExperienceEntry["roles"] {
+  if (!rolesStr) return [];
+  return rolesStr.split(";;").map((entry) => {
+    const trimmed = entry.trim();
+    const pipeIdx = trimmed.indexOf("|");
+    if (pipeIdx === -1) return { title: trimmed, start: "", end: "" };
+    const title = trimmed.slice(0, pipeIdx).trim();
+    const datesPart = trimmed.slice(pipeIdx + 1).trim();
+    const dashIdx = datesPart.indexOf(" - ");
+    if (dashIdx === -1) return { title, start: datesPart, end: "" };
+    return {
+      title,
+      start: datesPart.slice(0, dashIdx).trim(),
+      end: datesPart.slice(dashIdx + 3).trim(),
+    };
+  });
+}
+
+function getCheckbox(prop: Record<string, unknown> | undefined): boolean {
+  if (!prop) return false;
+  return (prop as Record<string, boolean>).checkbox === true;
+}
+
+export async function getExperience(): Promise<ExperienceEntry[]> {
+  if (!experienceDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: experienceDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 20,
+    });
+
+    return response.results
+      .filter((p): p is PageObjectResponse => "properties" in p)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        const company = getPlainText(props.Company, "title");
+        const slug = getPlainText(props.Slug, "rich_text") || company.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        const roleSummary = getPlainText(props["Role Summary"], "rich_text");
+        const dateRange = getPlainText(props["Date Range"], "rich_text");
+        const isCurrent = getCheckbox(props["Is Current"]);
+        const rolesStr = getPlainText(props.Roles, "rich_text");
+        const roles = parseRoles(rolesStr);
+        const whatILearned = getPlainText(props["What I Learned"], "rich_text");
+        const logoUrl = getFiles(props.Logo);
+        const productImageUrl = getFiles(props["Product Image"]);
+        const order = getNumber(props.Order);
+
+        return {
+          id: page.id,
+          slug,
+          company,
+          logoUrl,
+          productImageUrl,
+          roleSummary,
+          dateRange,
+          isCurrent,
+          roles,
+          whatILearned,
+          order,
+        };
+      });
+  } catch (error) {
+    console.error("Failed to fetch experience from Notion:", error);
     return [];
   }
 }

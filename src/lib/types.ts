@@ -32,3 +32,23 @@ export interface Favorite {
   subtitle: string;
   order: number;
 }
+
+export interface ExperienceRole {
+  title: string;
+  start: string;
+  end: string;
+}
+
+export interface ExperienceEntry {
+  id: string;
+  slug: string;
+  company: string;
+  logoUrl: string;
+  productImageUrl: string;
+  roleSummary: string;
+  dateRange: string;
+  isCurrent: boolean;
+  roles: ExperienceRole[];
+  whatILearned: string;
+  order: number;
+}
