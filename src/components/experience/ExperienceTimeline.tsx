@@ -285,16 +285,16 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
   }, []);
 
   return (
-    <div className="mx-auto w-full max-w-[800px]">
+    <>
       {/* Page Header */}
-      <header className="mb-8">
-        <h1 className="font-brand text-[24px] font-bold text-brand-ink">
+      <div className="flex flex-col gap-1">
+        <h1 className="font-brand text-22 font-bold text-brand-ink">
           Experience
         </h1>
-        <p className="mt-2 text-15 text-neutral-500">
+        <p className="text-14 leading-[1.6] text-neutral-400">
           Where I&apos;ve been and what I&apos;ve learned along the way
         </p>
-      </header>
+      </div>
 
       {/* Timeline */}
       <div className="relative">
@@ -308,6 +308,6 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 }

@@ -44,9 +44,9 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
   const dogUrl = assets.branding["dog"];
 
   return (
-    <header className="relative mb-8 flex items-start gap-5">
+    <header className="relative flex items-start gap-4">
       {/* Logo */}
-      <div className="flex h-[82px] w-[82px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#7c3aed] bg-[#ede9fe] text-[32px]">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#7c3aed] bg-[#ede9fe] text-[18px]">
         {logoUrl ? (
           <Img src={logoUrl} alt="Yummy Labs" className="h-full w-full object-contain" />
         ) : (
@@ -56,15 +56,15 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 
       {/* Title + subtitle */}
       <div className="flex-1">
-        <div className="mb-1 flex h-[51px] items-center gap-3">
-          <h1 className="font-brand text-[32px] font-extrabold text-gray-800">
+        <div className="mb-1 flex items-center gap-3">
+          <h1 className="font-brand text-22 font-bold text-brand-ink">
             Yummy Labs
           </h1>
-          <span className="inline-flex items-center rounded-full border border-[#7c3aed] bg-[#ede9fe] px-[13px] py-[7px] font-brand text-[11px] font-bold text-[#7c3aed]">
+          <span className="inline-flex items-center rounded-full border border-[#7c3aed] bg-[#ede9fe] px-2 py-[3px] font-brand text-[10px] font-bold text-[#7c3aed]">
             {"\u2713"} Figma Partner
           </span>
         </div>
-        <p className="text-[16px] text-gray-500">
+        <p className="text-14 leading-[1.6] text-neutral-400">
           Design accelerator I co-founded to help designers grow through real
           startup sprints
         </p>
@@ -72,7 +72,7 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 
       {/* Dog mascot - hidden on mobile */}
       {dogUrl && (
-        <div className="absolute right-0 top-[-10px] hidden h-[240px] w-[200px] md:block">
+        <div className="absolute right-0 top-[-10px] hidden h-[200px] w-[160px] lg:block">
           <Img src={dogUrl} alt="Yummy Labs Dog" className="h-full w-full object-contain" />
         </div>
       )}
@@ -462,18 +462,15 @@ function CtaSection() {
    ═══════════════════════════════════ */
 export function YummyLabsPage({ assets }: YummyLabsPageProps) {
   return (
-    <div className="mx-auto w-full max-w-[1100px]">
+    <>
       <Header assets={assets} />
-
-      <div className="flex flex-col gap-5">
-        <ProblemAndRole />
-        <Stats />
-        <HowItWorks />
-        <Partners assets={assets} />
-        <Testimonials assets={assets} />
-        <Gallery assets={assets} />
-        <CtaSection />
-      </div>
-    </div>
+      <ProblemAndRole />
+      <Stats />
+      <HowItWorks />
+      <Partners assets={assets} />
+      <Testimonials assets={assets} />
+      <Gallery assets={assets} />
+      <CtaSection />
+    </>
   );
 }

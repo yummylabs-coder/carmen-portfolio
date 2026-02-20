@@ -16,14 +16,14 @@ export function AboutPageContent({ photos, favorites }: AboutPageContentProps) {
   return (
     <>
       {/* Page header */}
-      <header className="mb-2">
-        <h1 className="font-brand text-[24px] font-bold text-brand-ink">
+      <div className="flex flex-col gap-1">
+        <h1 className="font-brand text-22 font-bold text-brand-ink">
           About Me
         </h1>
-        <p className="mt-2 text-15 text-neutral-500">
+        <p className="text-14 leading-[1.6] text-neutral-400">
           The person behind the pixels
         </p>
-      </header>
+      </div>
 
       {/* Row 1: Hero + Working With Me */}
       <div className="grid gap-6 lg:grid-cols-2">
