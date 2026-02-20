@@ -5,7 +5,7 @@ import { PixelAvatar } from "./PixelAvatar";
 export function HeroCard() {
   return (
     <div
-      className="flex flex-col items-center gap-6 rounded-3xl px-6 pb-8 pt-8"
+      className="flex flex-col items-start gap-5 rounded-3xl px-6 pb-8 pt-8"
       style={{
         background:
           "linear-gradient(135deg, #300101 0%, #1a0101 50%, #300101 100%)",
@@ -15,7 +15,7 @@ export function HeroCard() {
       <PixelAvatar />
 
       {/* Text */}
-      <div className="text-center">
+      <div>
         <h2 className="mb-2 font-brand text-[20px] font-bold text-white">
           Hey, I&apos;m Carmen 👋
         </h2>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 // 0=transparent 1=dark hair 2=light hair 3=skin 4=skin shadow
 // 5=eye brown 6=white 7=blush 8=lips 9=shirt blue
@@ -36,11 +36,8 @@ const COLORS: Record<number, string> = {
   9: "#2216ff",
 };
 
-// Eye pixel coordinates for each state
 type EyePixel = { x: number; y: number; c: number };
-interface EyeState {
-  pixels: EyePixel[];
-}
+interface EyeState { pixels: EyePixel[] }
 
 const EYE_AREA: EyePixel[] = [
   { x: 5, y: 5, c: 3 }, { x: 5, y: 6, c: 3 }, { x: 6, y: 5, c: 3 }, { x: 6, y: 6, c: 3 },
@@ -75,7 +72,7 @@ const EYE_STATES: Record<string, EyeState> = {
 };
 
 const GRID = 16;
-const PX = 8;
+const PX = 6;
 const GAP = 1;
 
 function delay(ms: number) {
@@ -84,12 +81,9 @@ function delay(ms: number) {
 
 export function PixelAvatar() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [count, setCount] = useState(0);
-  const [done, setDone] = useState(false);
   const eyeRunning = useRef(false);
   const animationId = useRef(0);
 
-  // Helpers that paint directly to the canvas
   const paintPixel = useCallback((x: number, y: number, colorIdx: number) => {
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
@@ -107,12 +101,10 @@ export function PixelAvatar() {
 
   const setEyeState = useCallback(
     (state: string) => {
-      // Clear eye area to skin first
       EYE_AREA.forEach(({ x, y }) => {
         clearPixel(x, y);
         paintPixel(x, y, 3);
       });
-      // Paint new eye state
       EYE_STATES[state].pixels.forEach(({ x, y, c }) => {
         clearPixel(x, y);
         paintPixel(x, y, c);
@@ -121,7 +113,6 @@ export function PixelAvatar() {
     [paintPixel, clearPixel]
   );
 
-  // Initial render animation
   useEffect(() => {
     const id = ++animationId.current;
     let cancelled = false;
@@ -130,10 +121,7 @@ export function PixelAvatar() {
       const ctx = canvasRef.current?.getContext("2d");
       if (!ctx) return;
       ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-      setCount(0);
-      setDone(false);
 
-      // Build render order: top-to-bottom, shuffled within each row
       const order: { x: number; y: number; c: number }[] = [];
       for (let y = 0; y < GRID; y++) {
         const row: typeof order = [];
@@ -144,31 +132,24 @@ export function PixelAvatar() {
         order.push(...row);
       }
 
-      let rendered = 0;
       for (const { x, y, c } of order) {
         if (cancelled || id !== animationId.current) return;
         paintPixel(x, y, c);
-        rendered++;
-        setCount(rendered);
-        await delay(15 + Math.random() * 10);
+        await delay(12 + Math.random() * 8);
       }
 
       if (cancelled || id !== animationId.current) return;
-      setDone(true);
 
-      // Start eye animations
       eyeRunning.current = true;
       while (eyeRunning.current && id === animationId.current) {
         await delay(1500 + Math.random() * 2000);
         if (!eyeRunning.current || id !== animationId.current) break;
         if (Math.random() < 0.7) {
-          // Blink
           setEyeState("closed");
           await delay(80);
           if (!eyeRunning.current || id !== animationId.current) break;
           setEyeState("open");
         } else {
-          // Look around
           const dirs = ["lookLeft", "open", "lookRight", "open"];
           for (const dir of dirs) {
             if (!eyeRunning.current || id !== animationId.current) break;
@@ -180,42 +161,19 @@ export function PixelAvatar() {
     }
 
     render();
-
-    return () => {
-      cancelled = true;
-      eyeRunning.current = false;
-    };
+    return () => { cancelled = true; eyeRunning.current = false; };
   }, [paintPixel, clearPixel, setEyeState]);
 
-  const totalNonEmpty = avatarData.flat().filter((c) => c !== 0).length;
   const canvasSize = GRID * (PX + GAP) - GAP;
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      {/* Container circle */}
-      <div className="flex h-[160px] w-[160px] items-center justify-center rounded-full border border-white/10 bg-white/[0.03]">
-        <canvas
-          ref={canvasRef}
-          width={canvasSize}
-          height={canvasSize}
-          className="image-rendering-pixelated"
-          style={{ imageRendering: "pixelated" }}
-        />
-      </div>
-
-      {/* Counter */}
-      <div className="font-mono text-[10px] text-white/40">
-        {done ? (
-          <span>
-            render complete{" "}
-            <span className="text-[#22c55e]">&#10003;</span>
-          </span>
-        ) : (
-          <span>
-            pixels: {count}/{totalNonEmpty}
-          </span>
-        )}
-      </div>
+    <div className="flex h-[112px] w-[112px] items-center justify-center rounded-full border border-white/10 bg-white/[0.03]">
+      <canvas
+        ref={canvasRef}
+        width={canvasSize}
+        height={canvasSize}
+        style={{ imageRendering: "pixelated" }}
+      />
     </div>
   );
 }
