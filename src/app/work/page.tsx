@@ -60,9 +60,11 @@ export default async function WorkPage() {
   }
 
   const featured = projects.find((p) => p.isFeatured);
-  const rest = projects
-    .filter((p) => !p.isFeatured)
-    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  // All projects in the grid (including featured), coming soon sorted to the end
+  const allForGrid = [...projects].sort((a, b) => {
+    if (a.isComingSoon !== b.isComingSoon) return a.isComingSoon ? 1 : -1;
+    return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
+  });
 
   return (
     <DashboardShell>
@@ -87,12 +89,12 @@ export default async function WorkPage() {
       )}
 
       {/* All projects grid */}
-      {rest.length > 0 && (
+      {allForGrid.length > 0 && (
         <section className="flex flex-col gap-3">
           <h2 className="font-brand text-17 font-semibold text-brand-ink">
             All projects
           </h2>
-          <WorkGrid projects={rest} />
+          <WorkGrid projects={allForGrid} />
         </section>
       )}
     </DashboardShell>
