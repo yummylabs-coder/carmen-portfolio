@@ -70,9 +70,9 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
         </p>
       </div>
 
-      {/* Dog mascot - hidden on mobile */}
+      {/* Dog mascot - hidden on mobile, sits behind the next section */}
       {dogUrl && (
-        <div className="absolute right-0 top-[-10px] hidden h-[200px] w-[160px] lg:block">
+        <div className="pointer-events-none absolute right-0 top-[-10px] z-0 hidden h-[200px] w-[160px] lg:block">
           <Img src={dogUrl} alt="Yummy Labs Dog" className="h-full w-full object-contain" />
         </div>
       )}
@@ -85,7 +85,7 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
    ═══════════════════════════════════ */
 function ProblemAndRole() {
   return (
-    <div className="flex flex-col gap-5 lg:flex-row">
+    <div className="relative z-10 flex flex-col gap-5 lg:flex-row">
       {/* The Problem card */}
       <div className="flex-shrink-0 rounded-[28px] bg-[#2216ff] p-6 text-white lg:w-[540px]">
         <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
