@@ -58,7 +58,7 @@ export function ExperienceIcon({ size = defaultProps.size, className }: IconProp
 export function AcceleratorIcon({ size = defaultProps.size, className }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
-      <path d="M4 2L12 8L4 14V2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M9 1.5L3.5 9H8L7 14.5L12.5 7H8L9 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

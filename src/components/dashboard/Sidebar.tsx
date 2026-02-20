@@ -110,18 +110,26 @@ export function Sidebar({ className = "" }: SidebarProps) {
 
         {/* Footer */}
         <div className="flex flex-col gap-3">
-          {/* Let's talk card */}
-          <div className="rounded-xl bg-neutral-50 p-4">
+          {/* Let's talk card — links to email */}
+          <a
+            href="mailto:carmenrincon92@gmail.com"
+            className="block rounded-xl bg-neutral-50 p-4 transition-colors hover:bg-neutral-100"
+          >
             <p className="font-body text-16 font-bold text-brand-ink">
               Let&apos;s talk!
             </p>
             <p className="text-13 text-neutral-500">
               carmenrincon92@gmail.com
             </p>
-          </div>
+          </a>
 
-          {/* Status bar */}
-          <div className="flex items-center gap-2 rounded-md bg-neutral-50 px-4 py-3">
+          {/* Status bar — links to yummy-labs.com */}
+          <a
+            href="https://yummy-labs.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 rounded-md bg-neutral-50 px-4 py-3 transition-colors hover:bg-neutral-100"
+          >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400 shadow-[0_0_0_3px_var(--green-200)]" />
@@ -130,7 +138,7 @@ export function Sidebar({ className = "" }: SidebarProps) {
               Building Yummy Labs
             </span>
             <ArrowRightIcon size={16} className="text-neutral-400" />
-          </div>
+          </a>
         </div>
       </nav>
     </aside>

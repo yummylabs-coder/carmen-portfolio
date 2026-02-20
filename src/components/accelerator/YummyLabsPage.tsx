@@ -72,7 +72,7 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 
       {/* Dog mascot - hidden on mobile, sits behind the next section */}
       {dogUrl && (
-        <div className="pointer-events-none absolute right-0 top-[-10px] z-0 hidden h-[200px] w-[160px] lg:block">
+        <div className="pointer-events-none absolute right-0 top-[-80px] z-0 hidden h-[200px] w-[160px] lg:block">
           <Img src={dogUrl} alt="Yummy Labs Dog" className="h-full w-full object-contain" />
         </div>
       )}
