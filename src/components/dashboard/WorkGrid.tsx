@@ -20,6 +20,7 @@ export function WorkGrid({ projects }: WorkGridProps) {
             coverUrl={project.coverUrl}
             slug={project.slug}
             tags={project.tags}
+            isComingSoon={project.isComingSoon}
           />
         ))}
       </div>

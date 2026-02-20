@@ -6,6 +6,7 @@ export interface CaseStudy {
   slug: string;
   tags?: string[];
   isFeatured?: boolean;
+  isComingSoon?: boolean;
   sortOrder?: number;
 }
 

@@ -69,10 +69,11 @@ function parsePage(page: PageObjectResponse): CaseStudy {
   // Featured = Status select equals "Featured"
   const status = getSelect(props.Status);
   const isFeatured = status === "Featured";
+  const isComingSoon = status !== "Published" && status !== "Featured";
 
   const sortOrder = getNumber(props.Order);
 
-  return { id: page.id, title, summary, coverUrl, slug, tags, isFeatured, sortOrder };
+  return { id: page.id, title, summary, coverUrl, slug, tags, isFeatured, isComingSoon, sortOrder };
 }
 
 export async function getFeaturedCaseStudies(): Promise<CaseStudy[]> {
@@ -100,12 +101,6 @@ export async function getAllProjects(): Promise<CaseStudy[]> {
   try {
     const response = await notion.databases.query({
       database_id: databaseId,
-      filter: {
-        or: [
-          { property: "Status", select: { equals: "Published" } },
-          { property: "Status", select: { equals: "Featured" } },
-        ],
-      },
       sorts: [{ property: "Order", direction: "ascending" }],
       page_size: 100,
     });
