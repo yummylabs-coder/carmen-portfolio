@@ -10,6 +10,7 @@ import {
   AboutIcon,
   ExperienceIcon,
   AcceleratorIcon,
+  ExperimentsIcon,
   ContactIcon,
   ArrowRightIcon,
 } from "@/components/icons/NavIcons";
@@ -24,6 +25,7 @@ const primaryNav = [
 
 const otherNav = [
   { label: "My Design Accelerator", href: "/accelerator", icon: AcceleratorIcon },
+  { label: "My Experiments", href: "/experiments", icon: ExperimentsIcon },
   { label: "Contact", href: "/contact", icon: ContactIcon },
 ];
 

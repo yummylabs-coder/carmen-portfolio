@@ -55,6 +55,14 @@ export function ExperienceIcon({ size = defaultProps.size, className }: IconProp
   );
 }
 
+export function ExperimentsIcon({ size = defaultProps.size, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
+      <path d="M5 2L6.5 5.5L10 4L7.5 7.5L11 9L7 9.5L8 14L5 10L2 12.5L3.5 8.5L1 7L4.5 6.5L5 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function AcceleratorIcon({ size = defaultProps.size, className }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
