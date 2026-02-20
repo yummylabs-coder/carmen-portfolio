@@ -33,7 +33,7 @@ function Header() {
   return (
     <header className="relative mb-8 flex items-start gap-5">
       {/* Logo */}
-      <div className="flex h-[82px] w-[82px] shrink-0 items-center justify-center rounded-2xl border-2 border-[#7c3aed] bg-[#ede9fe] text-[32px]">
+      <div className="flex h-[82px] w-[82px] shrink-0 items-center justify-center rounded-2xl border border-[#7c3aed] bg-[#ede9fe] text-[32px]">
         {"\u{1F9EA}"}
       </div>
 
@@ -98,7 +98,7 @@ function ProblemAndRole() {
       </div>
 
       {/* My Role card */}
-      <div className="flex-1 rounded-[28px] border-2 border-neutral-200 bg-white p-6">
+      <div className="flex-1 rounded-[28px] border border-neutral-200 bg-white p-6">
         <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
           My role
         </span>
@@ -132,10 +132,18 @@ function Stats() {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="rounded-[20px] border border-[#e0e0dc] bg-[#fffefc] px-[17px] py-5 text-center shadow-[0_0_0_0_rgba(48,1,1,0.04),0_1px_3px_0_rgba(48,1,1,0.04)]"
+          className="rounded-[20px] border border-[#e0e0dc] bg-[#fffefc] px-[17px] py-5 text-center shadow-[0_0_0_0_rgba(48,1,1,0.04),0_1px_3px_0_rgba(48,1,1,0.04)] transition-transform duration-300 ease-out hover:-rotate-2 hover:scale-[1.04]"
         >
           <div className="mb-2 text-[28px]">{stat.icon}</div>
-          <div className="font-brand text-[32px] font-extrabold leading-relaxed text-[#300101]">
+          <div
+            className="font-brand text-[32px] font-extrabold leading-relaxed"
+            style={{
+              background: "linear-gradient(135deg, #7c3aed 0%, #2216ff 50%, #7c3aed 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             {stat.number}
           </div>
           <div className="font-body text-[12px] font-semibold uppercase tracking-[0.03em] text-gray-500">
@@ -152,7 +160,7 @@ function Stats() {
    ═══════════════════════════════════ */
 function HowItWorks() {
   return (
-    <div className="rounded-[28px] border-2 border-neutral-200 bg-white p-6">
+    <div className="rounded-[28px] border border-neutral-200 bg-white p-6">
       <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
         {"\u26A1"} How it works
       </span>
@@ -204,7 +212,7 @@ function Partners() {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       {/* Startup Partners */}
-      <div className="flex-1 rounded-[28px] border-2 border-neutral-200 bg-white p-6">
+      <div className="flex-1 rounded-[28px] border border-neutral-200 bg-white p-6">
         <span className="mb-4 inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
           {"\u{1F680}"} Startup partners
         </span>
@@ -212,7 +220,7 @@ function Partners() {
           {partners.map((partner) => (
             <div
               key={partner.name}
-              className="flex-1 rounded-[20px] border-2 border-neutral-200 bg-white p-4 text-center"
+              className="flex-1 rounded-[20px] border border-neutral-200 bg-white p-4 text-center"
             >
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-50">
                 <span className="font-body text-[14px] font-bold text-gray-500">
@@ -304,7 +312,7 @@ function Testimonials() {
   const rest = testimonials.filter((t) => !t.featured);
 
   return (
-    <div className="rounded-[28px] border-2 border-neutral-200 bg-[#300101] p-[26px]">
+    <div className="rounded-[28px] border border-neutral-200 bg-[#300101] p-[26px]">
       <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
         {"\u{1F4AC}"} Designer testimonials
       </span>
@@ -353,7 +361,7 @@ function Gallery() {
         {galleryItems.map((item, idx) => (
           <div
             key={item.label + idx}
-            className={`flex min-h-[180px] items-center justify-center overflow-hidden rounded-[20px] border-2 border-neutral-200 bg-gradient-to-br from-[#ede9fe] to-[#f3e8ff] transition-all hover:scale-[1.02] hover:border-[#7c3aed] hover:rotate-0 ${
+            className={`flex min-h-[180px] items-center justify-center overflow-hidden rounded-[20px] border border-neutral-200 bg-gradient-to-br from-[#ede9fe] to-[#f3e8ff] transition-all hover:scale-[1.02] hover:border-[#7c3aed] hover:rotate-0 ${
               tiltClasses[idx] || ""
             } ${idx === 0 || idx === 5 ? "sm:col-span-2 lg:col-span-1" : ""}`}
           >
