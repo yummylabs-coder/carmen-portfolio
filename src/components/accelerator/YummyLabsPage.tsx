@@ -1,5 +1,6 @@
 "use client";
 
+import type { YummyAssetsMap } from "@/lib/types";
 import {
   stats,
   roles,
@@ -11,7 +12,16 @@ import {
 
 const YUMMY_URL = "https://yummy-labs.com";
 
-/* ─── External Link Arrow Icon ─── */
+interface YummyLabsPageProps {
+  assets: YummyAssetsMap;
+}
+
+/* ─── Helpers ─── */
+function Img({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={alt} className={className} />;
+}
+
 function ExternalArrow() {
   return (
     <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
@@ -29,12 +39,19 @@ function ExternalArrow() {
 /* ═══════════════════════════════════
    Section 1 — Header
    ═══════════════════════════════════ */
-function Header() {
+function Header({ assets }: { assets: YummyAssetsMap }) {
+  const logoUrl = assets.branding["logo"];
+  const dogUrl = assets.branding["dog"];
+
   return (
     <header className="relative mb-8 flex items-start gap-5">
       {/* Logo */}
-      <div className="flex h-[82px] w-[82px] shrink-0 items-center justify-center rounded-2xl border border-[#7c3aed] bg-[#ede9fe] text-[32px]">
-        {"\u{1F9EA}"}
+      <div className="flex h-[82px] w-[82px] shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#7c3aed] bg-[#ede9fe] text-[32px]">
+        {logoUrl ? (
+          <Img src={logoUrl} alt="Yummy Labs" className="h-full w-full object-contain" />
+        ) : (
+          "\u{1F9EA}"
+        )}
       </div>
 
       {/* Title + subtitle */}
@@ -53,10 +70,12 @@ function Header() {
         </p>
       </div>
 
-      {/* Dog mascot placeholder - hidden on mobile */}
-      <div className="absolute right-0 top-[-10px] hidden h-[240px] w-[200px] items-center justify-center md:flex">
-        {/* Replace with: <img src="/images/yummy-labs/dog.svg" alt="Yummy Labs Dog" className="h-full w-full object-contain" /> */}
-      </div>
+      {/* Dog mascot - hidden on mobile */}
+      {dogUrl && (
+        <div className="absolute right-0 top-[-10px] hidden h-[240px] w-[200px] md:block">
+          <Img src={dogUrl} alt="Yummy Labs Dog" className="h-full w-full object-contain" />
+        </div>
+      )}
     </header>
   );
 }
@@ -208,7 +227,7 @@ function HowItWorks() {
 /* ═══════════════════════════════════
    Section 5 — Partners
    ═══════════════════════════════════ */
-function Partners() {
+function Partners({ assets }: { assets: YummyAssetsMap }) {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       {/* Startup Partners */}
@@ -217,24 +236,31 @@ function Partners() {
           {"\u{1F680}"} Startup partners
         </span>
         <div className="flex flex-col gap-3 sm:flex-row">
-          {partners.map((partner) => (
-            <div
-              key={partner.name}
-              className="flex-1 rounded-[20px] border border-neutral-200 bg-white p-4 text-center"
-            >
-              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-50">
-                <span className="font-body text-[14px] font-bold text-gray-500">
-                  {partner.logoText}
-                </span>
+          {partners.map((partner) => {
+            const logoUrl = assets.partnerLogos[partner.slug];
+            return (
+              <div
+                key={partner.name}
+                className="flex-1 rounded-[20px] border border-neutral-200 bg-white p-4 text-center"
+              >
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
+                  {logoUrl ? (
+                    <Img src={logoUrl} alt={partner.name} className="h-8 w-8 object-contain" />
+                  ) : (
+                    <span className="font-body text-[14px] font-bold text-gray-500">
+                      {partner.logoText}
+                    </span>
+                  )}
+                </div>
+                <div className="mb-1 font-body text-[14px] font-bold text-[#300101]">
+                  {partner.name}
+                </div>
+                <div className="whitespace-pre-line text-[11px] leading-relaxed text-gray-500">
+                  {partner.description}
+                </div>
               </div>
-              <div className="mb-1 font-body text-[14px] font-bold text-[#300101]">
-                {partner.name}
-              </div>
-              <div className="whitespace-pre-line text-[11px] leading-relaxed text-gray-500">
-                {partner.description}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -247,21 +273,28 @@ function Partners() {
           Free tool access for every sprinter
         </h3>
         <div className="flex flex-col flex-wrap gap-3 sm:flex-row">
-          {tools.map((tool) => (
-            <div
-              key={tool.name}
-              className="flex items-center gap-2 rounded-full border border-[#e0e0dc] bg-white px-[17px] py-[11px]"
-            >
-              <div className="flex h-5 w-5 items-center justify-center rounded-[4px] bg-[#ede9fe]">
-                <span className="font-body text-[10px] font-bold text-[#7c3aed]">
-                  {tool.logoText}
+          {tools.map((tool) => {
+            const logoUrl = assets.toolLogos[tool.slug];
+            return (
+              <div
+                key={tool.name}
+                className="flex items-center gap-2 rounded-full border border-[#e0e0dc] bg-white px-[17px] py-[11px]"
+              >
+                <div className="flex h-5 w-5 items-center justify-center overflow-hidden rounded-[4px] bg-[#ede9fe]">
+                  {logoUrl ? (
+                    <Img src={logoUrl} alt={tool.name} className="h-4 w-4 object-contain" />
+                  ) : (
+                    <span className="font-body text-[10px] font-bold text-[#7c3aed]">
+                      {tool.logoText}
+                    </span>
+                  )}
+                </div>
+                <span className="font-body text-[13px] font-semibold text-gray-800">
+                  {tool.name}
                 </span>
               </div>
-              <span className="font-body text-[13px] font-semibold text-gray-800">
-                {tool.name}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
@@ -273,9 +306,11 @@ function Partners() {
    ═══════════════════════════════════ */
 function TestimonialCard({
   t,
+  avatarUrl,
   featured,
 }: {
   t: (typeof testimonials)[0];
+  avatarUrl?: string;
   featured?: boolean;
 }) {
   return (
@@ -288,10 +323,14 @@ function TestimonialCard({
         &ldquo;{t.quote}&rdquo;
       </p>
       <div className="flex items-center gap-[10px]">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#7c3aed] to-[#f472b6] font-body text-[14px] font-bold text-white">
-          {t.initial}
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#7c3aed] to-[#f472b6] font-body text-[14px] font-bold text-white">
+          {avatarUrl ? (
+            <Img src={avatarUrl} alt={t.name} className="h-full w-full object-cover" />
+          ) : (
+            t.initial
+          )}
         </div>
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <div className="font-body text-[13px] font-bold text-neutral-50">
             {t.name}
           </div>
@@ -299,7 +338,7 @@ function TestimonialCard({
             {t.title}, {t.location} {t.flag}
           </div>
         </div>
-        <span className="inline-flex items-center rounded-[4px] bg-[#d1fae5] px-2 py-[3px] font-body text-[10px] font-bold text-[#34d399]">
+        <span className="inline-flex shrink-0 items-center rounded-[4px] bg-[#d1fae5] px-2 py-[3px] font-body text-[10px] font-bold text-[#34d399]">
           {t.badge}
         </span>
       </div>
@@ -307,7 +346,7 @@ function TestimonialCard({
   );
 }
 
-function Testimonials() {
+function Testimonials({ assets }: { assets: YummyAssetsMap }) {
   const featured = testimonials.find((t) => t.featured);
   const rest = testimonials.filter((t) => !t.featured);
 
@@ -319,7 +358,13 @@ function Testimonials() {
 
       <div className="mt-8 flex flex-col gap-4">
         {/* Featured */}
-        {featured && <TestimonialCard t={featured} featured />}
+        {featured && (
+          <TestimonialCard
+            t={featured}
+            avatarUrl={assets.avatars[featured.avatarSlug] || undefined}
+            featured
+          />
+        )}
 
         {/* Rows of 2 */}
         {[0, 2, 4].map((startIdx) => {
@@ -328,7 +373,11 @@ function Testimonials() {
           return (
             <div key={startIdx} className="flex flex-col gap-4 md:flex-row">
               {pair.map((t) => (
-                <TestimonialCard key={t.name} t={t} />
+                <TestimonialCard
+                  key={t.name}
+                  t={t}
+                  avatarUrl={assets.avatars[t.avatarSlug] || undefined}
+                />
               ))}
             </div>
           );
@@ -350,7 +399,12 @@ const tiltClasses = [
   "rotate-[0.5deg]",
 ];
 
-function Gallery() {
+function Gallery({ assets }: { assets: YummyAssetsMap }) {
+  const galleryMap: Record<string, string> = {};
+  for (const g of assets.gallery) {
+    if (g.imageUrl) galleryMap[g.slug] = g.imageUrl;
+  }
+
   return (
     <div className="mt-2">
       <span className="mb-5 inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
@@ -358,18 +412,27 @@ function Gallery() {
       </span>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {galleryItems.map((item, idx) => (
-          <div
-            key={item.label + idx}
-            className={`flex min-h-[180px] items-center justify-center overflow-hidden rounded-[20px] border border-neutral-200 bg-gradient-to-br from-[#ede9fe] to-[#f3e8ff] transition-all hover:scale-[1.02] hover:border-[#7c3aed] hover:rotate-0 ${
-              tiltClasses[idx] || ""
-            } ${idx === 0 || idx === 5 ? "sm:col-span-2 lg:col-span-1" : ""}`}
-          >
-            <span className="px-3 text-center text-[11px] text-gray-500">
-              {item.label}
-            </span>
-          </div>
-        ))}
+        {galleryItems.map((item, idx) => {
+          const imgUrl = galleryMap[item.slug];
+          return (
+            <div
+              key={item.slug}
+              className={`flex min-h-[180px] items-center justify-center overflow-hidden rounded-[20px] border border-neutral-200 transition-all hover:scale-[1.02] hover:border-[#7c3aed] hover:rotate-0 ${
+                imgUrl ? "bg-neutral-100" : "bg-gradient-to-br from-[#ede9fe] to-[#f3e8ff]"
+              } ${tiltClasses[idx] || ""} ${
+                idx === 0 || idx === 5 ? "sm:col-span-2 lg:col-span-1" : ""
+              }`}
+            >
+              {imgUrl ? (
+                <Img src={imgUrl} alt={item.label} className="h-full w-full object-cover" />
+              ) : (
+                <span className="px-3 text-center text-[11px] text-gray-500">
+                  {item.label}
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -397,18 +460,18 @@ function CtaSection() {
 /* ═══════════════════════════════════
    Main Page
    ═══════════════════════════════════ */
-export function YummyLabsPage() {
+export function YummyLabsPage({ assets }: YummyLabsPageProps) {
   return (
     <div className="mx-auto w-full max-w-[1100px]">
-      <Header />
+      <Header assets={assets} />
 
       <div className="flex flex-col gap-5">
         <ProblemAndRole />
         <Stats />
         <HowItWorks />
-        <Partners />
-        <Testimonials />
-        <Gallery />
+        <Partners assets={assets} />
+        <Testimonials assets={assets} />
+        <Gallery assets={assets} />
         <CtaSection />
       </div>
     </div>

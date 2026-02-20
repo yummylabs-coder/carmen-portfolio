@@ -6,6 +6,7 @@ export interface Testimonial {
   quote: string;
   badge: string;
   initial: string;
+  avatarSlug: string;
   featured?: boolean;
 }
 
@@ -13,11 +14,13 @@ export interface Partner {
   name: string;
   description: string;
   logoText: string;
+  slug: string;
 }
 
 export interface Tool {
   name: string;
   logoText: string;
+  slug: string;
 }
 
 export interface Stat {
@@ -28,6 +31,7 @@ export interface Stat {
 
 export interface GalleryItem {
   label: string;
+  slug: string;
 }
 
 export const stats: Stat[] = [
@@ -49,24 +53,27 @@ export const partners: Partner[] = [
     name: "Cathouse",
     description: "New-Gen Homebuying\nWith the Former VP Product, Tinder",
     logoText: "C",
+    slug: "partner-cathouse",
   },
   {
     name: "Twenty.com",
     description: "Open source CRM\nWith 2X YC founders & Airbnb Product",
     logoText: "20",
+    slug: "partner-twenty",
   },
   {
     name: "Superbloom",
     description: "Game-tech startup\nWith ex-Glu Games leader",
     logoText: "S",
+    slug: "partner-superbloom",
   },
 ];
 
 export const tools: Tool[] = [
-  { name: "Figma", logoText: "F" },
-  { name: "UX Pilot", logoText: "U" },
-  { name: "Builder.io", logoText: "B" },
-  { name: "Subframe", logoText: "S" },
+  { name: "Figma", logoText: "F", slug: "tool-figma" },
+  { name: "UX Pilot", logoText: "U", slug: "tool-uxpilot" },
+  { name: "Builder.io", logoText: "B", slug: "tool-builder" },
+  { name: "Subframe", logoText: "S", slug: "tool-subframe" },
 ];
 
 export const testimonials: Testimonial[] = [
@@ -77,6 +84,7 @@ export const testimonials: Testimonial[] = [
     flag: "\u{1F1EC}\u{1F1E7}",
     badge: "\u2713 Completed",
     initial: "H",
+    avatarSlug: "avatar-harry",
     featured: true,
     quote:
       "I'm not usually a 'course' person. I prefer to dive in and learn by doing. But this was different. Yummy Labs didn't tell us what to design - they taught us how to think like product designers. My sleep schedule's wrecked, but my process is sharper and my design thinking's leveled up.",
@@ -88,6 +96,7 @@ export const testimonials: Testimonial[] = [
     flag: "\u{1F1FA}\u{1F1F8}",
     badge: "\u2713 Completed",
     initial: "S",
+    avatarSlug: "avatar-stephanie",
     quote:
       "It definitely wasn't easy, but I left this sprint knowing how it truly feels to think like a designer. We went from building user flows to functional prototypes in two weeks.",
   },
@@ -98,6 +107,7 @@ export const testimonials: Testimonial[] = [
     flag: "\u{1F1FA}\u{1F1F8}",
     badge: "\u2B50 Top Sprinter",
     initial: "M",
+    avatarSlug: "avatar-manushri",
     quote:
       "This sprint reminded me why I love what I do - blending design, business, code and empathy. I was recognized as a Top Sprinter with my work presented to the founders!",
   },
@@ -108,6 +118,7 @@ export const testimonials: Testimonial[] = [
     flag: "\u{1F1EC}\u{1F1E7}",
     badge: "\u2713 Completed",
     initial: "E",
+    avatarSlug: "avatar-eszter",
     quote:
       "This sprint taught me how to design with empathy while leveraging AI to accelerate clarity, decision-making, and innovation, without losing the human touch.",
   },
@@ -118,6 +129,7 @@ export const testimonials: Testimonial[] = [
     flag: "\u{1F1EA}\u{1F1F8}",
     badge: "\u2713 Completed",
     initial: "S",
+    avatarSlug: "avatar-sofia",
     quote:
       "Over two intense weeks, we worked on a project for a stealth startup founded by the ex-CPO of Tinder. Can't wait to show you this project in my portfolio soon!",
   },
@@ -128,16 +140,17 @@ export const testimonials: Testimonial[] = [
     flag: "\u{1F1FA}\u{1F1F8}",
     badge: "\u2713 Completed",
     initial: "B",
+    avatarSlug: "avatar-britney",
     quote:
       "I left this sprint sharper, more curious, and with a deeper appreciation for how AI can accelerate design. This definitely won't be my last sprint with the team.",
   },
 ];
 
 export const galleryItems: GalleryItem[] = [
-  { label: "Mentoring session" },
-  { label: "Designer work" },
-  { label: "Sprint kickoff" },
-  { label: "Designer work" },
-  { label: "Feedback session" },
-  { label: "Final presentations" },
+  { label: "Mentoring session", slug: "gallery-mentoring" },
+  { label: "Designer work", slug: "gallery-work-1" },
+  { label: "Sprint kickoff", slug: "gallery-kickoff" },
+  { label: "Designer work", slug: "gallery-work-2" },
+  { label: "Feedback session", slug: "gallery-feedback" },
+  { label: "Final presentations", slug: "gallery-presentations" },
 ];

@@ -1,7 +1,7 @@
 import "server-only";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import type { CaseStudy, AboutPhoto, Favorite, ExperienceEntry } from "./types";
+import type { CaseStudy, AboutPhoto, Favorite, ExperienceEntry, YummyAsset, YummyAssetsMap } from "./types";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID!;
@@ -243,5 +243,70 @@ export async function getExperience(): Promise<ExperienceEntry[]> {
   } catch (error) {
     console.error("Failed to fetch experience from Notion:", error);
     return [];
+  }
+}
+
+// ─── Yummy Labs Assets ───
+const yummyAssetsDbId = process.env.NOTION_YUMMY_ASSETS_DB_ID;
+
+export async function getYummyAssets(): Promise<YummyAssetsMap> {
+  const empty: YummyAssetsMap = {
+    branding: {},
+    partnerLogos: {},
+    toolLogos: {},
+    avatars: {},
+    gallery: [],
+  };
+
+  if (!yummyAssetsDbId) return empty;
+
+  try {
+    const response = await notion.databases.query({
+      database_id: yummyAssetsDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 50,
+    });
+
+    const assets: YummyAsset[] = response.results
+      .filter((p): p is PageObjectResponse => "properties" in p)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        return {
+          id: page.id,
+          name: getPlainText(props.Name, "title"),
+          slug: getPlainText(props.Slug, "rich_text"),
+          category: getSelect(props.Category) as YummyAsset["category"],
+          imageUrl: getFiles(props.Image),
+          order: getNumber(props.Order),
+        };
+      });
+
+    // Organize into a map keyed by slug for easy lookup
+    const result: YummyAssetsMap = { ...empty };
+
+    for (const asset of assets) {
+      switch (asset.category) {
+        case "Branding":
+          result.branding[asset.slug] = asset.imageUrl;
+          break;
+        case "Partner Logo":
+          result.partnerLogos[asset.slug] = asset.imageUrl;
+          break;
+        case "Tool Logo":
+          result.toolLogos[asset.slug] = asset.imageUrl;
+          break;
+        case "Designer Avatar":
+          result.avatars[asset.slug] = asset.imageUrl;
+          break;
+        case "Gallery":
+          result.gallery.push({ slug: asset.slug, imageUrl: asset.imageUrl, name: asset.name });
+          break;
+      }
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Failed to fetch Yummy Labs assets from Notion:", error);
+    return empty;
   }
 }

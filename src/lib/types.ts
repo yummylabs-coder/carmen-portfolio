@@ -52,3 +52,20 @@ export interface ExperienceEntry {
   whatILearned: string;
   order: number;
 }
+
+export interface YummyAsset {
+  id: string;
+  name: string;
+  slug: string;
+  category: "Branding" | "Partner Logo" | "Tool Logo" | "Designer Avatar" | "Gallery";
+  imageUrl: string;
+  order: number;
+}
+
+export interface YummyAssetsMap {
+  branding: Record<string, string>;
+  partnerLogos: Record<string, string>;
+  toolLogos: Record<string, string>;
+  avatars: Record<string, string>;
+  gallery: { slug: string; imageUrl: string; name: string }[];
+}
