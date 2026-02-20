@@ -277,54 +277,12 @@ function TimelineEntry({
 
 /* ─── Quick Summary Card ─── */
 function QuickSummary() {
-  const highlights = [
-    { icon: "\u{1F4C5}", text: "~10 years in design" },
-    { icon: "\u{1F680}", text: "End-to-end product builds" },
-    { icon: "\u{1F3AF}", text: "B2C & B2B experience" },
-    { icon: "\u26A1", text: "AI-native workflows" },
-    { icon: "\u{1F9EA}", text: "Founded Yummy Labs" },
-  ];
-
   return (
     <div className="rounded-2xl bg-brand-ink p-5">
-      <div className="mb-3 flex items-center gap-2">
-        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-white/10 text-[12px]">
-          {"\u{1F4CB}"}
-        </span>
-        <h3 className="font-brand text-[14px] font-bold text-white">
-          Quick Summary
-        </h3>
-      </div>
-      <div className="space-y-2">
-        {highlights.map((h) => (
-          <div
-            key={h.text}
-            className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2"
-          >
-            <span className="text-[14px]">{h.icon}</span>
-            <span className="text-12 font-medium text-white/80">
-              {h.text}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── Bottom Reflection ─── */
-function ExperienceReflection() {
-  return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6">
-      <div className="mb-3 flex items-center gap-2">
-        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-50 text-[12px]">
-          {"\u2728"}
-        </span>
-        <h3 className="font-brand text-[14px] font-bold text-brand-ink">
-          Looking Back &amp; Ahead
-        </h3>
-      </div>
-      <div className="space-y-3 text-13 leading-relaxed text-neutral-600">
+      <h3 className="mb-3 font-brand text-[14px] font-bold text-white">
+        Quick Summary
+      </h3>
+      <div className="space-y-3 text-12 leading-relaxed text-white/75">
         <p>
           I&apos;ve been in the design industry for almost 10 years now.
           Every position I took and every risk I made with my career taught
@@ -333,7 +291,7 @@ function ExperienceReflection() {
           interesting startups along the way.
         </p>
         <p>
-          Today, we&apos;re facing a major shift in the industry — and every
+          Today, we&apos;re facing a major shift in the industry, and every
           day I take it upon myself to find better processes, refine my
           workflow, push my craft, and help other designers do the same.
         </p>
@@ -383,9 +341,6 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
           ))}
         </div>
       </div>
-
-      {/* Bottom — Reflection */}
-      <ExperienceReflection />
     </>
   );
 }
