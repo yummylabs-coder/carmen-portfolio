@@ -60,11 +60,13 @@ export default async function WorkPage() {
   }
 
   const featured = projects.find((p) => p.isFeatured);
-  // All projects in the grid (including featured), coming soon sorted to the end
-  const allForGrid = [...projects].sort((a, b) => {
-    if (a.isComingSoon !== b.isComingSoon) return a.isComingSoon ? 1 : -1;
-    return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
-  });
+  // All projects in the grid (exclude the featured hero), coming soon at the end
+  const allForGrid = projects
+    .filter((p) => p.id !== featured?.id)
+    .sort((a, b) => {
+      if (a.isComingSoon !== b.isComingSoon) return a.isComingSoon ? 1 : -1;
+      return (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
+    });
 
   return (
     <DashboardShell>
