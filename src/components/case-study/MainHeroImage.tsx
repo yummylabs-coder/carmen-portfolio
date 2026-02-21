@@ -15,7 +15,7 @@ function isSvg(url: string): boolean {
 
 export function MainHeroImage({ src, alt }: MainHeroImageProps) {
   return (
-    <div className="full-bleed-panel">
+    <div className="full-bleed-panel -mt-14">
       <div className="relative aspect-[16/9] w-full overflow-hidden">
         {isVideo(src) ? (
           <video
