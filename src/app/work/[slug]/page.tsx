@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCaseStudyBySlug, getCaseStudySections, getNextCaseStudy } from "@/lib/notion";
+import { getCaseStudyBySlug, getCaseStudySections, getNextCaseStudy, getAllProjects } from "@/lib/notion";
 import { getCaseStudyConfig } from "@/lib/case-study-config";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ProgressBar } from "@/components/case-study/ProgressBar";
@@ -13,6 +13,12 @@ import { Outcomes } from "@/components/case-study/Outcomes";
 import { NextCaseStudy } from "@/components/case-study/NextCaseStudy";
 
 export const revalidate = 3600;
+
+/** Pre-build all case study pages at deploy time */
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map((p) => ({ slug: p.slug }));
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
