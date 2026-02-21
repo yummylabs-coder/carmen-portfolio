@@ -173,3 +173,43 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/*
+ * Full-bleed utility for case study hero & main hero image.
+ * Breaks out of DashboardShell padding to fill the entire right panel.
+ *
+ * DashboardShell padding layers:
+ *   Mobile:  px-4 (16px)
+ *   md:      px-6 (24px)
+ *   lg:      pl-4 + px-7 = 44px left,  pr-8 + px-7 = 60px right
+ *
+ * Also kills the outer pt and gap above the hero.
+ */
+.full-bleed-panel {
+  width: 100vw;
+  margin-left: -16px;
+  margin-right: -16px;
+}
+@media (min-width: 768px) {
+  .full-bleed-panel {
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+}
+@media (min-width: 1024px) {
+  .full-bleed-panel {
+    width: calc(100vw - 240px);
+    margin-left: -44px;
+    margin-right: -60px;
+  }
+}
+
+/* Hero pulls up to kill the DashboardShell top padding + gap */
+.full-bleed-hero {
+  margin-top: calc(-32px - 24px); /* pt-8 (32px) + gap-6 (24px) */
+}
+@media (min-width: 1024px) {
+  .full-bleed-hero {
+    margin-top: calc(-48px - 24px); /* lg:pt-12 (48px) + gap-6 (24px) */
+  }
+}

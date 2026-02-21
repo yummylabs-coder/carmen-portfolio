@@ -42,8 +42,10 @@ const fadeUp = {
 export function HeroSection({ study, readTime, brand }: HeroSectionProps) {
   return (
     <section
-      className="-mx-4 -mt-6 px-4 pb-8 pt-8 md:-mx-6 md:px-6 lg:-ml-11 lg:-mr-15 lg:px-11 lg:pt-8"
-      style={{ backgroundColor: brand.bg }}
+      className="full-bleed-panel full-bleed-hero flex flex-col justify-center px-4 pb-10 pt-[60px] md:px-6 lg:min-h-[calc(100vh-36px)] lg:px-[44px] lg:pt-10"
+      style={{
+        background: `linear-gradient(170deg, ${brand.bg} 0%, ${brand.bg}e6 60%, ${brand.bg}cc 100%)`,
+      }}
     >
       {/* Breadcrumb inside the branded bg */}
       <div className="mb-8">
