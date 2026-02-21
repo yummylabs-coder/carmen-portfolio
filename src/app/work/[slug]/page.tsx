@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ProgressBar } from "@/components/case-study/ProgressBar";
 import { Breadcrumb } from "@/components/case-study/Breadcrumb";
 import { HeroSection } from "@/components/case-study/HeroSection";
+import { MainHeroImage } from "@/components/case-study/MainHeroImage";
 import { OurRole } from "@/components/case-study/OurRole";
 import { ContentSection } from "@/components/case-study/ContentSection";
 import { ProcessTimeline } from "@/components/case-study/ProcessTimeline";
@@ -33,14 +34,22 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   return (
     <DashboardShell>
-      <ProgressBar />
+      <ProgressBar
+        progressBarColor={config.brand.progressBar}
+        celebrationColors={config.brand.celebrationColors}
+      />
 
       <div className="flex flex-col gap-14">
         {/* Breadcrumb */}
         <Breadcrumb caseName={study.title} />
 
-        {/* Hero */}
-        <HeroSection study={study} readTime={config.readTime} />
+        {/* Branded Hero Section (full-bleed bg) */}
+        <HeroSection study={study} readTime={config.readTime} brand={config.brand} />
+
+        {/* Full-bleed Main Hero Image */}
+        {study.mainHeroImage && (
+          <MainHeroImage src={study.mainHeroImage} alt={`${study.title} hero`} />
+        )}
 
         {/* Our Role */}
         <OurRole description={study.roleDescription} />

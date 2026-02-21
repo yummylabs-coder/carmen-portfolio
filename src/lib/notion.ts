@@ -166,6 +166,7 @@ function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
   }
 
   const heroImages = getAllFiles(props["Hero Images"]);
+  const mainHeroImage = getFiles(props["Main Hero Image"]);
 
   const outcomes: CaseStudyDetail["outcomes"] = [];
   for (let i = 1; i <= 4; i++) {
@@ -183,6 +184,7 @@ function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
     summary,
     coverUrl,
     heroImages,
+    mainHeroImage,
     roleDescription,
     services,
     platform,

@@ -63,6 +63,7 @@ export interface CaseStudyDetail {
   summary: string;
   coverUrl: string;
   heroImages: string[];
+  mainHeroImage: string;
   roleDescription: string;
   services: string[];
   platform: string[];

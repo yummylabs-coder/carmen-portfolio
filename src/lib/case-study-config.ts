@@ -1,15 +1,44 @@
 import type { TimelineStep } from "./types";
 
+export interface BrandColors {
+  /** Hero section background */
+  bg: string;
+  /** Primary text on branded bg */
+  text: string;
+  /** Secondary / muted text on branded bg */
+  textMuted: string;
+  /** Accent color (partner label, CTA button) */
+  accent: string;
+  /** Platform badge background */
+  badgeBg: string;
+  /** Platform badge text */
+  badgeText: string;
+  /** Service tag border */
+  tagBorder: string;
+  /** Service tag background */
+  tagBg: string;
+  /** Service tag text */
+  tagText: string;
+  /** Progress bar fill color */
+  progressBar: string;
+  /** CTA button background */
+  ctaBg: string;
+  /** CTA button text */
+  ctaText: string;
+  /** Celebration shape colors (geometric shapes on 100%) */
+  celebrationColors: string[];
+}
+
 interface CaseStudyConfig {
   readTime: string;
   timelineDuration: string;
   timelineSteps: TimelineStep[];
+  brand: BrandColors;
 }
 
 /**
  * Hardcoded per-case-study content.
  * Key = slug from Notion.
- * Timeline steps and read time are provided separately per case study.
  */
 const configs: Record<string, CaseStudyConfig> = {
   "learn-xyz": {
@@ -48,13 +77,45 @@ const configs: Record<string, CaseStudyConfig> = {
         isHighlight: true,
       },
     ],
+    brand: {
+      bg: "#FECB3A",
+      text: "#503B00",
+      textMuted: "#785900",
+      accent: "#856200",
+      badgeBg: "#503B00",
+      badgeText: "#FECB3A",
+      tagBorder: "#D4A000",
+      tagBg: "rgba(212, 160, 0, 0.15)",
+      tagText: "#5B4401",
+      progressBar: "#F4B80F",
+      ctaBg: "#503B00",
+      ctaText: "#FECB3A",
+      celebrationColors: ["#FECB3A", "#F4B80F", "#FFE066", "#D4A000", "#503B00", "#FFEB99"],
+    },
   },
+};
+
+const defaultBrand: BrandColors = {
+  bg: "#EEEDFF",
+  text: "#300101",
+  textMuted: "#64645F",
+  accent: "#2216FF",
+  badgeBg: "#300101",
+  badgeText: "#FFFFFF",
+  tagBorder: "#E0E0DC",
+  tagBg: "#F5F5F3",
+  tagText: "#64645F",
+  progressBar: "#2216FF",
+  ctaBg: "#2216FF",
+  ctaText: "#FFFFFF",
+  celebrationColors: ["#2216FF", "#D4D1FF", "#EEEDFF", "#300101", "#FFE066", "#22c55e"],
 };
 
 const defaultConfig: CaseStudyConfig = {
   readTime: "~5 min read",
   timelineDuration: "",
   timelineSteps: [],
+  brand: defaultBrand,
 };
 
 export function getCaseStudyConfig(slug: string): CaseStudyConfig {
