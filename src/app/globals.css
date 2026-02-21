@@ -186,28 +186,23 @@ body {
  * Also kills the outer pt and gap above the hero.
  */
 .full-bleed-panel {
+  /*
+   * Center-and-stretch: works at any viewport width regardless of
+   * parent padding, max-width, or mx-auto centering.
+   * left:50% moves the left edge to parent center,
+   * translateX(-50%) shifts back by half its own width → centered.
+   */
   width: 100vw;
-  margin-left: -16px;
-  margin-right: -16px;
-}
-@media (min-width: 768px) {
-  .full-bleed-panel {
-    margin-left: -24px;
-    margin-right: -24px;
-  }
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 @media (min-width: 1024px) {
   .full-bleed-panel {
-    /*
-     * Break out of the max-w-[1200px] + padding container.
-     * Inner: lg:px-7 (28px each side)
-     * Outer: lg:pl-4 (16px left) + lg:pr-8 (32px right)
-     * Total: 44px left, 60px right
-     * Width = parent 100% + both paddings = edge to edge of <main>
-     */
-    width: calc(100% + 44px + 60px);
-    margin-left: -44px;
-    margin-right: -60px;
+    /* Subtract the 240px sidebar, correct for asymmetric padding
+       (44px left vs 60px right → container center is 8px left of main center) */
+    width: calc(100vw - 240px);
+    transform: translateX(calc(-50% + 8px));
   }
 }
 
