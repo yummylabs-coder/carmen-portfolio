@@ -67,7 +67,7 @@ export function ContentSection({ section }: ContentSectionProps) {
       </h2>
 
       {section.description && (
-        <div className="whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
+        <div className="max-w-[756px] whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
           {section.description}
         </div>
       )}

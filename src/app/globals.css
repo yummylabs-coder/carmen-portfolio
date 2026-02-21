@@ -198,9 +198,16 @@ body {
 }
 @media (min-width: 1024px) {
   .full-bleed-panel {
+    /*
+     * Break out of the max-w-[1200px] mx-auto + padding container.
+     * Main area = 100vw - 240px (sidebar).
+     * Padding: pl-4 (16px) + px-7 (28px) = 44px left,
+     *          pr-8 (32px) + px-7 (28px) = 60px right.
+     * Use viewport-relative calc to always hit the edges.
+     */
     width: calc(100vw - 240px);
-    margin-left: -44px;
-    margin-right: -60px;
+    margin-left: calc(-1 * (100vw - 240px - 100%) / 2 - 44px);
+    margin-right: calc(-1 * (100vw - 240px - 100%) / 2 - 60px);
   }
 }
 

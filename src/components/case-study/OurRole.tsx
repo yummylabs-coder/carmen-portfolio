@@ -10,7 +10,7 @@ export function OurRole({ description }: OurRoleProps) {
       <h2 className="font-brand text-[24px] font-bold text-brand-ink">
         Our Role
       </h2>
-      <div className="text-16 leading-[1.8] text-neutral-600 whitespace-pre-line">
+      <div className="max-w-[756px] text-16 leading-[1.8] text-neutral-600 whitespace-pre-line">
         {description}
       </div>
     </section>

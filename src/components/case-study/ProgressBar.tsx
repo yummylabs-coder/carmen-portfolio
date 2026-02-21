@@ -104,7 +104,7 @@ export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) 
 
   return (
     <>
-      <div className="fixed left-0 right-0 top-0 z-[60] hidden h-[36px] items-center bg-white/95 backdrop-blur-sm lg:left-[240px] lg:flex">
+      <div className="fixed left-0 right-0 top-[60px] z-[35] flex h-[36px] items-center bg-white/95 backdrop-blur-sm lg:top-0 lg:z-[60] lg:left-[240px]">
         {/* Progress track */}
         <div className="absolute bottom-0 left-0 right-0 h-[6px] rounded-b-[3px] bg-neutral-100">
           <div
