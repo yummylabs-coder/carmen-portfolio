@@ -199,13 +199,13 @@ body {
 @media (min-width: 1024px) {
   .full-bleed-panel {
     /*
-     * Break out of padding only (stay inside <main>).
-     * Inner wrapper: lg:px-7 (28px each side)
-     * Outer wrapper: lg:pl-4 (16px) + lg:pr-8 (32px)
-     * Total: left 44px, right 60px
-     * Width: fill the main area (100vw - sidebar)
+     * Break out of the max-w-[1200px] + padding container.
+     * Inner: lg:px-7 (28px each side)
+     * Outer: lg:pl-4 (16px left) + lg:pr-8 (32px right)
+     * Total: 44px left, 60px right
+     * Width = parent 100% + both paddings = edge to edge of <main>
      */
-    width: calc(100vw - 240px);
+    width: calc(100% + 44px + 60px);
     margin-left: -44px;
     margin-right: -60px;
   }
