@@ -54,6 +54,54 @@ export interface ExperienceEntry {
   order: number;
 }
 
+export interface CaseStudyDetail {
+  id: string;
+  title: string;
+  slug: string;
+  partner: string;
+  headline: string;
+  summary: string;
+  coverUrl: string;
+  heroImages: string[];
+  roleDescription: string;
+  services: string[];
+  platform: string[];
+  industry: string;
+  projectType: string;
+  websiteUrl: string;
+  outcomes: { metric: string; description: string }[];
+  order: number;
+  status: string;
+}
+
+export interface CaseStudySection {
+  id: string;
+  title: string;
+  description: string;
+  images: string[];
+  captions: string[];
+  order: number;
+}
+
+export interface TimelineStep {
+  label: string;
+  title: string;
+  description: string;
+  isHighlight?: boolean;
+}
+
+export interface Experiment {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  status: "live" | "progress" | "archived";
+  statusLabel: string;
+  url?: string;
+  coverUrl?: string;
+  order: number;
+}
+
 export interface YummyAsset {
   id: string;
   name: string;
