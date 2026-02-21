@@ -62,7 +62,8 @@ export function ProgressBar() {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="mx-auto flex w-full max-w-[900px] items-center justify-between px-4 md:px-8">
+        {/* All content grouped on the right */}
+        <div className="ml-auto flex items-center gap-2 pr-4 md:pr-8">
           <span className="hidden text-12 text-neutral-500 md:block">
             {msg.text}
           </span>

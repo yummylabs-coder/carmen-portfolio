@@ -35,39 +35,37 @@ export default async function CaseStudyPage({ params }: PageProps) {
     <DashboardShell>
       <ProgressBar />
 
-      <div className="mx-auto w-full max-w-[900px]">
-        <div className="flex flex-col gap-16">
-          {/* Breadcrumb */}
-          <Breadcrumb caseName={study.title} />
+      <div className="flex flex-col gap-14">
+        {/* Breadcrumb */}
+        <Breadcrumb caseName={study.title} />
 
-          {/* Hero */}
-          <HeroSection study={study} readTime={config.readTime} />
+        {/* Hero */}
+        <HeroSection study={study} readTime={config.readTime} />
 
-          {/* Our Role */}
-          <OurRole description={study.roleDescription} />
+        {/* Our Role */}
+        <OurRole description={study.roleDescription} />
 
-          {/* Content Sections from Notion */}
-          {sections.map((section) => (
-            <ContentSection key={section.id} section={section} />
-          ))}
+        {/* Content Sections from Notion */}
+        {sections.map((section) => (
+          <ContentSection key={section.id} section={section} />
+        ))}
 
-          {/* Process Timeline (hardcoded per case study) */}
-          {config.timelineSteps.length > 0 && (
-            <ProcessTimeline
-              duration={config.timelineDuration}
-              steps={config.timelineSteps}
-            />
-          )}
+        {/* Process Timeline (hardcoded per case study) */}
+        {config.timelineSteps.length > 0 && (
+          <ProcessTimeline
+            duration={config.timelineDuration}
+            steps={config.timelineSteps}
+          />
+        )}
 
-          {/* Sticky Notes Banner */}
-          <StickyNotesBanner />
+        {/* Sticky Notes Banner */}
+        <StickyNotesBanner />
 
-          {/* Outcomes */}
-          <Outcomes outcomes={study.outcomes} />
+        {/* Outcomes */}
+        <Outcomes outcomes={study.outcomes} />
 
-          {/* Next Case Study */}
-          {nextProject && <NextCaseStudy project={nextProject} />}
-        </div>
+        {/* Next Case Study */}
+        {nextProject && <NextCaseStudy project={nextProject} />}
       </div>
     </DashboardShell>
   );

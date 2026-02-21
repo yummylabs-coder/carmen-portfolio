@@ -144,8 +144,8 @@ function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
   const title = getPlainText(props.Name, "title") || "Untitled";
   const slug = getPlainText(props.Slug, "rich_text") || title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   const partner = getPlainText(props.Partner, "rich_text");
-  const headline = getPlainText(props.Headline, "rich_text");
-  const summary = getPlainText(props.Summary, "rich_text");
+  const headline = getFullRichText(props.Headline);
+  const summary = getFullRichText(props.Summary);
   const roleDescription = getFullRichText(props["Role Description"]);
   const services = getMultiSelect(props.Services);
   const platform = getMultiSelect(props.Platform);

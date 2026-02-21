@@ -33,7 +33,7 @@ export function StickyNotesBanner() {
   return (
     <section className="flex flex-col items-center gap-6 rounded-2xl bg-brand-ink p-8 sm:flex-row sm:gap-8">
       <StickyNotesIllustration />
-      <div className="flex flex-1 flex-col gap-3 text-center sm:text-left">
+      <div className="flex flex-1 flex-col gap-1.5 text-center sm:text-left">
         <p className="font-brand text-[20px] font-bold text-white/90">
           Looking for sticky notes and empathy maps? Let&apos;s chat instead.
         </p>
@@ -42,7 +42,7 @@ export function StickyNotesBanner() {
         </p>
         <Link
           href="/contact"
-          className="mt-2 inline-flex w-fit self-center rounded-xl bg-brand-canvas px-5 py-3 text-14 font-semibold text-brand-ink transition-colors hover:bg-white sm:self-start"
+          className="mt-3 inline-flex w-fit self-center rounded-xl bg-brand-canvas px-5 py-3 text-14 font-semibold text-brand-ink transition-colors hover:bg-white sm:self-start"
         >
           Book a call
         </Link>

@@ -5,8 +5,60 @@ interface ContentSectionProps {
   section: CaseStudySection;
 }
 
+function isVideo(url: string): boolean {
+  return /\.(mp4|webm|mov)(\?|$)/i.test(url);
+}
+
+function isSvg(url: string): boolean {
+  return /\.svg(\?|$)/i.test(url);
+}
+
+function MediaItem({
+  src,
+  alt,
+  sizes,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+}) {
+  if (isVideo(src)) {
+    return (
+      <video
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="h-full w-full object-cover"
+      />
+    );
+  }
+
+  if (isSvg(src)) {
+    /* eslint-disable-next-line @next/next/no-img-element */
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover"
+      />
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className="object-cover transition-transform duration-300 hover:scale-[1.02]"
+      sizes={sizes}
+    />
+  );
+}
+
 export function ContentSection({ section }: ContentSectionProps) {
-  const imageCount = section.images.length;
+  const mediaCount = section.images.length;
 
   return (
     <section className="flex flex-col gap-5">
@@ -15,39 +67,37 @@ export function ContentSection({ section }: ContentSectionProps) {
       </h2>
 
       {section.description && (
-        <div className="text-16 leading-[1.8] text-neutral-600 whitespace-pre-line">
+        <div className="whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
           {section.description}
         </div>
       )}
 
-      {imageCount > 0 && (
+      {mediaCount > 0 && (
         <div
           className={`grid gap-5 ${
-            imageCount === 1
+            mediaCount === 1
               ? "grid-cols-1"
-              : imageCount === 2
+              : mediaCount === 2
                 ? "grid-cols-1 sm:grid-cols-2"
                 : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           }`}
         >
-          {section.images.map((img, i) => (
+          {section.images.map((src, i) => (
             <figure key={i} className="flex flex-col gap-2">
               <div
                 className={`relative w-full overflow-hidden rounded-2xl ${
-                  imageCount === 1 ? "aspect-[16/9]" : "aspect-[4/3]"
+                  mediaCount === 1 ? "aspect-[16/9]" : "aspect-[4/3]"
                 }`}
               >
-                <Image
-                  src={img}
+                <MediaItem
+                  src={src}
                   alt={section.captions[i] || `${section.title} image ${i + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-[1.02]"
                   sizes={
-                    imageCount === 1
-                      ? "(max-width: 900px) 100vw, 900px"
-                      : imageCount === 2
-                        ? "(max-width: 640px) 100vw, 450px"
-                        : "(max-width: 640px) 100vw, 300px"
+                    mediaCount === 1
+                      ? "(max-width: 1200px) 100vw, 1200px"
+                      : mediaCount === 2
+                        ? "(max-width: 640px) 100vw, 600px"
+                        : "(max-width: 640px) 100vw, 400px"
                   }
                 />
               </div>
