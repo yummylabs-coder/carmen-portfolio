@@ -136,7 +136,7 @@ export async function getAllProjects(): Promise<CaseStudy[]> {
 }
 
 // ─── Case Study Detail ───
-const sectionsDbId = "c1aa594eb0db4108a6eb1b65147b8e09";
+const sectionsDbId = "7df160d01ee44eccb000a937954ce594";
 
 function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
   const props = page.properties as Record<string, Record<string, unknown>>;
