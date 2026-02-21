@@ -3,30 +3,38 @@ import type { TimelineStep } from "./types";
 export interface BrandColors {
   /** Hero section background */
   bg: string;
-  /** Primary text on branded bg */
-  text: string;
-  /** Secondary / muted text on branded bg */
-  textMuted: string;
-  /** Accent color (partner label, CTA button) */
-  accent: string;
+  /** Headline text on branded bg */
+  headlineText: string;
+  /** Summary / body text on branded bg */
+  bodyText: string;
+  /** Partner label text */
+  partnerText: string;
+  /** Breadcrumb link text */
+  breadcrumbLink: string;
+  /** Breadcrumb separator text */
+  breadcrumbSeparator: string;
+  /** Breadcrumb active page text */
+  breadcrumbActive: string;
   /** Platform badge background */
   badgeBg: string;
   /** Platform badge text */
   badgeText: string;
-  /** Service tag border */
-  tagBorder: string;
+  /** Read time text */
+  readTimeText: string;
   /** Service tag background */
   tagBg: string;
+  /** Service tag border */
+  tagBorder: string;
   /** Service tag text */
   tagText: string;
-  /** Progress bar fill color */
-  progressBar: string;
   /** CTA button background */
   ctaBg: string;
   /** CTA button text */
   ctaText: string;
-  /** Celebration shape colors (geometric shapes on 100%) */
-  celebrationColors: string[];
+  /** CTA border radius */
+  ctaRadius: string;
+  /** Progress bar fill color */
+  progressBar: string;
 }
 
 interface CaseStudyConfig {
@@ -79,36 +87,44 @@ const configs: Record<string, CaseStudyConfig> = {
     ],
     brand: {
       bg: "#FECB3A",
-      text: "#503B00",
-      textMuted: "#785900",
-      accent: "#856200",
-      badgeBg: "#503B00",
-      badgeText: "#FECB3A",
-      tagBorder: "#D4A000",
-      tagBg: "rgba(212, 160, 0, 0.15)",
-      tagText: "#5B4401",
-      progressBar: "#F4B80F",
-      ctaBg: "#503B00",
-      ctaText: "#FECB3A",
-      celebrationColors: ["#FECB3A", "#F4B80F", "#FFE066", "#D4A000", "#503B00", "#FFEB99"],
+      headlineText: "#300101",
+      bodyText: "#503B00",
+      partnerText: "#785900",
+      breadcrumbLink: "#856200",
+      breadcrumbSeparator: "#B28402",
+      breadcrumbActive: "#300101",
+      badgeBg: "#300101",
+      badgeText: "#FFFEFC",
+      readTimeText: "#5B4401",
+      tagBg: "#F4B80F",
+      tagBorder: "#CF9A00",
+      tagText: "#826000",
+      ctaBg: "#2216FF",
+      ctaText: "#FFFFFF",
+      ctaRadius: "8px",
+      progressBar: "#2216FF",
     },
   },
 };
 
 const defaultBrand: BrandColors = {
   bg: "#EEEDFF",
-  text: "#300101",
-  textMuted: "#64645F",
-  accent: "#2216FF",
+  headlineText: "#300101",
+  bodyText: "#64645F",
+  partnerText: "#2216FF",
+  breadcrumbLink: "#878784",
+  breadcrumbSeparator: "#D0D0CB",
+  breadcrumbActive: "#300101",
   badgeBg: "#300101",
-  badgeText: "#FFFFFF",
-  tagBorder: "#E0E0DC",
+  badgeText: "#FFFEFC",
+  readTimeText: "#64645F",
   tagBg: "#F5F5F3",
+  tagBorder: "#E0E0DC",
   tagText: "#64645F",
-  progressBar: "#2216FF",
   ctaBg: "#2216FF",
   ctaText: "#FFFFFF",
-  celebrationColors: ["#2216FF", "#D4D1FF", "#EEEDFF", "#300101", "#FFE066", "#22c55e"],
+  ctaRadius: "12px",
+  progressBar: "#2216FF",
 };
 
 const defaultConfig: CaseStudyConfig = {

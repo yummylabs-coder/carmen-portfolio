@@ -3,7 +3,6 @@ import { getCaseStudyBySlug, getCaseStudySections, getNextCaseStudy } from "@/li
 import { getCaseStudyConfig } from "@/lib/case-study-config";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ProgressBar } from "@/components/case-study/ProgressBar";
-import { Breadcrumb } from "@/components/case-study/Breadcrumb";
 import { HeroSection } from "@/components/case-study/HeroSection";
 import { MainHeroImage } from "@/components/case-study/MainHeroImage";
 import { OurRole } from "@/components/case-study/OurRole";
@@ -34,16 +33,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   return (
     <DashboardShell>
-      <ProgressBar
-        progressBarColor={config.brand.progressBar}
-        celebrationColors={config.brand.celebrationColors}
-      />
+      <ProgressBar progressBarColor={config.brand.progressBar} />
 
       <div className="flex flex-col gap-14">
-        {/* Breadcrumb */}
-        <Breadcrumb caseName={study.title} />
-
-        {/* Branded Hero Section (full-bleed bg) */}
+        {/* Branded Hero (includes breadcrumb, full-bleed bg) */}
         <HeroSection study={study} readTime={config.readTime} brand={config.brand} />
 
         {/* Full-bleed Main Hero Image */}

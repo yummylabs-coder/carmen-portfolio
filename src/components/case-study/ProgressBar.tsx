@@ -19,31 +19,37 @@ function getMessage(progress: number) {
   return current;
 }
 
+/**
+ * Celebration uses our portfolio brand tokens — not the case study's brand.
+ * brand-ink (#300101), blue-500 (#2216FF), blue-100 (#D4D1FF),
+ * blue-50 (#EEEDFF), brand-canvas (#FFFEFC)
+ */
+const BRAND_CELEBRATION_COLORS = [
+  "#2216FF", // blue-500
+  "#300101", // brand-ink
+  "#D4D1FF", // blue-100
+  "#EEEDFF", // blue-50
+  "#5A4FFF", // blue-400
+  "#FFFEFC", // brand-canvas
+];
+
 /** Tiny SVG shapes: circle, square, triangle, diamond */
-const shapes = [
-  // Circle
-  (color: string, size: number) =>
-    `<svg width="${size}" height="${size}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="${color}"/></svg>`,
-  // Square
-  (color: string, size: number) =>
-    `<svg width="${size}" height="${size}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="8" height="8" rx="1" fill="${color}"/></svg>`,
-  // Triangle
-  (color: string, size: number) =>
-    `<svg width="${size}" height="${size}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,1 9,9 1,9" fill="${color}"/></svg>`,
-  // Diamond
-  (color: string, size: number) =>
-    `<svg width="${size}" height="${size}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,0 10,5 5,10 0,5" fill="${color}"/></svg>`,
+const shapeGenerators = [
+  (color: string, s: number) =>
+    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="${color}"/></svg>`,
+  (color: string, s: number) =>
+    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="8" height="8" rx="1" fill="${color}"/></svg>`,
+  (color: string, s: number) =>
+    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,1 9,9 1,9" fill="${color}"/></svg>`,
+  (color: string, s: number) =>
+    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,0 10,5 5,10 0,5" fill="${color}"/></svg>`,
 ];
 
 interface ProgressBarProps {
   progressBarColor?: string;
-  celebrationColors?: string[];
 }
 
-export function ProgressBar({
-  progressBarColor = "#2216FF",
-  celebrationColors = ["#2216FF", "#D4D1FF", "#EEEDFF", "#300101", "#FFE066", "#22c55e"],
-}: ProgressBarProps) {
+export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) {
   const [progress, setProgress] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const hasShown = useRef(false);
@@ -70,15 +76,15 @@ export function ProgressBar({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Pre-generate random positions for shapes so they don't shift on re-render
+  // Pre-generate random particle positions using brand colors
   const particles = useMemo(
     () =>
       Array.from({ length: 60 }).map((_, i) => {
-        const shapeIdx = i % shapes.length;
-        const colorIdx = i % celebrationColors.length;
+        const shapeIdx = i % shapeGenerators.length;
+        const colorIdx = i % BRAND_CELEBRATION_COLORS.length;
         const size = Math.random() * 10 + 6;
-        const color = celebrationColors[colorIdx];
-        const svgStr = shapes[shapeIdx](color, size);
+        const color = BRAND_CELEBRATION_COLORS[colorIdx];
+        const svgStr = shapeGenerators[shapeIdx](color, size);
         const encoded = `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
         return {
           left: `${Math.random() * 100}%`,
@@ -90,7 +96,7 @@ export function ProgressBar({
           size,
         };
       }),
-    [celebrationColors]
+    []
   );
 
   const msg = getMessage(progress);
@@ -120,7 +126,7 @@ export function ProgressBar({
         </div>
       </div>
 
-      {/* Celebration: branded geometric shapes */}
+      {/* Celebration: branded geometric shapes in portfolio colors */}
       {showCelebration && (
         <div className="pointer-events-none fixed inset-0 z-[70] overflow-hidden">
           {particles.map((p, i) => (
