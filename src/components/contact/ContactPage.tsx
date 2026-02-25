@@ -349,16 +349,14 @@ export function ContactPage() {
         {/* Col 1: Stats */}
         <StatsColumn />
 
-        {/* Col 2: Contact + Notes */}
-        <ContactColumn />
+        {/* Col 2: Contact + Notes + Discord */}
+        <div className="flex flex-col gap-4">
+          <ContactColumn />
+          <DiscordCommunityCard />
+        </div>
 
         {/* Col 3: Sticky Note Form */}
         <StickyForm />
-      </div>
-
-      {/* Discord community */}
-      <div className="max-w-[480px]">
-        <DiscordCommunityCard />
       </div>
     </PageEntrance>
   );

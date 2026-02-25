@@ -30,6 +30,37 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
+/* ─── Compact version badge (terminal style) ─── */
+function MobileVersionBadge() {
+  return (
+    <div className="rounded-xl bg-brand-ink px-4 py-3">
+      {/* Traffic lights + building indicator */}
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex gap-1">
+          <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
+          <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+        </div>
+        <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.5px] text-yellow-500">
+          <span className="inline-block h-1 w-1 animate-pulse rounded-full bg-yellow-500" />
+          building
+        </span>
+      </div>
+      {/* Terminal content */}
+      <div className="font-mono text-[11px] leading-[1.6]">
+        <span className="text-white/40">~/portfolio $</span>{" "}
+        <span className="text-white/80">git tag</span>
+        <br />
+        <span className="text-emerald-400">v14</span>
+        <span className="text-white/30"> &larr; current</span>
+        <br />
+        <span className="text-yellow-400/70">v15</span>
+        <span className="text-white/30"> &larr; wip</span>
+      </div>
+    </div>
+  );
+}
+
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -66,11 +97,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             ))}
           </nav>
 
-          <div className="mt-4 rounded-lg bg-sand-50 p-4">
-            <p className="font-body text-15 font-bold text-brand-ink">
-              Let&apos;s talk!
-            </p>
-            <p className="text-13 text-neutral-500">carmenrincon92@gmail.com</p>
+          {/* Version badge */}
+          <div className="mt-4">
+            <MobileVersionBadge />
           </div>
         </motion.div>
       )}
