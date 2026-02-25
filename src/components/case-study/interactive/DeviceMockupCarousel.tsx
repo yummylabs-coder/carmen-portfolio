@@ -216,6 +216,7 @@ export function DeviceMockupCarousel({
               src={slides[current].src}
               alt={slides[current].alt}
               fill
+              unoptimized
               className="object-cover object-top"
               sizes={sizes[device]}
             />

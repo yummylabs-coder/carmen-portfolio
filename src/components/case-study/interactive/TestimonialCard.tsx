@@ -63,6 +63,7 @@ export function TestimonialCard({
               src={avatarSrc}
               alt={name}
               fill
+              unoptimized
               className="object-cover"
               sizes="40px"
             />

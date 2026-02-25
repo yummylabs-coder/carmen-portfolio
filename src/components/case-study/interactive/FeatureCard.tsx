@@ -95,6 +95,7 @@ function FeatureCardInner({
                       src={feature.mockupSrc}
                       alt={feature.mockupAlt ?? feature.title}
                       fill
+                      unoptimized
                       className="object-cover object-top"
                       sizes="200px"
                     />

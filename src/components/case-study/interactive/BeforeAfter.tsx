@@ -83,6 +83,7 @@ export function BeforeAfter({
             src={afterSrc}
             alt={afterAlt}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 900px) 100vw, 900px"
             draggable={false}
@@ -98,6 +99,7 @@ export function BeforeAfter({
             src={beforeSrc}
             alt={beforeAlt}
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 900px) 100vw, 900px"
             draggable={false}

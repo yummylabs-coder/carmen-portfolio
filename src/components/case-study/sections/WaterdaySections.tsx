@@ -203,6 +203,7 @@ function PlatformSection({ accentColor }: { accentColor: string }) {
                 src={IMAGES.waterPhoto1}
                 alt="Water.day editorial platform"
                 fill
+                unoptimized
                 className="object-cover object-top"
                 sizes="(max-width: 800px) 100vw, 800px"
               />
@@ -302,6 +303,7 @@ function PersonalizationSection({ accentColor }: { accentColor: string }) {
                   src={IMAGES.phone4}
                   alt="Water.day onboarding — preference selection"
                   fill
+                  unoptimized
                   className="object-cover object-top"
                   sizes="280px"
                 />

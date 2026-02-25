@@ -255,6 +255,7 @@ function SymbolSection({ accentColor }: { accentColor: string }) {
               src={IMAGES.symbolDark}
               alt="Pandore symbol on dark"
               fill
+              unoptimized
               className="object-contain"
               sizes="120px"
             />
@@ -277,6 +278,7 @@ function SymbolSection({ accentColor }: { accentColor: string }) {
               src={IMAGES.symbolLight}
               alt="Pandore symbol on light"
               fill
+              unoptimized
               className="object-contain"
               sizes="120px"
             />
@@ -326,6 +328,7 @@ function PatternsSection({ accentColor }: { accentColor: string }) {
             src={IMAGES.patternBanner1}
             alt="Pandore brand patterns"
             fill
+            unoptimized
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 768px"
           />
