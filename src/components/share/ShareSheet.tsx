@@ -54,13 +54,28 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
     };
   }, []);
 
-  // Build the share URL — note is encoded as a query param so the recipient sees it
+  // Build the share URL — project data + note encoded as query params
+  // so the share page works without any Notion API call at view time.
   const shareUrl = (() => {
     const slugs = selectedProjects.map((p) => p.slug).join(",");
     const base = `${siteUrl}/share/${slugs}`;
     const params = new URLSearchParams();
     if (companyName.trim()) params.set("for", companyName.trim());
     if (note.trim()) params.set("note", note.trim());
+
+    // Embed project data so the share page can render without Notion
+    try {
+      const payload = selectedProjects.map((p) => ({
+        t: p.title,
+        s: p.slug,
+        d: (p.summary || "").slice(0, 140),
+        k: (p.tags || []).slice(0, 4),
+      }));
+      params.set("d", btoa(JSON.stringify(payload)));
+    } catch {
+      // Skip if encoding fails (rare Unicode edge case)
+    }
+
     const qs = params.toString();
     return qs ? `${base}?${qs}` : base;
   })();
@@ -170,7 +185,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="Company name or person"
-                    className="w-full rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-14 text-brand-ink placeholder:text-neutral-300 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-14 text-brand-ink placeholder:text-neutral-400 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
                   />
                 </div>
 
@@ -184,7 +199,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                     onChange={(e) => setNote(e.target.value)}
                     placeholder="e.g. Hey! Here are the projects most relevant to your team..."
                     rows={2}
-                    className="w-full resize-none rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-14 text-brand-ink placeholder:text-neutral-300 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
+                    className="w-full resize-none rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-14 text-brand-ink placeholder:text-neutral-400 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
                   />
                 </div>
 
