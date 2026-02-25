@@ -15,6 +15,21 @@ import { StickyNotesBanner } from "@/components/case-study/StickyNotesBanner";
 import { Outcomes } from "@/components/case-study/Outcomes";
 import { NextCaseStudy } from "@/components/case-study/NextCaseStudy";
 
+/* ─── Custom interactive sections per case study ─── */
+import { PandoreSections } from "@/components/case-study/sections/PandoreSections";
+import { AusventureSections } from "@/components/case-study/sections/AusventureSections";
+import { NeotasteSections } from "@/components/case-study/sections/NeotasteSections";
+import { WaterdaySections } from "@/components/case-study/sections/WaterdaySections";
+import { LearnXyzSections } from "@/components/case-study/sections/LearnXyzSections";
+
+const customSectionMap: Record<string, React.ComponentType<{ accentColor: string }>> = {
+  pandore: PandoreSections,
+  ausventure: AusventureSections,
+  neotaste: NeotasteSections,
+  "water-day": WaterdaySections,
+  "learn-xyz": LearnXyzSections,
+};
+
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 /** Pre-build all case study pages at deploy time */
@@ -96,10 +111,17 @@ export default async function CaseStudyPage({ params }: PageProps) {
         {/* Our Role */}
         <OurRole description={study.roleDescription} />
 
-        {/* Content Sections from Notion */}
-        {sections.map((section) => (
-          <ContentSection key={section.id} section={section} accentColor={config.brand.accentColor} />
-        ))}
+        {/* Content Sections — custom interactive or Notion fallback */}
+        {customSectionMap[slug] ? (
+          (() => {
+            const CustomSections = customSectionMap[slug];
+            return <CustomSections accentColor={config.brand.accentColor} />;
+          })()
+        ) : (
+          sections.map((section) => (
+            <ContentSection key={section.id} section={section} accentColor={config.brand.accentColor} />
+          ))
+        )}
 
         {/* Process Timeline (hardcoded per case study) */}
         {config.timelineSteps.length > 0 && (
