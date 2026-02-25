@@ -1,0 +1,15 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/icon.svg/route": "app/icon.svg/route.js",
+  "/design-system/page": "app/design-system/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/about/page": "app/about/page.js",
+  "/accelerator/page": "app/accelerator/page.js",
+  "/experience/page": "app/experience/page.js",
+  "/process/page": "app/process/page.js",
+  "/experiments/page": "app/experiments/page.js",
+  "/page": "app/page.js",
+  "/work/page": "app/work/page.js",
+  "/work/[slug]/page": "app/work/[slug]/page.js"
+}

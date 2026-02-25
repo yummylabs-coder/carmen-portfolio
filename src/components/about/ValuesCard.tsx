@@ -10,11 +10,23 @@ const values = [
   },
   {
     title: "Adapt the process to the problem",
-    body: "I don't follow a rigid playbook. Some projects need deep research; others need us to jump straight into code. I read the situation and pick the right approach — not the \"correct\" one.",
+    body: "I don't follow a rigid playbook. Some projects need deep research; others need us to jump straight into code. I read the situation and pick the right approach, not the \"correct\" one.",
   },
   {
     title: "Don't get stuck in trendy tools",
-    body: "Tools change every year. Problems don't. I'll use Figma, code, AI, napkin sketches — whatever gets us to the right solution fastest. The craft is in the thinking, not the software.",
+    body: "Tools change every year. Problems don't. I'll use Figma, code, AI, napkin sketches... whatever gets us to the right solution fastest. The craft is in the thinking, not the software.",
+  },
+  {
+    title: "Claude code is the BEST, I'm slightly obsessed",
+    body: "AI isn't replacing designers, it's supercharging us. I use Claude Code daily to build, prototype, and ship faster than ever. It's become my favorite creative partner and I'm not ashamed to admit it.",
+  },
+  {
+    title: "Our creativity shouldn't be limited to product design",
+    body: "Design thinking applies everywhere. Side projects, community building, writing, teaching. The best designers I know bring creativity to everything they touch, not just their Figma files.",
+  },
+  {
+    title: "Working together is better than working alone",
+    body: "The best ideas come from collaboration, not isolation. I believe in sharing early, building with others, and creating environments where everyone feels safe to contribute their best thinking.",
   },
 ];
 
@@ -22,9 +34,8 @@ export function ValuesCard() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
-    <div className="rounded-3xl border border-neutral-200 bg-white p-6">
-      <div className="mb-5 flex items-center gap-[10px]">
-        <span className="text-[20px]">💭</span>
+    <div className="rounded-3xl border border-sand-300 bg-white p-6">
+      <div className="mb-5">
         <h2 className="font-brand text-15 font-semibold text-brand-ink">
           What I believe
         </h2>
@@ -36,7 +47,7 @@ export function ValuesCard() {
           return (
             <div
               key={i}
-              className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 transition-colors hover:border-blue-500"
+              className="overflow-hidden rounded-xl border border-sand-300 bg-sand-100 transition-colors hover:border-sand-400"
             >
               <button
                 onClick={() => setExpandedIndex(isOpen ? null : i)}

@@ -35,6 +35,8 @@ export interface BrandColors {
   ctaRadius: string;
   /** Progress bar fill color */
   progressBar: string;
+  /** Accent color for bold intro text, section labels, etc. */
+  accentColor: string;
 }
 
 interface CaseStudyConfig {
@@ -104,6 +106,7 @@ const configs: Record<string, CaseStudyConfig> = {
       ctaText: "#FFFFFF",
       ctaRadius: "8px",
       progressBar: "#2216FF",
+      accentColor: "#2216FF",
     },
   },
 
@@ -151,6 +154,7 @@ const configs: Record<string, CaseStudyConfig> = {
       ctaText: "#FFFFFF",
       ctaRadius: "8px",
       progressBar: "#3A4EFF",
+      accentColor: "#3A4EFF",
     },
   },
 
@@ -203,6 +207,7 @@ const configs: Record<string, CaseStudyConfig> = {
       ctaText: "#002B35",
       ctaRadius: "20px",
       progressBar: "#00B3C7",
+      accentColor: "#00B3C7",
     },
   },
 
@@ -256,6 +261,7 @@ const configs: Record<string, CaseStudyConfig> = {
       ctaText: "#1C1D28",
       ctaRadius: "8px",
       progressBar: "#53F293",
+      accentColor: "#53F293",
     },
   },
 
@@ -308,6 +314,7 @@ const configs: Record<string, CaseStudyConfig> = {
       ctaText: "#143B39",
       ctaRadius: "8px",
       progressBar: "#11607D",
+      accentColor: "#11607D",
     },
   },
 
@@ -334,6 +341,7 @@ const configs: Record<string, CaseStudyConfig> = {
       ctaText: "#2216FF",
       ctaRadius: "8px",
       progressBar: "#2216FF",
+      accentColor: "#2216FF",
     },
   },
 };
@@ -356,6 +364,7 @@ const defaultBrand: BrandColors = {
   ctaText: "#FFFFFF",
   ctaRadius: "12px",
   progressBar: "#2216FF",
+  accentColor: "#2216FF",
 };
 
 const defaultConfig: CaseStudyConfig = {

@@ -11,9 +11,7 @@ interface GanttTimelineProps {
 }
 
 export function GanttTimeline({ config, selectedBlock, onSelectBlock }: GanttTimelineProps) {
-  const { totalWeeks, nowWeek, duration, rows } = config;
-  const nowPct = (nowWeek / totalWeeks) * 100;
-  const nowWeekIndex = Math.floor(nowWeek);
+  const { totalWeeks, duration, rows } = config;
 
   return (
     <section
@@ -40,32 +38,15 @@ export function GanttTimeline({ config, selectedBlock, onSelectBlock }: GanttTim
           {Array.from({ length: totalWeeks }, (_, i) => (
             <div
               key={i}
-              className={`relative flex-1 text-center text-[10px] font-medium uppercase tracking-[0.03em] ${
-                i === nowWeekIndex
-                  ? "font-bold text-[#fbbf24]"
-                  : "text-white/50"
-              }`}
+              className="flex-1 text-center text-[10px] font-medium uppercase tracking-[0.03em] text-white/50"
             >
               W{i + 1}
-              {i === nowWeekIndex && (
-                <span className="absolute -bottom-[13px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#fbbf24]" />
-              )}
             </div>
           ))}
         </div>
 
-        {/* Rows + now line */}
+        {/* Rows */}
         <div className="relative flex flex-col gap-2">
-          {/* Now line — yellow/gold */}
-          <div
-            className="absolute bottom-0 top-0 z-10 w-[2px] bg-[#fbbf24] opacity-60"
-            style={{ left: `${nowPct}%` }}
-          >
-            <span className="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-[#fbbf24]/20 px-2 py-[2px] text-[10px] font-bold text-[#fbbf24]">
-              Now
-            </span>
-          </div>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={duration}

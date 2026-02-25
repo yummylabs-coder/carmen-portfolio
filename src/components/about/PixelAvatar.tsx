@@ -135,7 +135,7 @@ export function PixelAvatar() {
       for (const { x, y, c } of order) {
         if (cancelled || id !== animationId.current) return;
         paintPixel(x, y, c);
-        await delay(12 + Math.random() * 8);
+        await delay(4 + Math.random() * 4);
       }
 
       if (cancelled || id !== animationId.current) return;

@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ExperienceEntry } from "@/lib/types";
+import { PageEntrance } from "@/components/ui/PageEntrance";
 
 /* ─── Fallback data (used when Notion returns empty) ─── */
 const fallbackExperiences: ExperienceEntry[] = [
@@ -115,16 +116,25 @@ function ChevronIcon({ open }: { open: boolean }) {
 /* ─── Timeline Dot ─── */
 function TimelineDot({ isCurrent, isOpen }: { isCurrent: boolean; isOpen: boolean }) {
   return (
-    <div
-      className={`relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200 ${
-        isCurrent || isOpen
-          ? "border-blue-600 bg-blue-600"
-          : "border-neutral-300 bg-white hover:border-blue-400"
-      }`}
-    >
-      {(isCurrent || isOpen) && (
-        <div className="h-2 w-2 rounded-full bg-white" />
+    <div className="relative z-10 flex h-5 w-5 shrink-0 items-center justify-center">
+      {/* Pulse ring for current */}
+      {isCurrent && (
+        <span className="absolute inset-0 animate-ping rounded-full bg-blue-500 opacity-25" />
       )}
+      {isCurrent && (
+        <span className="absolute inset-[-3px] animate-pulse rounded-full border-2 border-blue-400/40" />
+      )}
+      <div
+        className={`relative flex h-5 w-5 items-center justify-center rounded-full border-2 transition-colors duration-200 ${
+          isCurrent || isOpen
+            ? "border-blue-600 bg-blue-600"
+            : "border-neutral-300 bg-white hover:border-blue-400"
+        }`}
+      >
+        {(isCurrent || isOpen) && (
+          <div className="h-2 w-2 rounded-full bg-white" />
+        )}
+      </div>
     </div>
   );
 }
@@ -168,7 +178,7 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
             {entry.roles.map((role, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between rounded-lg bg-neutral-50 px-3 py-2.5"
+                className="flex items-center justify-between rounded-lg bg-sand-50 px-3 py-2.5"
               >
                 <span className="text-13 font-medium text-brand-ink">
                   {role.title}
@@ -192,7 +202,7 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
         </div>
 
         {/* Product Image */}
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100">
+        <div className="overflow-hidden rounded-xl border border-sand-300 bg-neutral-100">
           {entry.productImageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -236,11 +246,11 @@ function TimelineEntry({
       </div>
 
       {/* Card */}
-      <div className="mb-8 min-w-0 flex-1 pb-2">
+      <div className="mb-4 min-w-0 flex-1 pb-2">
         {/* Clickable Header */}
         <button
           onClick={onToggle}
-          className="group flex w-full items-start justify-between rounded-2xl border border-neutral-200 bg-white px-5 py-4 text-left transition-all hover:border-neutral-300 hover:shadow-sm"
+          className="group flex w-full items-center justify-between rounded-2xl border border-sand-300 bg-sand-100 px-5 py-4 text-left transition-all hover:border-sand-400 hover:shadow-sm"
         >
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex items-center gap-2">
@@ -249,7 +259,7 @@ function TimelineEntry({
                 {entry.company}
               </h3>
               {entry.isCurrent && (
-                <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-600">
+                <span className="rounded-md bg-blue-50 px-[10px] py-1 text-[11px] font-semibold text-blue-600">
                   Current
                 </span>
               )}
@@ -265,7 +275,7 @@ function TimelineEntry({
         {/* Expandable Content */}
         <AnimatePresence initial={false}>
           {isOpen && (
-            <div className="mt-3 rounded-2xl border border-neutral-200 bg-white px-5">
+            <div className="mt-3 rounded-2xl border border-sand-300 bg-sand-100 px-5">
               <CardExpanded entry={entry} />
             </div>
           )}
@@ -310,7 +320,7 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
   }, []);
 
   return (
-    <>
+    <PageEntrance>
       {/* Page Header */}
       <div className="flex flex-col gap-1">
         <h1 className="font-brand text-22 font-bold text-brand-ink">
@@ -341,6 +351,6 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
           ))}
         </div>
       </div>
-    </>
+    </PageEntrance>
   );
 }

@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef, useMemo } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const messages = [
   { min: 0, text: "Let's go!", emoji: "\u{1F680}" },
@@ -19,37 +22,19 @@ function getMessage(progress: number) {
   return current;
 }
 
-/**
- * Celebration uses our portfolio brand tokens — not the case study's brand.
- * brand-ink (#300101), blue-500 (#2216FF), blue-100 (#D4D1FF),
- * blue-50 (#EEEDFF), brand-canvas (#FFFEFC)
- */
-const BRAND_CELEBRATION_COLORS = [
-  "#2216FF", // blue-500
-  "#300101", // brand-ink
-  "#D4D1FF", // blue-100
-  "#EEEDFF", // blue-50
-  "#5A4FFF", // blue-400
-  "#FFFEFC", // brand-canvas
-];
-
-/** Tiny SVG shapes: circle, square, triangle, diamond */
-const shapeGenerators = [
-  (color: string, s: number) =>
-    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="${color}"/></svg>`,
-  (color: string, s: number) =>
-    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="8" height="8" rx="1" fill="${color}"/></svg>`,
-  (color: string, s: number) =>
-    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,1 9,9 1,9" fill="${color}"/></svg>`,
-  (color: string, s: number) =>
-    `<svg width="${s}" height="${s}" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="5,0 10,5 5,10 0,5" fill="${color}"/></svg>`,
-];
+interface NextProject {
+  title: string;
+  slug: string;
+  coverUrl: string;
+  tags?: string[];
+}
 
 interface ProgressBarProps {
   progressBarColor?: string;
+  nextProject?: NextProject | null;
 }
 
-export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) {
+export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: ProgressBarProps) {
   const [progress, setProgress] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const hasShown = useRef(false);
@@ -64,7 +49,6 @@ export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) 
     if (pct >= 100 && !hasShown.current) {
       hasShown.current = true;
       setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 3500);
     }
     if (pct < 95) {
       hasShown.current = false;
@@ -76,28 +60,22 @@ export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Pre-generate random particle positions using brand colors
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 60 }).map((_, i) => {
-        const shapeIdx = i % shapeGenerators.length;
-        const colorIdx = i % BRAND_CELEBRATION_COLORS.length;
-        const size = Math.random() * 10 + 6;
-        const color = BRAND_CELEBRATION_COLORS[colorIdx];
-        const svgStr = shapeGenerators[shapeIdx](color, size);
-        const encoded = `data:image/svg+xml,${encodeURIComponent(svgStr)}`;
-        return {
-          left: `${Math.random() * 100}%`,
-          top: `-${Math.random() * 15 + 5}%`,
-          rotation: Math.random() * 360,
-          delay: `${Math.random() * 1.2}s`,
-          duration: `${Math.random() * 1.5 + 2}s`,
-          encoded,
-          size,
-        };
-      }),
-    []
-  );
+  // Lock body scroll when celebration is showing
+  useEffect(() => {
+    if (!showCelebration) return;
+    const scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, [showCelebration]);
 
   const msg = getMessage(progress);
   const isComplete = progress >= 100;
@@ -105,14 +83,30 @@ export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) 
   return (
     <>
       <div className="fixed left-0 right-0 top-[60px] z-[35] flex h-[36px] items-center bg-white/95 backdrop-blur-sm lg:top-0 lg:z-[60] lg:left-[240px]">
-        {/* Progress track */}
-        <div className="absolute bottom-0 left-0 right-0 h-[6px] rounded-b-[3px] bg-neutral-100">
+        {/* Progress track — softer, thinner, gradient fill */}
+        <div className="absolute bottom-0 left-0 right-0 h-[4px] bg-neutral-100/50">
           <div
-            className="h-full rounded-b-[3px] transition-all duration-200"
-            style={{ width: `${progress}%`, backgroundColor: progressBarColor }}
+            className="h-full transition-all duration-300 ease-out"
+            style={{
+              width: `${progress}%`,
+              background: `linear-gradient(90deg, ${progressBarColor}25, ${progressBarColor}80, ${progressBarColor})`,
+              borderRadius: "0 2px 2px 0",
+            }}
           />
         </div>
-        {/* Content grouped on the right */}
+
+        {/* Back link */}
+        <Link
+          href="/work"
+          className="flex items-center gap-1 pl-4 text-12 font-medium text-neutral-500 transition-colors hover:text-brand-ink lg:hidden"
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0">
+            <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span>My Work</span>
+        </Link>
+
+        {/* Progress info */}
         <div className="ml-auto flex items-center gap-2 pr-4 md:pr-8">
           <span className="hidden text-12 text-neutral-500 md:block">
             {msg.text}
@@ -126,35 +120,268 @@ export function ProgressBar({ progressBarColor = "#2216FF" }: ProgressBarProps) 
         </div>
       </div>
 
-      {/* Celebration: branded geometric shapes in portfolio colors */}
-      {showCelebration && (
-        <div className="pointer-events-none fixed inset-0 z-[70] overflow-hidden">
-          {particles.map((p, i) => (
-            <div
-              key={i}
-              className="absolute animate-confetti-fall"
+      {/* ── Ethereal half-moon celebration ── */}
+      <AnimatePresence>
+        {showCelebration && (
+          <motion.div
+            className="fixed inset-0 z-[80] flex items-end justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Backdrop */}
+            <motion.div
+              className="absolute inset-0 bg-brand-ink/20 backdrop-blur-[6px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              onClick={() => setShowCelebration(false)}
+            />
+
+            {/* Perfect half-moon — aspect-ratio 2:1 = true semicircle */}
+            <motion.div
+              className="relative z-10 w-[94vw] max-w-[700px]"
               style={{
-                left: p.left,
-                top: p.top,
-                width: p.size,
-                height: p.size,
-                animationDelay: p.delay,
-                animationDuration: p.duration,
-                transform: `rotate(${p.rotation}deg)`,
+                aspectRatio: "2 / 1",
+                borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
+                overflow: "hidden",
+                animation: "celebrate-breathe 5s ease-in-out infinite",
+                boxShadow:
+                  "0 -12px 60px rgba(167,139,250,0.12), 0 -4px 24px rgba(129,140,248,0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
               }}
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 170, damping: 24 }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={p.encoded}
-                alt=""
-                width={p.size}
-                height={p.size}
-                style={{ width: p.size, height: p.size }}
+              {/* ── Glass base: soft white with very diffuse color wash ── */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `
+                    radial-gradient(circle at 28% 18%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 30%, transparent 60%),
+                    radial-gradient(circle at 72% 78%, rgba(167,139,250,0.18) 0%, transparent 55%),
+                    radial-gradient(circle at 22% 68%, rgba(103,232,249,0.12) 0%, transparent 50%),
+                    radial-gradient(circle at 82% 22%, rgba(129,140,248,0.15) 0%, transparent 55%),
+                    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(167,139,250,0.06) 100%)
+                  `,
+                }}
               />
-            </div>
-          ))}
-        </div>
-      )}
+
+              {/* ── Slow orbiting color wash: very blended, wide gradients ── */}
+              <div
+                className="absolute inset-[-30%]"
+                style={{
+                  background: `
+                    radial-gradient(circle at 60% 30%, rgba(167,139,250,0.14) 0%, transparent 45%),
+                    radial-gradient(circle at 30% 70%, rgba(103,232,249,0.10) 0%, transparent 45%)
+                  `,
+                  animation: "celebrate-orbit 20s linear infinite",
+                  filter: "blur(30px)",
+                }}
+              />
+
+              {/* ── Counter-rotating secondary: even more subtle + blurred ── */}
+              <div
+                className="absolute inset-[-20%]"
+                style={{
+                  background: `
+                    radial-gradient(circle at 40% 20%, rgba(129,140,248,0.10) 0%, transparent 45%),
+                    radial-gradient(circle at 65% 80%, rgba(232,168,124,0.06) 0%, transparent 40%)
+                  `,
+                  animation: "celebrate-orbit 28s linear infinite reverse",
+                  filter: "blur(24px)",
+                }}
+              />
+
+              {/* ── 3D glass highlight at the dome ── */}
+              <div
+                className="pointer-events-none absolute"
+                style={{
+                  top: "3%",
+                  left: "12%",
+                  width: "76%",
+                  height: "35%",
+                  background:
+                    "radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 100%)",
+                  filter: "blur(14px)",
+                  transform: "rotate(-3deg)",
+                }}
+              />
+
+              {/* ── Tilting aura ring: sweeping highlight tracing the arc ──
+                   Full circle (h=200% of parent = parent width) positioned at top:0
+                   so only the upper semicircle is visible within overflow:hidden.
+                   Conic gradient + radial mask = thin ring stroke. */}
+              <div
+                className="pointer-events-none absolute left-[-3px] right-[-3px] top-[-3px]"
+                style={{
+                  height: "calc(200% + 6px)",
+                  borderRadius: "9999px",
+                  background: `conic-gradient(from 0deg, transparent 0%, rgba(167,139,250,0.5) 6%, rgba(129,140,248,0.28) 14%, transparent 28%, transparent 100%)`,
+                  WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - 2.5px), black calc(100% - 2px))`,
+                  mask: `radial-gradient(farthest-side, transparent calc(100% - 2.5px), black calc(100% - 2px))`,
+                  animation: "celebrate-orbit 7s linear infinite",
+                }}
+              />
+
+              {/* ── Static luminous border (subtle always-on edge) ── */}
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
+                  border: "1px solid rgba(167,139,250,0.12)",
+                  borderBottom: "none",
+                }}
+              />
+
+              {/* ── Pulsing outer glow ── */}
+              <div
+                className="pointer-events-none absolute -inset-8"
+                style={{
+                  borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
+                  backgroundColor: "rgba(167,139,250,0.06)",
+                  filter: "blur(35px)",
+                  animation: "celebrate-radiate 4.5s ease-in-out infinite",
+                }}
+              />
+
+              {/* ── Content ── */}
+              <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-3 sm:px-14 sm:pb-6">
+                {/* Handwritten message */}
+                <motion.p
+                  className="relative font-handwritten text-[22px] text-brand-ink sm:text-[32px]"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+                >
+                  Thanks for reading{" "}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      delay: 0.8,
+                      duration: 0.4,
+                      type: "spring",
+                      stiffness: 350,
+                      damping: 12,
+                    }}
+                  >
+                    &#9829;
+                  </motion.span>
+                </motion.p>
+
+                {/* Ethereal divider */}
+                <motion.div
+                  className="mt-3 h-px w-10 sm:mt-5 sm:w-16"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(167,139,250,0.3), transparent)",
+                  }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+                />
+
+                {/* Next case study CTA */}
+                {nextProject && (
+                  <motion.div
+                    className="mt-3 w-full max-w-[260px] sm:mt-5 sm:max-w-[320px]"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+                  >
+                    <span className="mb-1.5 block text-center text-[9px] font-semibold uppercase tracking-[1.5px] text-brand-ink/20 sm:text-[10px]">
+                      Next Case Study
+                    </span>
+                    <Link
+                      href={`/work/${nextProject.slug}`}
+                      className="group flex items-center gap-2.5 rounded-xl p-2 transition-all hover:shadow-sm sm:gap-3 sm:p-2.5"
+                      style={{
+                        backgroundColor: "rgba(255,255,255,0.3)",
+                        backdropFilter: "blur(14px)",
+                        WebkitBackdropFilter: "blur(14px)",
+                        border: "1px solid rgba(167,139,250,0.12)",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
+                      }}
+                      onClick={() => setShowCelebration(false)}
+                    >
+                      {/* Thumbnail */}
+                      <div className="relative h-[40px] w-[54px] shrink-0 overflow-hidden rounded-lg sm:h-[48px] sm:w-[64px]">
+                        <Image
+                          src={nextProject.coverUrl}
+                          alt={nextProject.title}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex min-w-0 flex-1 flex-col">
+                        <span className="truncate font-brand text-12 font-bold text-brand-ink sm:text-14">
+                          {nextProject.title}
+                        </span>
+                        {nextProject.tags && nextProject.tags[0] && (
+                          <span className="text-11 text-brand-ink/35 sm:text-12">
+                            {nextProject.tags[0]}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Arrow */}
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-brand-ink/30 transition-colors group-hover:bg-brand-ink/5 group-hover:text-brand-ink/50 sm:h-8 sm:w-8">
+                        <svg
+                          width="13"
+                          height="13"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </Link>
+                  </motion.div>
+                )}
+
+                {/* Dismiss hint */}
+                <motion.button
+                  className="mt-2 text-[10px] text-brand-ink/15 transition-colors hover:text-brand-ink/30 sm:mt-3 sm:text-11"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.4 }}
+                  onClick={() => setShowCelebration(false)}
+                >
+                  tap to close
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Keyframes for celebration effects */}
+      <style>{`
+        @keyframes celebrate-breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.01); }
+        }
+        @keyframes celebrate-orbit {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes celebrate-radiate {
+          0%, 100% { opacity: 0.5; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.05); }
+        }
+      `}</style>
     </>
   );
 }

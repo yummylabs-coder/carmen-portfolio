@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { CaseStudy } from "@/lib/types";
+import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 
 interface FeaturedHeroCardProps {
   project: CaseStudy;
@@ -15,31 +15,27 @@ export function FeaturedHeroCard({ project }: FeaturedHeroCardProps) {
       <motion.article
         whileHover={{ y: -2 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className="group flex h-[338px] overflow-hidden rounded-3xl border border-neutral-50 bg-bg-surface"
-        style={{
-          borderWidth: "0.68px",
-          boxShadow:
-            "0 20px 25px -5px rgba(48,1,1,0.08), 0 8px 10px -6px rgba(48,1,1,0.04)",
-        }}
+        className="group flex flex-col overflow-hidden rounded-3xl border border-sand-300 bg-sand-100 md:h-[338px] md:flex-row"
       >
-        {/* Cover image — left half */}
-        <div className="relative h-full w-1/2 overflow-hidden rounded-3xl">
-          <Image
+        {/* Cover image — full width on mobile, left half on desktop */}
+        <div className="relative h-[220px] w-full overflow-hidden md:h-full md:w-1/2 md:rounded-3xl">
+          <ImageWithShimmer
             src={project.coverUrl}
             alt={`${project.title} cover`}
             fill
-            className="object-cover"
+            priority
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
 
-        {/* Content — right half */}
-        <div className="flex w-1/2 flex-col justify-between gap-4 p-6">
+        {/* Content — full width on mobile, right half on desktop */}
+        <div className="flex w-full flex-col justify-between gap-4 p-5 md:w-1/2 md:p-6">
           <div className="flex flex-col gap-3">
             <h3 className="font-brand text-22 font-bold text-brand-ink">
               {project.title}
             </h3>
-            <p className="text-14 leading-[1.6] text-text-secondary">
+            <p className="line-clamp-3 text-14 leading-[1.6] text-text-secondary">
               {project.summary}
             </p>
 
@@ -49,7 +45,7 @@ export function FeaturedHeroCard({ project }: FeaturedHeroCardProps) {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-neutral-50 px-[10px] py-1 text-11 font-medium text-text-tertiary"
+                    className="rounded-full bg-sand-200 px-[10px] py-1 text-11 font-medium text-text-tertiary"
                   >
                     {tag}
                   </span>
@@ -60,10 +56,23 @@ export function FeaturedHeroCard({ project }: FeaturedHeroCardProps) {
 
           {/* CTA */}
           <button
-            className="w-full rounded-lg bg-action-primary px-[22px] py-3 text-14 font-semibold text-white transition-colors duration-150 group-hover:bg-action-primary-hover"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-action-primary px-[22px] py-3 text-14 font-semibold text-white transition-colors duration-150 group-hover:bg-action-primary-hover"
             tabIndex={-1}
           >
-            View Case Study
+            Peek inside {project.title}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform duration-200 group-hover:translate-x-1"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
       </motion.article>

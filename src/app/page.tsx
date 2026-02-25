@@ -1,11 +1,11 @@
-import { getFeaturedCaseStudies } from "@/lib/notion";
+import { getFeaturedCaseStudies, getRadarTopics } from "@/lib/notion";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { GreetingSection } from "@/components/dashboard/GreetingSection";
 import { FeaturedWorkSection } from "@/components/dashboard/FeaturedWorkSection";
 import { MyNumbersWidget } from "@/components/dashboard/MyNumbersWidget";
-import { RecentActivityWidget } from "@/components/dashboard/RecentActivityWidget";
+import { DesignRadar } from "@/components/dashboard/DesignRadar";
 
-export const revalidate = 3600;
+export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 const fallbackStudies = [
   {
@@ -36,6 +36,7 @@ const fallbackStudies = [
 
 export default async function Home() {
   let caseStudies = await getFeaturedCaseStudies();
+  const radarTopics = await getRadarTopics();
 
   if (caseStudies.length === 0) {
     caseStudies = fallbackStudies;
@@ -49,7 +50,7 @@ export default async function Home() {
 
       <div className="flex w-full flex-col gap-5 lg:flex-row">
         <MyNumbersWidget />
-        <RecentActivityWidget />
+        <DesignRadar topics={radarTopics} />
       </div>
     </DashboardShell>
   );

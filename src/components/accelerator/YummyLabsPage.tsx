@@ -1,13 +1,13 @@
 "use client";
 
 import type { YummyAssetsMap } from "@/lib/types";
+import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
   stats,
   roles,
   partners,
   tools,
   testimonials,
-  galleryItems,
 } from "./acceleratorData";
 
 const YUMMY_URL = "https://yummy-labs.com";
@@ -60,9 +60,6 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
           <h1 className="font-brand text-22 font-bold text-brand-ink">
             Yummy Labs
           </h1>
-          <span className="inline-flex items-center rounded-full border border-[#7c3aed] bg-[#ede9fe] px-2 py-[3px] font-brand text-[10px] font-bold text-[#7c3aed]">
-            {"\u2713"} Figma Partner
-          </span>
         </div>
         <p className="text-14 leading-[1.6] text-neutral-400">
           Design accelerator I co-founded to help designers grow through real
@@ -72,8 +69,8 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 
       {/* Dog mascot - hidden on mobile, sits behind the next section */}
       {dogUrl && (
-        <div className="pointer-events-none absolute right-0 top-[-80px] z-0 hidden h-[200px] w-[160px] lg:block">
-          <Img src={dogUrl} alt="Yummy Labs Dog" className="h-full w-full object-contain" />
+        <div className="pointer-events-none absolute bottom-0 right-0 z-0 hidden w-[112px] translate-y-[50%] lg:block">
+          <Img src={dogUrl} alt="Yummy Labs Dog" className="block w-full" />
         </div>
       )}
     </header>
@@ -87,7 +84,7 @@ function ProblemAndRole() {
   return (
     <div className="relative z-10 flex flex-col gap-5 lg:flex-row">
       {/* The Problem card */}
-      <div className="flex-shrink-0 rounded-[28px] bg-[#2216ff] p-6 text-white lg:w-[540px]">
+      <div className="flex-shrink-0 rounded-3xl bg-[#2216ff] p-6 text-white lg:w-[540px]">
         <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
           The problem I saw
         </span>
@@ -110,28 +107,28 @@ function ProblemAndRole() {
           href={YUMMY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-[10px] rounded-full bg-[#fffefc] px-8 py-4 font-body text-[15px] font-bold text-[#300101] shadow-[0_4px_16px_rgba(124,58,237,0.3)] transition-transform hover:-translate-y-0.5"
+          className="mt-4 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-body text-[14px] font-semibold text-[#2216ff] transition-colors hover:bg-white/90"
         >
           Visit yummy-labs.com
         </a>
       </div>
 
       {/* My Role card */}
-      <div className="flex-1 rounded-[28px] border border-neutral-200 bg-white p-6">
-        <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
+      <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
+        <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
           My role
         </span>
         <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
           Co-Founder & Sprint Leader
         </h3>
-        <div className="grid grid-cols-1 gap-[11px] sm:grid-cols-2 sm:gap-x-[34px]">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2">
           {roles.map((role) => (
             <div
               key={role.text}
-              className="flex items-center gap-1 rounded-lg bg-[#ede9fe] px-[14px] py-[9px]"
+              className="flex items-center gap-1.5 rounded-lg bg-sand-50 px-3 py-2"
             >
-              <span className="text-[16px]">{role.icon}</span>
-              <span className="font-body text-[13px] font-medium text-[#5b21b6]">
+              <span className="text-[14px]">{role.icon}</span>
+              <span className="font-body text-[13px] font-medium text-neutral-700">
                 {role.text}
               </span>
             </div>
@@ -145,19 +142,59 @@ function ProblemAndRole() {
 /* ═══════════════════════════════════
    Section 3 — Stats
    ═══════════════════════════════════ */
+/* Stat icons — clean SVG icons replacing emojis */
+const statIcons: Record<string, React.ReactNode> = {
+  "Sprints Run": (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  ),
+  "Designers Trained": (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
+  "Startup Partners": (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 3h12l4 6-10 13L2 9z" />
+      <path d="M11 3l1 6h-8" />
+      <path d="M13 3l-1 6h8" />
+      <path d="M8 9l4 13 4-13" />
+    </svg>
+  ),
+  "Weeks per Sprint": (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <path d="M8 14h.01" />
+      <path d="M12 14h.01" />
+      <path d="M16 14h.01" />
+      <path d="M8 18h.01" />
+      <path d="M12 18h.01" />
+    </svg>
+  ),
+};
+
 function Stats() {
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="rounded-[20px] border border-[#e0e0dc] bg-[#fffefc] px-[17px] py-5 text-center shadow-[0_0_0_0_rgba(48,1,1,0.04),0_1px_3px_0_rgba(48,1,1,0.04)] transition-transform duration-300 ease-out hover:-rotate-2 hover:scale-[1.04]"
+          className="rounded-2xl border border-sand-300 bg-sand-100 px-[17px] py-5 text-center transition-transform duration-300 ease-out hover:-rotate-2 hover:scale-[1.04]"
         >
-          <div className="mb-2 text-[28px]">{stat.icon}</div>
+          <div className="mb-2 flex justify-center text-[#300101]">
+            {statIcons[stat.label] ?? stat.icon}
+          </div>
           <div
             className="font-brand text-[32px] font-extrabold leading-relaxed"
             style={{
-              background: "linear-gradient(135deg, #7c3aed 0%, #2216ff 50%, #7c3aed 100%)",
+              background: "linear-gradient(135deg, #2216ff 0%, #2216ff 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -179,9 +216,9 @@ function Stats() {
    ═══════════════════════════════════ */
 function HowItWorks() {
   return (
-    <div className="rounded-[28px] border border-neutral-200 bg-white p-6">
-      <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
-        {"\u26A1"} How it works
+    <div className="rounded-3xl border border-sand-300 bg-white p-6">
+      <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        How it works
       </span>
       <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
         2-week sprints. Real startups. Shipped products.
@@ -189,8 +226,8 @@ function HowItWorks() {
 
       <div className="flex flex-col items-center gap-4 lg:flex-row lg:gap-[35px]">
         {/* Week 1 */}
-        <div className="relative w-full flex-1 rounded-[20px] border border-[#7c3aed] bg-[#ede9fe] p-[17px]">
-          <span className="mb-[10px] inline-block rounded-[4px] bg-[#7c3aed] px-2 py-[3px] text-[10px] font-bold uppercase text-white">
+        <div className="relative w-full flex-1 rounded-2xl border border-[#7c3aed] bg-[#ede9fe] p-[17px]">
+          <span className="mb-[10px] inline-block rounded-md bg-[#7c3aed] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white">
             Week 1
           </span>
           <div className="mb-[6px] font-brand text-[14px] font-bold text-[#5b21b6]">
@@ -207,8 +244,8 @@ function HowItWorks() {
         </div>
 
         {/* Week 2 */}
-        <div className="w-full flex-1 rounded-[20px] border border-[#7c3aed] bg-[#ede9fe] p-[17px]">
-          <span className="mb-[10px] inline-block rounded-[4px] bg-[#7c3aed] px-2 py-[3px] text-[10px] font-bold uppercase text-white">
+        <div className="w-full flex-1 rounded-2xl border border-[#7c3aed] bg-[#ede9fe] p-[17px]">
+          <span className="mb-[10px] inline-block rounded-md bg-[#7c3aed] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white">
             Week 2
           </span>
           <div className="mb-[6px] font-brand text-[14px] font-bold text-[#5b21b6]">
@@ -231,9 +268,9 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       {/* Startup Partners */}
-      <div className="flex-1 rounded-[28px] border border-neutral-200 bg-white p-6">
-        <span className="mb-4 inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
-          {"\u{1F680}"} Startup partners
+      <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
+        <span className="mb-4 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          Startup partners
         </span>
         <div className="flex flex-col gap-3 sm:flex-row">
           {partners.map((partner) => {
@@ -241,7 +278,7 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
             return (
               <div
                 key={partner.name}
-                className="flex-1 rounded-[20px] border border-neutral-200 bg-white p-4 text-center"
+                className="flex-1 rounded-2xl border border-sand-300 bg-sand-100 p-4 text-center"
               >
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
                   {logoUrl ? (
@@ -265,9 +302,9 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
       </div>
 
       {/* Tool Partners */}
-      <div className="flex-1 rounded-[28px] border border-[#e0e0dc] bg-white p-6">
-        <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
-          {"\u{1F6E0}\uFE0F"} Tool partners
+      <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
+        <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          Tool partners
         </span>
         <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
           Free tool access for every sprinter
@@ -278,7 +315,7 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
             return (
               <div
                 key={tool.name}
-                className="flex items-center gap-2 rounded-full border border-[#e0e0dc] bg-white px-[17px] py-[11px]"
+                className="flex items-center gap-2 rounded-full border border-sand-300 bg-sand-100 px-[17px] py-[11px]"
               >
                 <div className="flex h-5 w-5 items-center justify-center overflow-hidden rounded-[4px] bg-[#ede9fe]">
                   {logoUrl ? (
@@ -338,7 +375,7 @@ function TestimonialCard({
             {t.title}, {t.location} {t.flag}
           </div>
         </div>
-        <span className="inline-flex shrink-0 items-center rounded-[4px] bg-[#d1fae5] px-2 py-[3px] font-body text-[10px] font-bold text-[#34d399]">
+        <span className="inline-flex shrink-0 items-center rounded-md bg-[#d1fae5] px-[10px] py-1 font-body text-[11px] font-bold text-[#059669]">
           {t.badge}
         </span>
       </div>
@@ -351,9 +388,9 @@ function Testimonials({ assets }: { assets: YummyAssetsMap }) {
   const rest = testimonials.filter((t) => !t.featured);
 
   return (
-    <div className="rounded-[28px] border border-neutral-200 bg-[#300101] p-[26px]">
-      <span className="mb-[13px] inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
-        {"\u{1F4AC}"} Designer testimonials
+    <div className="rounded-3xl border border-sand-300 bg-[#300101] p-[26px]">
+      <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        Designer testimonials
       </span>
 
       <div className="mt-8 flex flex-col gap-4">
@@ -400,39 +437,26 @@ const tiltClasses = [
 ];
 
 function Gallery({ assets }: { assets: YummyAssetsMap }) {
-  const galleryMap: Record<string, string> = {};
-  for (const g of assets.gallery) {
-    if (g.imageUrl) galleryMap[g.slug] = g.imageUrl;
-  }
+  // Render directly from Notion — no hardcoded list needed
+  const items = assets.gallery.filter((g) => g.imageUrl);
+
+  if (items.length === 0) return null;
 
   return (
     <div className="mt-2">
-      <span className="mb-5 inline-flex items-center rounded-md bg-[#ede9fe] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
-        {"\u{1F4F8}"} Behind the scenes
+      <span className="mb-5 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        Behind the scenes
       </span>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {galleryItems.map((item, idx) => {
-          const imgUrl = galleryMap[item.slug];
-          return (
-            <div
-              key={item.slug}
-              className={`flex min-h-[180px] items-center justify-center overflow-hidden rounded-[20px] border border-neutral-200 transition-all hover:scale-[1.02] hover:border-[#7c3aed] hover:rotate-0 ${
-                imgUrl ? "bg-neutral-100" : "bg-gradient-to-br from-[#ede9fe] to-[#f3e8ff]"
-              } ${tiltClasses[idx] || ""} ${
-                idx === 0 || idx === 5 ? "sm:col-span-2 lg:col-span-1" : ""
-              }`}
-            >
-              {imgUrl ? (
-                <Img src={imgUrl} alt={item.label} className="h-full w-full object-cover" />
-              ) : (
-                <span className="px-3 text-center text-[11px] text-gray-500">
-                  {item.label}
-                </span>
-              )}
-            </div>
-          );
-        })}
+      <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+        {items.map((item, idx) => (
+          <div
+            key={item.slug}
+            className={`mb-4 overflow-hidden rounded-2xl border border-sand-300 bg-neutral-50 break-inside-avoid transition-all hover:scale-[1.02] hover:border-[#2216ff] hover:rotate-0 ${tiltClasses[idx % tiltClasses.length] || ""}`}
+          >
+            <Img src={item.imageUrl} alt={item.name} className="w-full rounded-2xl" />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -448,7 +472,7 @@ function CtaSection() {
         href={YUMMY_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-[10px] rounded-full bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] px-8 py-4 font-body text-[15px] font-bold text-white shadow-[0_4px_16px_rgba(124,58,237,0.3)] transition-transform hover:-translate-y-0.5"
+        className="inline-flex items-center gap-2 rounded-lg bg-[#2216ff] px-6 py-3 font-body text-[14px] font-semibold text-white shadow-[0_4px_16px_rgba(34,22,255,0.25)] transition-colors hover:bg-[#1a11cc]"
       >
         Visit yummy-labs.com
         <ExternalArrow />
@@ -462,7 +486,7 @@ function CtaSection() {
    ═══════════════════════════════════ */
 export function YummyLabsPage({ assets }: YummyLabsPageProps) {
   return (
-    <>
+    <PageEntrance>
       <Header assets={assets} />
       <ProblemAndRole />
       <Stats />
@@ -471,6 +495,6 @@ export function YummyLabsPage({ assets }: YummyLabsPageProps) {
       <Testimonials assets={assets} />
       <Gallery assets={assets} />
       <CtaSection />
-    </>
+    </PageEntrance>
   );
 }

@@ -1,16 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import type { PhaseBlock } from "./processData";
 import { badgeColors } from "./processData";
 
 interface PhaseDetailsPanelProps {
   phase: PhaseBlock | null;
+  imageUrl?: string;
 }
 
-export function PhaseDetailsPanel({ phase }: PhaseDetailsPanelProps) {
+export function PhaseDetailsPanel({ phase, imageUrl }: PhaseDetailsPanelProps) {
   return (
-    <aside className="sticky top-10 rounded-3xl border border-neutral-200 bg-white p-6">
+    <aside className="sticky top-10 rounded-3xl border border-sand-300 bg-white p-6">
       <AnimatePresence mode="wait">
         {!phase ? (
           <motion.div
@@ -22,7 +24,7 @@ export function PhaseDetailsPanel({ phase }: PhaseDetailsPanelProps) {
           >
             <div className="mb-3 text-[32px] opacity-50">&#x1F446;</div>
             <p className="text-14 leading-[1.5]">
-              Click any phase to learn when I use it — and when I skip it.
+              Click any phase to learn when I use it, and when I skip it.
             </p>
           </motion.div>
         ) : (
@@ -35,7 +37,7 @@ export function PhaseDetailsPanel({ phase }: PhaseDetailsPanelProps) {
           >
             {/* Type badge */}
             <span
-              className={`mb-2 inline-block rounded-md px-[10px] py-1 text-[10px] font-semibold uppercase tracking-[0.03em] ${badgeColors[phase.type]}`}
+              className={`mb-2 inline-block rounded-md px-[10px] py-1 text-[11px] font-semibold uppercase tracking-[0.05em] ${badgeColors[phase.type]}`}
             >
               {phase.type}
             </span>
@@ -56,7 +58,7 @@ export function PhaseDetailsPanel({ phase }: PhaseDetailsPanelProps) {
             </div>
 
             {/* I skip this when */}
-            <div className="mb-4">
+            <div className={imageUrl ? "mb-4" : ""}>
               <h4 className="mb-[6px] font-body text-11 font-semibold uppercase tracking-[0.05em] text-neutral-400">
                 I skip this when...
               </h4>
@@ -65,10 +67,28 @@ export function PhaseDetailsPanel({ phase }: PhaseDetailsPanelProps) {
               </div>
             </div>
 
-            {/* Example image placeholder */}
-            <div className="flex h-[140px] items-center justify-center rounded-lg border border-dashed border-neutral-200 bg-neutral-50 text-11 text-neutral-400">
-              Example image placeholder
-            </div>
+            {/* Phase image — only shown when an image is uploaded in Notion */}
+            {imageUrl && (
+              <div className="overflow-hidden rounded-lg">
+                {imageUrl.toLowerCase().includes(".svg") ? (
+                  /* SVGs can't be optimised by next/image — use a plain img */
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={imageUrl}
+                    alt={`${phase.name} example`}
+                    className="h-auto w-full"
+                  />
+                ) : (
+                  <Image
+                    src={imageUrl}
+                    alt={`${phase.name} example`}
+                    width={600}
+                    height={400}
+                    className="h-auto w-full object-cover"
+                  />
+                )}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

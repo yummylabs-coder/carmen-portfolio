@@ -21,6 +21,7 @@ export interface ActivityItem {
 export interface AboutPhoto {
   id: string;
   label: string;
+  caption?: string;
   imageUrl: string;
   size: "normal" | "tall" | "wide";
   order: number;
@@ -31,6 +32,15 @@ export interface Favorite {
   title: string;
   category: "reading" | "watching" | "listening" | "cooking";
   subtitle: string;
+  order: number;
+}
+
+export interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  coverUrl?: string;
+  previewUrl?: string;
   order: number;
 }
 
@@ -61,6 +71,8 @@ export interface CaseStudyDetail {
   partner: string;
   headline: string;
   summary: string;
+  overview: string;
+  challenge: string;
   coverUrl: string;
   heroImages: string[];
   mainHeroImage: string;
@@ -75,12 +87,32 @@ export interface CaseStudyDetail {
   status: string;
 }
 
+/** A single segment of Notion rich text with formatting annotations */
+export interface RichTextSpan {
+  text: string;
+  bold: boolean;
+  italic: boolean;
+}
+
+/** Layout variants for content sections */
+export type SectionLayout =
+  | "default"
+  | "phone-pair"
+  | "laptop"
+  | "desktop"
+  | "full-bleed"
+  | "phone-single"
+  | "side-by-side";
+
 export interface CaseStudySection {
   id: string;
   title: string;
+  label: string;
+  introText: RichTextSpan[];
   description: string;
   images: string[];
   captions: string[];
+  layout: SectionLayout;
   order: number;
 }
 
@@ -96,12 +128,36 @@ export interface Experiment {
   name: string;
   description: string;
   type: string;
+  category: "experiment" | "toolkit";
   status: "live" | "progress" | "archived";
   statusLabel: string;
   url?: string;
   coverUrl?: string;
+  galleryUrls?: string[];
+  galleryCaptions?: string[];
+  videoUrl?: string;
   order: number;
 }
+
+export interface ExperimentPreview {
+  experimentName: string;
+  imageUrls: string[];
+  captions: string[];
+  videoUrl?: string;
+}
+
+/** Maps experiment name (lowercase) → preview data */
+export type ExperimentPreviewMap = Record<string, ExperimentPreview>;
+
+export interface CaseStudyPreview {
+  caseStudyTitle: string;
+  imageUrls: string[];
+  captions: string[];
+  videoUrl?: string;
+}
+
+/** Maps case study title (lowercase) → preview data */
+export type CaseStudyPreviewMap = Record<string, CaseStudyPreview>;
 
 export interface YummyAsset {
   id: string;
@@ -118,4 +174,29 @@ export interface YummyAssetsMap {
   toolLogos: Record<string, string>;
   avatars: Record<string, string>;
   gallery: { slug: string; imageUrl: string; name: string }[];
+}
+
+/** Maps process phase key to its image URL */
+export type ProcessPhaseImages = Record<string, string>;
+
+export interface TravelDestination {
+  id: string;
+  name: string;
+  code: string;
+  stampUrl?: string;
+  seat: string;
+  departure: string;
+  highlight?: string;
+  order: number;
+}
+
+export interface RadarTopic {
+  id: string;
+  topic: string;
+  oneLiner: string;
+  expandedCopy?: string;
+  imageUrl?: string;
+  interest: number;
+  color: string;
+  order: number;
 }

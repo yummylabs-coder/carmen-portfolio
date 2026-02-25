@@ -31,9 +31,9 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: "carmenrincon92@gmail.com",
+      to: "hello@yummydesign.xyz",
       replyTo: email,
-      subject: `New portfolio message${workType ? ` — ${workLabel}` : ""}`,
+      subject: `New portfolio message${workType ? ` | ${workLabel}` : ""}`,
       html: `
         <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
           <h2 style="color: #300101; margin-bottom: 4px;">New message from your portfolio</h2>

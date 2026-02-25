@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 
 interface MainHeroImageProps {
   src: string;
@@ -34,7 +36,7 @@ export function MainHeroImage({ src, alt }: MainHeroImageProps) {
             className="h-full w-full object-cover"
           />
         ) : (
-          <Image
+          <ImageWithShimmer
             src={src}
             alt={alt}
             fill

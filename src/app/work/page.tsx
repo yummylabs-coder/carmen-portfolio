@@ -1,59 +1,32 @@
-import { getAllProjects } from "@/lib/notion";
+import type { Metadata } from "next";
+import { getAllProjects, getCaseStudyPreviews } from "@/lib/notion";
+import { fallbackProjects } from "@/lib/fallback-projects";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { FeaturedHeroCard } from "@/components/dashboard/FeaturedHeroCard";
 import { WorkGrid } from "@/components/dashboard/WorkGrid";
+import { PageEntrance } from "@/components/ui/PageEntrance";
+import { CurateToggle } from "@/components/share/CurateToggle";
+import { FeaturedCurationWrapper } from "@/components/share/FeaturedCurationWrapper";
 
-export const revalidate = 3600;
+export const metadata: Metadata = {
+  title: "My Work",
+  description:
+    "A selection of case studies from 9+ years of product design spanning EdTech, Health Tech, Food Tech, and more.",
+  openGraph: {
+    title: "My Work | Carmen Rincon",
+    description:
+      "A selection of case studies from 9+ years of product design.",
+  },
+};
 
-const fallbackProjects = [
-  {
-    id: "1",
-    title: "Water.day",
-    summary:
-      "A platform that teaches Gen Z better habits through daily stories, habits and facts.",
-    coverUrl: "/cover-placeholder.svg",
-    slug: "water-day",
-    tags: ["Mobile App", "Health Tech"],
-    isFeatured: true,
-    sortOrder: 1,
-  },
-  {
-    id: "2",
-    title: "Yummy Labs",
-    summary:
-      "A food-tech platform connecting local chefs with hungry customers.",
-    coverUrl: "/cover-placeholder.svg",
-    slug: "yummy-labs",
-    tags: ["Web App", "Food Tech"],
-    isFeatured: false,
-    sortOrder: 2,
-  },
-  {
-    id: "3",
-    title: "Learn.xyz",
-    summary:
-      "An e-learning platform that makes education accessible and engaging.",
-    coverUrl: "/cover-placeholder.svg",
-    slug: "learn-xyz",
-    tags: ["Web App", "EdTech"],
-    isFeatured: false,
-    sortOrder: 3,
-  },
-  {
-    id: "4",
-    title: "Design System v2",
-    summary:
-      "A comprehensive design system with tokens, components, and patterns.",
-    coverUrl: "/cover-placeholder.svg",
-    slug: "design-system",
-    tags: ["Design System", "Tooling"],
-    isFeatured: false,
-    sortOrder: 4,
-  },
-];
+export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 export default async function WorkPage() {
-  let projects = await getAllProjects();
+  const [rawProjects, previews] = await Promise.all([
+    getAllProjects(),
+    getCaseStudyPreviews(),
+  ]);
+  let projects = rawProjects;
 
   if (projects.length === 0) {
     projects = fallbackProjects;
@@ -70,35 +43,57 @@ export default async function WorkPage() {
 
   return (
     <DashboardShell>
-      {/* Page header */}
-      <div className="flex flex-col gap-1">
-        <h1 className="font-brand text-22 font-bold text-brand-ink">
-          My work
-        </h1>
-        <p className="text-14 leading-[1.6] text-neutral-400">
-          A selection of my most recent case studies
-        </p>
-      </div>
+      <PageEntrance>
+        {/* Page header */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <h1 className="font-brand text-22 font-bold text-brand-ink">
+                My work
+              </h1>
+              <p className="text-14 leading-[1.6] text-neutral-400">
+                A selection of my most recent case studies
+              </p>
+            </div>
+            {/* Desktop: inline with header */}
+            <div className="hidden sm:block">
+              <CurateToggle />
+            </div>
+          </div>
+          {/* Mobile: below header, left-aligned */}
+          <div className="sm:hidden">
+            <CurateToggle />
+          </div>
+        </div>
 
-      {/* Featured project */}
-      {featured && (
-        <section className="flex flex-col gap-3">
-          <h2 className="font-brand text-17 font-semibold text-brand-ink">
-            Featured &#x2B50;&#xFE0F;
-          </h2>
-          <FeaturedHeroCard project={featured} />
-        </section>
-      )}
+        {/* Featured project */}
+        {featured && (
+          <section
+            className="flex flex-col gap-4 overflow-hidden rounded-3xl border border-[#3D0A0A] p-5 md:p-6"
+            style={{
+              background:
+                "linear-gradient(145deg, #300101 0%, #3D0A0A 50%, #2A0000 100%)",
+            }}
+          >
+            <h2 className="font-brand text-17 font-semibold text-white">
+              Featured &#x2B50;&#xFE0F;
+            </h2>
+            <FeaturedCurationWrapper slug={featured.slug}>
+              <FeaturedHeroCard project={featured} />
+            </FeaturedCurationWrapper>
+          </section>
+        )}
 
-      {/* All projects grid */}
-      {allForGrid.length > 0 && (
-        <section className="flex flex-col gap-3">
-          <h2 className="font-brand text-17 font-semibold text-brand-ink">
-            All projects
-          </h2>
-          <WorkGrid projects={allForGrid} />
-        </section>
-      )}
+        {/* All projects grid */}
+        {allForGrid.length > 0 && (
+          <section className="flex flex-col gap-3">
+            <h2 className="font-brand text-17 font-semibold text-brand-ink">
+              All projects
+            </h2>
+            <WorkGrid projects={allForGrid} previews={previews} featuredProject={featured} />
+          </section>
+        )}
+      </PageEntrance>
     </DashboardShell>
   );
 }

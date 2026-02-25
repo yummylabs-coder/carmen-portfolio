@@ -9,7 +9,7 @@ export default function CaseStudyLoading() {
     <DashboardShell>
       <div className="flex flex-col gap-14">
         {/* Hero skeleton */}
-        <div className="full-bleed-panel full-bleed-hero flex flex-col justify-center gap-4 px-4 pb-10 pt-[60px] md:px-6 lg:min-h-[calc(100vh-36px)] lg:px-[44px] lg:pt-10"
+        <div className="full-bleed-panel full-bleed-hero flex flex-col justify-center gap-4 px-4 pb-10 pt-[96px] md:px-6 lg:min-h-[calc(100vh-36px)] lg:px-[44px] lg:pt-10"
           style={{ background: "#F5F5F3" }}
         >
           <Pulse className="h-4 w-32" />

@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { PageEntrance } from "@/components/ui/PageEntrance";
 
 /* ─── Types ─── */
-type Purpose = "fulltime" | "consulting" | "yummylabs" | "other";
+type Purpose = "fulltime" | "consulting" | "yummylabs" | "speaker" | "other";
 
 interface PurposeItem {
   key: Purpose;
@@ -44,6 +45,18 @@ const purposes: PurposeItem[] = [
     ),
   },
   {
+    key: "speaker",
+    label: "Speaker",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        <line x1="12" y1="19" x2="12" y2="23" />
+        <line x1="8" y1="23" x2="16" y2="23" />
+      </svg>
+    ),
+  },
+  {
     key: "other",
     label: "Say hi",
     icon: (
@@ -55,9 +68,9 @@ const purposes: PurposeItem[] = [
 ];
 
 const stickyNotes = [
-  { text: "\u201CGreat portfolio!\u201D", color: "bg-[#FCE7F3]", rotate: "-rotate-1" },
-  { text: "\u201CLove your work on Learn.xyz\u201D", color: "bg-[#DBEAFE]", rotate: "rotate-[0.5deg]" },
-  { text: "\u201CLet\u2019s collaborate!\u201D", color: "bg-[#D1FAE5]", rotate: "-rotate-[0.5deg]" },
+  { text: "\u201CGreat portfolio!\u201D", color: "bg-white", rotate: "-rotate-1" },
+  { text: "\u201CLove your work on Learn.xyz\u201D", color: "bg-white", rotate: "rotate-[0.5deg]" },
+  { text: "\u201CLet\u2019s collaborate!\u201D", color: "bg-white", rotate: "-rotate-[0.5deg]" },
 ];
 
 const stats = [
@@ -145,7 +158,7 @@ function ContactColumn() {
       </div>
 
       {/* Notes from Others */}
-      <div className="rounded-xl border border-[var(--border-default)] bg-white p-5">
+      <div className="rounded-xl border border-sand-300 bg-sand-100 p-5">
         <div className="mb-4 text-13 font-semibold text-[var(--neutral-500)]">
           &#128172; Notes from others
         </div>
@@ -226,7 +239,7 @@ function StickyForm() {
               <label className="mb-2 block text-12 font-semibold text-[var(--brand-ink)]">
                 What&apos;s this about?
               </label>
-              <div className="grid grid-cols-2 gap-[6px]">
+              <div className="grid grid-cols-3 gap-[6px]">
                 {purposes.map((p) => {
                   const isActive = selected === p.key;
                   return (
@@ -315,7 +328,7 @@ function StickyForm() {
    ═══════════════════════════════════ */
 export function ContactPage() {
   return (
-    <>
+    <PageEntrance>
       {/* Page Header — matches all other pages */}
       <div className="flex flex-col gap-1">
         <h1 className="font-brand text-22 font-bold text-brand-ink">
@@ -341,6 +354,6 @@ export function ContactPage() {
         {/* Col 3: Sticky Note Form */}
         <StickyForm />
       </div>
-    </>
+    </PageEntrance>
   );
 }

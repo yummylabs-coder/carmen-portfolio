@@ -46,6 +46,7 @@ export const roles = [
   { icon: "\u{1F393}", text: "Lead mentorship" },
   { icon: "\u{1F91D}", text: "Startup partnerships" },
   { icon: "\u{1F680}", text: "Product vision" },
+  { icon: "\u{1F3AF}", text: "UX Lead" },
 ];
 
 export const partners: Partner[] = [

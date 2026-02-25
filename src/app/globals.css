@@ -66,6 +66,18 @@
   --orange-700: #B85C10;
   --orange-800: #8C4508;
 
+  /* Sand */
+  --sand-50: #FBF8F6;
+  --sand-100: #F7F2EE;
+  --sand-200: #EEE8E1;
+  --sand-300: #DFD8D0;
+  --sand-400: #CFC7BE;
+  --sand-500: #C0B6AB;
+  --sand-600: #A99E92;
+  --sand-700: #92867A;
+  --sand-800: #7B6F64;
+  --sand-900: #655950;
+
   /* Neutral */
   --neutral-0: #FAFAF9;
   --neutral-50: #F5F5F3;
@@ -107,8 +119,8 @@
   --action-success-hover: var(--green-700);
 
   /* Semantic – Borders */
-  --border-default: var(--neutral-200);
-  --border-strong: var(--neutral-300);
+  --border-default: var(--sand-300);
+  --border-strong: var(--sand-400);
   --border-focus: var(--blue-500);
 
   /* Semantic – Status */

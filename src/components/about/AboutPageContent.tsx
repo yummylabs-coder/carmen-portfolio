@@ -1,20 +1,23 @@
 "use client";
 
-import type { AboutPhoto, Favorite } from "@/lib/types";
+import type { AboutPhoto, TravelDestination, Track } from "@/lib/types";
 import { HeroCard } from "./HeroCard";
 import { FlipCards } from "./FlipCards";
 import { ValuesCard } from "./ValuesCard";
-import { PhotoWall } from "./PhotoWall";
-import { FavoritesShelf } from "./FavoritesShelf";
+import { PhotoMosaic } from "./PhotoMosaic";
+import { VinylShelf } from "./VinylShelf";
+import { WorldTour } from "./WorldTour";
+import { PageEntrance } from "@/components/ui/PageEntrance";
 
 interface AboutPageContentProps {
   photos: AboutPhoto[];
-  favorites: Favorite[];
+  destinations: TravelDestination[];
+  tracks: Track[];
 }
 
-export function AboutPageContent({ photos, favorites }: AboutPageContentProps) {
+export function AboutPageContent({ photos, destinations, tracks }: AboutPageContentProps) {
   return (
-    <>
+    <PageEntrance>
       {/* Page header */}
       <div className="flex flex-col gap-1">
         <h1 className="font-brand text-22 font-bold text-brand-ink">
@@ -25,20 +28,23 @@ export function AboutPageContent({ photos, favorites }: AboutPageContentProps) {
         </p>
       </div>
 
-      {/* Row 1: Hero + Working With Me */}
+      {/* Row 1: Letter + Working With Me */}
       <div className="grid gap-6 lg:grid-cols-2">
         <HeroCard />
         <FlipCards />
       </div>
 
-      {/* Row 2: Values + Photo Wall */}
+      {/* Row 2: On Rotation — Vinyl Records (Full Width) */}
+      <VinylShelf tracks={tracks} />
+
+      {/* Row 3: Values + Photo Mosaic */}
       <div className="grid gap-6 lg:grid-cols-2">
         <ValuesCard />
-        <PhotoWall photos={photos} />
+        <PhotoMosaic photos={photos} />
       </div>
 
-      {/* Row 3: Favorites Shelf (Full Width) */}
-      <FavoritesShelf favorites={favorites} />
-    </>
+      {/* Row 4: World Tour (Full Width) */}
+      <WorldTour destinations={destinations} />
+    </PageEntrance>
   );
 }

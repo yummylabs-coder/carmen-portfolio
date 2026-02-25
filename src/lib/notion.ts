@@ -1,7 +1,7 @@
 import "server-only";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import type { CaseStudy, CaseStudyDetail, CaseStudySection, AboutPhoto, Favorite, ExperienceEntry, Experiment, YummyAsset, YummyAssetsMap } from "./types";
+import type { CaseStudy, CaseStudyDetail, CaseStudySection, RichTextSpan, SectionLayout, AboutPhoto, Favorite, ExperienceEntry, Experiment, ExperimentPreviewMap, CaseStudyPreviewMap, YummyAsset, YummyAssetsMap, ProcessPhaseImages, TravelDestination, Track, RadarTopic } from "./types";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID!;
@@ -10,7 +10,7 @@ function getPlainText(prop: Record<string, unknown> | undefined, type: "title" |
   if (!prop) return "";
   const arr = (prop as Record<string, unknown[]>)[type];
   if (!Array.isArray(arr) || arr.length === 0) return "";
-  return (arr[0] as Record<string, string>).plain_text ?? "";
+  return arr.map((item) => (item as Record<string, string>).plain_text ?? "").join("");
 }
 
 function getMultiSelect(prop: Record<string, unknown> | undefined): string[] {
@@ -60,6 +60,22 @@ function getFullRichText(prop: Record<string, unknown> | undefined): string {
   const arr = (prop as Record<string, unknown[]>).rich_text;
   if (!Array.isArray(arr) || arr.length === 0) return "";
   return arr.map((item) => (item as Record<string, string>).plain_text ?? "").join("");
+}
+
+/** Reads Notion rich_text with formatting annotations (bold, italic, etc.) */
+function getRichTextSegments(prop: Record<string, unknown> | undefined): RichTextSpan[] {
+  if (!prop) return [];
+  const arr = (prop as Record<string, unknown[]>).rich_text;
+  if (!Array.isArray(arr) || arr.length === 0) return [];
+  return arr.map((item) => {
+    const richItem = item as Record<string, unknown>;
+    const annotations = (richItem.annotations ?? {}) as Record<string, unknown>;
+    return {
+      text: (richItem.plain_text as string) ?? "",
+      bold: (annotations.bold as boolean) ?? false,
+      italic: (annotations.italic as boolean) ?? false,
+    };
+  });
 }
 
 function parsePage(page: PageObjectResponse): CaseStudy {
@@ -146,6 +162,8 @@ function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
   const partner = getPlainText(props.Partner, "rich_text");
   const headline = getFullRichText(props.Headline);
   const summary = getFullRichText(props.Summary);
+  const overview = getFullRichText(props.Overview);
+  const challenge = getFullRichText(props.Challenge);
   const roleDescription = getFullRichText(props["Role Description"]);
   const services = getMultiSelect(props.Services);
   const platform = getMultiSelect(props.Platform);
@@ -182,6 +200,8 @@ function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
     partner,
     headline,
     summary,
+    overview,
+    challenge,
     coverUrl,
     heroImages,
     mainHeroImage,
@@ -236,14 +256,19 @@ export async function getCaseStudySections(caseStudyId: string): Promise<CaseStu
       .map((page) => {
         const props = page.properties as Record<string, Record<string, unknown>>;
         const title = getPlainText(props["Section Title"], "title");
+        const label = getFullRichText(props.Label);
+        const introText = getRichTextSegments(props["Intro Text"]);
         const description = getFullRichText(props.Description);
         const images = getAllFiles(props.Images);
         const captions: string[] = [];
         for (let i = 1; i <= 6; i++) {
           captions.push(getPlainText(props[`Image ${i} Caption`], "rich_text"));
         }
+        const layoutRaw = getSelect(props.Layout);
+        const validLayouts: SectionLayout[] = ["default", "phone-pair", "laptop", "desktop", "full-bleed", "phone-single", "side-by-side"];
+        const layout: SectionLayout = validLayouts.includes(layoutRaw as SectionLayout) ? (layoutRaw as SectionLayout) : "default";
         const order = getNumber(props.Order);
-        return { id: page.id, title, description, images, captions, order };
+        return { id: page.id, title, label, introText, description, images, captions, layout, order };
       });
   } catch (error) {
     console.error("Failed to fetch case study sections:", error);
@@ -310,7 +335,7 @@ export async function getAboutPhotos(): Promise<AboutPhoto[]> {
     const response = await notion.databases.query({
       database_id: photosDbId,
       sorts: [{ property: "Order", direction: "ascending" }],
-      page_size: 20,
+      page_size: 100,
     });
 
     return response.results
@@ -320,9 +345,11 @@ export async function getAboutPhotos(): Promise<AboutPhoto[]> {
         const label = getPlainText(props.Label, "rich_text") || getPlainText(props.Name, "title");
         const imageUrl = getFiles(props.Image);
         const size = getSelect(props.Size) as AboutPhoto["size"] || "normal";
+        const caption = getPlainText(props.Caption, "rich_text") || "";
         const order = getNumber(props.Order);
-        return { id: page.id, label, imageUrl, size, order };
-      });
+        return { id: page.id, label, caption: caption || undefined, imageUrl, size, order };
+      })
+      .filter((photo) => photo.imageUrl);
   } catch (error) {
     console.error("Failed to fetch about photos from Notion:", error);
     return [];
@@ -456,15 +483,37 @@ export async function getExperiments(): Promise<Experiment[]> {
         const name = getPlainText(props.Name, "title");
         const description = getPlainText(props.Description, "rich_text");
         const type = getSelect(props.Type) || "Other";
+        const categoryRaw = getSelect(props.Category);
+        const category: Experiment["category"] =
+          (categoryRaw || "").toLowerCase().trim() === "toolkit" ? "toolkit" : "experiment";
         const statusRaw = getSelect(props.Status);
+        const statusNorm = (statusRaw || "").toLowerCase().trim();
         const status: Experiment["status"] =
-          statusRaw === "Live" ? "live" : statusRaw === "In Progress" ? "progress" : "archived";
+          statusNorm === "live" || statusNorm === "finished" || statusNorm === "done"
+            ? "live"
+            : statusNorm === "in progress" || statusNorm === "wip"
+              ? "progress"
+              : "archived";
         const statusLabel = statusRaw || "In Progress";
         const url = getUrl(props["URL"]);
         const coverUrl = getFiles(props.Cover);
+        const galleryUrls = getAllFiles(props["Gallery Images"]);
+        const galleryCaptionsRaw = getPlainText(props["Gallery Captions"], "rich_text");
+        const galleryCaptions = galleryCaptionsRaw
+          ? galleryCaptionsRaw.split("\n").map((c) => c.trim()).filter(Boolean)
+          : [];
+        const videoUrl = getUrl(props["Video URL"]);
         const order = getNumber(props.Order);
 
-        return { id: page.id, name, description, type, status, statusLabel, url: url || undefined, coverUrl: coverUrl || undefined, order };
+        return {
+          id: page.id, name, description, type, category, status, statusLabel,
+          url: url || undefined,
+          coverUrl: coverUrl || undefined,
+          galleryUrls: galleryUrls.length > 0 ? galleryUrls : undefined,
+          galleryCaptions: galleryCaptions.length > 0 ? galleryCaptions : undefined,
+          videoUrl: videoUrl || undefined,
+          order,
+        };
       });
   } catch (error) {
     console.error("Failed to fetch experiments from Notion:", error);
@@ -534,5 +583,217 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
   } catch (error) {
     console.error("Failed to fetch Yummy Labs assets from Notion:", error);
     return empty;
+  }
+}
+
+// ─── Process Phase Images ───
+const processImagesDbId = process.env.NOTION_PROCESS_IMAGES_DB_ID;
+
+export async function getProcessPhaseImages(): Promise<ProcessPhaseImages> {
+  if (!processImagesDbId) return {};
+  try {
+    const response = await notion.databases.query({
+      database_id: processImagesDbId,
+      page_size: 20,
+    });
+
+    const map: ProcessPhaseImages = {};
+    for (const page of response.results) {
+      if (!("properties" in page)) continue;
+      const props = (page as PageObjectResponse).properties as Record<string, Record<string, unknown>>;
+      const phaseKey = getPlainText(props["Phase Key"], "rich_text");
+      const imageUrl = getFiles(props.Image);
+      if (phaseKey && imageUrl) {
+        map[phaseKey] = imageUrl;
+      }
+    }
+    return map;
+  } catch (error) {
+    console.error("Failed to fetch process phase images from Notion:", error);
+    return {};
+  }
+}
+
+// ─── Experiment Previews ───
+const previewsDbId = process.env.NOTION_EXPERIMENT_PREVIEWS_DB_ID;
+
+export async function getExperimentPreviews(): Promise<ExperimentPreviewMap> {
+  if (!previewsDbId) return {};
+  try {
+    const response = await notion.databases.query({
+      database_id: previewsDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 50,
+    });
+
+    const map: ExperimentPreviewMap = {};
+
+    for (const page of response.results) {
+      if (!("properties" in page)) continue;
+      const props = (page as PageObjectResponse).properties as Record<string, Record<string, unknown>>;
+      const experimentName = getPlainText(props["Experiment Name"], "rich_text");
+      if (!experimentName) continue;
+
+      const imageUrls = getAllFiles(props["Preview Images"]);
+      const captionsRaw = getPlainText(props["Preview Captions"], "rich_text");
+      const captions = captionsRaw
+        ? captionsRaw.split("\n").map((c) => c.trim()).filter(Boolean)
+        : [];
+      const videoUrl = getUrl(props["Video URL"]);
+
+      map[experimentName.toLowerCase()] = {
+        experimentName,
+        imageUrls,
+        captions,
+        videoUrl: videoUrl || undefined,
+      };
+    }
+
+    return map;
+  } catch (error) {
+    console.error("Failed to fetch experiment previews from Notion:", error);
+    return {};
+  }
+}
+
+// ─── Case Study Previews ───
+const caseStudyPreviewsDbId = process.env.NOTION_CASESTUDY_PREVIEWS_DB_ID;
+
+export async function getCaseStudyPreviews(): Promise<CaseStudyPreviewMap> {
+  if (!caseStudyPreviewsDbId) return {};
+  try {
+    const response = await notion.databases.query({
+      database_id: caseStudyPreviewsDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 50,
+    });
+
+    const map: CaseStudyPreviewMap = {};
+
+    for (const page of response.results) {
+      if (!("properties" in page)) continue;
+      const props = (page as PageObjectResponse).properties as Record<string, Record<string, unknown>>;
+      const caseStudyTitle = getPlainText(props["Case Study Title"], "rich_text");
+      if (!caseStudyTitle) continue;
+
+      const imageUrls = getAllFiles(props["Preview Images"]);
+      const captionsRaw = getPlainText(props["Preview Captions"], "rich_text");
+      const captions = captionsRaw
+        ? captionsRaw.split("\n").map((c) => c.trim()).filter(Boolean)
+        : [];
+      const videoUrl = getUrl(props["Video URL"]);
+
+      map[caseStudyTitle.toLowerCase()] = {
+        caseStudyTitle,
+        imageUrls,
+        captions,
+        videoUrl: videoUrl || undefined,
+      };
+    }
+
+    return map;
+  } catch (error) {
+    console.error("Failed to fetch case study previews from Notion:", error);
+    return {};
+  }
+}
+
+/* ─── Tracks (On Rotation) ─── */
+const tracksDbId = process.env.NOTION_TRACKS_DB_ID;
+
+export async function getTracks(): Promise<Track[]> {
+  if (!tracksDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: tracksDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 10,
+    });
+
+    return response.results
+      .filter((page): page is PageObjectResponse => "properties" in page)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        return {
+          id: page.id,
+          title: getPlainText(props["Name"], "title"),
+          artist: getPlainText(props["Artist"], "rich_text"),
+          coverUrl: getFiles(props["Cover"]) || undefined,
+          previewUrl: getUrl(props["Preview URL"]) || undefined,
+          order: getNumber(props["Order"]),
+        };
+      })
+      .filter((t) => t.title);
+  } catch (error) {
+    console.error("Failed to fetch tracks from Notion:", error);
+    return [];
+  }
+}
+
+/* ─── Travel Destinations ─── */
+const travelDbId = process.env.NOTION_TRAVEL_DB_ID;
+
+export async function getTravelDestinations(): Promise<TravelDestination[]> {
+  if (!travelDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: travelDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 50,
+    });
+
+    return response.results
+      .filter((page): page is PageObjectResponse => "properties" in page)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        return {
+          id: page.id,
+          name: getPlainText(props["Name"], "title"),
+          code: getPlainText(props["Code"], "rich_text"),
+          stampUrl: getFiles(props["Stamp"]) || undefined,
+          seat: getPlainText(props["Seat"], "rich_text") || "—",
+          departure: getPlainText(props["Departure"], "rich_text") || "—",
+          highlight: getPlainText(props["Highlight"], "rich_text") || undefined,
+          order: getNumber(props["Order"]),
+        };
+      })
+      .filter((d) => d.name && d.code);
+  } catch (error) {
+    console.error("Failed to fetch travel destinations from Notion:", error);
+    return [];
+  }
+}
+
+/* ─── Radar Topics ─── */
+const radarDbId = process.env.NOTION_RADAR_DB_ID;
+
+export async function getRadarTopics(): Promise<RadarTopic[]> {
+  if (!radarDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: radarDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 12,
+    });
+
+    return response.results
+      .filter((page): page is PageObjectResponse => "properties" in page)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        return {
+          id: page.id,
+          topic: getPlainText(props["Topic"], "title"),
+          oneLiner: getPlainText(props["One-liner"], "rich_text"),
+          expandedCopy: getPlainText(props["Expanded Copy"], "rich_text") || undefined,
+          imageUrl: getFiles(props["Image"]) || undefined,
+          interest: getNumber(props["Interest"]) || 3,
+          color: getPlainText(props["Color"], "rich_text") || "#2216ff",
+          order: getNumber(props["Order"]),
+        };
+      })
+      .filter((t) => t.topic);
+  } catch (error) {
+    console.error("Failed to fetch radar topics from Notion:", error);
+    return [];
   }
 }

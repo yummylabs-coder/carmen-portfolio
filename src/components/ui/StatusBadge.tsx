@@ -4,7 +4,7 @@ interface StatusBadgeProps {
 }
 
 function StatusBadge({
-  label = "Building Yummy Labs",
+  label = "Join my design community",
   className = "",
 }: StatusBadgeProps) {
   return (

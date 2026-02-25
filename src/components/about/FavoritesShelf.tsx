@@ -47,12 +47,11 @@ export function FavoritesShelf({ favorites }: FavoritesShelfProps) {
       className="relative rounded-3xl p-6 pt-8 md:p-8"
       style={{
         background:
-          "linear-gradient(135deg, #300101 0%, #1a0101 50%, #300101 100%)",
+          "linear-gradient(145deg, #2216ff 0%, #2a20ff 35%, #3630ff 65%, #2a20ff 100%)",
       }}
     >
       {/* Header */}
-      <div className="mb-6 flex items-center gap-[10px]">
-        <span className="text-[20px]">📚</span>
+      <div className="mb-6">
         <h2 className="font-brand text-15 font-semibold text-white/90">
           Current favorites
         </h2>
@@ -92,13 +91,13 @@ export function FavoritesShelf({ favorites }: FavoritesShelfProps) {
         })}
       </div>
 
-      {/* Wood plank */}
+      {/* Shelf plank */}
       <div
         className="absolute bottom-6 left-0 right-0 mx-6 h-3 rounded-sm md:mx-8"
         style={{
           background:
-            "linear-gradient(180deg, #4a1a1a 0%, #300101 50%, #1a0101 100%)",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
+            "linear-gradient(180deg, #3630ff 0%, #2a20ff 50%, #2216ff 100%)",
+          boxShadow: "0 4px 12px rgba(34,22,255,0.35)",
         }}
       />
     </div>
