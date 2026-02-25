@@ -161,20 +161,8 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
             <div className="sm:flex">
               {/* LEFT COLUMN — form inputs */}
               <div className="flex-1 sm:border-r sm:border-sand-200">
-                {/* Selected projects preview */}
-                <div className="flex gap-2 overflow-x-auto px-5 py-4">
-                  {selectedProjects.map((project) => (
-                    <div key={project.id} className="flex shrink-0 items-center gap-2 rounded-lg border border-sand-200 bg-sand-50 px-2.5 py-1.5">
-                      <div className="relative h-6 w-8 shrink-0 overflow-hidden rounded">
-                        <Image src={project.coverUrl} alt={project.title} fill className="object-cover" sizes="32px" />
-                      </div>
-                      <span className="text-12 font-medium text-brand-ink">{project.title}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Curate for */}
-                <div className="px-5 pb-3">
+                  {/* Curate for */}
+                <div className="px-5 pb-3 pt-4">
                   <label className="mb-1.5 block text-12 font-medium text-neutral-500">Curate for</label>
                   <input
                     ref={inputRef}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import Link from "next/link";
 import { getAllProjects, getCaseStudyBySlug } from "@/lib/notion";
 import { fallbackProjects } from "@/lib/fallback-projects";
@@ -6,11 +7,20 @@ import { SharePacketHeader } from "@/components/share/SharePacketHeader";
 import { SharePacketCard } from "@/components/share/SharePacketCard";
 import type { CaseStudy } from "@/lib/types";
 
-export const revalidate = 3600;
+/**
+ * Always render fresh — share links must reflect current Notion data,
+ * and we never want an empty result cached by ISR.
+ */
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ slugs: string }>;
   searchParams: Promise<{ for?: string; note?: string }>;
+}
+
+/** Normalize slug so "learn.xyz", "learn-xyz", "Learn XYZ" all become "learn-xyz" */
+function normalizeSlug(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 /** Parse "water-day,learn-xyz" → ["water-day", "learn-xyz"] */
@@ -26,30 +36,49 @@ function parseSlugs(raw: string): string[] {
  * 1. getAllProjects() from Notion (best — returns live data with cover images)
  * 2. getCaseStudyBySlug() per-slug from Notion (if bulk fetch fails)
  * 3. fallbackProjects hardcoded data (if Notion is completely down)
+ *
+ * All comparisons use normalizeSlug() so "learn.xyz" matches "learn-xyz".
  */
 async function resolveProjects(slugs: string[]): Promise<CaseStudy[]> {
+  if (slugs.length === 0) return [];
+
+  const normalizedInput = slugs.map(normalizeSlug);
+
   // Tier 1: try getting all projects from Notion
   let allProjects: CaseStudy[] = [];
   try {
     allProjects = await getAllProjects();
+    console.log(`[share] getAllProjects returned ${allProjects.length} projects, matching against slugs: ${slugs.join(", ")}`);
   } catch (e) {
     console.error("[share] getAllProjects failed:", e);
   }
 
   if (allProjects.length > 0) {
-    const matched = slugs
-      .map((slug) => allProjects.find((p) => p.slug === slug))
+    const matched = normalizedInput
+      .map((ns) => allProjects.find((p) => normalizeSlug(p.slug) === ns))
       .filter(Boolean) as CaseStudy[];
 
-    if (matched.length > 0) return matched;
+    if (matched.length > 0) {
+      console.log(`[share] Tier 1 matched ${matched.length}/${slugs.length}: ${matched.map((p) => p.title).join(", ")}`);
+      return matched;
+    }
+    console.warn(`[share] Tier 1: 0 matches. Project slugs in DB: ${allProjects.map((p) => p.slug).join(", ")}`);
   }
 
   // Tier 2: try fetching each slug individually from Notion
-  console.warn("[share] Bulk fetch returned 0 projects, trying per-slug fetch...");
+  console.warn("[share] Trying per-slug fetch...");
   const perSlugResults = await Promise.allSettled(
     slugs.map(async (slug): Promise<CaseStudy | null> => {
       try {
-        const detail = await getCaseStudyBySlug(slug);
+        // Try original slug first
+        let detail = await getCaseStudyBySlug(slug);
+        // If no match, try the normalized version
+        if (!detail) {
+          const normalized = normalizeSlug(slug);
+          if (normalized !== slug) {
+            detail = await getCaseStudyBySlug(normalized);
+          }
+        }
         if (!detail) return null;
         return {
           id: detail.id,
@@ -73,20 +102,32 @@ async function resolveProjects(slugs: string[]): Promise<CaseStudy[]> {
     .map((r) => r.value)
     .filter(Boolean) as CaseStudy[];
 
-  if (fromSlugFetch.length > 0) return fromSlugFetch;
+  if (fromSlugFetch.length > 0) {
+    console.log(`[share] Tier 2 matched ${fromSlugFetch.length}/${slugs.length}`);
+    return fromSlugFetch;
+  }
 
-  // Tier 3: use hardcoded fallback
+  // Tier 3: use hardcoded fallback (normalize both sides)
   console.warn("[share] Per-slug fetch returned 0 results, using fallback data");
-  return slugs
-    .map((slug) => fallbackProjects.find((p) => p.slug === slug))
+  return normalizedInput
+    .map((ns) => fallbackProjects.find((p) => normalizeSlug(p.slug) === ns))
     .filter(Boolean) as CaseStudy[];
 }
+
+/**
+ * Deduplicate resolveProjects between generateMetadata + page component
+ * so we make one Notion API call per request instead of two.
+ */
+const getShareData = cache(async (rawSlugs: string) => {
+  const slugs = parseSlugs(rawSlugs);
+  const projects = await resolveProjects(slugs);
+  return { slugs, projects };
+});
 
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slugs: rawSlugs } = await params;
   const { for: companyName } = await searchParams;
-  const slugs = parseSlugs(rawSlugs);
-  const projects = await resolveProjects(slugs);
+  const { projects } = await getShareData(rawSlugs);
   const titles = projects.map((p) => p.title).join(", ");
 
   const title = companyName
@@ -109,8 +150,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 export default async function SharePacketPage({ params, searchParams }: PageProps) {
   const { slugs: rawSlugs } = await params;
   const { for: companyName, note } = await searchParams;
-  const slugs = parseSlugs(rawSlugs);
-  const projects = await resolveProjects(slugs);
+  const { projects } = await getShareData(rawSlugs);
 
   return (
     <>
