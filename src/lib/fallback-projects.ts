@@ -1,6 +1,24 @@
 import type { CaseStudy } from "./types";
 
 /**
+ * Map slug → static cover image in public/covers/.
+ * Used by fallback data AND the inline-data decoder on the share page.
+ */
+export const staticCoverMap: Record<string, string> = {
+  "water-day": "/covers/water-day.png",
+  "pandore": "/covers/pandore.png",
+  "neotaste": "/covers/neotaste.svg",
+  "learn-xyz": "/covers/learn-xyz.png",
+  "ausventure": "/covers/ausventure.svg",
+  "klasse": "/covers/klasse.svg",
+};
+
+/** Get the static cover path for a slug, or a placeholder if unknown. */
+export function getStaticCover(slug: string): string {
+  return staticCoverMap[slug] ?? "/cover-placeholder.svg";
+}
+
+/**
  * Fallback project data used when the Notion API is unreachable.
  * Shared by /work page and /share/[slugs] page.
  *
@@ -14,7 +32,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Water.day",
     summary:
       "A platform that teaches Gen Z better habits through daily stories, habits and facts.",
-    coverUrl: "/cover-placeholder.svg",
+    coverUrl: "/covers/water-day.png",
     slug: "water-day",
     tags: ["Mobile App", "Health Tech"],
     isFeatured: true,
@@ -25,7 +43,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Pandore",
     summary:
       "Brand identity and landing page for an AI consulting firm positioning itself as a trusted partner for enterprise AI adoption.",
-    coverUrl: "/cover-placeholder.svg",
+    coverUrl: "/covers/pandore.png",
     slug: "pandore",
     tags: ["Branding", "Web Design"],
     isFeatured: false,
@@ -36,7 +54,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Neotaste",
     summary:
       "A 2-week design sprint to reimagine restaurant discovery and help foodies find hidden gems.",
-    coverUrl: "/cover-placeholder.svg",
+    coverUrl: "/covers/neotaste.svg",
     slug: "neotaste",
     tags: ["Mobile App", "Food Tech"],
     isFeatured: false,
@@ -47,7 +65,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Learn.xyz",
     summary:
       "An e-learning platform that makes workplace education accessible and engaging.",
-    coverUrl: "/cover-placeholder.svg",
+    coverUrl: "/covers/learn-xyz.png",
     slug: "learn-xyz",
     tags: ["Web App", "EdTech"],
     isFeatured: false,
@@ -58,7 +76,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Ausventure Travel",
     summary:
       "Redesigning the end-to-end booking experience for a premium Australian travel company.",
-    coverUrl: "/cover-placeholder.svg",
+    coverUrl: "/covers/ausventure.svg",
     slug: "ausventure",
     tags: ["Web App", "Travel"],
     isFeatured: false,
@@ -69,7 +87,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Klasse",
     summary:
       "Building a modern design consultancy brand from the ground up — identity, site, and tooling.",
-    coverUrl: "/cover-placeholder.svg",
+    coverUrl: "/covers/klasse.svg",
     slug: "klasse",
     tags: ["Branding", "Web App"],
     isFeatured: false,

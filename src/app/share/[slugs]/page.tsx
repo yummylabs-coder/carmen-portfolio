@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cache } from "react";
 import Link from "next/link";
 import { getAllProjects, getCaseStudyBySlug } from "@/lib/notion";
-import { fallbackProjects } from "@/lib/fallback-projects";
+import { fallbackProjects, getStaticCover } from "@/lib/fallback-projects";
 import { SharePacketHeader } from "@/components/share/SharePacketHeader";
 import { SharePacketCard } from "@/components/share/SharePacketCard";
 import type { CaseStudy } from "@/lib/types";
@@ -48,7 +48,7 @@ function decodeInlineData(d: string | undefined): CaseStudy[] | null {
         title: item.t || "Untitled",
         slug: item.s || "",
         summary: item.d || "",
-        coverUrl: "/cover-placeholder.svg",
+        coverUrl: getStaticCover(item.s || ""),
         tags: item.k || [],
       })
     );
