@@ -65,105 +65,109 @@ export function DiscordCommunityCard() {
       href="https://discord.gg/7GnFfQuZ3m"
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-sand-300 transition-all hover:border-sand-400 hover:shadow-sm"
+      className="group flex flex-col overflow-hidden rounded-xl border border-sand-300 transition-all hover:border-sand-400 hover:shadow-sm"
     >
       {/* Header — brand brown with cream Discord icon */}
-      <div className="flex items-center gap-3 bg-brand-ink px-5 py-4">
-        <DiscordIcon size={28} className="text-[#FFFEFC]" />
+      <div className="flex items-center gap-2.5 bg-brand-ink px-4 py-2.5">
+        <DiscordIcon size={22} className="text-[#FFFEFC]" />
         <div className="flex flex-col">
-          <span className="font-brand text-15 font-bold text-[#FFFEFC]">
+          <span className="font-brand text-14 font-bold text-[#FFFEFC]">
             Design Community
           </span>
-          <span className="text-12 text-white/50">
+          <span className="text-11 text-white/50">
             Join the conversation on Discord
           </span>
         </div>
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 flex-col bg-sand-100 px-5 py-4">
-        <p className="text-13 leading-relaxed text-neutral-500">
-          A space for designers to share work, get feedback, and grow together.
-          Whether you&apos;re just starting out or a seasoned pro, you&apos;re welcome here.
+      <div className="flex flex-col bg-sand-100 px-4 py-3">
+        <p className="text-12 leading-relaxed text-neutral-500">
+          Share work, get feedback, and grow with other designers.
         </p>
 
-        {/* Live count */}
-        <div className="mt-3 flex items-center gap-4">
-          {memberCount !== null && (
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-neutral-300" />
-              </span>
-              <span className="font-mono text-13 font-semibold text-brand-ink">
-                {memberCount.toLocaleString()}
-              </span>
-              <span className="text-12 text-neutral-400">members</span>
-            </div>
-          )}
-          {onlineCount !== null && onlineCount > 0 && (
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="font-mono text-13 font-semibold text-emerald-600">
-                {onlineCount.toLocaleString()}
-              </span>
-              <span className="text-12 text-neutral-400">online now</span>
-            </div>
-          )}
-        </div>
+        {/* Live counts */}
+        {(memberCount !== null || onlineCount !== null) && (
+          <div className="mt-2 flex items-center gap-4">
+            {memberCount !== null && (
+              <div className="flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-neutral-300" />
+                </span>
+                <span className="font-mono text-12 font-semibold text-brand-ink">
+                  {memberCount.toLocaleString()}
+                </span>
+                <span className="text-11 text-neutral-400">members</span>
+              </div>
+            )}
+            {onlineCount !== null && onlineCount > 0 && (
+              <div className="flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                <span className="font-mono text-12 font-semibold text-emerald-600">
+                  {onlineCount.toLocaleString()}
+                </span>
+                <span className="text-11 text-neutral-400">online</span>
+              </div>
+            )}
+          </div>
+        )}
 
-        {/* Recent messages — only shown when API returns data */}
-        {messages.length > 0 && (
-          <div className="mt-4 flex flex-col gap-2">
+        {/* Recent messages or friendly empty state */}
+        {messages.length > 0 ? (
+          <div className="mt-3 flex flex-col gap-1.5">
             <span className="text-11 font-semibold uppercase tracking-wide text-neutral-400">
               Recent messages
             </span>
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className="flex items-start gap-2.5 rounded-lg bg-white/70 px-3 py-2.5"
+                className="flex items-start gap-2 rounded-lg bg-white/70 px-2.5 py-2"
               >
-                {/* Avatar or initial */}
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#5865F2] text-[10px] font-bold text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#5865F2] text-[9px] font-bold text-white">
                   {msg.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={msg.avatar}
                       alt=""
-                      className="h-6 w-6 rounded-full"
+                      className="h-5 w-5 rounded-full"
                     />
                   ) : (
                     msg.author[0]?.toUpperCase()
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-12 font-semibold text-brand-ink">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-11 font-semibold text-brand-ink">
                       {msg.author}
                     </span>
                     <span className="text-10 text-neutral-400">
                       {timeAgo(msg.timestamp)}
                     </span>
                   </div>
-                  <p className="mt-0.5 truncate text-12 text-neutral-500">
+                  <p className="truncate text-11 text-neutral-500">
                     {msg.content || "Shared an attachment"}
                   </p>
                 </div>
               </div>
             ))}
           </div>
+        ) : (
+          <div className="mt-3 flex items-center gap-2.5 rounded-lg bg-white/50 px-3 py-2.5">
+            <span className="text-[15px]">&#128172;</span>
+            <span className="text-12 text-neutral-400">
+              Be the first to say hello!
+            </span>
+          </div>
         )}
 
-        {/* Spacer pushes CTA to bottom */}
-        <div className="flex-1" />
-
-        {/* Join CTA — blue like all primary CTAs */}
-        <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-[#2216ff] px-4 py-2.5 text-13 font-semibold text-white transition-colors group-hover:bg-[#1a10d9]">
-          <DiscordIcon size={16} className="text-white/70" />
+        {/* Join CTA */}
+        <div className="mt-2.5 flex items-center justify-center gap-2 rounded-lg bg-[#2216ff] px-3.5 py-2 text-12 font-semibold text-white transition-colors group-hover:bg-[#1a10d9]">
+          <DiscordIcon size={14} className="text-white/70" />
           Join the conversation
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="ml-1 shrink-0">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="ml-0.5 shrink-0">
             <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>

@@ -7,21 +7,15 @@ import { DiscordCommunityCard } from "@/components/contact/DiscordCommunityCard"
 /* ─── Types ─── */
 type Purpose = "fulltime" | "consulting" | "yummylabs" | "speaker" | "other";
 
-interface PurposeItem {
-  key: Purpose;
-  label: string;
-  icon: React.ReactNode;
-}
-
-/* ─── Data ─── */
-const purposes: PurposeItem[] = [
+/* ─── Purpose data with icons ─── */
+const purposes: { key: Purpose; label: string; icon: React.ReactNode }[] = [
   {
     key: "fulltime",
     label: "Full-time",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
         <rect x="2" y="7" width="20" height="14" rx="2" />
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
       </svg>
     ),
   },
@@ -29,9 +23,10 @@ const purposes: PurposeItem[] = [
     key: "consulting",
     label: "Consulting",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
         <circle cx="12" cy="12" r="10" />
-        <circle cx="12" cy="12" r="3" />
+        <circle cx="12" cy="12" r="6" />
+        <circle cx="12" cy="12" r="2" />
       </svg>
     ),
   },
@@ -39,9 +34,9 @@ const purposes: PurposeItem[] = [
     key: "yummylabs",
     label: "Yummy Labs",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-        <polyline points="14 2 14 8 20 8" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
+        <path d="M9 3h6" />
+        <path d="M10 3v7.4L4.7 18.5a1 1 0 0 0 .8 1.5h13a1 1 0 0 0 .8-1.5L14 10.4V3" />
       </svg>
     ),
   },
@@ -49,11 +44,11 @@ const purposes: PurposeItem[] = [
     key: "speaker",
     label: "Speaker",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-        <line x1="12" y1="19" x2="12" y2="23" />
-        <line x1="8" y1="23" x2="16" y2="23" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
+        <rect x="9" y="2" width="6" height="11" rx="3" />
+        <path d="M5 10a7 7 0 0 0 14 0" />
+        <path d="M12 17v4" />
+        <path d="M8 21h8" />
       </svg>
     ),
   },
@@ -61,13 +56,14 @@ const purposes: PurposeItem[] = [
     key: "other",
     label: "Say hi",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-full w-full">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
       </svg>
     ),
   },
 ];
 
+/* ─── Stats data ─── */
 const stats = [
   {
     value: "<24h",
@@ -102,6 +98,10 @@ const stats = [
   },
 ];
 
+/* ─── Refined input class ─── */
+const inputClass =
+  "w-full rounded-lg border border-sand-200 bg-white px-3.5 py-2.5 text-13 text-brand-ink placeholder:text-neutral-300 outline-none transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100";
+
 /* ═══════════════════════════════════
    Stats Row — blue cards across top
    ═══════════════════════════════════ */
@@ -125,9 +125,9 @@ function StatsRow() {
 }
 
 /* ═══════════════════════════════════
-   Sticky Note Form
+   Note Card Form — compact with tape
    ═══════════════════════════════════ */
-function StickyForm() {
+function NoteForm() {
   const [selected, setSelected] = useState<Purpose | null>(null);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -159,36 +159,38 @@ function StickyForm() {
   }
 
   return (
-    <div className="relative rounded-[4px] bg-[#FEF9C3] p-6 shadow-[4px_4px_12px_rgba(0,0,0,0.12)]">
-      {/* Tape strip */}
-      <div className="absolute left-1/2 top-0 h-4 w-[50px] -translate-x-1/2 rounded-b bg-black/[0.08]" />
+    <div className="relative rounded-xl border border-sand-200 bg-sand-50 p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+      {/* Washi tape decoration */}
+      <div className="absolute left-1/2 -top-[5px] -translate-x-1/2 rotate-[-1.5deg]">
+        <div className="h-[10px] w-[52px] rounded-[2px] bg-orange-200/90 shadow-sm" />
+      </div>
 
       {sent ? (
-        <div className="py-8 text-center">
-          <div className="mb-3 text-[40px]">&#10024;</div>
-          <h3 className="font-brand text-[18px] font-bold text-[var(--brand-ink)]">
+        <div className="py-5 text-center">
+          <div className="mb-2 text-[28px]">&#10024;</div>
+          <h3 className="font-brand text-15 font-bold text-brand-ink">
             Note sent!
           </h3>
-          <p className="text-13 text-[var(--neutral-500)]">
+          <p className="text-13 text-neutral-400">
             I&apos;ll get back to you soon.
           </p>
         </div>
       ) : (
         <>
-          <h2 className="mt-2 font-brand text-[18px] font-bold text-[var(--brand-ink)]">
+          <h2 className="mt-1 font-brand text-15 font-bold text-brand-ink">
             Leave me a note &#128221;
           </h2>
-          <p className="mb-5 text-13 text-[var(--neutral-600)]">
+          <p className="mb-3 text-12 text-neutral-400">
             I&apos;ll get back to you soon!
           </p>
 
           <form onSubmit={handleSubmit}>
-            {/* Purpose Selector */}
-            <div className="mb-4">
-              <label className="mb-2 block text-12 font-semibold text-[var(--brand-ink)]">
+            {/* Purpose Selector — icon cards in grid */}
+            <div className="mb-3">
+              <label className="mb-1.5 block text-12 font-medium text-neutral-500">
                 What&apos;s this about?
               </label>
-              <div className="grid grid-cols-3 gap-[6px]">
+              <div className="grid grid-cols-3 gap-2 mobile:grid-cols-2">
                 {purposes.map((p) => {
                   const isActive = selected === p.key;
                   return (
@@ -196,32 +198,26 @@ function StickyForm() {
                       key={p.key}
                       type="button"
                       onClick={() => setSelected(p.key)}
-                      className={`rounded-md border-2 bg-white p-[10px_8px] text-center transition-all duration-150 ${
+                      className={`flex flex-col items-center gap-1 rounded-lg border px-3 py-2.5 text-12 transition-all ${
                         isActive
-                          ? "border-[#2216ff] bg-[var(--blue-50)]"
-                          : "border-transparent hover:border-[var(--blue-100)]"
+                          ? "border-blue-300 bg-blue-50 font-semibold text-[#2216ff]"
+                          : "border-sand-200 bg-white text-neutral-500 hover:border-sand-300 hover:bg-sand-50"
                       }`}
                     >
-                      <div
-                        className={`mx-auto mb-1 h-6 w-6 ${
-                          isActive ? "text-[#2216ff]" : "text-[var(--neutral-400)]"
-                        }`}
-                      >
+                      <span className={`h-[18px] w-[18px] ${isActive ? "opacity-90" : "opacity-50"}`}>
                         {p.icon}
-                      </div>
-                      <div className="text-11 font-semibold text-[var(--brand-ink)]">
-                        {p.label}
-                      </div>
+                      </span>
+                      {p.label}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <div className="mb-3">
+            <div className="mb-2.5">
               <label
                 htmlFor="contact-email"
-                className="mb-1 block text-12 font-semibold text-[var(--brand-ink)]"
+                className="mb-1 block text-12 font-medium text-neutral-500"
               >
                 Your email
               </label>
@@ -232,14 +228,14 @@ function StickyForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@email.com"
-                className="w-full rounded-md border-2 border-black/[0.08] bg-white/80 px-3 py-[10px] font-body text-13 text-[var(--brand-ink)] placeholder:text-[var(--neutral-400)] focus:border-[#2216ff] focus:bg-white focus:outline-none"
+                className={inputClass}
               />
             </div>
 
             <div className="mb-3">
               <label
                 htmlFor="contact-message"
-                className="mb-1 block text-12 font-semibold text-[var(--brand-ink)]"
+                className="mb-1 block text-12 font-medium text-neutral-500"
               >
                 Your message
               </label>
@@ -249,15 +245,15 @@ function StickyForm() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="What's on your mind?"
-                rows={4}
-                className="w-full resize-y rounded-md border-2 border-black/[0.08] bg-white/80 px-3 py-[10px] font-body text-13 text-[var(--brand-ink)] placeholder:text-[var(--neutral-400)] focus:border-[#2216ff] focus:bg-white focus:outline-none"
+                rows={3}
+                className={`${inputClass} resize-y`}
               />
             </div>
 
             <button
               type="submit"
               disabled={!selected || sending}
-              className="w-full rounded-md bg-[var(--brand-ink)] px-4 py-3 font-body text-14 font-semibold text-white transition-colors hover:bg-[#2216ff] disabled:cursor-not-allowed disabled:bg-[var(--neutral-400)]"
+              className="w-full rounded-lg bg-[#2216ff] px-4 py-2.5 text-13 font-semibold text-white transition-colors hover:bg-[#1a10d9] disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
             >
               {!selected
                 ? "Pick a topic first"
@@ -277,11 +273,11 @@ function StickyForm() {
    ═══════════════════════════════════ */
 function EmailCard() {
   return (
-    <div className="rounded-xl bg-[var(--brand-ink)] p-6 text-white">
-      <div className="mb-1 text-12 opacity-70">Email me directly</div>
+    <div className="rounded-xl bg-brand-ink p-4 text-white">
+      <div className="mb-1 text-11 opacity-70">Email me directly</div>
       <a
         href="mailto:carmenrincon92@gmail.com"
-        className="mb-4 block font-brand text-16 font-semibold text-white hover:underline"
+        className="mb-3 block font-brand text-14 font-semibold text-white hover:underline"
       >
         carmenrincon92@gmail.com
       </a>
@@ -289,9 +285,9 @@ function EmailCard() {
         href="https://linkedin.com/in/carmenrincon"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-[6px] rounded-lg bg-white/15 px-[14px] py-[10px] text-13 font-medium text-white transition-colors hover:bg-white/25"
+        className="inline-flex items-center gap-[6px] rounded-lg bg-white/15 px-3 py-1.5 text-12 font-medium text-white transition-colors hover:bg-white/25"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
           <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
         </svg>
         Connect on LinkedIn
@@ -306,7 +302,7 @@ function EmailCard() {
 export function ContactPage() {
   return (
     <PageEntrance>
-      {/* Page Header — matches all other pages */}
+      {/* Page Header */}
       <div className="flex flex-col gap-1">
         <h1 className="font-brand text-22 font-bold text-brand-ink">
           Contact{" "}
@@ -320,19 +316,19 @@ export function ContactPage() {
         </p>
       </div>
 
-      {/* Blue Stats — full width row on top */}
+      {/* Blue Stats — full width */}
       <StatsRow />
 
-      {/* Two Column Layout — Note+Email left, Discord right */}
-      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_340px]">
-        {/* Left Column: Sticky Form + Email Card */}
-        <div className="flex flex-col gap-4">
-          <StickyForm />
+      {/* Two Column: Form left · Discord + Email right */}
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_320px]">
+        {/* Left: Note Form */}
+        <NoteForm />
+
+        {/* Right: Discord + Email stacked */}
+        <div className="flex flex-col gap-3">
+          <DiscordCommunityCard />
           <EmailCard />
         </div>
-
-        {/* Right Column: Discord Community */}
-        <DiscordCommunityCard />
       </div>
     </PageEntrance>
   );
