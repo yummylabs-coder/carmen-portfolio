@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -190,7 +191,9 @@ export function StoryViewer({
   const aspectClass =
     aspect === "landscape" ? "aspect-[16/10]" : "aspect-[3/4]";
 
-  return (
+  /* Portal to document.body so `position: fixed` works correctly
+     even when ancestors use CSS transforms (e.g. Framer Motion). */
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -502,6 +505,7 @@ export function StoryViewer({
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }

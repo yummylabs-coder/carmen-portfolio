@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { AboutPhoto } from "@/lib/types";
@@ -137,7 +138,7 @@ export function PhotoStoryViewer({
     [goNext, goPrev]
   );
 
-  return (
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -356,6 +357,7 @@ export function PhotoStoryViewer({
           />
         </svg>
       </button>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }
