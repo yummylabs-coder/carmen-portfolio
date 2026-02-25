@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PageEntrance } from "@/components/ui/PageEntrance";
+import { DiscordCommunityCard } from "@/components/contact/DiscordCommunityCard";
 
 /* ─── Types ─── */
 type Purpose = "fulltime" | "consulting" | "yummylabs" | "speaker" | "other";
@@ -353,6 +354,11 @@ export function ContactPage() {
 
         {/* Col 3: Sticky Note Form */}
         <StickyForm />
+      </div>
+
+      {/* Discord community */}
+      <div className="max-w-[480px]">
+        <DiscordCommunityCard />
       </div>
     </PageEntrance>
   );
