@@ -97,7 +97,7 @@ export function ShareModal({ open, onClose, url, title }: ShareModalProps) {
           transition={{ duration: 0.2 }}
         >
           <motion.div
-            className="absolute inset-0 bg-brand-ink/12 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-brand-ink/60 backdrop-blur-[3px] sm:bg-brand-ink/15 sm:backdrop-blur-[2px]"
             onClick={onClose}
           />
 

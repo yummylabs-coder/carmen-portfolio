@@ -33,7 +33,7 @@ function isActive(pathname: string, href: string): boolean {
 /* ─── Compact version badge (terminal style) ─── */
 function MobileVersionBadge() {
   return (
-    <div className="rounded-xl bg-brand-ink px-4 py-3">
+    <div className="rounded-xl border border-sand-300 bg-sand-100 px-4 py-3">
       {/* Traffic lights + building indicator */}
       <div className="mb-2 flex items-center justify-between">
         <div className="flex gap-1">
@@ -41,21 +41,21 @@ function MobileVersionBadge() {
           <span className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
           <span className="h-2 w-2 rounded-full bg-[#28c840]" />
         </div>
-        <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.5px] text-yellow-500">
-          <span className="inline-block h-1 w-1 animate-pulse rounded-full bg-yellow-500" />
+        <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.5px] text-yellow-600">
+          <span className="inline-block h-1 w-1 animate-pulse rounded-full bg-yellow-600" />
           building
         </span>
       </div>
       {/* Terminal content */}
       <div className="font-mono text-[11px] leading-[1.6]">
-        <span className="text-white/40">~/portfolio $</span>{" "}
-        <span className="text-white/80">git tag</span>
+        <span className="text-neutral-400">~/portfolio $</span>{" "}
+        <span className="text-brand-ink/70">git tag</span>
         <br />
-        <span className="text-emerald-400">v14</span>
-        <span className="text-white/30"> &larr; current</span>
+        <span className="text-emerald-600">v14</span>
+        <span className="text-neutral-400"> &larr; current</span>
         <br />
-        <span className="text-yellow-400/70">v15</span>
-        <span className="text-white/30"> &larr; wip</span>
+        <span className="text-yellow-600">v15</span>
+        <span className="text-neutral-400"> &larr; wip</span>
       </div>
     </div>
   );
@@ -72,36 +72,48 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed inset-x-0 top-[60px] z-30 border-b border-sand-300 bg-white p-4 shadow-lg lg:hidden"
-        >
-          <nav className="flex flex-col gap-1">
-            {allNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onClose}
-                className={`flex h-[48px] items-center gap-3 rounded-md px-3 text-15 transition-colors ${
-                  isActive(pathname, item.href)
-                    ? "bg-blue-50 font-semibold text-blue-700"
-                    : "font-medium text-text-secondary hover:bg-sand-100"
-                }`}
-              >
-                <item.icon size={18} />
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </nav>
+        <>
+          {/* Dark overlay behind menu */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 top-[60px] z-20 bg-brand-ink/60 backdrop-blur-[2px] lg:hidden"
+            onClick={onClose}
+          />
 
-          {/* Version badge */}
-          <div className="mt-4">
-            <MobileVersionBadge />
-          </div>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed inset-x-0 top-[60px] z-30 border-b border-sand-300 bg-white p-4 shadow-lg lg:hidden"
+          >
+            <nav className="flex flex-col gap-1">
+              {allNav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  className={`flex h-[48px] items-center gap-3 rounded-md px-3 text-15 transition-colors ${
+                    isActive(pathname, item.href)
+                      ? "bg-blue-50 font-semibold text-blue-700"
+                      : "font-medium text-text-secondary hover:bg-sand-100"
+                  }`}
+                >
+                  <item.icon size={18} />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+
+            {/* Version badge */}
+            <div className="mt-4">
+              <MobileVersionBadge />
+            </div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );

@@ -127,7 +127,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <motion.div className="absolute inset-0 bg-brand-ink/15 backdrop-blur-[3px]" onClick={onClose} />
+          <motion.div className="absolute inset-0 bg-brand-ink/60 backdrop-blur-[3px] sm:bg-brand-ink/15" onClick={onClose} />
 
           <motion.div
             className="relative z-10 w-full max-w-[460px] overflow-hidden rounded-t-2xl border border-sand-300 bg-white shadow-xl sm:mx-4 sm:max-w-[780px] sm:rounded-2xl"

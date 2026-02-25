@@ -11,31 +11,61 @@ function DiscordIcon({ size = 20, className = "" }: { size?: number; className?:
   );
 }
 
+/* ─── Types ─── */
+interface DiscordMessage {
+  author: string;
+  avatar: string | null;
+  content: string;
+  timestamp: string;
+}
+
 export function DiscordCommunityCard() {
   const [memberCount, setMemberCount] = useState<number | null>(null);
   const [onlineCount, setOnlineCount] = useState<number | null>(null);
+  const [messages, setMessages] = useState<DiscordMessage[]>([]);
 
   useEffect(() => {
-    async function fetchCount() {
+    async function fetchData() {
       try {
-        const res = await fetch("/api/discord");
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.memberCount > 0) setMemberCount(data.memberCount);
-        if (data.onlineCount > 0) setOnlineCount(data.onlineCount);
+        const [countRes, msgRes] = await Promise.all([
+          fetch("/api/discord"),
+          fetch("/api/discord-messages"),
+        ]);
+
+        if (countRes.ok) {
+          const data = await countRes.json();
+          if (data.memberCount > 0) setMemberCount(data.memberCount);
+          if (data.onlineCount > 0) setOnlineCount(data.onlineCount);
+        }
+
+        if (msgRes.ok) {
+          const data = await msgRes.json();
+          if (data.messages?.length > 0) setMessages(data.messages);
+        }
       } catch {
-        // Fail silently — the card still works without the count
+        // Fail silently — the card still works without the data
       }
     }
-    fetchCount();
+    fetchData();
   }, []);
+
+  function timeAgo(timestamp: string): string {
+    const diff = Date.now() - new Date(timestamp).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "just now";
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    const days = Math.floor(hrs / 24);
+    return `${days}d ago`;
+  }
 
   return (
     <a
       href="https://discord.gg/7GnFfQuZ3m"
       target="_blank"
       rel="noopener noreferrer"
-      className="group block overflow-hidden rounded-xl border border-sand-300 transition-all hover:border-sand-400 hover:shadow-sm"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-sand-300 transition-all hover:border-sand-400 hover:shadow-sm"
     >
       {/* Header — brand brown with cream Discord icon */}
       <div className="flex items-center gap-3 bg-brand-ink px-5 py-4">
@@ -51,7 +81,7 @@ export function DiscordCommunityCard() {
       </div>
 
       {/* Body */}
-      <div className="bg-sand-100 px-5 py-4">
+      <div className="flex flex-1 flex-col bg-sand-100 px-5 py-4">
         <p className="text-13 leading-relaxed text-neutral-500">
           A space for designers to share work, get feedback, and grow together.
           Whether you&apos;re just starting out or a seasoned pro, you&apos;re welcome here.
@@ -84,10 +114,55 @@ export function DiscordCommunityCard() {
           )}
         </div>
 
-        {/* Join CTA — brand style */}
-        <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-brand-ink px-4 py-2.5 text-13 font-semibold text-white transition-colors group-hover:bg-[#2216ff]">
+        {/* Recent messages — only shown when API returns data */}
+        {messages.length > 0 && (
+          <div className="mt-4 flex flex-col gap-2">
+            <span className="text-11 font-semibold uppercase tracking-wide text-neutral-400">
+              Recent messages
+            </span>
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-2.5 rounded-lg bg-white/70 px-3 py-2.5"
+              >
+                {/* Avatar or initial */}
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#5865F2] text-[10px] font-bold text-white">
+                  {msg.avatar ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={msg.avatar}
+                      alt=""
+                      className="h-6 w-6 rounded-full"
+                    />
+                  ) : (
+                    msg.author[0]?.toUpperCase()
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-12 font-semibold text-brand-ink">
+                      {msg.author}
+                    </span>
+                    <span className="text-10 text-neutral-400">
+                      {timeAgo(msg.timestamp)}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 truncate text-12 text-neutral-500">
+                    {msg.content || "Shared an attachment"}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Spacer pushes CTA to bottom */}
+        <div className="flex-1" />
+
+        {/* Join CTA — blue like all primary CTAs */}
+        <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-[#2216ff] px-4 py-2.5 text-13 font-semibold text-white transition-colors group-hover:bg-[#1a10d9]">
           <DiscordIcon size={16} className="text-white/70" />
-          Join the community
+          Join the conversation
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="ml-1 shrink-0">
             <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

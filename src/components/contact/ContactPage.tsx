@@ -68,12 +68,6 @@ const purposes: PurposeItem[] = [
   },
 ];
 
-const stickyNotes = [
-  { text: "\u201CGreat portfolio!\u201D", color: "bg-white", rotate: "-rotate-1" },
-  { text: "\u201CLove your work on Learn.xyz\u201D", color: "bg-white", rotate: "rotate-[0.5deg]" },
-  { text: "\u201CLet\u2019s collaborate!\u201D", color: "bg-white", rotate: "-rotate-[0.5deg]" },
-];
-
 const stats = [
   {
     value: "<24h",
@@ -109,15 +103,15 @@ const stats = [
 ];
 
 /* ═══════════════════════════════════
-   Column 1 — Stats (vertical stack)
+   Stats Row — blue cards across top
    ═══════════════════════════════════ */
-function StatsColumn() {
+function StatsRow() {
   return (
-    <div className="flex gap-3 lg:flex-col">
+    <div className="grid grid-cols-3 gap-3">
       {stats.map((s) => (
         <div
           key={s.label}
-          className="flex-1 rounded-xl bg-[#2216ff] p-5 text-center"
+          className="rounded-xl bg-[#2216ff] p-5 text-center"
         >
           <div className="mx-auto mb-2 h-7 w-7 text-white/70">{s.icon}</div>
           <div className="font-brand text-22 font-bold text-[#FFFEFC]">
@@ -131,53 +125,7 @@ function StatsColumn() {
 }
 
 /* ═══════════════════════════════════
-   Column 2 — Contact info + Notes
-   ═══════════════════════════════════ */
-function ContactColumn() {
-  return (
-    <div className="flex flex-col gap-4">
-      {/* Quick Contact */}
-      <div className="rounded-xl bg-[var(--brand-ink)] p-6 text-white">
-        <div className="mb-1 text-12 opacity-70">Email me directly</div>
-        <a
-          href="mailto:carmenrincon92@gmail.com"
-          className="mb-4 block font-brand text-16 font-semibold text-white hover:underline"
-        >
-          carmenrincon92@gmail.com
-        </a>
-        <a
-          href="https://linkedin.com/in/carmenrincon"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-[6px] rounded-lg bg-white/15 px-[14px] py-[10px] text-13 font-medium text-white transition-colors hover:bg-white/25"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-          </svg>
-          Connect on LinkedIn
-        </a>
-      </div>
-
-      {/* Notes from Others */}
-      <div className="rounded-xl border border-sand-300 bg-sand-100 p-5">
-        <div className="mb-4 text-13 font-semibold text-[var(--neutral-500)]">
-          &#128172; Notes from others
-        </div>
-        {stickyNotes.map((note, i) => (
-          <div
-            key={i}
-            className={`mb-[10px] last:mb-0 rounded-[4px] px-[14px] py-3 text-13 italic text-[var(--brand-ink)] shadow-[2px_2px_6px_rgba(0,0,0,0.06)] ${note.color} ${note.rotate}`}
-          >
-            {note.text}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════
-   Column 3 — Sticky Note Form
+   Sticky Note Form
    ═══════════════════════════════════ */
 function StickyForm() {
   const [selected, setSelected] = useState<Purpose | null>(null);
@@ -211,7 +159,7 @@ function StickyForm() {
   }
 
   return (
-    <div className="-rotate-[0.5deg] relative rounded-[4px] bg-[#FEF9C3] p-6 shadow-[4px_4px_12px_rgba(0,0,0,0.12)]">
+    <div className="relative rounded-[4px] bg-[#FEF9C3] p-6 shadow-[4px_4px_12px_rgba(0,0,0,0.12)]">
       {/* Tape strip */}
       <div className="absolute left-1/2 top-0 h-4 w-[50px] -translate-x-1/2 rounded-b bg-black/[0.08]" />
 
@@ -325,6 +273,34 @@ function StickyForm() {
 }
 
 /* ═══════════════════════════════════
+   Email Card
+   ═══════════════════════════════════ */
+function EmailCard() {
+  return (
+    <div className="rounded-xl bg-[var(--brand-ink)] p-6 text-white">
+      <div className="mb-1 text-12 opacity-70">Email me directly</div>
+      <a
+        href="mailto:carmenrincon92@gmail.com"
+        className="mb-4 block font-brand text-16 font-semibold text-white hover:underline"
+      >
+        carmenrincon92@gmail.com
+      </a>
+      <a
+        href="https://linkedin.com/in/carmenrincon"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-[6px] rounded-lg bg-white/15 px-[14px] py-[10px] text-13 font-medium text-white transition-colors hover:bg-white/25"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+        Connect on LinkedIn
+      </a>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════
    Main — ContactPage
    ═══════════════════════════════════ */
 export function ContactPage() {
@@ -344,19 +320,19 @@ export function ContactPage() {
         </p>
       </div>
 
-      {/* Three Column Grid */}
-      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[200px_1fr_320px]">
-        {/* Col 1: Stats */}
-        <StatsColumn />
+      {/* Blue Stats — full width row on top */}
+      <StatsRow />
 
-        {/* Col 2: Contact + Notes + Discord */}
+      {/* Two Column Layout — Note+Email left, Discord right */}
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_340px]">
+        {/* Left Column: Sticky Form + Email Card */}
         <div className="flex flex-col gap-4">
-          <ContactColumn />
-          <DiscordCommunityCard />
+          <StickyForm />
+          <EmailCard />
         </div>
 
-        {/* Col 3: Sticky Note Form */}
-        <StickyForm />
+        {/* Right Column: Discord Community */}
+        <DiscordCommunityCard />
       </div>
     </PageEntrance>
   );

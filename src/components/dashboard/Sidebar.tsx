@@ -64,7 +64,7 @@ function isActive(pathname: string, href: string): boolean {
 /* ─── Portfolio version badge (lab/terminal style) ─── */
 function VersionBadge() {
   return (
-    <div className="rounded-xl border border-sand-300 bg-brand-ink px-4 py-3">
+    <div className="rounded-xl border border-sand-300 bg-sand-100 px-4 py-3">
       {/* Traffic lights */}
       <div className="mb-2.5 flex items-center justify-between">
         <div className="flex gap-1">
@@ -72,21 +72,21 @@ function VersionBadge() {
           <span className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
           <span className="h-2 w-2 rounded-full bg-[#28c840]" />
         </div>
-        <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.5px] text-yellow-500">
-          <span className="inline-block h-1 w-1 animate-pulse rounded-full bg-yellow-500" />
+        <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.5px] text-yellow-600">
+          <span className="inline-block h-1 w-1 animate-pulse rounded-full bg-yellow-600" />
           building
         </span>
       </div>
       {/* Terminal content */}
       <div className="font-mono text-[11px] leading-[1.6]">
-        <span className="text-white/40">~/portfolio $</span>{" "}
-        <span className="text-white/80">git tag</span>
+        <span className="text-neutral-400">~/portfolio $</span>{" "}
+        <span className="text-brand-ink/70">git tag</span>
         <br />
-        <span className="text-emerald-400">v14</span>
-        <span className="text-white/30"> ← current</span>
+        <span className="text-emerald-600">v14</span>
+        <span className="text-neutral-400"> ← current</span>
         <br />
-        <span className="text-yellow-400/70">v15</span>
-        <span className="text-white/30"> ← wip</span>
+        <span className="text-yellow-600">v15</span>
+        <span className="text-neutral-400"> ← wip</span>
       </div>
     </div>
   );
