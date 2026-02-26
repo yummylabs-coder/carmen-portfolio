@@ -369,12 +369,12 @@ function PreviewCard({
     <Wrapper
       {...wrapperProps}
       onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-300 bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(48,1,1,0.35)] ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-300/60 bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(194,176,156,0.3)] ${
         isClickable ? "cursor-pointer" : ""
       }`}
     >
       {/* ── Image hero (rounded top corners to match Figma) ── */}
-      <div className="relative h-[200px] overflow-hidden rounded-t-3xl">
+      <div className="relative h-[200px] overflow-hidden">
         {experiment.coverUrl ? (
           <ImageWithShimmer
             src={experiment.coverUrl}
@@ -425,7 +425,7 @@ function PreviewCard({
         {/* Tab row */}
         <div className="flex items-end">
           {/* Folder tab — flush left, both top corners rounded */}
-          <div className="flex h-[40px] items-center rounded-t-[14px] bg-brand-ink pl-5 pr-4">
+          <div className="flex items-center rounded-t-[8px] bg-brand-ink px-3 pb-1.5 pt-2.5">
             <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
               {experiment.type}
             </span>
@@ -435,7 +435,7 @@ function PreviewCard({
             className="h-[16px] w-[16px] shrink-0"
             style={{
               background:
-                "radial-gradient(circle at 100% 0, transparent 16px, var(--brand-ink) 16px)",
+                "radial-gradient(circle at 100% 0, transparent 15px, var(--brand-ink) 16.5px)",
             }}
           />
           {/* Transparent gap — image shows through */}
@@ -443,7 +443,7 @@ function PreviewCard({
         </div>
 
         {/* Sheet body — rounded-tr only (no tl, avoids seam with tab) + top shadow for folder depth */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink px-6 pb-6 pt-5 shadow-[0_-6px_16px_rgba(0,0,0,0.2)]">
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink px-6 pb-6 pt-5 shadow-[0_-3px_24px_rgba(0,0,0,0.08)]">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-white">
             {experiment.name}
           </h3>
