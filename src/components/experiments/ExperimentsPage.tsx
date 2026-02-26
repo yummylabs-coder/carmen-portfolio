@@ -397,16 +397,9 @@ function PreviewCard({
           </div>
         )}
 
-        {/* Type label floating on image (top-right, like inspo) */}
-        <div className="absolute right-3 top-3">
-          <span className="inline-flex items-center rounded-lg bg-black/40 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-white/90 backdrop-blur-sm">
-            {experiment.type}
-          </span>
-        </div>
-
         {/* Gallery badge */}
         {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
-          <div className="absolute bottom-8 right-3 flex items-center gap-1 rounded-md bg-black/40 px-2 py-1 text-[10px] font-medium text-white/80 backdrop-blur-sm">
+          <div className="absolute bottom-12 right-3 flex items-center gap-1 rounded-md bg-black/40 px-2 py-1 text-[10px] font-medium text-white/80 backdrop-blur-sm">
             <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
               <rect x="2" y="2" width="12" height="12" rx="1.5" />
               <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
@@ -427,18 +420,51 @@ function PreviewCard({
         )}
       </div>
 
-      {/* ── Folder sheet (overlaps image with rounded top — folder-flap) ── */}
-      <div className="relative z-10 -mt-10 flex flex-1 flex-col rounded-t-[20px] bg-brand-ink px-4 pb-2 pt-4 shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
-        <h3 className="mb-1 font-brand text-[15px] font-bold leading-snug text-white">
-          {experiment.name}
-        </h3>
-        <p className="line-clamp-2 text-12 leading-[1.5] text-white/45">
-          {experiment.description}
-        </p>
+      {/* ── Folder tab + sheet (real folder-tab shape with inverted corners) ── */}
+      <div className="relative z-10 -mt-10 flex flex-1 flex-col">
+        {/* Tab row — image is visible through the transparent gaps */}
+        <div className="flex items-end">
+          {/* Left gap (transparent → image shows through) */}
+          <div className="w-4 shrink-0" />
+          {/* Left inverted corner (╯ curve) */}
+          <div
+            className="h-[10px] w-[10px] shrink-0"
+            style={{
+              background:
+                "radial-gradient(circle at 0 0, transparent 10px, var(--brand-ink) 10px)",
+            }}
+          />
+          {/* Folder tab */}
+          <div className="flex h-[28px] items-center rounded-t-[10px] bg-brand-ink px-3">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.06em] text-white/60">
+              {experiment.type}
+            </span>
+          </div>
+          {/* Right inverted corner (╰ curve) */}
+          <div
+            className="h-[10px] w-[10px] shrink-0"
+            style={{
+              background:
+                "radial-gradient(circle at 100% 0, transparent 10px, var(--brand-ink) 10px)",
+            }}
+          />
+          {/* Right gap (transparent → image shows through) */}
+          <div className="flex-1" />
+        </div>
+
+        {/* Full-width sheet body */}
+        <div className="flex flex-1 flex-col bg-brand-ink px-4 pb-2 pt-3">
+          <h3 className="mb-1 font-brand text-[15px] font-bold leading-snug text-white">
+            {experiment.name}
+          </h3>
+          <p className="line-clamp-2 text-12 leading-[1.5] text-white/45">
+            {experiment.description}
+          </p>
+        </div>
       </div>
 
       {/* ── Bottom stats bar ── */}
-      <div className="flex items-center justify-between px-4 pb-4 pt-3">
+      <div className="flex items-center justify-between bg-brand-ink px-4 pb-4 pt-3">
         <div className="flex items-center gap-1.5 text-12 text-white/40">
           <span
             className={`inline-block h-[6px] w-[6px] rounded-full ${
