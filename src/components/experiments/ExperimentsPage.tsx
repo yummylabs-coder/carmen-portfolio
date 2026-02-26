@@ -369,12 +369,12 @@ function PreviewCard({
     <Wrapper
       {...wrapperProps}
       onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-[22px] bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(48,1,1,0.35)] ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(48,1,1,0.35)] ${
         isClickable ? "cursor-pointer" : ""
       }`}
     >
-      {/* ── Image hero ── */}
-      <div className="relative h-[175px] overflow-hidden">
+      {/* ── Image hero (rounded top corners to match Figma) ── */}
+      <div className="relative h-[200px] overflow-hidden rounded-t-3xl">
         {experiment.coverUrl ? (
           <ImageWithShimmer
             src={experiment.coverUrl}
@@ -399,7 +399,7 @@ function PreviewCard({
 
         {/* Gallery badge */}
         {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
-          <div className="absolute bottom-12 right-3 flex items-center gap-1 rounded-md bg-black/40 px-2 py-1 text-[10px] font-medium text-white/80 backdrop-blur-sm">
+          <div className="absolute right-3 top-3 flex items-center gap-1 rounded-md bg-black/40 px-2 py-1 text-[10px] font-medium text-white/80 backdrop-blur-sm">
             <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
               <rect x="2" y="2" width="12" height="12" rx="1.5" />
               <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
@@ -420,55 +420,39 @@ function PreviewCard({
         )}
       </div>
 
-      {/* ── Folder tab + sheet ── */}
-      <div className="relative z-10 -mt-10 flex flex-1 flex-col">
-        {/* Tab row — image visible through transparent gaps */}
+      {/* ── Folder tab + sheet (flush left, single right curve) ── */}
+      <div className="relative z-10 -mt-12 flex flex-1 flex-col">
+        {/* Tab row */}
         <div className="flex items-end">
-          {/* Left gap (image shows through) */}
-          <div className="w-4 shrink-0" />
-          {/* Left inverted corner (╯) */}
-          <div
-            className="h-[14px] w-[14px] shrink-0"
-            style={{
-              background:
-                "radial-gradient(circle at 0 0, transparent 14px, var(--brand-ink) 14px)",
-            }}
-          />
-          {/* Folder tab */}
-          <div
-            className="flex h-[34px] items-center rounded-t-[12px] bg-brand-ink px-4"
-            style={{ boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.1), inset 1px 0 0 0 rgba(255,255,255,0.06), inset -1px 0 0 0 rgba(255,255,255,0.06)" }}
-          >
-            <span className="text-[10px] font-semibold uppercase tracking-[0.06em] text-white/60">
+          {/* Folder tab — flush left, only top-right is rounded */}
+          <div className="flex h-[36px] items-center rounded-tr-[14px] bg-brand-ink pl-6 pr-5">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.06em] text-white/50">
               {experiment.type}
             </span>
           </div>
           {/* Right inverted corner (╰) */}
           <div
-            className="h-[14px] w-[14px] shrink-0"
+            className="h-[16px] w-[16px] shrink-0"
             style={{
               background:
-                "radial-gradient(circle at 100% 0, transparent 14px, var(--brand-ink) 14px)",
+                "radial-gradient(circle at 100% 0, transparent 16px, var(--brand-ink) 16px)",
             }}
           />
-          {/* Right gap (image shows through) */}
+          {/* Transparent gap — image shows through */}
           <div className="flex-1" />
         </div>
 
-        {/* Full-width sheet body (with rounded top corners + subtle stroke) */}
-        <div
-          className="flex flex-1 flex-col rounded-t-[12px] bg-brand-ink px-4 pb-2 pt-3"
-          style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }}
-        >
-          <h3 className="mb-1 font-brand text-[15px] font-bold leading-snug text-white">
+        {/* Sheet body — rounded-tr only (no tl, avoids seam with tab) */}
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink px-6 pb-6 pt-5">
+          <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-white">
             {experiment.name}
           </h3>
-          <p className="line-clamp-2 text-12 leading-[1.5] text-white/45">
+          <p className="line-clamp-2 text-13 leading-[1.5] text-white/[0.45]">
             {experiment.description}
           </p>
 
-          {/* Footer — inside body so the stroke wraps it */}
-          <div className="mt-auto flex items-center justify-between border-t border-white/[0.06] pt-3">
+          {/* Footer */}
+          <div className="mt-auto flex items-center justify-between border-t border-white/[0.06] pt-4">
             <div className="flex items-center gap-1.5 text-12 text-white/40">
               <span
                 className={`inline-block h-[6px] w-[6px] rounded-full ${
