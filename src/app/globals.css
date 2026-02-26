@@ -227,3 +227,51 @@ body {
     margin-top: calc(-48px - 24px); /* lg:pt-12 (48px) + gap-6 (24px) */
   }
 }
+
+/* ─── Print styles (resume PDF export) ─── */
+@media print {
+  /* Hide everything except resume content */
+  .no-print,
+  nav,
+  aside,
+  header,
+  footer,
+  [data-sidebar],
+  [data-mobile-header] {
+    display: none !important;
+  }
+
+  /* Clean A4 layout */
+  body {
+    background: white !important;
+    color: #300101 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .resume-print {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Remove layout offsets from DashboardShell */
+  main {
+    margin-left: 0 !important;
+    padding: 24px !important;
+  }
+
+  /* Keep sections together */
+  .resume-section {
+    break-inside: avoid;
+  }
+
+  /* Sensible link display */
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}

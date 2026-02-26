@@ -291,11 +291,11 @@ function PreviewCard({
       </div>
 
       {/* ── Folder tab + sheet ── */}
-      <div className="relative z-10 -mt-12 flex flex-1 flex-col">
+      <div className="relative z-10 -mt-12 flex flex-1 flex-col shadow-[0_-3px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300 group-hover:shadow-[0_-8px_32px_rgba(0,0,0,0.22)]">
         {/* Tab row */}
         <div className="flex items-end">
           <div className="flex items-center rounded-t-[16px] bg-brand-ink px-3 pb-0 pt-2">
-            <span className="inline-flex items-center rounded-md bg-white/[0.1] px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-200/50">
+            <span className="inline-flex items-center rounded-md bg-white/[0.1] px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-[#F7F2EE]">
               {experiment.type}
             </span>
           </div>
@@ -310,8 +310,8 @@ function PreviewCard({
           <div className="flex-1" />
         </div>
 
-        {/* Sheet body — shadow strengthens on hover (folder "opening") */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink pb-5 pl-4 pr-4 pt-6 shadow-[0_-3px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300 group-hover:shadow-[0_-8px_32px_rgba(0,0,0,0.22)]">
+        {/* Sheet body */}
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink pb-5 pl-4 pr-4 pt-6">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-white">
             {experiment.name}
           </h3>
@@ -415,7 +415,7 @@ function PreviewCardLight({
       </div>
 
       {/* ── Folder tab + sheet ── */}
-      <div className="relative z-10 -mt-12 flex flex-1 flex-col">
+      <div className="relative z-10 -mt-12 flex flex-1 flex-col transition-shadow duration-300 group-hover:shadow-[0_-6px_24px_rgba(0,0,0,0.08)]">
         {/* Tab row */}
         <div className="flex items-end">
           <div className="flex items-center rounded-t-[16px] bg-sand-100 px-3 pb-0 pt-2">
@@ -434,8 +434,8 @@ function PreviewCardLight({
           <div className="flex-1" />
         </div>
 
-        {/* Sheet body — shadow strengthens on hover (folder "opening") */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-sand-100 pb-5 pl-4 pr-4 pt-6 shadow-none transition-shadow duration-300 group-hover:shadow-[0_-6px_24px_rgba(0,0,0,0.08)]">
+        {/* Sheet body */}
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-sand-100 pb-5 pl-4 pr-4 pt-6">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-brand-ink">
             {experiment.name}
           </h3>
