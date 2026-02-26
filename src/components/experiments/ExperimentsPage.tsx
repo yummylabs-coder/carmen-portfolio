@@ -339,14 +339,8 @@ function ExperimentCard({
   );
 }
 
-/* ─── Preview Card — dark folder/sheet style ─── */
-function PreviewCard({
-  experiment,
-  onOpenGallery,
-}: {
-  experiment: Experiment;
-  onOpenGallery: (exp: Experiment) => void;
-}) {
+/* ─── Shared preview-card logic ─── */
+function usePreviewCardState(experiment: Experiment) {
   const hasLink = !!experiment.url;
   const hasVideo = !!experiment.videoUrl;
   const hasGallery =
@@ -356,7 +350,7 @@ function PreviewCard({
   const isComingSoon = !hasLink && !hasGallery;
   const isClickable = hasLink || hasGallery;
 
-  const Wrapper = hasLink ? "a" : "div";
+  const Wrapper = hasLink ? ("a" as const) : ("div" as const);
   const wrapperProps = hasLink
     ? {
         href: experiment.url,
@@ -364,6 +358,20 @@ function PreviewCard({
         rel: "noopener noreferrer",
       }
     : {};
+
+  return { hasLink, hasVideo, hasGallery, isComingSoon, isClickable, Wrapper, wrapperProps };
+}
+
+/* ─── Preview Card — dark folder/sheet style ─── */
+function PreviewCard({
+  experiment,
+  onOpenGallery,
+}: {
+  experiment: Experiment;
+  onOpenGallery: (exp: Experiment) => void;
+}) {
+  const { hasLink, hasVideo, hasGallery, isComingSoon, isClickable, Wrapper, wrapperProps } =
+    usePreviewCardState(experiment);
 
   return (
     <Wrapper
@@ -373,7 +381,7 @@ function PreviewCard({
         isClickable ? "cursor-pointer" : ""
       }`}
     >
-      {/* ── Image hero (rounded top corners to match Figma) ── */}
+      {/* ── Image hero ── */}
       <div className="relative h-[200px] overflow-hidden">
         {experiment.coverUrl ? (
           <ImageWithShimmer
@@ -381,7 +389,7 @@ function PreviewCard({
             alt={experiment.name}
             fill
             sizes="(max-width: 640px) 100vw, 340px"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+            className="object-cover"
           />
         ) : (
           <div
@@ -411,7 +419,7 @@ function PreviewCard({
         {/* Video play icon */}
         {!hasLink && hasVideo && !experiment.galleryUrls?.length && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M5 3L13 8L5 13V3Z" />
               </svg>
@@ -420,17 +428,16 @@ function PreviewCard({
         )}
       </div>
 
-      {/* ── Folder tab + sheet (flush left, single right curve) ── */}
+      {/* ── Folder tab + sheet ── */}
       <div className="relative z-10 -mt-12 flex flex-1 flex-col">
         {/* Tab row */}
         <div className="flex items-end">
-          {/* Folder tab — flush left, both top corners rounded */}
           <div className="flex items-center rounded-t-[16px] bg-brand-ink px-3 pb-0 pt-2">
             <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
               {experiment.type}
             </span>
           </div>
-          {/* Right inverted corner (╰) */}
+          {/* Right inverted corner */}
           <div
             className="h-[16px] w-[16px] shrink-0"
             style={{
@@ -438,12 +445,11 @@ function PreviewCard({
                 "radial-gradient(circle at 100% 0, transparent 15px, var(--brand-ink) 16.5px)",
             }}
           />
-          {/* Transparent gap — image shows through */}
           <div className="flex-1" />
         </div>
 
-        {/* Sheet body — rounded-tr only (no tl, avoids seam with tab) + top shadow for folder depth */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink pb-5 pl-4 pr-4 pt-6 shadow-[0_-3px_24px_rgba(0,0,0,0.08)]">
+        {/* Sheet body — shadow strengthens on hover (folder "opening") */}
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink pb-5 pl-4 pr-4 pt-6 shadow-[0_-3px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300 group-hover:shadow-[0_-8px_32px_rgba(0,0,0,0.22)]">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-white">
             {experiment.name}
           </h3>
@@ -478,6 +484,130 @@ function PreviewCard({
               </span>
             ) : isComingSoon ? (
               <span className="text-11 text-white/25">Coming soon</span>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+}
+
+/* ─── Preview Card — light/sandy folder style ─── */
+function PreviewCardLight({
+  experiment,
+  onOpenGallery,
+}: {
+  experiment: Experiment;
+  onOpenGallery: (exp: Experiment) => void;
+}) {
+  const { hasLink, hasVideo, hasGallery, isComingSoon, isClickable, Wrapper, wrapperProps } =
+    usePreviewCardState(experiment);
+
+  return (
+    <Wrapper
+      {...wrapperProps}
+      onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-300 bg-sand-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(194,176,156,0.25)] ${
+        isClickable ? "cursor-pointer" : ""
+      }`}
+    >
+      {/* ── Image hero ── */}
+      <div className="relative h-[200px] overflow-hidden">
+        {experiment.coverUrl ? (
+          <ImageWithShimmer
+            src={experiment.coverUrl}
+            alt={experiment.name}
+            fill
+            sizes="(max-width: 640px) 100vw, 340px"
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-sand-200">
+            <span className="font-brand text-[18px] font-bold text-sand-500">
+              {experiment.name}
+            </span>
+          </div>
+        )}
+
+        {/* Gallery badge */}
+        {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
+          <div className="absolute right-3 top-3 flex items-center gap-1 rounded-md bg-black/40 px-2 py-1 text-[10px] font-medium text-white/80 backdrop-blur-sm">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="2" y="2" width="12" height="12" rx="1.5" />
+              <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+            </svg>
+            {experiment.galleryUrls.length}{hasVideo ? " + video" : ""}
+          </div>
+        )}
+
+        {/* Video play icon */}
+        {!hasLink && hasVideo && !experiment.galleryUrls?.length && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M5 3L13 8L5 13V3Z" />
+              </svg>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Folder tab + sheet ── */}
+      <div className="relative z-10 -mt-12 flex flex-1 flex-col">
+        {/* Tab row */}
+        <div className="flex items-end">
+          <div className="flex items-center rounded-t-[16px] bg-sand-100 px-3 pb-0 pt-2">
+            <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
+              {experiment.type}
+            </span>
+          </div>
+          {/* Right inverted corner */}
+          <div
+            className="h-[16px] w-[16px] shrink-0"
+            style={{
+              background:
+                "radial-gradient(circle at 100% 0, transparent 15px, var(--sand-100) 16.5px)",
+            }}
+          />
+          <div className="flex-1" />
+        </div>
+
+        {/* Sheet body — shadow strengthens on hover (folder "opening") */}
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-sand-100 pb-5 pl-4 pr-4 pt-6 shadow-[0_-3px_20px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
+          <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-brand-ink">
+            {experiment.name}
+          </h3>
+          <p className="line-clamp-2 text-13 leading-[1.5] text-neutral-500">
+            {experiment.description}
+          </p>
+
+          {/* Footer */}
+          <div className="mt-auto flex items-center justify-between border-t border-sand-200 pt-4">
+            <div className="flex items-center gap-1.5 text-12 text-neutral-500">
+              <span
+                className={`inline-block h-[6px] w-[6px] rounded-full ${
+                  experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
+                }`}
+              />
+              {experiment.statusLabel}
+            </div>
+            {hasLink ? (
+              <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff] transition-colors">
+                {experiment.category === "toolkit" ? "Open" : "View"}
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </span>
+            ) : hasGallery ? (
+              <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff] transition-colors">
+                Gallery
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <rect x="2" y="2" width="12" height="12" rx="1.5" />
+                  <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+                </svg>
+              </span>
+            ) : isComingSoon ? (
+              <span className="text-11 text-neutral-400">Coming soon</span>
             ) : null}
           </div>
         </div>
@@ -760,15 +890,25 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
 
           {/* ✨ Card redesign preview — remove after deciding */}
           {experiments.length > 0 && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <p className="text-11 font-medium uppercase tracking-wide text-neutral-400">
                 ✨ Card redesign preview
               </p>
-              <div className="max-w-[340px]">
-                <PreviewCard
-                  experiment={experiments[0]}
-                  onOpenGallery={openGallery}
-                />
+              <div className="flex flex-wrap gap-5">
+                <div className="flex w-[340px] flex-col gap-1.5">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Dark</span>
+                  <PreviewCard
+                    experiment={experiments[0]}
+                    onOpenGallery={openGallery}
+                  />
+                </div>
+                <div className="flex w-[340px] flex-col gap-1.5">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Light</span>
+                  <PreviewCardLight
+                    experiment={experiments[0]}
+                    onOpenGallery={openGallery}
+                  />
+                </div>
               </div>
             </div>
           )}
