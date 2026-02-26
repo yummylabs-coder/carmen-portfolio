@@ -339,6 +339,140 @@ function ExperimentCard({
   );
 }
 
+/* ─── Preview Card — layered style test ─── */
+function PreviewCard({
+  experiment,
+  onOpenGallery,
+}: {
+  experiment: Experiment;
+  onOpenGallery: (exp: Experiment) => void;
+}) {
+  const hasLink = !!experiment.url;
+  const hasVideo = !!experiment.videoUrl;
+  const hasGallery =
+    (experiment.galleryUrls && experiment.galleryUrls.length > 0) ||
+    experiment.coverUrl ||
+    hasVideo;
+  const isClickable = hasLink || hasGallery;
+
+  const Wrapper = hasLink ? "a" : "div";
+  const wrapperProps = hasLink
+    ? {
+        href: experiment.url,
+        target: "_blank" as const,
+        rel: "noopener noreferrer",
+      }
+    : {};
+
+  return (
+    <Wrapper
+      {...wrapperProps}
+      onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-sand-300 bg-sand-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(48,1,1,0.10)] ${
+        isClickable ? "cursor-pointer" : ""
+      }`}
+    >
+      {/* Image area with gradient fade */}
+      <div className="relative h-[180px] overflow-hidden">
+        {experiment.coverUrl ? (
+          <>
+            <ImageWithShimmer
+              src={experiment.coverUrl}
+              alt={experiment.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 340px"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+            />
+            {/* Gradient fade to sand-100 */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-sand-100" />
+          </>
+        ) : (
+          <div
+            className="flex h-full items-center justify-center"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(34,22,255,0.08) 0%, transparent 70%)",
+            }}
+          >
+            <span className="font-brand text-[18px] font-bold text-[#2216ff]/60">
+              {experiment.name}
+            </span>
+          </div>
+        )}
+
+        {/* Video play icon */}
+        {!hasLink && hasVideo && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M5 3L13 8L5 13V3Z" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* Gallery badge */}
+        {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
+          <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-md bg-black/50 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="2" y="2" width="12" height="12" rx="1.5" />
+              <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+            </svg>
+            {experiment.galleryUrls.length} images{hasVideo ? " + video" : ""}
+          </div>
+        )}
+      </div>
+
+      {/* Content — overlaps the gradient zone */}
+      <div className="relative -mt-3 flex flex-1 flex-col px-4 pb-4">
+        <div className="mb-2 flex items-center gap-2">
+          <span className="inline-flex w-fit items-center rounded-md bg-sand-200 px-[10px] py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-sand-700">
+            {experiment.type}
+          </span>
+        </div>
+
+        <h3 className="mb-1 font-brand text-[16px] font-bold leading-snug text-brand-ink">
+          {experiment.name}
+        </h3>
+
+        <p className="mb-4 line-clamp-2 text-13 leading-[1.5] text-neutral-500">
+          {experiment.description}
+        </p>
+
+        {/* Footer */}
+        <div className="mt-auto flex items-center justify-between border-t border-sand-200 pt-3">
+          <div className="flex items-center gap-1.5 text-12 text-neutral-500">
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${
+                experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
+              }`}
+            />
+            {experiment.statusLabel}
+          </div>
+          {hasLink ? (
+            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
+              View more
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+            </span>
+          ) : hasGallery ? (
+            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
+              View gallery
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <rect x="2" y="2" width="12" height="12" rx="1.5" />
+                <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+              </svg>
+            </span>
+          ) : (
+            <span className="text-12 text-neutral-400">Coming soon</span>
+          )}
+        </div>
+      </div>
+    </Wrapper>
+  );
+}
+
 /* ─── Empty State ─── */
 function EmptyState({ tab }: { tab: TabKey }) {
   const isToolkit = tab === "toolkit";
@@ -610,6 +744,21 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
         {/* Left Column */}
         <div className="flex min-w-0 flex-1 flex-col gap-6">
           <StatsRow experiments={experiments} />
+
+          {/* ✨ Card redesign preview — remove after deciding */}
+          {experiments.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <p className="text-11 font-medium uppercase tracking-wide text-neutral-400">
+                ✨ Card redesign preview
+              </p>
+              <div className="max-w-[340px]">
+                <PreviewCard
+                  experiment={experiments[0]}
+                  onOpenGallery={openGallery}
+                />
+              </div>
+            </div>
+          )}
 
           <TabBar
             active={activeTab}
