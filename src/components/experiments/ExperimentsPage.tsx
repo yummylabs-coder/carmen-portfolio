@@ -339,7 +339,7 @@ function ExperimentCard({
   );
 }
 
-/* ─── Preview Card — layered sheet style ─── */
+/* ─── Preview Card — dark folder/sheet style ─── */
 function PreviewCard({
   experiment,
   onOpenGallery,
@@ -369,12 +369,12 @@ function PreviewCard({
     <Wrapper
       {...wrapperProps}
       onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-sand-300 bg-sand-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(48,1,1,0.10)] ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-[22px] bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(48,1,1,0.35)] ${
         isClickable ? "cursor-pointer" : ""
       }`}
     >
-      {/* ── Image hero (top layer) ── */}
-      <div className="relative h-[160px] overflow-hidden rounded-t-[21px]">
+      {/* ── Image hero ── */}
+      <div className="relative h-[155px] overflow-hidden">
         {experiment.coverUrl ? (
           <ImageWithShimmer
             src={experiment.coverUrl}
@@ -385,28 +385,28 @@ function PreviewCard({
           />
         ) : (
           <div
-            className="flex h-full items-center justify-center bg-blue-50"
+            className="flex h-full items-center justify-center"
             style={{
               background:
-                "radial-gradient(ellipse at center, rgba(34,22,255,0.12) 0%, var(--blue-50) 70%)",
+                "radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 70%)",
             }}
           >
-            <span className="font-brand text-[18px] font-bold text-[#2216ff]/50">
+            <span className="font-brand text-[18px] font-bold text-white/25">
               {experiment.name}
             </span>
           </div>
         )}
 
-        {/* Type badge floating on the image */}
+        {/* Type label floating on image (top-right, like inspo) */}
         <div className="absolute right-3 top-3">
-          <span className="inline-flex items-center rounded-lg bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-brand-ink backdrop-blur-sm">
+          <span className="inline-flex items-center rounded-lg bg-black/40 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-white/90 backdrop-blur-sm">
             {experiment.type}
           </span>
         </div>
 
         {/* Gallery badge */}
         {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
-          <div className="absolute bottom-10 right-3 flex items-center gap-1 rounded-md bg-black/45 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
+          <div className="absolute bottom-8 right-3 flex items-center gap-1 rounded-md bg-black/40 px-2 py-1 text-[10px] font-medium text-white/80 backdrop-blur-sm">
             <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
               <rect x="2" y="2" width="12" height="12" rx="1.5" />
               <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
@@ -418,7 +418,7 @@ function PreviewCard({
         {/* Video play icon */}
         {!hasLink && hasVideo && !experiment.galleryUrls?.length && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M5 3L13 8L5 13V3Z" />
               </svg>
@@ -427,45 +427,44 @@ function PreviewCard({
         )}
       </div>
 
-      {/* ── Inner sheet (overlaps image) ── */}
-      <div className="-mt-4 relative z-10 flex flex-1 flex-col rounded-t-2xl bg-white px-4 pb-4 pt-4 shadow-[0_-2px_8px_rgba(0,0,0,0.04)]">
-        <h3 className="mb-1 font-brand text-[16px] font-bold leading-snug text-brand-ink">
+      {/* ── Folder sheet (overlaps image with rounded top) ── */}
+      <div className="relative z-10 -mt-5 flex flex-1 flex-col rounded-t-[16px] bg-brand-ink px-4 pb-2 pt-4">
+        <h3 className="mb-1 font-brand text-[15px] font-bold leading-snug text-white">
           {experiment.name}
         </h3>
-
-        <p className="mb-4 line-clamp-2 text-13 leading-[1.5] text-neutral-500">
+        <p className="line-clamp-2 text-12 leading-[1.5] text-white/45">
           {experiment.description}
         </p>
+      </div>
 
-        {/* Footer — pushed to bottom */}
-        <div className="mt-auto flex items-center justify-between border-t border-sand-200 pt-3">
-          <div className="flex items-center gap-1.5 text-12 text-neutral-500">
-            <span
-              className={`inline-block h-2 w-2 rounded-full ${
-                experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
-              }`}
-            />
-            {experiment.statusLabel}
-          </div>
-          {hasLink ? (
-            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
-              {experiment.category === "toolkit" ? "Open in Figma" : "View more"}
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </span>
-          ) : hasGallery ? (
-            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
-              View gallery
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <rect x="2" y="2" width="12" height="12" rx="1.5" />
-                <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
-              </svg>
-            </span>
-          ) : isComingSoon ? (
-            <span className="text-12 text-neutral-400">Coming soon</span>
-          ) : null}
+      {/* ── Bottom stats bar ── */}
+      <div className="flex items-center justify-between px-4 pb-4 pt-3">
+        <div className="flex items-center gap-1.5 text-12 text-white/40">
+          <span
+            className={`inline-block h-[6px] w-[6px] rounded-full ${
+              experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
+            }`}
+          />
+          {experiment.statusLabel}
         </div>
+        {hasLink ? (
+          <span className="flex items-center gap-1 text-12 font-medium text-white/70 transition-colors group-hover:text-white">
+            {experiment.category === "toolkit" ? "Open" : "View"}
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </span>
+        ) : hasGallery ? (
+          <span className="flex items-center gap-1 text-12 font-medium text-white/70 transition-colors group-hover:text-white">
+            Gallery
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="2" y="2" width="12" height="12" rx="1.5" />
+              <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+            </svg>
+          </span>
+        ) : isComingSoon ? (
+          <span className="text-11 text-white/25">Coming soon</span>
+        ) : null}
       </div>
     </Wrapper>
   );
