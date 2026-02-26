@@ -425,7 +425,7 @@ function PreviewCard({
         {/* Tab row */}
         <div className="flex items-end">
           {/* Folder tab — flush left, both top corners rounded */}
-          <div className="flex items-center rounded-t-[12px] bg-brand-ink px-3.5 py-2">
+          <div className="flex items-center rounded-t-[16px] bg-brand-ink px-3 pb-0 pt-2">
             <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
               {experiment.type}
             </span>
@@ -443,7 +443,7 @@ function PreviewCard({
         </div>
 
         {/* Sheet body — rounded-tr only (no tl, avoids seam with tab) + top shadow for folder depth */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink px-6 pb-6 pt-5 shadow-[0_-3px_24px_rgba(0,0,0,0.08)]">
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink pb-5 pl-4 pr-4 pt-6 shadow-[0_-3px_24px_rgba(0,0,0,0.08)]">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-white">
             {experiment.name}
           </h3>
