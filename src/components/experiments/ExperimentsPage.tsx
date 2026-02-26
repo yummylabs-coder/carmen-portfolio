@@ -251,7 +251,7 @@ function PreviewCard({
             alt={experiment.name}
             fill
             sizes="(max-width: 640px) 100vw, 340px"
-            className="object-cover"
+            className="object-cover object-top"
           />
         ) : (
           <div
@@ -295,7 +295,7 @@ function PreviewCard({
         {/* Tab row */}
         <div className="flex items-end">
           <div className="flex items-center rounded-t-[16px] bg-brand-ink px-3 pb-0 pt-2">
-            <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
+            <span className="inline-flex items-center rounded-md bg-white/[0.1] px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-200/50">
               {experiment.type}
             </span>
           </div>
@@ -381,7 +381,7 @@ function PreviewCardLight({
             alt={experiment.name}
             fill
             sizes="(max-width: 640px) 100vw, 340px"
-            className="object-cover"
+            className="object-cover object-top"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-sand-200">
