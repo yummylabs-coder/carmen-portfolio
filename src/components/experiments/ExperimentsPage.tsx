@@ -201,144 +201,6 @@ function toStorySlides(experiment: Experiment): StorySlide[] {
   return slides;
 }
 
-/* ─── Experiment Card ─── */
-function ExperimentCard({
-  experiment,
-  hasPreview,
-  onOpenGallery,
-}: {
-  experiment: Experiment;
-  hasPreview: boolean;
-  onOpenGallery: (exp: Experiment) => void;
-}) {
-  const hasLink = !!experiment.url;
-  const hasVideo = !!experiment.videoUrl;
-  const hasGallery =
-    (experiment.galleryUrls && experiment.galleryUrls.length > 0) ||
-    experiment.coverUrl ||
-    hasVideo;
-  const isComingSoon = !hasLink && !hasGallery;
-  const isClickable = hasLink || hasGallery || hasPreview;
-
-  // If it has a URL, the whole card links externally.
-  // Otherwise clicking opens the modal (gallery or preview).
-  const Wrapper = hasLink ? "a" : "div";
-  const wrapperProps = hasLink
-    ? {
-        href: experiment.url,
-        target: "_blank" as const,
-        rel: "noopener noreferrer",
-      }
-    : {};
-
-  return (
-    <Wrapper
-      {...wrapperProps}
-      onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-sand-300 bg-sand-100 transition-all hover:-translate-y-0.5 hover:border-sand-400 hover:shadow-[0_8px_24px_rgba(48,1,1,0.08)] ${
-        isClickable ? "cursor-pointer" : ""
-      }`}
-    >
-      {/* Cover */}
-      {experiment.coverUrl ? (
-        <div className="relative h-[140px] overflow-hidden rounded-b-2xl bg-blue-50">
-          <ImageWithShimmer
-            src={experiment.coverUrl}
-            alt={experiment.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-          />
-          {/* Video play icon */}
-          {!hasLink && hasVideo && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M5 3L13 8L5 13V3Z" />
-                </svg>
-              </div>
-            </div>
-          )}
-          {/* Gallery badge */}
-          {!hasLink && (experiment.galleryUrls && experiment.galleryUrls.length > 0) && (
-            <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/50 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <rect x="2" y="2" width="12" height="12" rx="1.5" />
-                <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
-              </svg>
-              {experiment.galleryUrls.length} images{hasVideo ? " + video" : ""}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex h-[140px] items-center justify-center rounded-b-2xl bg-blue-50">
-          <span className="font-brand text-[18px] font-bold text-[#2216ff]">
-            {experiment.name}
-          </span>
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="flex flex-1 flex-col p-4">
-        <div className="mb-2.5 flex items-center gap-2">
-          <span className="inline-flex w-fit items-center rounded-md bg-sand-200 px-[10px] py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-sand-700">
-            {experiment.type}
-          </span>
-          {isComingSoon && (
-            <span className="inline-flex items-center rounded-md bg-sand-200 px-[10px] py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-sand-600">
-              Coming soon
-            </span>
-          )}
-        </div>
-        <h3 className="mb-1.5 font-brand text-[16px] font-bold text-brand-ink">
-          {experiment.name}
-        </h3>
-        <p className="mb-4 text-13 leading-[1.5] text-neutral-500">
-          {experiment.description}
-        </p>
-
-        {/* Footer – pushed to bottom */}
-        <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-3">
-          <div className="flex items-center gap-1.5 text-12 text-neutral-500">
-            <span
-              className={`inline-block h-2 w-2 rounded-full ${
-                experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
-              }`}
-            />
-            {experiment.statusLabel}
-          </div>
-          {hasLink ? (
-            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
-              {experiment.category === "toolkit" ? "Open in Figma" : "View more"}
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </span>
-          ) : hasGallery ? (
-            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
-              View gallery
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <rect x="2" y="2" width="12" height="12" rx="1.5" />
-                <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
-              </svg>
-            </span>
-          ) : hasPreview ? (
-            <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
-              View a preview
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            </span>
-          ) : (
-            <span className="text-12 text-neutral-400">Coming soon</span>
-          )}
-        </div>
-      </div>
-    </Wrapper>
-  );
-}
-
 /* ─── Shared preview-card logic ─── */
 function usePreviewCardState(experiment: Experiment) {
   const hasLink = !!experiment.url;
@@ -573,7 +435,7 @@ function PreviewCardLight({
         </div>
 
         {/* Sheet body — shadow strengthens on hover (folder "opening") */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-sand-100 pb-5 pl-4 pr-4 pt-6 shadow-[0_-3px_20px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-sand-100 pb-5 pl-4 pr-4 pt-6 shadow-none transition-shadow duration-300 group-hover:shadow-[0_-6px_24px_rgba(0,0,0,0.08)]">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-brand-ink">
             {experiment.name}
           </h3>
@@ -790,12 +652,10 @@ function TerminalCard() {
 function CardGrid({
   items,
   tab,
-  previewMap,
   onOpenGallery,
 }: {
   items: Experiment[];
   tab: TabKey;
-  previewMap: ExperimentPreviewMap;
   onOpenGallery: (exp: Experiment) => void;
 }) {
   if (items.length === 0) {
@@ -819,11 +679,17 @@ function CardGrid({
             }}
             className="h-full"
           >
-            <ExperimentCard
-              experiment={exp}
-              hasPreview={!!previewMap[exp.name.toLowerCase()]}
-              onOpenGallery={onOpenGallery}
-            />
+            {tab === "experiments" ? (
+              <PreviewCard
+                experiment={exp}
+                onOpenGallery={onOpenGallery}
+              />
+            ) : (
+              <PreviewCardLight
+                experiment={exp}
+                onOpenGallery={onOpenGallery}
+              />
+            )}
           </motion.div>
         ))}
       </AnimatePresence>
@@ -888,31 +754,6 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
         <div className="flex min-w-0 flex-1 flex-col gap-6">
           <StatsRow experiments={experiments} />
 
-          {/* ✨ Card redesign preview — remove after deciding */}
-          {experiments.length > 0 && (
-            <div className="flex flex-col gap-3">
-              <p className="text-11 font-medium uppercase tracking-wide text-neutral-400">
-                ✨ Card redesign preview
-              </p>
-              <div className="flex flex-wrap gap-5">
-                <div className="flex w-[340px] flex-col gap-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Dark</span>
-                  <PreviewCard
-                    experiment={experiments[0]}
-                    onOpenGallery={openGallery}
-                  />
-                </div>
-                <div className="flex w-[340px] flex-col gap-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Light</span>
-                  <PreviewCardLight
-                    experiment={experiments[0]}
-                    onOpenGallery={openGallery}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
           <TabBar
             active={activeTab}
             onChange={setActiveTab}
@@ -923,7 +764,6 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
           <CardGrid
             items={visibleItems}
             tab={activeTab}
-            previewMap={previews}
             onOpenGallery={openGallery}
           />
         </div>
