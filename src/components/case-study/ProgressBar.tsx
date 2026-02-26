@@ -37,7 +37,9 @@ interface ProgressBarProps {
 export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: ProgressBarProps) {
   const [progress, setProgress] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   const hasShown = useRef(false);
+  const shareCopiedTimer = useRef<NodeJS.Timeout | null>(null);
 
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY;
@@ -77,13 +79,39 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
     };
   }, [showCelebration]);
 
+  const handleShare = useCallback(async () => {
+    const url = window.location.href;
+    const title = document.title;
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ title, url });
+        return;
+      } catch {
+        // User cancelled or share failed — fall through to clipboard
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    setShareCopied(true);
+    if (shareCopiedTimer.current) clearTimeout(shareCopiedTimer.current);
+    shareCopiedTimer.current = setTimeout(() => setShareCopied(false), 2500);
+  }, []);
+
   const msg = getMessage(progress);
   const isComplete = progress >= 100;
 
   return (
     <>
-      <div className="fixed left-0 right-0 top-[60px] z-[35] flex h-[36px] items-center bg-white/95 backdrop-blur-sm lg:top-0 lg:z-[60] lg:left-[240px]">
-        {/* Progress track — softer, thinner, gradient fill */}
+      <div className="fixed left-0 right-0 top-[60px] z-[35] flex h-[40px] items-center bg-white/95 backdrop-blur-sm lg:top-0 lg:z-[60] lg:left-[240px] lg:h-[36px]">
+        {/* Progress track — softer, thinner, gradient fill — flush to bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-[4px] bg-neutral-100/50">
           <div
             className="h-full transition-all duration-300 ease-out"
@@ -142,9 +170,9 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
 
             {/* Perfect half-moon — aspect-ratio 2:1 = true semicircle */}
             <motion.div
-              className="relative z-10 w-[94vw] max-w-[700px]"
+              className="relative z-10 w-[100vw] max-w-[700px] sm:w-[94vw]"
               style={{
-                aspectRatio: "2 / 1",
+                aspectRatio: "2 / 1.15",
                 borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
                 overflow: "hidden",
                 animation: "celebrate-breathe 5s ease-in-out infinite",
@@ -249,7 +277,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
               />
 
               {/* ── Content ── */}
-              <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-3 sm:px-14 sm:pb-6">
+              <div className="relative z-10 flex h-full flex-col items-center justify-center px-8 pb-6 sm:px-14 sm:pb-8">
                 {/* Handwritten message */}
                 <motion.p
                   className="relative font-handwritten text-[22px] text-brand-ink sm:text-[32px]"
@@ -351,9 +379,39 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                   </motion.div>
                 )}
 
+                {/* Share this case study */}
+                <motion.button
+                  className="mt-3 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-medium text-brand-ink/30 transition-all hover:bg-brand-ink/5 hover:text-brand-ink/50 sm:mt-4 sm:text-12"
+                  style={{
+                    border: "1px solid rgba(167,139,250,0.12)",
+                  }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
+                  onClick={handleShare}
+                >
+                  {shareCopied ? (
+                    <>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                      Link copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                        <polyline points="16 6 12 2 8 6" />
+                        <line x1="12" y1="2" x2="12" y2="15" />
+                      </svg>
+                      Share this case study
+                    </>
+                  )}
+                </motion.button>
+
                 {/* Dismiss hint */}
                 <motion.button
-                  className="mt-2 text-[10px] text-brand-ink/15 transition-colors hover:text-brand-ink/30 sm:mt-3 sm:text-11"
+                  className="mt-2 text-[10px] text-brand-ink/15 transition-colors hover:text-brand-ink/30 sm:mt-2 sm:text-11"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1, duration: 0.4 }}
