@@ -369,7 +369,7 @@ function PreviewCard({
     <Wrapper
       {...wrapperProps}
       onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-300/60 bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(194,176,156,0.3)] ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-300 bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(194,176,156,0.3)] ${
         isClickable ? "cursor-pointer" : ""
       }`}
     >
@@ -425,7 +425,7 @@ function PreviewCard({
         {/* Tab row */}
         <div className="flex items-end">
           {/* Folder tab — flush left, both top corners rounded */}
-          <div className="flex items-center rounded-t-[8px] bg-brand-ink px-3 pb-1.5 pt-2.5">
+          <div className="flex items-center rounded-t-[12px] bg-brand-ink px-3.5 py-2">
             <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
               {experiment.type}
             </span>
