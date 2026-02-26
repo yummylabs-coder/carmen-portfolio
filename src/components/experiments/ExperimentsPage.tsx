@@ -420,77 +420,83 @@ function PreviewCard({
         )}
       </div>
 
-      {/* ── Folder tab + sheet (real folder-tab shape with inverted corners) ── */}
+      {/* ── Folder tab + sheet ── */}
       <div className="relative z-10 -mt-10 flex flex-1 flex-col">
-        {/* Tab row — image is visible through the transparent gaps */}
+        {/* Tab row — image visible through transparent gaps */}
         <div className="flex items-end">
-          {/* Left gap (transparent → image shows through) */}
+          {/* Left gap (image shows through) */}
           <div className="w-4 shrink-0" />
-          {/* Left inverted corner (╯ curve) */}
+          {/* Left inverted corner (╯) */}
           <div
-            className="h-[10px] w-[10px] shrink-0"
+            className="h-[14px] w-[14px] shrink-0"
             style={{
               background:
-                "radial-gradient(circle at 0 0, transparent 10px, var(--brand-ink) 10px)",
+                "radial-gradient(circle at 0 0, transparent 14px, var(--brand-ink) 14px)",
             }}
           />
           {/* Folder tab */}
-          <div className="flex h-[28px] items-center rounded-t-[10px] bg-brand-ink px-3">
+          <div
+            className="flex h-[34px] items-center rounded-t-[12px] bg-brand-ink px-4"
+            style={{ boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.1), inset 1px 0 0 0 rgba(255,255,255,0.06), inset -1px 0 0 0 rgba(255,255,255,0.06)" }}
+          >
             <span className="text-[10px] font-semibold uppercase tracking-[0.06em] text-white/60">
               {experiment.type}
             </span>
           </div>
-          {/* Right inverted corner (╰ curve) */}
+          {/* Right inverted corner (╰) */}
           <div
-            className="h-[10px] w-[10px] shrink-0"
+            className="h-[14px] w-[14px] shrink-0"
             style={{
               background:
-                "radial-gradient(circle at 100% 0, transparent 10px, var(--brand-ink) 10px)",
+                "radial-gradient(circle at 100% 0, transparent 14px, var(--brand-ink) 14px)",
             }}
           />
-          {/* Right gap (transparent → image shows through) */}
+          {/* Right gap (image shows through) */}
           <div className="flex-1" />
         </div>
 
-        {/* Full-width sheet body */}
-        <div className="flex flex-1 flex-col bg-brand-ink px-4 pb-2 pt-3">
+        {/* Full-width sheet body (with rounded top corners + subtle stroke) */}
+        <div
+          className="flex flex-1 flex-col rounded-t-[12px] bg-brand-ink px-4 pb-2 pt-3"
+          style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }}
+        >
           <h3 className="mb-1 font-brand text-[15px] font-bold leading-snug text-white">
             {experiment.name}
           </h3>
           <p className="line-clamp-2 text-12 leading-[1.5] text-white/45">
             {experiment.description}
           </p>
-        </div>
-      </div>
 
-      {/* ── Bottom stats bar ── */}
-      <div className="flex items-center justify-between bg-brand-ink px-4 pb-4 pt-3">
-        <div className="flex items-center gap-1.5 text-12 text-white/40">
-          <span
-            className={`inline-block h-[6px] w-[6px] rounded-full ${
-              experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
-            }`}
-          />
-          {experiment.statusLabel}
+          {/* Footer — inside body so the stroke wraps it */}
+          <div className="mt-auto flex items-center justify-between border-t border-white/[0.06] pt-3">
+            <div className="flex items-center gap-1.5 text-12 text-white/40">
+              <span
+                className={`inline-block h-[6px] w-[6px] rounded-full ${
+                  experiment.status === "live" ? "bg-green-500" : "bg-yellow-500"
+                }`}
+              />
+              {experiment.statusLabel}
+            </div>
+            {hasLink ? (
+              <span className="flex items-center gap-1 text-12 font-medium text-white/70 transition-colors group-hover:text-white">
+                {experiment.category === "toolkit" ? "Open" : "View"}
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </span>
+            ) : hasGallery ? (
+              <span className="flex items-center gap-1 text-12 font-medium text-white/70 transition-colors group-hover:text-white">
+                Gallery
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <rect x="2" y="2" width="12" height="12" rx="1.5" />
+                  <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+                </svg>
+              </span>
+            ) : isComingSoon ? (
+              <span className="text-11 text-white/25">Coming soon</span>
+            ) : null}
+          </div>
         </div>
-        {hasLink ? (
-          <span className="flex items-center gap-1 text-12 font-medium text-white/70 transition-colors group-hover:text-white">
-            {experiment.category === "toolkit" ? "Open" : "View"}
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" />
-            </svg>
-          </span>
-        ) : hasGallery ? (
-          <span className="flex items-center gap-1 text-12 font-medium text-white/70 transition-colors group-hover:text-white">
-            Gallery
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="2" y="2" width="12" height="12" rx="1.5" />
-              <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
-            </svg>
-          </span>
-        ) : isComingSoon ? (
-          <span className="text-11 text-white/25">Coming soon</span>
-        ) : null}
       </div>
     </Wrapper>
   );
