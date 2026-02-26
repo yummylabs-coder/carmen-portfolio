@@ -374,7 +374,7 @@ function PreviewCard({
       }`}
     >
       {/* ── Image hero ── */}
-      <div className="relative h-[155px] overflow-hidden">
+      <div className="relative h-[175px] overflow-hidden">
         {experiment.coverUrl ? (
           <ImageWithShimmer
             src={experiment.coverUrl}
@@ -427,8 +427,8 @@ function PreviewCard({
         )}
       </div>
 
-      {/* ── Folder sheet (overlaps image with rounded top) ── */}
-      <div className="relative z-10 -mt-5 flex flex-1 flex-col rounded-t-[16px] bg-brand-ink px-4 pb-2 pt-4">
+      {/* ── Folder sheet (overlaps image with rounded top — folder-flap) ── */}
+      <div className="relative z-10 -mt-10 flex flex-1 flex-col rounded-t-[20px] bg-brand-ink px-4 pb-2 pt-4 shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
         <h3 className="mb-1 font-brand text-[15px] font-bold leading-snug text-white">
           {experiment.name}
         </h3>
