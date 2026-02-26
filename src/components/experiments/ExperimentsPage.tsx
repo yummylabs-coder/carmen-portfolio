@@ -339,7 +339,7 @@ function ExperimentCard({
   );
 }
 
-/* ─── Preview Card — layered style test ─── */
+/* ─── Preview Card — layered sheet style ─── */
 function PreviewCard({
   experiment,
   onOpenGallery,
@@ -353,6 +353,7 @@ function PreviewCard({
     (experiment.galleryUrls && experiment.galleryUrls.length > 0) ||
     experiment.coverUrl ||
     hasVideo;
+  const isComingSoon = !hasLink && !hasGallery;
   const isClickable = hasLink || hasGallery;
 
   const Wrapper = hasLink ? "a" : "div";
@@ -368,69 +369,66 @@ function PreviewCard({
     <Wrapper
       {...wrapperProps}
       onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-sand-300 bg-sand-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(48,1,1,0.10)] ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-sand-300 bg-sand-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(48,1,1,0.10)] ${
         isClickable ? "cursor-pointer" : ""
       }`}
     >
-      {/* Image area with gradient fade */}
-      <div className="relative h-[180px] overflow-hidden">
+      {/* ── Image hero (top layer) ── */}
+      <div className="relative h-[160px] overflow-hidden rounded-t-[21px]">
         {experiment.coverUrl ? (
-          <>
-            <ImageWithShimmer
-              src={experiment.coverUrl}
-              alt={experiment.name}
-              fill
-              sizes="(max-width: 640px) 100vw, 340px"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-            />
-            {/* Gradient fade to sand-100 */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-sand-100" />
-          </>
+          <ImageWithShimmer
+            src={experiment.coverUrl}
+            alt={experiment.name}
+            fill
+            sizes="(max-width: 640px) 100vw, 340px"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+          />
         ) : (
           <div
-            className="flex h-full items-center justify-center"
+            className="flex h-full items-center justify-center bg-blue-50"
             style={{
               background:
-                "radial-gradient(ellipse at center, rgba(34,22,255,0.08) 0%, transparent 70%)",
+                "radial-gradient(ellipse at center, rgba(34,22,255,0.12) 0%, var(--blue-50) 70%)",
             }}
           >
-            <span className="font-brand text-[18px] font-bold text-[#2216ff]/60">
+            <span className="font-brand text-[18px] font-bold text-[#2216ff]/50">
               {experiment.name}
             </span>
           </div>
         )}
 
+        {/* Type badge floating on the image */}
+        <div className="absolute right-3 top-3">
+          <span className="inline-flex items-center rounded-lg bg-white/85 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.05em] text-brand-ink backdrop-blur-sm">
+            {experiment.type}
+          </span>
+        </div>
+
+        {/* Gallery badge */}
+        {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
+          <div className="absolute bottom-10 right-3 flex items-center gap-1 rounded-md bg-black/45 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="2" y="2" width="12" height="12" rx="1.5" />
+              <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
+            </svg>
+            {experiment.galleryUrls.length}{hasVideo ? " + video" : ""}
+          </div>
+        )}
+
         {/* Video play icon */}
-        {!hasLink && hasVideo && (
+        {!hasLink && hasVideo && !experiment.galleryUrls?.length && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-transform group-hover:scale-110">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M5 3L13 8L5 13V3Z" />
               </svg>
             </div>
           </div>
         )}
-
-        {/* Gallery badge */}
-        {!hasLink && experiment.galleryUrls && experiment.galleryUrls.length > 0 && (
-          <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-md bg-black/50 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="2" y="2" width="12" height="12" rx="1.5" />
-              <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
-            </svg>
-            {experiment.galleryUrls.length} images{hasVideo ? " + video" : ""}
-          </div>
-        )}
       </div>
 
-      {/* Content — overlaps the gradient zone */}
-      <div className="relative -mt-3 flex flex-1 flex-col px-4 pb-4">
-        <div className="mb-2 flex items-center gap-2">
-          <span className="inline-flex w-fit items-center rounded-md bg-sand-200 px-[10px] py-1 text-[11px] font-semibold uppercase tracking-[0.05em] text-sand-700">
-            {experiment.type}
-          </span>
-        </div>
-
+      {/* ── Inner sheet (overlaps image) ── */}
+      <div className="-mt-4 relative z-10 flex flex-1 flex-col rounded-t-2xl bg-white px-4 pb-4 pt-4 shadow-[0_-2px_8px_rgba(0,0,0,0.04)]">
         <h3 className="mb-1 font-brand text-[16px] font-bold leading-snug text-brand-ink">
           {experiment.name}
         </h3>
@@ -439,7 +437,7 @@ function PreviewCard({
           {experiment.description}
         </p>
 
-        {/* Footer */}
+        {/* Footer — pushed to bottom */}
         <div className="mt-auto flex items-center justify-between border-t border-sand-200 pt-3">
           <div className="flex items-center gap-1.5 text-12 text-neutral-500">
             <span
@@ -451,7 +449,7 @@ function PreviewCard({
           </div>
           {hasLink ? (
             <span className="flex items-center gap-1 text-12 font-medium text-[#2216ff]">
-              View more
+              {experiment.category === "toolkit" ? "Open in Figma" : "View more"}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
@@ -464,9 +462,9 @@ function PreviewCard({
                 <path d="M2 11L5.5 7.5L8 10L10 8L14 12" />
               </svg>
             </span>
-          ) : (
+          ) : isComingSoon ? (
             <span className="text-12 text-neutral-400">Coming soon</span>
-          )}
+          ) : null}
         </div>
       </div>
     </Wrapper>
