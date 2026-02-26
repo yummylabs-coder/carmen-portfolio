@@ -369,7 +369,7 @@ function PreviewCard({
     <Wrapper
       {...wrapperProps}
       onClick={!hasLink && isClickable ? () => onOpenGallery(experiment) : undefined}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(48,1,1,0.35)] ${
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand-300 bg-brand-ink transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(48,1,1,0.35)] ${
         isClickable ? "cursor-pointer" : ""
       }`}
     >
@@ -424,9 +424,9 @@ function PreviewCard({
       <div className="relative z-10 -mt-12 flex flex-1 flex-col">
         {/* Tab row */}
         <div className="flex items-end">
-          {/* Folder tab — flush left, only top-right is rounded */}
-          <div className="flex h-[36px] items-center rounded-tr-[14px] bg-brand-ink pl-6 pr-5">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.06em] text-white/50">
+          {/* Folder tab — flush left, both top corners rounded */}
+          <div className="flex h-[40px] items-center rounded-t-[14px] bg-brand-ink pl-5 pr-4">
+            <span className="inline-flex items-center rounded-md bg-sand-200 px-2.5 py-[3px] text-[10px] font-semibold uppercase tracking-[0.05em] text-sand-700">
               {experiment.type}
             </span>
           </div>
@@ -442,8 +442,8 @@ function PreviewCard({
           <div className="flex-1" />
         </div>
 
-        {/* Sheet body — rounded-tr only (no tl, avoids seam with tab) */}
-        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink px-6 pb-6 pt-5">
+        {/* Sheet body — rounded-tr only (no tl, avoids seam with tab) + top shadow for folder depth */}
+        <div className="flex flex-1 flex-col rounded-tr-[16px] bg-brand-ink px-6 pb-6 pt-5 shadow-[0_-6px_16px_rgba(0,0,0,0.2)]">
           <h3 className="mb-1 font-brand text-[16px] font-bold leading-[1.3] text-white">
             {experiment.name}
           </h3>
