@@ -243,7 +243,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
 
                 {/* Next case study CTA */}
                 {nextProject && (
-                  <div className="mt-3 w-full max-w-[260px] sm:mt-5 sm:max-w-[320px]">
+                  <div className="mt-3 w-full sm:mt-5 sm:max-w-[320px]">
                     <span className="mb-1.5 block text-center text-[9px] font-semibold uppercase tracking-[1.5px] text-brand-ink/20 sm:text-[10px]">
                       Next Case Study
                     </span>
@@ -289,7 +289,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
 
                 {/* Share this case study */}
                 <button
-                  className="mt-3 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-medium text-brand-ink/30 transition-all hover:bg-brand-ink/5 hover:text-brand-ink/50 sm:mt-4 sm:text-12"
+                  className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-[12px] font-medium text-brand-ink/30 transition-all hover:bg-brand-ink/5 hover:text-brand-ink/50 sm:mt-4 sm:w-auto sm:py-1.5 sm:text-12"
                   style={{ border: "1px solid rgba(167,139,250,0.12)" }}
                   onClick={handleShare}
                 >
