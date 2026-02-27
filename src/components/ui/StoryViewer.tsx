@@ -346,10 +346,10 @@ export function StoryViewer({
                 scale: 0.96,
               }}
               transition={{ duration: 0.35, ease: [0.25, 0.4, 0.25, 1] }}
-              className="relative w-full overflow-hidden rounded-2xl bg-white"
+              className="relative w-full overflow-hidden rounded-2xl bg-neutral-900 ring-[1.5px] ring-white/[0.08]"
               style={{
                 boxShadow:
-                  "0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)",
+                  "0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)",
               }}
             >
               {embedUrl ? (
