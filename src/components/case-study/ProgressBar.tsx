@@ -156,7 +156,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {/* Backdrop */}
             <motion.div
@@ -164,15 +164,15 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
               onClick={() => setShowCelebration(false)}
             />
 
-            {/* Perfect half-moon — aspect-ratio 2:1 = true semicircle */}
+            {/* Half-moon — fills ~50vh on mobile, capped on desktop */}
             <motion.div
               className="relative z-10 w-[100vw] max-w-[700px] sm:w-[94vw]"
               style={{
-                aspectRatio: "2 / 1.15",
+                height: "min(50vh, 420px)",
                 borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
                 overflow: "hidden",
                 animation: "celebrate-breathe 5s ease-in-out infinite",
@@ -181,8 +181,8 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
               }}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", stiffness: 170, damping: 24 }}
+              exit={{ y: "100%", opacity: 0 }}
+              transition={{ type: "spring", stiffness: 80, damping: 20, mass: 1 }}
             >
               {/* ── Glass base: soft white with very diffuse color wash ── */}
               <div
