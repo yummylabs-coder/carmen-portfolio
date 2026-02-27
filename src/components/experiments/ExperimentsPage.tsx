@@ -291,7 +291,7 @@ function PreviewCard({
       </div>
 
       {/* ── Folder tab + sheet ── */}
-      <div className="relative z-10 -mt-12 flex flex-1 flex-col shadow-[0_-3px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300 group-hover:shadow-[0_-8px_32px_rgba(0,0,0,0.22)]">
+      <div className="relative z-10 -mt-12 flex flex-1 flex-col">
         {/* Tab row */}
         <div className="flex items-end">
           <div className="flex items-center rounded-t-[16px] bg-brand-ink px-3 pb-0 pt-2">
@@ -415,7 +415,7 @@ function PreviewCardLight({
       </div>
 
       {/* ── Folder tab + sheet ── */}
-      <div className="relative z-10 -mt-12 flex flex-1 flex-col transition-shadow duration-300 group-hover:shadow-[0_-6px_24px_rgba(0,0,0,0.08)]">
+      <div className="relative z-10 -mt-12 flex flex-1 flex-col">
         {/* Tab row */}
         <div className="flex items-end">
           <div className="flex items-center rounded-t-[16px] bg-sand-100 px-3 pb-0 pt-2">
