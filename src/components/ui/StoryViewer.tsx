@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -172,8 +172,10 @@ export function StoryViewer({
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose, goNext, goPrev]);
 
-  /* ── Lock body scroll (iOS-safe) ── */
-  useEffect(() => {
+  /* ── Lock body scroll (iOS-safe) ──
+     useLayoutEffect ensures the lock runs BEFORE the browser paints,
+     preventing the visible background "shuffle" on open/close. */
+  useLayoutEffect(() => {
     savedScrollY.current = lockBodyScroll();
     return () => {
       unlockBodyScroll(savedScrollY.current);
