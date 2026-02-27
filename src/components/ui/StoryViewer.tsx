@@ -207,8 +207,8 @@ export function StoryViewer({
       }}
       onTouchMove={(e) => e.preventDefault()}
     >
-      {/* Frosted glass backdrop — heavier + light blur on mobile, full blur on desktop */}
-      <div className="absolute inset-0 bg-black/92 backdrop-blur-sm sm:bg-black/70 sm:backdrop-blur-3xl" />
+      {/* Frosted glass backdrop — dark brown on mobile, blurred on desktop */}
+      <div className="absolute inset-0 bg-[#1a0000]/95 backdrop-blur-sm sm:bg-brand-ink/80 sm:backdrop-blur-3xl" />
 
       {/* Blurred ambient photo color — DESKTOP ONLY
           blur-[80px] on a full-viewport image kills mobile GPU memory */}
