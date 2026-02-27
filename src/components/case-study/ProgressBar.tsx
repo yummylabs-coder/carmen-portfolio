@@ -185,43 +185,36 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                   height: "max(160vw, 750px)",
                   borderRadius: "50%",
                   overflow: "hidden",
-                  boxShadow:
-                    "0 -12px 60px rgba(167,139,250,0.12), 0 -4px 24px rgba(129,140,248,0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
                 }}
               >
-                {/* Glass base */}
+                {/* Mesh gradient */}
                 <div
                   className="absolute inset-0"
                   style={{
                     background: `
-                      radial-gradient(circle at 28% 18%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 30%, transparent 60%),
-                      radial-gradient(circle at 72% 78%, rgba(167,139,250,0.18) 0%, transparent 55%),
-                      radial-gradient(circle at 22% 68%, rgba(103,232,249,0.12) 0%, transparent 50%),
-                      radial-gradient(circle at 82% 22%, rgba(129,140,248,0.15) 0%, transparent 55%),
-                      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(167,139,250,0.06) 100%)
+                      radial-gradient(circle at 25% 15%, rgba(244,114,182,0.18) 0%, transparent 45%),
+                      radial-gradient(circle at 75% 75%, rgba(167,139,250,0.28) 0%, transparent 50%),
+                      radial-gradient(circle at 15% 65%, rgba(103,232,249,0.18) 0%, transparent 45%),
+                      radial-gradient(circle at 85% 25%, rgba(251,191,36,0.12) 0%, transparent 40%),
+                      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.7) 0%, rgba(237,233,254,0.35) 55%, rgba(249,250,251,0.92) 100%)
                     `,
                   }}
                 />
 
-                {/* 3D glass highlight at the dome */}
+                {/* Soft highlight at the dome */}
                 <div
-                  className="pointer-events-none absolute"
+                  className="pointer-events-none absolute left-[15%] top-[4%] h-[22%] w-[70%]"
                   style={{
-                    top: "3%",
-                    left: "12%",
-                    width: "76%",
-                    height: "35%",
                     background:
-                      "radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 100%)",
-                    filter: "blur(14px)",
-                    transform: "rotate(-3deg)",
+                      "radial-gradient(ellipse, rgba(255,255,255,0.35) 0%, transparent 100%)",
+                    filter: "blur(20px)",
                   }}
                 />
 
                 {/* Subtle luminous border */}
                 <div
                   className="pointer-events-none absolute inset-0 rounded-full"
-                  style={{ border: "1px solid rgba(167,139,250,0.12)" }}
+                  style={{ border: "1px solid rgba(167,139,250,0.1)" }}
                 />
               </div>
 
@@ -249,9 +242,8 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                     </span>
                     <Link
                       href={`/work/${nextProject.slug}`}
-                      className="group flex items-center gap-2.5 rounded-xl p-2 transition-all hover:shadow-sm sm:gap-3 sm:p-2.5"
+                      className="group flex items-center gap-2.5 rounded-xl bg-white/30 p-2 transition-all hover:bg-white/50 hover:shadow-md hover:scale-[1.02] sm:gap-3 sm:p-2.5"
                       style={{
-                        backgroundColor: "rgba(255,255,255,0.3)",
                         backdropFilter: "blur(14px)",
                         WebkitBackdropFilter: "blur(14px)",
                         border: "1px solid rgba(167,139,250,0.12)",
@@ -289,7 +281,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
 
                 {/* Share this case study */}
                 <button
-                  className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-[12px] font-medium text-brand-ink/30 transition-all hover:bg-brand-ink/5 hover:text-brand-ink/50 sm:mt-4 sm:w-auto sm:py-1.5 sm:text-12"
+                  className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-white/20 px-4 py-2.5 text-[12px] font-medium text-brand-ink/30 transition-all hover:bg-white/40 hover:text-brand-ink/50 hover:shadow-sm hover:scale-[1.02] sm:mt-4 sm:w-auto sm:py-1.5 sm:text-12"
                   style={{ border: "1px solid rgba(167,139,250,0.12)" }}
                   onClick={handleShare}
                 >

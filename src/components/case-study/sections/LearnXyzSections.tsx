@@ -135,7 +135,7 @@ function RoleSection({ accentColor }: { accentColor: string }) {
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           From MVP to seed round
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[756px] text-16 leading-[1.8] text-neutral-600">
           I served as the dedicated design partner for Learn.xyz from day zero
           through their pre-seed and seed rounds, leading UX strategy,
           product design, and research across their entire ecosystem.
@@ -151,7 +151,14 @@ function RoleSection({ accentColor }: { accentColor: string }) {
             transition={{ duration: 0.4, delay: 0.2 + i * 0.1, ease: "easeOut" }}
             className="rounded-xl border border-sand-200 bg-white p-5 text-center"
           >
-            <div className="mb-2 flex justify-center text-neutral-400">{a.icon}</div>
+            <motion.div
+              className="mb-2 flex justify-center text-[#C4B5A0]"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 + i * 0.12, type: "spring", stiffness: 200, damping: 12 }}
+            >
+              {a.icon}
+            </motion.div>
             <h4 className="text-14 font-semibold text-brand-ink">{a.label}</h4>
             <p className="mt-1 text-12 text-neutral-400">{a.desc}</p>
           </motion.div>
@@ -172,7 +179,7 @@ function DesignSystemSection({ accentColor }: { accentColor: string }) {
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Bold, joyful, unmistakable
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[756px] text-16 leading-[1.8] text-neutral-600">
           I created a brand system that sets Learn.xyz apart from the sea of
           dull, corporate learning tools. Playful yet professional, designed
           to spark curiosity and make learning feel exciting.
@@ -231,7 +238,7 @@ function WebsiteSection({ accentColor }: { accentColor: string }) {
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Playful and conversion-focused
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[756px] text-16 leading-[1.8] text-neutral-600">
           I designed a website that made it instantly clear: this isn&apos;t
           your average workplace training tool. Bold visuals,
           micro-interactions, and joyful copy emphasize Learn.xyz&apos;s fresh
@@ -284,7 +291,7 @@ function DashboardSection({ accentColor }: { accentColor: string }) {
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Web admin dashboard
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[756px] text-16 leading-[1.8] text-neutral-600">
           I designed a dashboard that lets admins create AI-powered lessons,
           organize them by team or topic, and publish in one click. Built for
           speed and clarity with smart defaults, preview tools, and
@@ -319,7 +326,7 @@ function MobileAppSection({ accentColor }: { accentColor: string }) {
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Learner mobile app
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[756px] text-16 leading-[1.8] text-neutral-600">
           The learner app feels more like a social feed than a training
           tool: fast, visual, and made for on-the-go learning. Lessons are
           snackable, swipeable, and packed with motion. Gamification and
@@ -408,7 +415,7 @@ function OutcomeSection({ accentColor }: { accentColor: string }) {
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Real results, real fast
         </h2>
-        <p className="mt-4 mb-8 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 mb-8 max-w-[756px] text-16 leading-[1.8] text-neutral-600">
           Learn.xyz launched, grew, and raised $4M in seed funding, with
           the CEO of Udemy showing interest. Here are the numbers that
           got investors excited.

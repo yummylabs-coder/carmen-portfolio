@@ -73,7 +73,7 @@ function StatCard({
       className="flex flex-col items-center rounded-xl border border-blue-100 bg-blue-50 p-6 text-center"
     >
       {stat.icon && (
-        <div className="mb-3 h-8 w-8 text-neutral-400">{stat.icon}</div>
+        <div className="mb-3 h-8 w-8 text-indigo-400">{stat.icon}</div>
       )}
       <div className="font-brand text-32 font-bold tabular-nums text-brand-ink">
         {stat.prefix}
