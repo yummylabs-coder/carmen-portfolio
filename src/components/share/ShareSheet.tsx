@@ -34,7 +34,11 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
       setCompanyName("");
       setNote("");
       setLinkedInToast(false);
-      setTimeout(() => inputRef.current?.focus(), 300);
+      // Only auto-focus on desktop — on mobile iOS, focus triggers unwanted zoom
+      const isDesktop = window.matchMedia("(min-width: 640px)").matches;
+      if (isDesktop) {
+        setTimeout(() => inputRef.current?.focus(), 300);
+      }
     }
   }, [open]);
 
@@ -185,7 +189,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="Company name or person"
-                    className="w-full rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-14 text-brand-ink placeholder:text-neutral-400 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
+                    className="w-full rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-[16px] sm:text-14 text-brand-ink placeholder:text-neutral-400 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
                   />
                 </div>
 
@@ -199,7 +203,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                     onChange={(e) => setNote(e.target.value)}
                     placeholder="e.g. Hey! Here are the projects most relevant to your team..."
                     rows={2}
-                    className="w-full resize-none rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-14 text-brand-ink placeholder:text-neutral-400 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
+                    className="w-full resize-none rounded-xl border border-sand-300 bg-sand-50 px-3.5 py-2.5 text-[16px] sm:text-14 text-brand-ink placeholder:text-neutral-400 outline-none transition-colors focus:border-blue-300 focus:ring-2 focus:ring-blue-50"
                   />
                 </div>
 
