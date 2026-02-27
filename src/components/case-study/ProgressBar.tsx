@@ -168,160 +168,82 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
               onClick={() => setShowCelebration(false)}
             />
 
-            {/* Half-moon — fills ~50vh on mobile, capped on desktop */}
+            {/* Half-moon — oversized circle for a gentle arc, pinned to bottom */}
             <motion.div
-              className="relative z-10 w-[100vw] max-w-[700px] sm:w-[94vw]"
-              style={{
-                height: "min(50vh, 420px)",
-                borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
-                overflow: "hidden",
-                animation: "celebrate-breathe 5s ease-in-out infinite",
-                boxShadow:
-                  "0 -12px 60px rgba(167,139,250,0.12), 0 -4px 24px rgba(129,140,248,0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
-              }}
+              className="relative z-10 w-full overflow-hidden"
+              style={{ height: "min(72dvh, 580px)" }}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
-              exit={{ y: "100%", opacity: 0 }}
+              exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 80, damping: 20, mass: 1 }}
             >
-              {/* ── Glass base: soft white with very diffuse color wash ── */}
+              {/* ── Large circle — much wider than viewport for a gentle arc ── */}
               <div
-                className="absolute inset-0"
+                className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2"
                 style={{
-                  background: `
-                    radial-gradient(circle at 28% 18%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 30%, transparent 60%),
-                    radial-gradient(circle at 72% 78%, rgba(167,139,250,0.18) 0%, transparent 55%),
-                    radial-gradient(circle at 22% 68%, rgba(103,232,249,0.12) 0%, transparent 50%),
-                    radial-gradient(circle at 82% 22%, rgba(129,140,248,0.15) 0%, transparent 55%),
-                    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(167,139,250,0.06) 100%)
-                  `,
+                  width: "max(160vw, 750px)",
+                  height: "max(160vw, 750px)",
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  boxShadow:
+                    "0 -12px 60px rgba(167,139,250,0.12), 0 -4px 24px rgba(129,140,248,0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
                 }}
-              />
+              >
+                {/* Glass base */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: `
+                      radial-gradient(circle at 28% 18%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 30%, transparent 60%),
+                      radial-gradient(circle at 72% 78%, rgba(167,139,250,0.18) 0%, transparent 55%),
+                      radial-gradient(circle at 22% 68%, rgba(103,232,249,0.12) 0%, transparent 50%),
+                      radial-gradient(circle at 82% 22%, rgba(129,140,248,0.15) 0%, transparent 55%),
+                      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(167,139,250,0.06) 100%)
+                    `,
+                  }}
+                />
 
-              {/* ── Slow orbiting color wash: very blended, wide gradients ── */}
-              <div
-                className="absolute inset-[-30%]"
-                style={{
-                  background: `
-                    radial-gradient(circle at 60% 30%, rgba(167,139,250,0.14) 0%, transparent 45%),
-                    radial-gradient(circle at 30% 70%, rgba(103,232,249,0.10) 0%, transparent 45%)
-                  `,
-                  animation: "celebrate-orbit 20s linear infinite",
-                  filter: "blur(30px)",
-                }}
-              />
+                {/* 3D glass highlight at the dome */}
+                <div
+                  className="pointer-events-none absolute"
+                  style={{
+                    top: "3%",
+                    left: "12%",
+                    width: "76%",
+                    height: "35%",
+                    background:
+                      "radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 100%)",
+                    filter: "blur(14px)",
+                    transform: "rotate(-3deg)",
+                  }}
+                />
 
-              {/* ── Counter-rotating secondary: even more subtle + blurred ── */}
-              <div
-                className="absolute inset-[-20%]"
-                style={{
-                  background: `
-                    radial-gradient(circle at 40% 20%, rgba(129,140,248,0.10) 0%, transparent 45%),
-                    radial-gradient(circle at 65% 80%, rgba(232,168,124,0.06) 0%, transparent 40%)
-                  `,
-                  animation: "celebrate-orbit 28s linear infinite reverse",
-                  filter: "blur(24px)",
-                }}
-              />
+                {/* Subtle luminous border */}
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-full"
+                  style={{ border: "1px solid rgba(167,139,250,0.12)" }}
+                />
+              </div>
 
-              {/* ── 3D glass highlight at the dome ── */}
-              <div
-                className="pointer-events-none absolute"
-                style={{
-                  top: "3%",
-                  left: "12%",
-                  width: "76%",
-                  height: "35%",
-                  background:
-                    "radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 100%)",
-                  filter: "blur(14px)",
-                  transform: "rotate(-3deg)",
-                }}
-              />
-
-              {/* ── Tilting aura ring: sweeping highlight tracing the arc ──
-                   Full circle (h=200% of parent = parent width) positioned at top:0
-                   so only the upper semicircle is visible within overflow:hidden.
-                   Conic gradient + radial mask = thin ring stroke. */}
-              <div
-                className="pointer-events-none absolute left-[-3px] right-[-3px] top-[-3px]"
-                style={{
-                  height: "calc(200% + 6px)",
-                  borderRadius: "9999px",
-                  background: `conic-gradient(from 0deg, transparent 0%, rgba(167,139,250,0.5) 6%, rgba(129,140,248,0.28) 14%, transparent 28%, transparent 100%)`,
-                  WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - 2.5px), black calc(100% - 2px))`,
-                  mask: `radial-gradient(farthest-side, transparent calc(100% - 2.5px), black calc(100% - 2px))`,
-                  animation: "celebrate-orbit 7s linear infinite",
-                }}
-              />
-
-              {/* ── Static luminous border (subtle always-on edge) ── */}
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
-                  border: "1px solid rgba(167,139,250,0.12)",
-                  borderBottom: "none",
-                }}
-              />
-
-              {/* ── Pulsing outer glow ── */}
-              <div
-                className="pointer-events-none absolute -inset-8"
-                style={{
-                  borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
-                  backgroundColor: "rgba(167,139,250,0.06)",
-                  filter: "blur(35px)",
-                  animation: "celebrate-radiate 4.5s ease-in-out infinite",
-                }}
-              />
-
-              {/* ── Content ── */}
+              {/* ── Content — static, no entrance animations ── */}
               <div className="relative z-10 flex h-full flex-col items-center justify-center px-8 pb-6 sm:px-14 sm:pb-8">
                 {/* Handwritten message */}
-                <motion.p
-                  className="relative font-handwritten text-[22px] text-brand-ink sm:text-[32px]"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-                >
-                  Thanks for reading{" "}
-                  <motion.span
-                    className="inline-block"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{
-                      delay: 0.8,
-                      duration: 0.4,
-                      type: "spring",
-                      stiffness: 350,
-                      damping: 12,
-                    }}
-                  >
-                    &#9829;
-                  </motion.span>
-                </motion.p>
+                <p className="relative font-handwritten text-[22px] text-brand-ink sm:text-[32px]">
+                  Thanks for reading &#9829;
+                </p>
 
                 {/* Ethereal divider */}
-                <motion.div
+                <div
                   className="mt-3 h-px w-10 sm:mt-5 sm:w-16"
                   style={{
                     background:
                       "linear-gradient(90deg, transparent, rgba(167,139,250,0.3), transparent)",
                   }}
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
                 />
 
                 {/* Next case study CTA */}
                 {nextProject && (
-                  <motion.div
-                    className="mt-3 w-full max-w-[260px] sm:mt-5 sm:max-w-[320px]"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
-                  >
+                  <div className="mt-3 w-full max-w-[260px] sm:mt-5 sm:max-w-[320px]">
                     <span className="mb-1.5 block text-center text-[9px] font-semibold uppercase tracking-[1.5px] text-brand-ink/20 sm:text-[10px]">
                       Next Case Study
                     </span>
@@ -337,7 +259,6 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                       }}
                       onClick={() => setShowCelebration(false)}
                     >
-                      {/* Thumbnail */}
                       <div className="relative h-[40px] w-[54px] shrink-0 overflow-hidden rounded-lg sm:h-[48px] sm:w-[64px]">
                         <Image
                           src={nextProject.coverUrl}
@@ -347,8 +268,6 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                           sizes="64px"
                         />
                       </div>
-
-                      {/* Info */}
                       <div className="flex min-w-0 flex-1 flex-col">
                         <span className="truncate font-brand text-12 font-bold text-brand-ink sm:text-14">
                           {nextProject.title}
@@ -359,35 +278,19 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                           </span>
                         )}
                       </div>
-
-                      {/* Arrow */}
                       <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-brand-ink/30 transition-colors group-hover:bg-brand-ink/5 group-hover:text-brand-ink/50 sm:h-8 sm:w-8">
-                        <svg
-                          width="13"
-                          height="13"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
                       </div>
                     </Link>
-                  </motion.div>
+                  </div>
                 )}
 
                 {/* Share this case study */}
-                <motion.button
+                <button
                   className="mt-3 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-medium text-brand-ink/30 transition-all hover:bg-brand-ink/5 hover:text-brand-ink/50 sm:mt-4 sm:text-12"
-                  style={{
-                    border: "1px solid rgba(167,139,250,0.12)",
-                  }}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.4, ease: "easeOut" }}
+                  style={{ border: "1px solid rgba(167,139,250,0.12)" }}
                   onClick={handleShare}
                 >
                   {shareCopied ? (
@@ -407,39 +310,21 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                       Share this case study
                     </>
                   )}
-                </motion.button>
+                </button>
 
                 {/* Dismiss hint */}
-                <motion.button
+                <button
                   className="mt-2 text-[10px] text-brand-ink/15 transition-colors hover:text-brand-ink/30 sm:mt-2 sm:text-11"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1, duration: 0.4 }}
                   onClick={() => setShowCelebration(false)}
                 >
                   tap to close
-                </motion.button>
+                </button>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Keyframes for celebration effects */}
-      <style>{`
-        @keyframes celebrate-breathe {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.01); }
-        }
-        @keyframes celebrate-orbit {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes celebrate-radiate {
-          0%, 100% { opacity: 0.5; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.05); }
-        }
-      `}</style>
     </>
   );
 }
