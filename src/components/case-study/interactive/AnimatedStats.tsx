@@ -70,7 +70,7 @@ function StatCard({
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="flex flex-col items-center rounded-xl border border-sand-200 bg-white p-6 text-center"
+      className="flex flex-col items-center rounded-xl border border-blue-100 bg-blue-50 p-6 text-center"
     >
       {stat.icon && (
         <div className="mb-3 h-8 w-8 text-neutral-400">{stat.icon}</div>

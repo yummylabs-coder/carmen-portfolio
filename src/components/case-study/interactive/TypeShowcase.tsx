@@ -50,7 +50,7 @@ export function TypeShowcase({
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={`rounded-2xl border border-sand-200 bg-sand-50 p-6 sm:p-8 ${className ?? ""}`}>
       {/* Load Google Font if provided */}
       {googleFontUrl && (
         // eslint-disable-next-line @next/next/no-page-custom-font
@@ -80,7 +80,7 @@ export function TypeShowcase({
         initial={{ opacity: 0, y: 16 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
         transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-        className="mb-8 overflow-hidden rounded-lg border border-sand-200 bg-sand-50 p-4"
+        className="mb-8 overflow-hidden rounded-lg border border-sand-200 bg-white p-4"
       >
         <p
           className="text-13 leading-relaxed text-neutral-400"

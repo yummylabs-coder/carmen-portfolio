@@ -30,6 +30,12 @@ const customSectionMap: Record<string, React.ComponentType<{ accentColor: string
   "learn-xyz": LearnXyzSections,
 };
 
+/* When custom sections already include their own Role / Outcomes,
+   skip the shared Notion-sourced ones to avoid duplicates. */
+const skipSharedSections: Record<string, { role?: boolean; outcomes?: boolean }> = {
+  "learn-xyz": { role: true, outcomes: true },
+};
+
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 /** Pre-build all case study pages at deploy time */
@@ -108,8 +114,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
         {/* The Challenge */}
         <Challenge text={study.challenge} />
 
-        {/* Our Role */}
-        <OurRole description={study.roleDescription} />
+        {/* Our Role — skip if custom sections handle it */}
+        {!skipSharedSections[slug]?.role && (
+          <OurRole description={study.roleDescription} />
+        )}
 
         {/* Content Sections — custom interactive or Notion fallback */}
         {customSectionMap[slug] ? (
@@ -134,8 +142,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
         {/* Sticky Notes Banner */}
         <StickyNotesBanner />
 
-        {/* Outcomes */}
-        <Outcomes outcomes={study.outcomes} />
+        {/* Outcomes — skip if custom sections handle it */}
+        {!skipSharedSections[slug]?.outcomes && (
+          <Outcomes outcomes={study.outcomes} />
+        )}
 
         {/* Next Case Study */}
         {nextProject && <NextCaseStudy project={nextProject} />}
