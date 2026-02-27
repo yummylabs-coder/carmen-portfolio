@@ -174,7 +174,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-brand-ink/20 backdrop-blur-[6px]"
+              className="absolute inset-0 bg-[#F5F0EA]/70 backdrop-blur-[14px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -201,16 +201,16 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
                   overflow: "hidden",
                 }}
               >
-                {/* Mesh gradient */}
+                {/* Mesh gradient — sandy base with soft color accents */}
                 <div
                   className="absolute inset-0"
                   style={{
                     background: `
-                      radial-gradient(circle at 25% 15%, rgba(244,114,182,0.18) 0%, transparent 45%),
-                      radial-gradient(circle at 75% 75%, rgba(167,139,250,0.28) 0%, transparent 50%),
-                      radial-gradient(circle at 15% 65%, rgba(103,232,249,0.18) 0%, transparent 45%),
-                      radial-gradient(circle at 85% 25%, rgba(251,191,36,0.12) 0%, transparent 40%),
-                      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.7) 0%, rgba(237,233,254,0.35) 55%, rgba(249,250,251,0.92) 100%)
+                      radial-gradient(circle at 25% 15%, rgba(244,114,182,0.14) 0%, transparent 45%),
+                      radial-gradient(circle at 75% 75%, rgba(167,139,250,0.2) 0%, transparent 50%),
+                      radial-gradient(circle at 15% 65%, rgba(103,232,249,0.12) 0%, transparent 45%),
+                      radial-gradient(circle at 85% 25%, rgba(251,191,36,0.1) 0%, transparent 40%),
+                      radial-gradient(circle at 50% 40%, rgba(245,240,234,1) 0%, rgba(245,240,234,0.97) 55%, rgba(245,240,234,0.95) 100%)
                     `,
                   }}
                 />

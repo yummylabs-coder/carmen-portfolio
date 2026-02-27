@@ -3,44 +3,25 @@
 import Image from "next/image";
 import { useState, useCallback, useEffect, useRef } from "react";
 
-/* ── Tiny landscape icon for the shimmer placeholder ───────────── */
-function PlaceholderIcon({ className = "" }: { className?: string }) {
+/* ── Animated image icon — pulses gently while loading ─────────── */
+function AnimatedImageIcon() {
   return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-      <circle cx="8.5" cy="8.5" r="1.5" />
-      <path d="M21 15l-5-5L5 21" />
-    </svg>
-  );
-}
-
-/* ── Shimmer skeleton shown while image loads ──────────────────── */
-function ShimmerPlaceholder() {
-  return (
-    <div className="absolute inset-0 z-[1] flex items-center justify-center overflow-hidden">
-      {/* Animated gradient sweep */}
-      <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-neutral-100 via-white to-neutral-100 bg-[length:200%_100%]" />
-      {/* Centered icon */}
-      <PlaceholderIcon className="relative z-10 text-neutral-300" />
-    </div>
-  );
-}
-
-/* ── Static fallback when an image fails to load ─────────────── */
-function ErrorPlaceholder() {
-  return (
-    <div className="absolute inset-0 z-[1] flex items-center justify-center bg-neutral-50">
-      <PlaceholderIcon className="text-neutral-300" />
+    <div className="absolute inset-0 z-[1] flex items-center justify-center bg-sand-50">
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="animate-pulse text-sand-300"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <path d="M21 15l-5-5L5 21" />
+      </svg>
     </div>
   );
 }
@@ -96,7 +77,6 @@ export function ImageWithShimmer({
   const handleLoad = useCallback(() => setIsLoaded(true), []);
   const handleError = useCallback(() => {
     setHasError(true);
-    setIsLoaded(true); // hide shimmer
   }, []);
 
   const imgClassName = `${className} transition-opacity duration-500 ${isLoaded && !hasError ? "opacity-100" : "opacity-0"}`;
@@ -108,11 +88,7 @@ export function ImageWithShimmer({
   if (fill) {
     return (
       <>
-        {hasError ? (
-          <ErrorPlaceholder />
-        ) : (
-          !isLoaded && <ShimmerPlaceholder />
-        )}
+        {(!isLoaded || hasError) && <AnimatedImageIcon />}
         <Image
           ref={setRef}
           src={src}
@@ -132,11 +108,7 @@ export function ImageWithShimmer({
   /* width/height mode — Image flows naturally, shimmer overlays */
   return (
     <div className="relative overflow-hidden">
-      {hasError ? (
-        <ErrorPlaceholder />
-      ) : (
-        !isLoaded && <ShimmerPlaceholder />
-      )}
+      {(!isLoaded || hasError) && <AnimatedImageIcon />}
       <Image
         ref={setRef}
         src={src}
