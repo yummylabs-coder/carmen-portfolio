@@ -10,6 +10,7 @@ import {
   partners,
   tools,
   testimonials,
+  labExperiments,
 } from "./acceleratorData";
 
 const YUMMY_URL = "https://yummy-labs.com";
@@ -489,7 +490,144 @@ function Gallery({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 8 — CTA
+   Section 8 — Lab Experiments
+   ═══════════════════════════════════ */
+
+function FloatingOrb({ delay, size, x, y, color }: { delay: number; size: number; x: string; y: string; color: string }) {
+  return (
+    <motion.div
+      className="absolute rounded-full"
+      style={{ width: size, height: size, left: x, top: y, background: color, filter: "blur(1px)" }}
+      animate={{
+        y: [0, -8, 0, 6, 0],
+        x: [0, 4, -3, 2, 0],
+        opacity: [0.3, 0.6, 0.4, 0.55, 0.3],
+      }}
+      transition={{ duration: 6, delay, repeat: Infinity, ease: "easeInOut" }}
+    />
+  );
+}
+
+function LabExperiments() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const experiment = labExperiments[0];
+  if (!experiment) return null;
+
+  return (
+    <div ref={ref} className="mt-2">
+      <span className="mb-5 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        Lab experiments
+      </span>
+
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative overflow-hidden rounded-3xl border border-sand-300"
+        style={{
+          background: "linear-gradient(145deg, #0D0B2E 0%, #1a1145 40%, #0f0a30 100%)",
+        }}
+      >
+        {/* Floating ambient orbs — the visual metaphor */}
+        <div className="pointer-events-none absolute inset-0">
+          <FloatingOrb delay={0} size={60} x="8%" y="15%" color="rgba(124,92,255,0.25)" />
+          <FloatingOrb delay={1.2} size={40} x="75%" y="20%" color="rgba(99,179,255,0.2)" />
+          <FloatingOrb delay={0.6} size={50} x="60%" y="65%" color="rgba(168,130,255,0.2)" />
+          <FloatingOrb delay={2} size={35} x="25%" y="75%" color="rgba(255,155,200,0.15)" />
+          <FloatingOrb delay={0.8} size={28} x="85%" y="60%" color="rgba(130,220,255,0.18)" />
+          <FloatingOrb delay={1.5} size={45} x="45%" y="10%" color="rgba(100,80,255,0.2)" />
+
+          {/* Subtle grid lines — hint of spatial structure */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 p-7 lg:p-8">
+          {/* Status badge */}
+          <div className="mb-5 flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-amber-300 backdrop-blur-sm">
+              <span className="relative flex h-[6px] w-[6px]">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-60" />
+                <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-amber-400" />
+              </span>
+              In progress
+            </span>
+            <span className="text-[11px] text-white/30">{experiment.platform}</span>
+          </div>
+
+          {/* Title area */}
+          <div className="mb-6 max-w-2xl">
+            <motion.h3
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="mb-2 font-brand text-[28px] font-extrabold leading-tight text-white"
+            >
+              {experiment.icon} {experiment.title}
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="mb-1 font-brand text-[16px] font-medium text-white/60"
+            >
+              {experiment.tagline}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="text-[14px] leading-relaxed text-white/45"
+            >
+              {experiment.description}
+            </motion.p>
+          </div>
+
+          {/* Feature list — 2 columns */}
+          <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {experiment.features.map((feature, i) => (
+              <motion.div
+                key={feature}
+                initial={{ opacity: 0, x: -8 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.5 + i * 0.07, duration: 0.4 }}
+                className="flex items-start gap-2 rounded-xl bg-white/[0.05] px-3.5 py-2.5 backdrop-blur-sm"
+              >
+                <span className="mt-0.5 text-[10px] text-purple-400">●</span>
+                <span className="text-[13px] leading-snug text-white/70">{feature}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {experiment.tags.map((tag, i) => (
+              <motion.span
+                key={tag}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: 0.8 + i * 0.05, type: "spring", stiffness: 300, damping: 20 }}
+                className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-[11px] font-medium text-white/50"
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════
+   Section 9 — CTA
    ═══════════════════════════════════ */
 function CtaSection() {
   return (
@@ -520,6 +658,7 @@ export function YummyLabsPage({ assets }: YummyLabsPageProps) {
       <Partners assets={assets} />
       <Testimonials assets={assets} />
       <Gallery assets={assets} />
+      <LabExperiments />
       <CtaSection />
     </PageEntrance>
   );
