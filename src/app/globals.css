@@ -247,8 +247,16 @@ body {
     color: #300101 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    font-size: 10pt !important;
   }
 
+  /* A4 page settings — tight margins for max content */
+  @page {
+    size: A4;
+    margin: 0.45in 0.5in;
+  }
+
+  /* Kill ALL extra spacing from layout wrappers */
   .resume-print {
     max-width: 100% !important;
     padding: 0 !important;
@@ -256,16 +264,55 @@ body {
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    /* Tighten the space-y gap for print */
+    gap: 0 !important;
+  }
+
+  /* Override Tailwind space-y on resume-print */
+  .resume-print > * + * {
+    margin-top: 6px !important;
   }
 
   /* Remove layout offsets from DashboardShell */
   main {
     margin-left: 0 !important;
-    padding: 24px !important;
+    padding: 0 !important;
+    gap: 0 !important;
   }
 
-  /* Keep sections together */
+  /* The resume card wrapper */
+  .resume-print-card {
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Dividers — minimal spacing */
+  .resume-divider {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+  }
+
+  /* Section headings — compact for print */
+  .resume-section-heading {
+    margin-bottom: 4px !important;
+    font-size: 9pt !important;
+  }
+
+  /* Experience entries — tighter */
+  .resume-entry + .resume-entry {
+    margin-top: 6px !important;
+  }
+
+  /* Allow content to flow across pages naturally — do NOT use break-inside: avoid
+     on large sections, or they push everything to page 2 */
   .resume-section {
+    break-inside: auto;
+  }
+
+  /* Only avoid breaks on small atomic elements */
+  .resume-entry {
     break-inside: avoid;
   }
 

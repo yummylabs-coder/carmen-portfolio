@@ -108,8 +108,8 @@ export function ResumePageContent({ entries }: ResumePageContentProps) {
       </div>
 
       {/* ── Resume Card ── */}
-      <div className="resume-print rounded-2xl border border-sand-300 bg-white p-6 sm:p-8">
-        <ResumeContent entries={entries} />
+      <div className="resume-print-card rounded-2xl border border-sand-300 bg-white p-5 sm:p-8">
+        <ResumeContent entries={entries} isPrintMode />
       </div>
 
       {/* ── Share Footer ── */}

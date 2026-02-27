@@ -3,12 +3,12 @@
 export const resumeProfile = {
   name: "Carmen Rincon",
   title: "Product Designer & Strategist",
-  location: "Berlin, Germany",
-  email: "carmen@yummy.design",
-  portfolio: "carmenrincon.com",
+  email: "carmenrincon92@gmail.com",
+  portfolio: "carmen-portfolio-iota.vercel.app",
   linkedin: "linkedin.com/in/carmenrincon",
+  accelerator: "yummylabs.com",
   summary:
-    "Product designer with 9+ years of experience building end-to-end digital products across startups and scale-ups. I specialize in turning complex problems into clear, delightful user experiences. Passionate about design systems, AI-powered tools, and helping other designers level up their craft.",
+    "Product designer with 9+ years of experience building end-to-end digital products across startups and scale-ups. I specialize in turning complex problems into clear, delightful user experiences — from early research and strategy through high-fidelity design systems and production code. Passionate about AI-powered tools and helping other designers level up their craft.",
 };
 
 export const resumeSkills = [
@@ -28,10 +28,13 @@ export const resumeSkills = [
     items: [
       "Figma",
       "Framer",
+      "Claude Code",
+      "Cursor",
       "Next.js",
       "Tailwind CSS",
-      "Notion",
       "Webflow",
+      "Notion",
+      "Linear",
     ],
   },
   {
@@ -48,8 +51,8 @@ export const resumeSkills = [
 
 export const resumeEducation = [
   {
-    institution: "TBD",
-    degree: "TBD",
-    year: "TBD",
+    institution: "Savannah College of Art and Design (SCAD)",
+    degree: "Bachelor of Fine Arts",
+    year: "2016",
   },
 ];
