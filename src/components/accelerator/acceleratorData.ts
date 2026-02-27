@@ -147,42 +147,6 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
-/* ── Lab Experiments ─── */
-
-export interface LabExperiment {
-  title: string;
-  tagline: string;
-  description: string;
-  status: "in-progress" | "completed";
-  platform: string;
-  sprint: string;
-  tags: string[];
-  features: string[];
-  icon: string;
-}
-
-export const labExperiments: LabExperiment[] = [
-  {
-    title: "Ambient OS",
-    tagline: "What comes after screens?",
-    description:
-      "A conceptual operating system that dissolves into your environment. No screens — just voice, gesture, haptics, and AI that anticipates needs from spatial context. Exploring the edges of post-screen interaction design.",
-    status: "in-progress",
-    platform: "Conceptual / visionOS",
-    sprint: "Future Interfaces Lab",
-    tags: ["Ambient Computing", "Voice UI", "Gesture", "Spatial", "AI"],
-    features: [
-      "Voice + gesture + haptic interaction model",
-      "Notifications as spatial audio whispers",
-      "Apps as contextual floating orbs",
-      "Your environment IS the interface",
-      "AI anticipates needs from context",
-      "Privacy zones via gesture boundaries",
-    ],
-    icon: "\u2728",
-  },
-];
-
 export const galleryItems: GalleryItem[] = [
   { label: "Mentoring session", slug: "gallery-mentoring" },
   { label: "Designer work", slug: "gallery-work-1" },

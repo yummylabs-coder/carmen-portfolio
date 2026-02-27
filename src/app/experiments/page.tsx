@@ -47,13 +47,44 @@ const fallbackExperiments = [
   },
 ];
 
+/* ── Local image overrides for experiments without Notion-hosted images ── */
+const localImageOverrides: Record<
+  string,
+  { coverUrl: string; galleryUrls: string[]; galleryCaptions: string[] }
+> = {
+  "ambient os": {
+    coverUrl: "/experiments/ambient-os-cover.jpg",
+    galleryUrls: [
+      "/experiments/ambient-os-gallery-1.jpg",
+      "/experiments/ambient-os-gallery-2.jpg",
+      "/experiments/ambient-os-gallery-3.jpg",
+      "/experiments/ambient-os-gallery-4.jpg",
+    ],
+    galleryCaptions: [
+      "Apps as Contextual Orbs — floating spatial interface model",
+      "Voice + Gesture + Haptics — multi-modal interaction layer",
+      "Gesture-Defined Privacy Boundaries — room-level control",
+      "Spatial Audio Whispers — notification priority system",
+    ],
+  },
+};
+
 export default async function ExperimentsRoute() {
   const [experimentsRaw, previews] = await Promise.all([
     getExperiments(),
     getExperimentPreviews(),
   ]);
 
-  const experiments = experimentsRaw.length > 0 ? experimentsRaw : fallbackExperiments;
+  const base = experimentsRaw.length > 0 ? experimentsRaw : fallbackExperiments;
+
+  // Enrich experiments with local images when Notion doesn't have them
+  const experiments = base.map((exp) => {
+    const override = localImageOverrides[exp.name.toLowerCase()];
+    if (override && !("coverUrl" in exp && exp.coverUrl)) {
+      return { ...exp, ...override };
+    }
+    return exp;
+  });
 
   return (
     <DashboardShell>
