@@ -161,22 +161,22 @@ function NoteForm() {
 
   return (
     <motion.div
-      className="relative overflow-hidden rounded-xl border border-sand-200 bg-sand-50 p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
-      animate={{ rotate: [0, -0.4, 0.4, -0.2, 0.2, 0] }}
-      transition={{ duration: 3, delay: 0.5, ease: "easeInOut" }}
+      className="relative rounded-xl border border-sand-200 bg-sand-50 p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+      animate={{ rotate: [0, -1, 1, -0.6, 0.6, -0.3, 0] }}
+      transition={{ duration: 2, delay: 0.3, ease: "easeInOut" }}
     >
       {/* Dotted grid pattern — designer grid paper */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl opacity-[0.55]"
         style={{
-          backgroundImage: "radial-gradient(circle, #C4B5A0 0.7px, transparent 0.7px)",
+          backgroundImage: "radial-gradient(circle, #B5A48E 0.8px, transparent 0.8px)",
           backgroundSize: "14px 14px",
         }}
       />
 
-      {/* Washi tape — rotated, half in / half out */}
-      <div className="absolute -top-[8px] left-[38%] z-10 -translate-x-1/2 rotate-[-3deg]">
-        <div className="h-[22px] w-[72px] rounded-[3px] bg-white/90 shadow-[0_1px_4px_rgba(0,0,0,0.08)] border border-sand-200/60" />
+      {/* Washi tape — rotated, half in / half out, sits above the container */}
+      <div className="absolute -top-[10px] left-[38%] z-20 -translate-x-1/2 rotate-[-3deg]">
+        <div className="h-[24px] w-[76px] rounded-[3px] bg-white/95 shadow-[0_1px_6px_rgba(0,0,0,0.1)] border border-sand-200/50" />
       </div>
 
       {sent ? (
