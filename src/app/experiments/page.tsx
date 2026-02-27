@@ -53,12 +53,12 @@ const localImageOverrides: Record<
   { coverUrl: string; galleryUrls: string[]; galleryCaptions: string[] }
 > = {
   "ambient os": {
-    coverUrl: "/experiments/ambient-os-cover.jpg",
+    coverUrl: "/images/ambient-os/ambient-os-cover.jpg",
     galleryUrls: [
-      "/experiments/ambient-os-gallery-1.jpg",
-      "/experiments/ambient-os-gallery-2.jpg",
-      "/experiments/ambient-os-gallery-3.jpg",
-      "/experiments/ambient-os-gallery-4.jpg",
+      "/images/ambient-os/ambient-os-gallery-1.jpg",
+      "/images/ambient-os/ambient-os-gallery-2.jpg",
+      "/images/ambient-os/ambient-os-gallery-3.jpg",
+      "/images/ambient-os/ambient-os-gallery-4.jpg",
     ],
     galleryCaptions: [
       "Apps as Contextual Orbs — floating spatial interface model",
@@ -77,13 +77,10 @@ export default async function ExperimentsRoute() {
 
   const base = experimentsRaw.length > 0 ? experimentsRaw : fallbackExperiments;
 
-  // Enrich experiments with local images when Notion doesn't have them
+  // Enrich experiments with locally-stored images
   const experiments = base.map((exp) => {
-    const override = localImageOverrides[exp.name.toLowerCase()];
-    if (override && !("coverUrl" in exp && exp.coverUrl)) {
-      return { ...exp, ...override };
-    }
-    return exp;
+    const override = localImageOverrides[exp.name.toLowerCase().trim()];
+    return override ? { ...exp, ...override } : exp;
   });
 
   return (

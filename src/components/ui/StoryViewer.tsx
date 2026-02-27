@@ -264,7 +264,9 @@ export function StoryViewer({
 
       {/* Content container — image centered in viewport, metadata compact */}
       <div
-        className="relative flex h-full w-full max-w-[480px] flex-col items-center px-4 py-6 sm:py-10"
+        className={`relative flex h-full w-full flex-col items-center px-4 py-6 sm:py-10 ${
+          aspect === "landscape" ? "max-w-[800px]" : "max-w-[480px]"
+        }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -368,7 +370,7 @@ export function StoryViewer({
                       src={slide.imageUrl}
                       alt={slide.label}
                       fill
-                      sizes="(max-width: 640px) 100vw, 480px"
+                      sizes="(max-width: 640px) 100vw, 800px"
                       className="object-cover"
                       quality={85}
                       priority
@@ -406,7 +408,7 @@ export function StoryViewer({
                     src={slides[currentIndex + 1].imageUrl!}
                     alt=""
                     fill
-                    sizes="(max-width: 640px) 100vw, 480px"
+                    sizes="(max-width: 640px) 100vw, 800px"
                     className="pointer-events-none opacity-0"
                     quality={85}
                     aria-hidden="true"

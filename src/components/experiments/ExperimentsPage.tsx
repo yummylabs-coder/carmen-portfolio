@@ -194,7 +194,7 @@ function toStorySlides(experiment: Experiment): StorySlide[] {
       id: `${experiment.id}-img-${i}`,
       imageUrl: url,
       label: captions[i] || experiment.name,
-      caption: captions[i],
+      caption: captions[i] ? experiment.name : undefined,
     });
   });
 
