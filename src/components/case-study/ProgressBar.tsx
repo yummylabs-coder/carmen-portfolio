@@ -63,11 +63,12 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
   }, [handleScroll]);
 
   // Lock body scroll when celebration is showing
+  const savedScrollY = useRef(0);
   useEffect(() => {
     if (!showCelebration) return;
-    const scrollY = window.scrollY;
+    savedScrollY.current = window.scrollY;
     document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
+    document.body.style.top = `-${savedScrollY.current}px`;
     document.body.style.left = "0";
     document.body.style.right = "0";
     return () => {
@@ -75,9 +76,22 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
       document.body.style.top = "";
       document.body.style.left = "";
       document.body.style.right = "";
-      window.scrollTo(0, scrollY);
+      window.scrollTo(0, savedScrollY.current);
     };
   }, [showCelebration]);
+
+  // Also clean up body styles on unmount (e.g. navigation while celebration is open)
+  useEffect(() => {
+    return () => {
+      if (document.body.style.position === "fixed") {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        window.scrollTo(0, savedScrollY.current);
+      }
+    };
+  }, []);
 
   const handleShare = useCallback(async () => {
     const url = window.location.href;

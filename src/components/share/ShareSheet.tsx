@@ -75,7 +75,8 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
         d: (p.summary || "").slice(0, 140),
         k: (p.tags || []).slice(0, 4),
       }));
-      params.set("d", btoa(JSON.stringify(payload)));
+      // Use encodeURIComponent + unescape to handle Unicode characters safely
+      params.set("d", btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
     } catch {
       // Skip if encoding fails (rare Unicode edge case)
     }
@@ -88,10 +89,21 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
     ? `Selected Work for ${companyName.trim()} — Carmen Rincon`
     : "Selected Work by Carmen Rincon";
 
-  // For email body: include note + URL together
+  // For email body: use a clean short URL (without the bulky base64 `d` param)
+  // The share page will still resolve projects via Notion fallback tiers
+  const emailShareUrl = (() => {
+    const slugs = selectedProjects.map((p) => p.slug).join(",");
+    const base = `${siteUrl}/share/${slugs}`;
+    const params = new URLSearchParams();
+    if (companyName.trim()) params.set("for", companyName.trim());
+    if (note.trim()) params.set("note", note.trim());
+    const qs = params.toString();
+    return qs ? `${base}?${qs}` : base;
+  })();
+
   const emailBody = note.trim()
-    ? `${note.trim()}\n\n${shareUrl}`
-    : shareUrl;
+    ? `${note.trim()}\n\n${emailShareUrl}`
+    : emailShareUrl;
 
   // Copy ONLY the URL (note is embedded as ?note= param, so recipient sees it on the page)
   const handleCopy = useCallback(async () => {
@@ -130,7 +142,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
     liTimerRef.current = setTimeout(() => setLinkedInToast(false), 4000);
   }, [note, shareUrl]);
 
-  const emailUrl = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(emailBody)}`;
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&su=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(emailBody)}`;
   const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
   const xUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(note.trim() || shareTitle)}`;
 
@@ -229,11 +241,13 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                   </p>
                   <div className="grid grid-cols-3 gap-2">
                     <a
-                      href={emailUrl}
+                      href={gmailUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex flex-col items-center gap-1.5 rounded-xl border border-sand-200 bg-sand-50 py-3 text-11 font-medium text-neutral-500 transition-colors hover:bg-sand-100"
                     >
                       <ContactIcon size={18} />
-                      Email
+                      Gmail
                     </a>
                     <a
                       href={linkedInUrl}
@@ -294,8 +308,8 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                     </p>
 
                     {note.trim() && (
-                      <div className="mt-2 rounded-lg border border-sand-200 bg-white px-2.5 py-2 text-11 leading-relaxed text-neutral-500">
-                        &ldquo;{note.trim()}&rdquo;
+                      <div className="mt-2 overflow-hidden rounded-lg border border-sand-200 bg-white px-2.5 py-2 text-11 leading-relaxed text-neutral-500">
+                        <p className="line-clamp-3">&ldquo;{note.trim()}&rdquo;</p>
                       </div>
                     )}
 

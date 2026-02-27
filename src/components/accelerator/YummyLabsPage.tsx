@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import type { YummyAssetsMap } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
@@ -81,8 +83,11 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
    Section 2 — Problem + Role
    ═══════════════════════════════════ */
 function ProblemAndRole() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
   return (
-    <div className="relative z-10 flex flex-col gap-5 lg:flex-row">
+    <div ref={ref} className="relative z-10 flex flex-col gap-5 lg:flex-row">
       {/* The Problem card */}
       <div className="flex-shrink-0 rounded-3xl bg-[#2216ff] p-6 text-white lg:w-[540px]">
         <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
@@ -122,16 +127,26 @@ function ProblemAndRole() {
           Co-Founder & Sprint Leader
         </h3>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2">
-          {roles.map((role) => (
-            <div
+          {roles.map((role, i) => (
+            <motion.div
               key={role.text}
+              initial={{ opacity: 0, x: -10 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+              transition={{ duration: 0.4, delay: 0.15 + i * 0.07, ease: "easeOut" }}
               className="flex items-center gap-1.5 rounded-lg bg-sand-50 px-3 py-2"
             >
-              <span className="text-[14px]">{role.icon}</span>
+              <motion.span
+                className="text-[14px]"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.4, delay: 0.25 + i * 0.07, type: "spring", stiffness: 200, damping: 12 }}
+              >
+                {role.icon}
+              </motion.span>
               <span className="font-body text-[13px] font-medium text-neutral-700">
                 {role.text}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -181,16 +196,27 @@ const statIcons: Record<string, React.ReactNode> = {
 };
 
 function Stats() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
   return (
-    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {stats.map((stat) => (
-        <div
+    <div ref={ref} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {stats.map((stat, i) => (
+        <motion.div
           key={stat.label}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
           className="rounded-2xl border border-sand-300 bg-sand-100 px-[17px] py-5 text-center transition-transform duration-300 ease-out hover:-rotate-2 hover:scale-[1.04]"
         >
-          <div className="mb-2 flex justify-center text-[#300101]">
+          <motion.div
+            className="mb-2 flex justify-center text-[#300101]"
+            initial={{ scale: 0.4, opacity: 0 }}
+            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 + i * 0.1, type: "spring", stiffness: 200, damping: 12 }}
+          >
             {statIcons[stat.label] ?? stat.icon}
-          </div>
+          </motion.div>
           <div
             className="font-brand text-[32px] font-extrabold leading-relaxed"
             style={{
@@ -205,7 +231,7 @@ function Stats() {
           <div className="font-body text-[12px] font-semibold uppercase tracking-[0.03em] text-gray-500">
             {stat.label}
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

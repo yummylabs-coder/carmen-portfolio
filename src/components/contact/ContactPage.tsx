@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import { DiscordCommunityCard } from "@/components/contact/DiscordCommunityCard";
 
@@ -159,14 +160,27 @@ function NoteForm() {
   }
 
   return (
-    <div className="relative rounded-xl border border-sand-200 bg-sand-50 p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-      {/* Washi tape decoration */}
-      <div className="absolute left-1/2 -top-[5px] -translate-x-1/2 rotate-[-1.5deg]">
-        <div className="h-[10px] w-[52px] rounded-[2px] bg-orange-200/90 shadow-sm" />
+    <motion.div
+      className="relative overflow-hidden rounded-xl border border-sand-200 bg-sand-50 p-5 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+      animate={{ rotate: [0, -0.4, 0.4, -0.2, 0.2, 0] }}
+      transition={{ duration: 3, delay: 0.5, ease: "easeInOut" }}
+    >
+      {/* Dotted grid pattern — designer grid paper */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #C4B5A0 0.7px, transparent 0.7px)",
+          backgroundSize: "14px 14px",
+        }}
+      />
+
+      {/* Washi tape — rotated, half in / half out */}
+      <div className="absolute -top-[8px] left-[38%] z-10 -translate-x-1/2 rotate-[-3deg]">
+        <div className="h-[22px] w-[72px] rounded-[3px] bg-white/90 shadow-[0_1px_4px_rgba(0,0,0,0.08)] border border-sand-200/60" />
       </div>
 
       {sent ? (
-        <div className="py-5 text-center">
+        <div className="relative z-[1] py-5 text-center">
           <div className="mb-2 text-[28px]">&#10024;</div>
           <h3 className="font-brand text-15 font-bold text-brand-ink">
             Note sent!
@@ -176,7 +190,7 @@ function NoteForm() {
           </p>
         </div>
       ) : (
-        <>
+        <div className="relative z-[1]">
           <h2 className="mt-1 font-brand text-15 font-bold text-brand-ink">
             Leave me a note &#128221;
           </h2>
@@ -262,9 +276,9 @@ function NoteForm() {
                   : "Send note \u2728"}
             </button>
           </form>
-        </>
+        </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -324,10 +338,14 @@ export function ContactPage() {
         {/* Left: Note Form */}
         <NoteForm />
 
-        {/* Right: Discord + Email stacked */}
+        {/* Right: Email first on mobile, Discord below */}
         <div className="flex flex-col gap-3">
-          <DiscordCommunityCard />
-          <EmailCard />
+          <div className="order-2 lg:order-1">
+            <DiscordCommunityCard />
+          </div>
+          <div className="order-1 lg:order-2">
+            <EmailCard />
+          </div>
         </div>
       </div>
     </PageEntrance>
