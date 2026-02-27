@@ -132,7 +132,7 @@ export function ResumeContent({ entries, isPrintMode }: ResumeContentProps) {
                     >
                       <span className="text-neutral-500">{role.title}</span>
                       <span className="text-neutral-400">
-                        {role.start} – {role.end}
+                        {role.start} - {role.end}
                       </span>
                     </div>
                   ))}
