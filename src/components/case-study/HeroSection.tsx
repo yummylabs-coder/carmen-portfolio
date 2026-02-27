@@ -231,6 +231,7 @@ export function HeroSection({ study, readTime, brand }: HeroSectionProps) {
                   className="h-auto w-full"
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   priority
+                  placeholderClassName="bg-transparent"
                 />
               )}
             </div>

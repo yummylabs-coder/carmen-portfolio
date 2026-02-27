@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useState, useCallback, useEffect, useRef } from "react";
 
 /* ── Animated image icon — pulses gently while loading ─────────── */
-function AnimatedImageIcon() {
+function AnimatedImageIcon({ bgClassName = "bg-sand-50" }: { bgClassName?: string }) {
   return (
-    <div className="absolute inset-0 z-[1] flex items-center justify-center bg-sand-50">
+    <div className={`absolute inset-0 z-[1] flex items-center justify-center ${bgClassName}`}>
       <svg
         width="28"
         height="28"
@@ -38,6 +38,8 @@ interface ImageWithShimmerProps {
   priority?: boolean;
   className?: string;
   quality?: number;
+  /** Custom bg class for the loading placeholder (default: "bg-sand-50") */
+  placeholderClassName?: string;
 }
 
 export function ImageWithShimmer({
@@ -50,6 +52,7 @@ export function ImageWithShimmer({
   priority,
   className = "",
   quality,
+  placeholderClassName,
 }: ImageWithShimmerProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -88,7 +91,7 @@ export function ImageWithShimmer({
   if (fill) {
     return (
       <>
-        {(!isLoaded || hasError) && <AnimatedImageIcon />}
+        {(!isLoaded || hasError) && <AnimatedImageIcon bgClassName={placeholderClassName} />}
         <Image
           ref={setRef}
           src={src}
@@ -108,7 +111,7 @@ export function ImageWithShimmer({
   /* width/height mode — Image flows naturally, shimmer overlays */
   return (
     <div className="relative overflow-hidden">
-      {(!isLoaded || hasError) && <AnimatedImageIcon />}
+      {(!isLoaded || hasError) && <AnimatedImageIcon bgClassName={placeholderClassName} />}
       <Image
         ref={setRef}
         src={src}

@@ -43,6 +43,7 @@ export function MainHeroImage({ src, alt }: MainHeroImageProps) {
             className="object-cover"
             priority
             sizes="100vw"
+            placeholderClassName="bg-sand-100/60"
           />
         )}
       </div>

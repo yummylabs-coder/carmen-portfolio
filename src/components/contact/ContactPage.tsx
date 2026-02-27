@@ -167,16 +167,39 @@ function NoteForm() {
     >
       {/* Dotted grid pattern — designer grid paper */}
       <div
-        className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl opacity-[0.55]"
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl opacity-[0.47]"
         style={{
           backgroundImage: "radial-gradient(circle, #B5A48E 0.8px, transparent 0.8px)",
           backgroundSize: "14px 14px",
         }}
       />
 
-      {/* Washi tape — rotated, half in / half out, sits above the container */}
-      <div className="absolute -top-[10px] left-[38%] z-20 -translate-x-1/2 rotate-[-3deg]">
-        <div className="h-[24px] w-[76px] rounded-[3px] bg-white/95 shadow-[0_1px_6px_rgba(0,0,0,0.1)] border border-sand-200/50" />
+      {/* Washi tape — semi-transparent with diagonal stripes, rotated */}
+      <div className="absolute -top-[11px] left-[38%] z-20 -translate-x-1/2 rotate-[-3deg]">
+        <div
+          className="relative h-[22px] w-[80px] overflow-hidden"
+          style={{
+            background: "rgba(226, 217, 203, 0.65)",
+            borderRadius: "1px",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+          }}
+        >
+          {/* Diagonal stripe texture */}
+          <div
+            className="absolute inset-0 opacity-[0.18]"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(135deg, transparent, transparent 2.5px, rgba(180,164,142,0.6) 2.5px, rgba(180,164,142,0.6) 3.5px)",
+            }}
+          />
+          {/* Subtle edge roughness via inset shadow */}
+          <div
+            className="absolute inset-0"
+            style={{
+              boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.5), inset 0 -0.5px 0 rgba(0,0,0,0.04)",
+            }}
+          />
+        </div>
       </div>
 
       {sent ? (
