@@ -293,7 +293,7 @@ function QuickSummary() {
       <h3 className="mb-3 font-brand text-[14px] font-bold text-white">
         Quick Summary
       </h3>
-      <div className="space-y-3 text-12 leading-relaxed text-white/75">
+      <div className="space-y-3 text-[14px] leading-[1.65] text-white/80">
         <p>
           I&apos;ve been in the design industry for almost 10 years now.
           Every position I took and every risk I made with my career taught
