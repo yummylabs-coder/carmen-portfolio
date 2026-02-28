@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import type { YummyAssetsMap } from "@/lib/types";
+import type { YummyAssetsMap, SprintDay } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
   stats,
@@ -11,13 +11,14 @@ import {
   partners,
   tools,
   testimonials,
-  sprintWeeks,
 } from "./acceleratorData";
 
 const YUMMY_URL = "https://yummy-labs.com";
+const RESERVE_URL = "https://www.yummy-labs.com/reserve-your-seat";
 
 interface YummyLabsPageProps {
   assets: YummyAssetsMap;
+  sprintDays?: SprintDay[];
 }
 
 /* ─── Helpers ─── */
@@ -504,11 +505,43 @@ function RoleAndStats() {
 }
 
 /* ═══════════════════════════════════
-   Section 4 — How It Works
+   Section 4 — Sprint Calendar (interactive)
    ═══════════════════════════════════ */
-function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
+const DAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"];
+
+function SprintCalendar({ days }: { days: SprintDay[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  // Split into weeks of 7
+  const week1 = days.slice(0, 7);
+  const week2 = days.slice(7, 14);
+  const [activeWeek, setActiveWeek] = useState(0); // 0 = week 1, 1 = week 2
+  const [selectedIdx, setSelectedIdx] = useState(0); // index within current week
+
+  const currentWeek = activeWeek === 0 ? week1 : week2;
+  const selectedDay = currentWeek[selectedIdx] ?? currentWeek[0];
+
+  // Derive month name from first day's date
+  const firstDate = new Date(week1[0]?.date + "T12:00:00");
+  const monthName = firstDate.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  // Week range labels
+  const weekRanges = [week1, week2].map((w) => {
+    if (w.length === 0) return "";
+    const start = new Date(w[0].date + "T12:00:00");
+    const end = new Date(w[w.length - 1].date + "T12:00:00");
+    const s = start.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    const e = end.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return `${s}–${e}`;
+  });
+
+  const switchWeek = (newWeek: number) => {
+    setActiveWeek(newWeek);
+    setSelectedIdx(0);
+  };
+
+  if (days.length === 0) return null;
 
   return (
     <motion.div
@@ -525,95 +558,168 @@ function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
       <h3 className="mb-1 font-brand text-[20px] font-bold leading-tight text-gray-800">
         2-week sprints. Real startups. Shipped products.
       </h3>
-      <p className="mb-6 text-[13px] leading-relaxed text-neutral-400">
-        Each cohort partners with a real AI startup. You get the brief, the data, and 14 days to ship.
+      <p className="mb-5 text-[13px] leading-relaxed text-neutral-400">
+        Tap a day to see what you&rsquo;d be working on.
       </p>
 
-      {/* Sprint Timeline */}
-      <div className="relative flex flex-col gap-4 lg:flex-row lg:gap-0">
-        {sprintWeeks.map((week, i) => (
-          <motion.div
-            key={week.week}
-            className="relative flex-1"
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.45, delay: 0.15 + i * 0.15 }}
-          >
-            {/* Connecting arrow — visible on desktop between cards */}
-            {i === 0 && (
-              <div className="pointer-events-none absolute -right-6 top-1/2 z-10 hidden -translate-y-1/2 lg:block">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-sand-300 bg-white shadow-sm">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </div>
-              </div>
-            )}
+      {/* Calendar widget */}
+      <div className="overflow-hidden rounded-2xl border border-sand-200 bg-sand-50">
+        {/* Month + week nav */}
+        <div className="flex items-center justify-between border-b border-sand-200 px-4 py-3 sm:px-5">
+          <div>
+            <div className="font-brand text-[15px] font-semibold text-brand-ink">{monthName}</div>
+            <div className="text-[11px] font-medium text-neutral-400">
+              Week {activeWeek + 1} · {weekRanges[activeWeek]}
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => switchWeek(0)}
+              disabled={activeWeek === 0}
+              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors disabled:opacity-30 enabled:hover:bg-sand-200"
+              aria-label="Previous week"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button
+              onClick={() => switchWeek(1)}
+              disabled={activeWeek === 1}
+              className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors disabled:opacity-30 enabled:hover:bg-sand-200"
+              aria-label="Next week"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
-            {/* Mobile arrow between cards */}
-            {i === 0 && (
-              <div className="flex justify-center py-1 lg:hidden">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-sand-300 bg-sand-50">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <polyline points="19 12 12 19 5 12" />
-                  </svg>
-                </div>
-              </div>
-            )}
+        {/* Day grid */}
+        <div className="px-2 pb-2 pt-3 sm:px-4">
+          {/* Day letters */}
+          <div className="mb-1 grid grid-cols-7 text-center">
+            {DAY_LETTERS.map((letter, i) => (
+              <span
+                key={i}
+                className={`text-[11px] font-semibold ${
+                  i >= 5 ? "text-neutral-300" : "text-neutral-400"
+                }`}
+              >
+                {letter}
+              </span>
+            ))}
+          </div>
 
-            {/* Card */}
-            <div
-              className={`h-full rounded-2xl border p-5 ${
-                i === 0
-                  ? "border-[#7c3aed]/20 bg-gradient-to-br from-[#f5f3ff] to-[#ede9fe] lg:mr-8"
-                  : "border-[#7c3aed]/20 bg-gradient-to-br from-[#ede9fe] to-[#e4dffc] lg:ml-8"
+          {/* Day numbers — large tap targets */}
+          <div className="grid grid-cols-7">
+            <AnimatePresence mode="wait">
+              {currentWeek.map((day, i) => {
+                const d = new Date(day.date + "T12:00:00");
+                const dayNum = d.getDate();
+                const isSelected = i === selectedIdx;
+                const isRest = day.isRestDay;
+
+                return (
+                  <motion.button
+                    key={`${activeWeek}-${i}`}
+                    onClick={() => setSelectedIdx(i)}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: i * 0.03 }}
+                    className="group flex flex-col items-center gap-1 py-2"
+                    aria-label={`${day.name} — ${day.description}`}
+                  >
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-full text-[15px] font-semibold transition-all sm:h-11 sm:w-11 ${
+                        isSelected
+                          ? "bg-[#7c3aed] text-white shadow-md shadow-[#7c3aed]/25"
+                          : isRest
+                            ? "text-neutral-300 group-hover:bg-sand-200"
+                            : "text-brand-ink group-hover:bg-sand-200"
+                      }`}
+                    >
+                      {dayNum}
+                    </div>
+                    {/* Dot indicator */}
+                    <div
+                      className={`h-1 w-1 rounded-full transition-colors ${
+                        isSelected
+                          ? "bg-[#7c3aed]"
+                          : day.moduleNumber
+                            ? "bg-[#7c3aed]/30"
+                            : "bg-transparent"
+                      }`}
+                    />
+                  </motion.button>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Selected day detail card */}
+        <div className="border-t border-sand-200 px-4 py-4 sm:px-5">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${activeWeek}-${selectedIdx}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className={`rounded-xl p-4 ${
+                selectedDay?.isRestDay
+                  ? "bg-sand-100"
+                  : "bg-gradient-to-br from-[#f5f3ff] to-[#ede9fe]"
               }`}
             >
-              {/* Week badge + title row */}
-              <div className="mb-3 flex items-center gap-3">
-                <span className="inline-flex items-center rounded-lg bg-[#7c3aed] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white shadow-sm">
-                  Week {week.week}
-                </span>
-                <span className="text-[11px] font-medium text-[#7c3aed]/50">
-                  {week.week === 1 ? "Days 1–7" : "Days 8–14"}
+              <div className="mb-2 flex items-center gap-2.5">
+                {selectedDay?.moduleNumber ? (
+                  <span className="inline-flex items-center rounded-md bg-[#7c3aed] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-white">
+                    Module {selectedDay.moduleNumber}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 rounded-md bg-sand-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-neutral-400">
+                    {selectedDay?.isRestDay ? "Rest day" : "Day off"}
+                  </span>
+                )}
+                <span className="text-[11px] text-neutral-400">
+                  {selectedDay
+                    ? new Date(selectedDay.date + "T12:00:00").toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    : ""}
                 </span>
               </div>
-
-              <h4 className="mb-1 font-brand text-[16px] font-bold text-[#5b21b6]">
-                {week.title}
+              <h4 className={`mb-1 font-brand text-[16px] font-bold ${
+                selectedDay?.isRestDay ? "text-neutral-500" : "text-[#5b21b6]"
+              }`}>
+                {selectedDay?.name}
               </h4>
-              <p className="mb-4 text-[12px] leading-relaxed text-neutral-400">
-                {week.subtitle}
+              <p className="text-[13px] leading-relaxed text-neutral-400">
+                {selectedDay?.description}
               </p>
-
-              {/* Activity list */}
-              <ul className="space-y-2">
-                {week.activities.map((activity) => (
-                  <li key={activity} className="flex items-start gap-2.5 text-[12px] leading-snug text-gray-600">
-                    <span className="mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#7c3aed]/10">
-                      <svg width="8" height="8" viewBox="0 0 16 16" fill="#7c3aed">
-                        <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z" />
-                      </svg>
-                    </span>
-                    {activity}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
-      {/* Bottom note */}
-      <div className="mt-5 flex items-center gap-2 rounded-xl bg-sand-50 px-4 py-3">
-        <span className="text-[14px]">🎯</span>
-        <p className="text-[12px] leading-relaxed text-neutral-400">
-          <span className="font-semibold text-neutral-500">Zero &ldquo;watch-only&rdquo; mode.</span>{" "}
-          You get real startup data, real mentorship, and ship a live product you can show in interviews.
-        </p>
-      </div>
+      {/* CTA */}
+      <a
+        href={RESERVE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-[#7c3aed] px-5 py-3 font-body text-[14px] font-semibold text-white transition-colors hover:bg-[#6d28d9]"
+      >
+        I&rsquo;m ready to sprint
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
+      </a>
     </motion.div>
   );
 }
@@ -841,13 +947,13 @@ function CtaSection() {
 /* ═══════════════════════════════════
    Main Page
    ═══════════════════════════════════ */
-export function YummyLabsPage({ assets }: YummyLabsPageProps) {
+export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
   return (
     <PageEntrance>
       <Header assets={assets} />
       <ProblemHero assets={assets} />
       <RoleAndStats />
-      <HowItWorks assets={assets} />
+      <SprintCalendar days={sprintDays ?? []} />
       <Partners assets={assets} />
       <Testimonials assets={assets} />
       <Gallery assets={assets} />

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { YummyLabsPage } from "@/components/accelerator/YummyLabsPage";
-import { getYummyAssets } from "@/lib/notion";
+import { getYummyAssets, getSprintCalendar } from "@/lib/notion";
 
 export const metadata: Metadata = {
   title: "Accelerator",
@@ -12,11 +12,14 @@ export const metadata: Metadata = {
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 export default async function AcceleratorPage() {
-  const assets = await getYummyAssets();
+  const [assets, sprintDays] = await Promise.all([
+    getYummyAssets(),
+    getSprintCalendar(),
+  ]);
 
   return (
     <DashboardShell>
-      <YummyLabsPage assets={assets} />
+      <YummyLabsPage assets={assets} sprintDays={sprintDays} />
     </DashboardShell>
   );
 }

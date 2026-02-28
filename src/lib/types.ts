@@ -207,3 +207,13 @@ export interface RadarTopic {
   color: string;
   order: number;
 }
+
+export interface SprintDay {
+  id: string;
+  name: string;
+  date: string; // ISO date string e.g. "2026-03-09"
+  moduleNumber: number | null;
+  description: string;
+  isRestDay: boolean;
+  order: number;
+}

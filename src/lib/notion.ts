@@ -1,7 +1,7 @@
 import "server-only";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import type { CaseStudy, CaseStudyDetail, CaseStudySection, RichTextSpan, SectionLayout, AboutPhoto, Favorite, ExperienceEntry, Experiment, ExperimentPreviewMap, CaseStudyPreviewMap, YummyAsset, YummyAssetsMap, ProcessPhaseImages, TravelDestination, Track, RadarTopic } from "./types";
+import type { CaseStudy, CaseStudyDetail, CaseStudySection, RichTextSpan, SectionLayout, AboutPhoto, Favorite, ExperienceEntry, Experiment, ExperimentPreviewMap, CaseStudyPreviewMap, YummyAsset, YummyAssetsMap, ProcessPhaseImages, TravelDestination, Track, RadarTopic, SprintDay } from "./types";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID!;
@@ -809,6 +809,46 @@ export async function getRadarTopics(): Promise<RadarTopic[]> {
       .filter((t) => t.topic);
   } catch (error) {
     console.error("Failed to fetch radar topics from Notion:", error);
+    return [];
+  }
+}
+
+/* ─── Sprint Calendar ─── */
+const sprintCalendarDbId = process.env.NOTION_SPRINT_CALENDAR_DB_ID;
+
+function getDate(prop: Record<string, unknown> | undefined): string {
+  if (!prop) return "";
+  const dateObj = (prop as Record<string, Record<string, string>>).date;
+  return dateObj?.start ?? "";
+}
+
+export async function getSprintCalendar(): Promise<SprintDay[]> {
+  if (!sprintCalendarDbId) return [];
+  try {
+    const response = await notion.databases.query({
+      database_id: sprintCalendarDbId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+      page_size: 30,
+    });
+
+    return response.results
+      .filter((page): page is PageObjectResponse => "properties" in page)
+      .map((page) => {
+        const props = page.properties as Record<string, Record<string, unknown>>;
+        const moduleNum = getNumber(props["Module Number"]);
+        return {
+          id: page.id,
+          name: getPlainText(props["Name"], "title"),
+          date: getDate(props["Date"]),
+          moduleNumber: moduleNum || null,
+          description: getPlainText(props["Description"], "rich_text"),
+          isRestDay: getCheckbox(props["Is Rest Day"]),
+          order: getNumber(props["Order"]),
+        };
+      })
+      .filter((d) => d.name && d.date);
+  } catch (error) {
+    console.error("Failed to fetch sprint calendar from Notion:", error);
     return [];
   }
 }
