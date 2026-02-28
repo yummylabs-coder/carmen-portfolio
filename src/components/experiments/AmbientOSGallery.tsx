@@ -225,7 +225,9 @@ export function AmbientOSGallery({
       <div className="relative z-10 flex w-full max-w-[820px] flex-col items-center px-12 sm:px-16">
         {/* Slide container */}
         <div
-          className="relative w-full overflow-hidden rounded-2xl"
+          className={`relative w-full rounded-2xl ${
+            slide.type === "interactive" ? "overflow-visible" : "overflow-hidden"
+          }`}
           style={{ aspectRatio: "16 / 10" }}
         >
           <AnimatePresence mode="wait" custom={direction}>
