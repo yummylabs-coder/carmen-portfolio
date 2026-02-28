@@ -255,6 +255,7 @@ export function AmbientOSGallery({
                     className="rounded-2xl object-cover"
                     sizes="820px"
                     priority={current <= 1}
+                    unoptimized={slide.imageUrl.startsWith("/images/")}
                   />
                 </div>
               ) : null}

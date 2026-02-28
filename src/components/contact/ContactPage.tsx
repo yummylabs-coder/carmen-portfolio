@@ -356,15 +356,15 @@ export function ContactPage() {
       {/* Blue Stats — full width */}
       <StatsRow />
 
-      {/* Two Column: Form + Email left · Discord right */}
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_320px]">
-        {/* Left: Note Form + Email directly below */}
-        <div className="flex flex-col gap-3">
+      {/* Two Column: Form + Email (aligned to first 2 stats) · Discord (aligned to 3rd stat) */}
+      <div className="grid grid-cols-1 items-start gap-3 lg:grid-cols-3">
+        {/* Left: Note Form + Email — spans 2 columns to align with first 2 stats */}
+        <div className="flex flex-col gap-3 lg:col-span-2">
           <NoteForm />
           <EmailCard />
         </div>
 
-        {/* Right: Discord */}
+        {/* Right: Discord — 1 column aligned with 3rd stat */}
         <DiscordCommunityCard />
       </div>
     </PageEntrance>

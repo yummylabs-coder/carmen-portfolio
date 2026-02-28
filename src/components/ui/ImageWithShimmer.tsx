@@ -42,6 +42,8 @@ interface ImageWithShimmerProps {
   style?: React.CSSProperties;
   /** Custom bg class for the loading placeholder (default: "bg-sand-50") */
   placeholderClassName?: string;
+  /** Skip Vercel image optimization (use for local /public images) */
+  unoptimized?: boolean;
 }
 
 export function ImageWithShimmer({
@@ -56,6 +58,7 @@ export function ImageWithShimmer({
   quality,
   style,
   placeholderClassName,
+  unoptimized,
 }: ImageWithShimmerProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -103,6 +106,7 @@ export function ImageWithShimmer({
           sizes={sizes}
           priority={priority}
           quality={quality}
+          unoptimized={unoptimized}
           className={imgClassName}
           style={style}
           onLoad={handleLoad}
@@ -125,6 +129,7 @@ export function ImageWithShimmer({
         sizes={sizes}
         priority={priority}
         quality={quality}
+        unoptimized={unoptimized}
         className={imgClassName}
         style={style}
         onLoad={handleLoad}
