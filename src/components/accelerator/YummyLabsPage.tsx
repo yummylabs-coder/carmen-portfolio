@@ -11,6 +11,7 @@ import {
   partners,
   tools,
   testimonials,
+  sprintWeeks,
 } from "./acceleratorData";
 
 const YUMMY_URL = "https://yummy-labs.com";
@@ -470,50 +471,142 @@ function RoleAndStats() {
 /* ═══════════════════════════════════
    Section 4 — How It Works
    ═══════════════════════════════════ */
-function HowItWorks() {
+function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
   return (
-    <div className="rounded-3xl border border-sand-300 bg-white p-6">
-      <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+    <motion.div
+      ref={ref}
+      className="rounded-3xl border border-sand-300 bg-white p-6 lg:p-8"
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Header */}
+      <span className="mb-3 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
         How it works
       </span>
-      <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
+      <h3 className="mb-1 font-brand text-[20px] font-bold leading-tight text-gray-800">
         2-week sprints. Real startups. Shipped products.
       </h3>
+      <p className="mb-6 text-[13px] leading-relaxed text-neutral-400">
+        Each cohort partners with a real AI startup. You get the brief, the data, and 14 days to ship.
+      </p>
 
-      <div className="flex flex-col items-center gap-4 lg:flex-row lg:gap-[35px]">
-        {/* Week 1 */}
-        <div className="relative w-full flex-1 rounded-2xl border border-[#7c3aed] bg-[#ede9fe] p-[17px]">
-          <span className="mb-[10px] inline-block rounded-md bg-[#7c3aed] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-            Week 1
-          </span>
-          <div className="mb-[6px] font-brand text-[14px] font-bold text-[#5b21b6]">
-            Discover & Frame
-          </div>
-          <div className="text-[12px] leading-relaxed text-gray-500">
-            Access real startup data, understand constraints, frame the problem
-            with AI tools
-          </div>
-          {/* Arrow */}
-          <span className="absolute -right-[27px] top-1/2 hidden -translate-y-1/2 font-body text-[20px] font-bold text-[#7c3aed] lg:block">
-            {"\u2192"}
-          </span>
-        </div>
+      {/* Sprint Timeline */}
+      <div className="relative flex flex-col gap-4 lg:flex-row lg:gap-0">
+        {sprintWeeks.map((week, i) => (
+          <motion.div
+            key={week.week}
+            className="relative flex-1"
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.45, delay: 0.15 + i * 0.15 }}
+          >
+            {/* Connecting line — visible on desktop between cards */}
+            {i === 0 && (
+              <div className="pointer-events-none absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:block">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-sand-300 bg-white shadow-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </div>
+              </div>
+            )}
 
-        {/* Week 2 */}
-        <div className="w-full flex-1 rounded-2xl border border-[#7c3aed] bg-[#ede9fe] p-[17px]">
-          <span className="mb-[10px] inline-block rounded-md bg-[#7c3aed] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white">
-            Week 2
-          </span>
-          <div className="mb-[6px] font-brand text-[14px] font-bold text-[#5b21b6]">
-            Design & Ship
-          </div>
-          <div className="text-[12px] leading-relaxed text-gray-500">
-            Design core flows, run user tests, ship a working prototype to
-            production
-          </div>
-        </div>
+            {/* Mobile arrow between cards */}
+            {i === 0 && (
+              <div className="flex justify-center py-1 lg:hidden">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-sand-300 bg-sand-50">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <polyline points="19 12 12 19 5 12" />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            {/* Card */}
+            <div
+              className={`h-full rounded-2xl border p-5 ${
+                i === 0
+                  ? "border-[#7c3aed]/20 bg-gradient-to-br from-[#f5f3ff] to-[#ede9fe] lg:mr-5"
+                  : "border-[#7c3aed]/20 bg-gradient-to-br from-[#ede9fe] to-[#e4dffc] lg:ml-5"
+              }`}
+            >
+              {/* Week badge + title row */}
+              <div className="mb-3 flex items-center gap-3">
+                <span className="inline-flex items-center rounded-lg bg-[#7c3aed] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white shadow-sm">
+                  Week {week.week}
+                </span>
+                <span className="text-[11px] font-medium text-[#7c3aed]/50">
+                  {week.week === 1 ? "Days 1–7" : "Days 8–14"}
+                </span>
+              </div>
+
+              <h4 className="mb-1 font-brand text-[16px] font-bold text-[#5b21b6]">
+                {week.title}
+              </h4>
+              <p className="mb-4 text-[12px] leading-relaxed text-neutral-400">
+                {week.subtitle}
+              </p>
+
+              {/* Activity list */}
+              <ul className="mb-5 space-y-2">
+                {week.activities.map((activity) => (
+                  <li key={activity} className="flex items-start gap-2.5 text-[12px] leading-snug text-gray-600">
+                    <span className="mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#7c3aed]/10">
+                      <svg width="8" height="8" viewBox="0 0 16 16" fill="#7c3aed">
+                        <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z" />
+                      </svg>
+                    </span>
+                    {activity}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Tools used this week */}
+              <div className="flex items-center gap-1.5">
+                <span className="mr-1 text-[10px] font-medium uppercase tracking-wider text-neutral-300">
+                  Tools
+                </span>
+                {week.tools.map((slug) => {
+                  const tool = tools.find((t) => t.slug === slug);
+                  const logoUrl = assets.toolLogos[slug];
+                  if (!tool) return null;
+                  return (
+                    <div
+                      key={slug}
+                      className="flex items-center gap-1.5 rounded-full border border-[#7c3aed]/10 bg-white/80 px-2 py-1"
+                    >
+                      <div className="flex h-4 w-4 items-center justify-center overflow-hidden rounded-[3px]">
+                        {logoUrl ? (
+                          <Img src={logoUrl} alt={tool.name} className="h-3.5 w-3.5 object-contain" />
+                        ) : (
+                          <span className="text-[9px] font-bold text-[#7c3aed]">{tool.logoText}</span>
+                        )}
+                      </div>
+                      <span className="text-[11px] font-medium text-gray-500">{tool.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
-    </div>
+
+      {/* Bottom note */}
+      <div className="mt-5 flex items-center gap-2 rounded-xl bg-sand-50 px-4 py-3">
+        <span className="text-[14px]">🎯</span>
+        <p className="text-[12px] leading-relaxed text-neutral-400">
+          <span className="font-semibold text-neutral-500">Zero &ldquo;watch-only&rdquo; mode.</span>{" "}
+          You get real startup data, real mentorship, and ship a live product you can show in interviews.
+        </p>
+      </div>
+    </motion.div>
   );
 }
 
@@ -746,7 +839,7 @@ export function YummyLabsPage({ assets }: YummyLabsPageProps) {
       <Header assets={assets} />
       <ProblemHero assets={assets} />
       <RoleAndStats />
-      <HowItWorks />
+      <HowItWorks assets={assets} />
       <Partners assets={assets} />
       <Testimonials assets={assets} />
       <Gallery assets={assets} />

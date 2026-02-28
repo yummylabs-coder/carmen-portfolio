@@ -77,6 +77,43 @@ export const tools: Tool[] = [
   { name: "Subframe", logoText: "S", slug: "tool-subframe" },
 ];
 
+export interface SprintWeek {
+  week: number;
+  title: string;
+  subtitle: string;
+  activities: string[];
+  tools: string[]; // tool slugs
+}
+
+export const sprintWeeks: SprintWeek[] = [
+  {
+    week: 1,
+    title: "Strategy & Research",
+    subtitle: "Understand the problem like a senior designer",
+    activities: [
+      "Kickoff call with startup partner",
+      "Access real briefs, data & constraints",
+      "Frame the problem with AI tools",
+      "Map opportunity space & user journeys",
+      "Define scope, metrics & personas",
+    ],
+    tools: ["tool-figma", "tool-uxpilot"],
+  },
+  {
+    week: 2,
+    title: "Design, Build & Ship",
+    subtitle: "Turn research into a live, shipped product",
+    activities: [
+      "Design core flows & interactions",
+      "Run lightweight user tests",
+      "Build a working MVP with AI tools",
+      "Deploy to production via GitHub & Vercel",
+      "Record Loom walkthrough & document delivery",
+    ],
+    tools: ["tool-builder", "tool-subframe"],
+  },
+];
+
 export const testimonials: Testimonial[] = [
   {
     name: "Harry Dodd-Irwin",
