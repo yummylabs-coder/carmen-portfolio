@@ -549,7 +549,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
       page_size: 50,
     });
 
-    const assets: YummyAsset[] = response.results
+    const assets: (YummyAsset & { videoUrl?: string })[] = response.results
       .filter((p): p is PageObjectResponse => "properties" in p)
       .map((page) => {
         const props = page.properties as Record<string, Record<string, unknown>>;
@@ -559,6 +559,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           slug: getPlainText(props.Slug, "rich_text"),
           category: getSelect(props.Category) as YummyAsset["category"],
           imageUrl: getFiles(props.Image),
+          videoUrl: getUrl(props["Video URL"]) || undefined,
           order: getNumber(props.Order),
         };
       });
@@ -581,7 +582,8 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           result.avatars[asset.slug] = asset.imageUrl;
           break;
         case "Video":
-          result.videos[asset.slug] = asset.imageUrl;
+          // Prefer the permanent CDN URL from "Video URL" over Notion's expiring file URL
+          result.videos[asset.slug] = asset.videoUrl || asset.imageUrl;
           break;
         case "Gallery":
           result.gallery.push({ slug: asset.slug, imageUrl: asset.imageUrl, name: asset.name });
