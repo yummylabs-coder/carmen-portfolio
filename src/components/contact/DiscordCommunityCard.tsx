@@ -175,7 +175,7 @@ export function DiscordCommunityCard() {
                       </span>
                     </div>
                     <p className="truncate text-11 text-neutral-500">
-                      {msg.content || "Shared an attachment"}
+                      {msg.content || "Just introduced themselves! 👋"}
                     </p>
                   </div>
                 </div>
