@@ -143,9 +143,6 @@ export function DiscordCommunityCard() {
         {/* Recent messages from #introduce-yourself */}
         {messages.length > 0 && (
           <div className="mt-3 flex flex-col gap-1.5">
-            <span className="text-10 font-semibold uppercase tracking-wide text-neutral-400">
-              #introduce-yourself
-            </span>
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -170,12 +167,12 @@ export function DiscordCommunityCard() {
                       <span className="text-11 font-semibold text-brand-ink">
                         {msg.author}
                       </span>
-                      <span className="text-10 text-neutral-400">
+                      <span className="text-[9px] text-neutral-400">
                         {timeAgo(msg.timestamp)}
                       </span>
                     </div>
                     <p className="truncate text-11 text-neutral-500">
-                      {msg.content || "Just introduced themselves! 👋"}
+                      {msg.content || "Hey everyone, excited to be here! 👋"}
                     </p>
                   </div>
                 </div>

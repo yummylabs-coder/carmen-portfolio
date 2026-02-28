@@ -356,20 +356,16 @@ export function ContactPage() {
       {/* Blue Stats — full width */}
       <StatsRow />
 
-      {/* Two Column: Form left · Discord + Email right */}
+      {/* Two Column: Form + Email left · Discord right */}
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[1fr_320px]">
-        {/* Left: Note Form */}
-        <NoteForm />
-
-        {/* Right: Email first on mobile, Discord below */}
+        {/* Left: Note Form + Email directly below */}
         <div className="flex flex-col gap-3">
-          <div className="order-2 lg:order-1">
-            <DiscordCommunityCard />
-          </div>
-          <div className="order-1 lg:order-2">
-            <EmailCard />
-          </div>
+          <NoteForm />
+          <EmailCard />
         </div>
+
+        {/* Right: Discord */}
+        <DiscordCommunityCard />
       </div>
     </PageEntrance>
   );
