@@ -45,32 +45,19 @@ function ExternalArrow() {
    Section 1 — Header
    ═══════════════════════════════════ */
 function Header({ assets }: { assets: YummyAssetsMap }) {
-  const logoUrl = assets.branding["logo"];
   const dogUrl = assets.branding["dog"];
 
   return (
-    <header className="relative flex items-start gap-4">
-      {/* Logo */}
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#7c3aed] bg-[#ede9fe] text-[18px]">
-        {logoUrl ? (
-          <Img src={logoUrl} alt="Yummy Labs" className="h-full w-full object-contain" />
-        ) : (
-          "\u{1F9EA}"
-        )}
+    <header className="relative">
+      <div className="mb-1">
+        <h1 className="font-brand text-22 font-bold text-brand-ink">
+          Yummy Labs
+        </h1>
       </div>
-
-      {/* Title + subtitle */}
-      <div className="flex-1">
-        <div className="mb-1 flex items-center gap-3">
-          <h1 className="font-brand text-22 font-bold text-brand-ink">
-            Yummy Labs
-          </h1>
-        </div>
-        <p className="text-14 leading-[1.6] text-neutral-400">
-          Design accelerator I co-founded to help designers grow through real
-          startup sprints
-        </p>
-      </div>
+      <p className="text-14 leading-[1.6] text-neutral-400">
+        Design accelerator I co-founded to help designers grow through real
+        startup sprints
+      </p>
 
       {/* Dog mascot - hidden on mobile, sits behind the next section */}
       {dogUrl && (
@@ -313,6 +300,12 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
         {/* Left — Copy */}
         <div className="flex-1 text-white">
+          {/* Logo */}
+          {assets.branding["logo"] && (
+            <div className="mb-4 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/90">
+              <Img src={assets.branding["logo"]} alt="Yummy Labs" className="h-full w-full object-contain" />
+            </div>
+          )}
           <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
             The problem I saw
           </span>
@@ -634,7 +627,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-full text-[15px] font-semibold transition-all sm:h-11 sm:w-11 ${
                         isSelected
-                          ? "bg-[#7c3aed] text-white shadow-md shadow-[#7c3aed]/25"
+                          ? "bg-[#2216ff] text-white shadow-md shadow-[#2216ff]/25"
                           : isRest
                             ? "text-neutral-300 group-hover:bg-sand-200"
                             : "text-brand-ink group-hover:bg-sand-200"
@@ -646,9 +639,9 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
                     <div
                       className={`h-1 w-1 rounded-full transition-colors ${
                         isSelected
-                          ? "bg-[#7c3aed]"
+                          ? "bg-[#2216ff]"
                           : day.moduleNumber
-                            ? "bg-[#7c3aed]/30"
+                            ? "bg-[#2216ff]/30"
                             : "bg-transparent"
                       }`}
                     />
@@ -668,58 +661,68 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className={`rounded-xl p-4 ${
+              className={`relative overflow-hidden rounded-xl p-4 ${
                 selectedDay?.isRestDay
                   ? "bg-sand-100"
-                  : "bg-gradient-to-br from-[#f5f3ff] to-[#ede9fe]"
+                  : "bg-brand-ink"
               }`}
             >
-              <div className="mb-2 flex items-center gap-2.5">
-                {selectedDay?.moduleNumber ? (
-                  <span className="inline-flex items-center rounded-md bg-[#7c3aed] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-white">
-                    Module {selectedDay.moduleNumber}
+              {/* Soft blurred gradient overlay for module days */}
+              {!selectedDay?.isRestDay && (
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(215,201,183,0.12),transparent_60%)]" />
+              )}
+              <div className="relative">
+                <div className="mb-2 flex items-center gap-2.5">
+                  {selectedDay?.moduleNumber ? (
+                    <span className="inline-flex items-center rounded-md bg-sand-100/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-sand-100">
+                      Module {selectedDay.moduleNumber}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded-md bg-sand-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-neutral-400">
+                      {selectedDay?.isRestDay ? "Rest day" : "Day off"}
+                    </span>
+                  )}
+                  <span className={`text-[11px] ${selectedDay?.isRestDay ? "text-neutral-400" : "text-sand-500"}`}>
+                    {selectedDay
+                      ? new Date(selectedDay.date + "T12:00:00").toLocaleDateString("en-US", {
+                          weekday: "long",
+                          month: "short",
+                          day: "numeric",
+                        })
+                      : ""}
                   </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-sand-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-neutral-400">
-                    {selectedDay?.isRestDay ? "Rest day" : "Day off"}
-                  </span>
-                )}
-                <span className="text-[11px] text-neutral-400">
-                  {selectedDay
-                    ? new Date(selectedDay.date + "T12:00:00").toLocaleDateString("en-US", {
-                        weekday: "long",
-                        month: "short",
-                        day: "numeric",
-                      })
-                    : ""}
-                </span>
+                </div>
+                <h4 className={`mb-1 font-brand text-[16px] font-bold ${
+                  selectedDay?.isRestDay ? "text-neutral-500" : "text-sand-100"
+                }`}>
+                  {selectedDay?.name}
+                </h4>
+                <p className={`text-[13px] leading-relaxed ${
+                  selectedDay?.isRestDay ? "text-neutral-400" : "text-sand-500"
+                }`}>
+                  {selectedDay?.description}
+                </p>
               </div>
-              <h4 className={`mb-1 font-brand text-[16px] font-bold ${
-                selectedDay?.isRestDay ? "text-neutral-500" : "text-[#5b21b6]"
-              }`}>
-                {selectedDay?.name}
-              </h4>
-              <p className="text-[13px] leading-relaxed text-neutral-400">
-                {selectedDay?.description}
-              </p>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
       {/* CTA */}
-      <a
-        href={RESERVE_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-[#7c3aed] px-5 py-3 font-body text-[14px] font-semibold text-white transition-colors hover:bg-[#6d28d9]"
-      >
-        I&rsquo;m ready to sprint
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12" />
-          <polyline points="12 5 19 12 12 19" />
-        </svg>
-      </a>
+      <div className="mt-5 flex justify-center">
+        <a
+          href={RESERVE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2216ff] px-6 py-3 font-body text-[14px] font-semibold text-white transition-colors hover:bg-[#1a11cc] sm:w-auto"
+        >
+          I&rsquo;m ready to sprint
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      </div>
     </motion.div>
   );
 }
