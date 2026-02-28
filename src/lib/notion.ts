@@ -536,6 +536,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
     partnerLogos: {},
     toolLogos: {},
     avatars: {},
+    videos: {},
     gallery: [],
   };
 
@@ -578,6 +579,9 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           break;
         case "Designer Avatar":
           result.avatars[asset.slug] = asset.imageUrl;
+          break;
+        case "Video":
+          result.videos[asset.slug] = asset.imageUrl;
           break;
         case "Gallery":
           result.gallery.push({ slug: asset.slug, imageUrl: asset.imageUrl, name: asset.name });

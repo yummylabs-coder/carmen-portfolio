@@ -82,9 +82,8 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 /* ═══════════════════════════════════
    Glassmorphism Video Frame
    ═══════════════════════════════════ */
-function GlassmorphismVideoFrame() {
-  const videoSrc = "/videos/yummy-labs-demo.mp4";
-  const [hasVideo, setHasVideo] = useState(true);
+function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
+  const [hasVideo, setHasVideo] = useState(!!videoUrl);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -111,7 +110,7 @@ function GlassmorphismVideoFrame() {
             <>
               <video
                 ref={videoRef}
-                src={videoSrc}
+                src={videoUrl}
                 className="h-full w-full object-cover"
                 onError={() => setHasVideo(false)}
                 onPlay={() => setIsPlaying(true)}
@@ -180,7 +179,7 @@ function GlassmorphismVideoFrame() {
 /* ═══════════════════════════════════
    Section 2 — Problem Hero (full-width blue)
    ═══════════════════════════════════ */
-function ProblemHero() {
+function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
   return (
     <div className="relative z-10 overflow-hidden rounded-3xl bg-[#2216ff] p-6 lg:p-8">
       {/* Subtle radial gradient for depth */}
@@ -219,7 +218,7 @@ function ProblemHero() {
 
         {/* Right — Glassmorphism Video */}
         <div className="flex-1">
-          <GlassmorphismVideoFrame />
+          <GlassmorphismVideoFrame videoUrl={assets.videos["demo-video"]} />
         </div>
       </div>
     </div>
@@ -622,7 +621,7 @@ export function YummyLabsPage({ assets }: YummyLabsPageProps) {
   return (
     <PageEntrance>
       <Header assets={assets} />
-      <ProblemHero />
+      <ProblemHero assets={assets} />
       <RoleAndStats />
       <HowItWorks />
       <Partners assets={assets} />

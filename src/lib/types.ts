@@ -167,7 +167,7 @@ export interface YummyAsset {
   id: string;
   name: string;
   slug: string;
-  category: "Branding" | "Partner Logo" | "Tool Logo" | "Designer Avatar" | "Gallery";
+  category: "Branding" | "Partner Logo" | "Tool Logo" | "Designer Avatar" | "Gallery" | "Video";
   imageUrl: string;
   order: number;
 }
@@ -177,6 +177,7 @@ export interface YummyAssetsMap {
   partnerLogos: Record<string, string>;
   toolLogos: Record<string, string>;
   avatars: Record<string, string>;
+  videos: Record<string, string>;
   gallery: { slug: string; imageUrl: string; name: string }[];
 }
 
