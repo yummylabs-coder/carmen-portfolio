@@ -38,6 +38,8 @@ interface ImageWithShimmerProps {
   priority?: boolean;
   className?: string;
   quality?: number;
+  /** Inline styles forwarded to the <Image> element (e.g. objectPosition) */
+  style?: React.CSSProperties;
   /** Custom bg class for the loading placeholder (default: "bg-sand-50") */
   placeholderClassName?: string;
 }
@@ -52,6 +54,7 @@ export function ImageWithShimmer({
   priority,
   className = "",
   quality,
+  style,
   placeholderClassName,
 }: ImageWithShimmerProps) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -101,6 +104,7 @@ export function ImageWithShimmer({
           priority={priority}
           quality={quality}
           className={imgClassName}
+          style={style}
           onLoad={handleLoad}
           onError={handleError}
         />
@@ -122,6 +126,7 @@ export function ImageWithShimmer({
         priority={priority}
         quality={quality}
         className={imgClassName}
+        style={style}
         onLoad={handleLoad}
         onError={handleError}
       />

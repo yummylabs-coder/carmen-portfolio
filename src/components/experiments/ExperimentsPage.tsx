@@ -251,7 +251,8 @@ function PreviewCard({
             alt={experiment.name}
             fill
             sizes="(max-width: 640px) 100vw, 340px"
-            className="object-cover object-top"
+            className="object-cover"
+            style={{ objectPosition: experiment.coverFocusPoint || "top" }}
           />
         ) : (
           <div
@@ -381,7 +382,8 @@ function PreviewCardLight({
             alt={experiment.name}
             fill
             sizes="(max-width: 640px) 100vw, 340px"
-            className="object-cover object-top"
+            className="object-cover"
+            style={{ objectPosition: experiment.coverFocusPoint || "top" }}
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-sand-200">

@@ -133,6 +133,8 @@ export interface Experiment {
   statusLabel: string;
   url?: string;
   coverUrl?: string;
+  /** CSS object-position value for cover image cropping, e.g. "center 20%" */
+  coverFocusPoint?: string;
   galleryUrls?: string[];
   galleryCaptions?: string[];
   videoUrl?: string;

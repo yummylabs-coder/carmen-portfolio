@@ -69,6 +69,16 @@ const localImageOverrides: Record<
   },
 };
 
+/* ── Cover image focus points (CSS object-position) per experiment ── */
+const coverFocusPoints: Record<string, string> = {
+  "claude ux, ui skills .md file": "center 15%",
+  "the ux behavioral strategy cards": "center 15%",
+  "the freelancers sprint kit": "center 10%",
+  "figma to production": "center 15%",
+  "design tokens: fromzero to production": "center 10%",
+  "ambient os": "center 25%",
+};
+
 export default async function ExperimentsRoute() {
   const [experimentsRaw, previews] = await Promise.all([
     getExperiments(),
@@ -77,10 +87,16 @@ export default async function ExperimentsRoute() {
 
   const base = experimentsRaw.length > 0 ? experimentsRaw : fallbackExperiments;
 
-  // Enrich experiments with locally-stored images
+  // Enrich experiments with locally-stored images + cover focus points
   const experiments = base.map((exp) => {
-    const override = localImageOverrides[exp.name.toLowerCase().trim()];
-    return override ? { ...exp, ...override } : exp;
+    const key = exp.name.toLowerCase().trim();
+    const imageOverride = localImageOverrides[key];
+    const focusPoint = coverFocusPoints[key];
+    return {
+      ...exp,
+      ...(imageOverride ?? {}),
+      ...(focusPoint ? { coverFocusPoint: focusPoint } : {}),
+    };
   });
 
   return (
