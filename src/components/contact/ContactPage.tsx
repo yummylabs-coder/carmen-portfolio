@@ -169,15 +169,15 @@ function NoteForm() {
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl opacity-[0.35]"
         style={{
-          backgroundImage: "radial-gradient(circle, #B5A48E 0.8px, transparent 0.8px)",
+          backgroundImage: "radial-gradient(circle, rgb(215,201,183) 0.8px, transparent 0.8px)",
           backgroundSize: "14px 14px",
         }}
       />
 
       {/* Washi tape — semi-transparent with diagonal stripes, rotated */}
-      <div className="absolute -top-[13px] left-1/2 z-20 -translate-x-1/2 rotate-[-2deg]">
+      <div className="absolute -top-[16px] left-1/2 z-20 -translate-x-1/2 rotate-[-2deg]">
         <div
-          className="relative h-[26px] w-[100px] overflow-hidden"
+          className="relative h-[32px] w-[130px] overflow-hidden"
           style={{
             background: "rgba(226, 217, 203, 0.65)",
             borderRadius: "1px",

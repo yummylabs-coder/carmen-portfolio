@@ -207,7 +207,7 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
       {/* Glassmorphism border frame */}
       <div className="relative overflow-hidden rounded-2xl border border-white/[0.15] bg-white/[0.07] p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl">
         {/* Inner video area */}
-        <div className="relative aspect-video overflow-hidden rounded-[10px] bg-black/30">
+        <div className="relative aspect-video overflow-hidden rounded-[16px] bg-black/30">
           {hasVideo ? (
             <>
               <video
