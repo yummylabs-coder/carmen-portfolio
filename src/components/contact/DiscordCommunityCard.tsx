@@ -167,7 +167,7 @@ export function DiscordCommunityCard() {
                       <span className="text-11 font-semibold text-brand-ink">
                         {msg.author}
                       </span>
-                      <span className="text-[9px] text-neutral-400">
+                      <span className="text-[8px] text-neutral-300">
                         {timeAgo(msg.timestamp)}
                       </span>
                     </div>
