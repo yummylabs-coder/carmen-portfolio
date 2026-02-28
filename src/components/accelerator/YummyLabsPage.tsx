@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import type { YummyAssetsMap } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
@@ -82,10 +83,109 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 /* ═══════════════════════════════════
    Glassmorphism Video Frame
    ═══════════════════════════════════ */
+/* ── Fullscreen Video Lightbox ── */
+function VideoLightbox({
+  videoUrl,
+  open,
+  onClose,
+}: {
+  videoUrl: string;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  /* Close on Escape */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  /* Auto-play when opening */
+  useEffect(() => {
+    if (open) videoRef.current?.play();
+  }, [open]);
+
+  if (typeof window === "undefined") return null;
+
+  return createPortal(
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[200] flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+
+          {/* Video container */}
+          <motion.div
+            className="relative z-10 w-[94vw] max-w-6xl"
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.92, opacity: 0 }}
+            transition={{ type: "spring", damping: 28, stiffness: 260 }}
+          >
+            {/* Close button */}
+            <button
+              onClick={onClose}
+              className="absolute -right-2 -top-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 backdrop-blur-md transition-colors hover:bg-white/20 hover:text-white"
+              aria-label="Close"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            {/* Video */}
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl">
+              <video
+                ref={videoRef}
+                src={videoUrl}
+                className="w-full"
+                controls
+                playsInline
+                loop
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
+  );
+}
+
 function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
   const [hasVideo, setHasVideo] = useState(!!videoUrl);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const openLightbox = useCallback(() => {
+    if (!hasVideo) return;
+    // Pause the inline video when opening lightbox
+    videoRef.current?.pause();
+    setLightboxOpen(true);
+  }, [hasVideo]);
+
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false);
+  }, []);
 
   const togglePlay = () => {
     const v = videoRef.current;
@@ -142,6 +242,20 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
                   )}
                 </div>
               </button>
+
+              {/* Expand button — bottom-right corner */}
+              <button
+                onClick={openLightbox}
+                className="absolute bottom-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 bg-black/40 text-white/70 backdrop-blur-md transition-all hover:bg-black/60 hover:text-white"
+                aria-label="Expand video"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+              </button>
             </>
           ) : (
             /* Placeholder — no video uploaded yet */
@@ -172,6 +286,15 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
           )}
         </div>
       </div>
+
+      {/* Fullscreen lightbox */}
+      {hasVideo && videoUrl && (
+        <VideoLightbox
+          videoUrl={videoUrl}
+          open={lightboxOpen}
+          onClose={closeLightbox}
+        />
+      )}
     </div>
   );
 }
