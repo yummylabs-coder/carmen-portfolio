@@ -783,6 +783,7 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
             slides={toStorySlides(galleryExperiment)}
             onClose={closeGallery}
             aspect="landscape"
+            fit={galleryExperiment.galleryFit || "cover"}
             autoAdvance={false}
           />
         )}

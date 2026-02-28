@@ -51,6 +51,8 @@ export interface StoryViewerProps {
   tags?: string[];
   /** "portrait" (3:4) for photo galleries, "landscape" (16:10) for screenshots */
   aspect?: "portrait" | "landscape";
+  /** How images fill the card — "cover" crops to fill (default), "contain" fits within bounds (good for phone screenshots) */
+  fit?: "cover" | "contain";
   /** Show progress bars and auto-advance (default: true). Set false for static modals. */
   autoAdvance?: boolean;
 }
@@ -84,6 +86,7 @@ export function StoryViewer({
   subtitle,
   tags,
   aspect = "portrait",
+  fit = "cover",
   autoAdvance = true,
 }: StoryViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(startIndex);
@@ -371,7 +374,7 @@ export function StoryViewer({
                       alt={slide.label}
                       fill
                       sizes="(max-width: 640px) 100vw, 800px"
-                      className="object-cover"
+                      className={fit === "contain" ? "object-contain" : "object-cover"}
                       quality={85}
                       priority
                     />

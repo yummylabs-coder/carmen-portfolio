@@ -69,8 +69,11 @@ const localImageOverrides: Record<
   },
 };
 
-/* ── Cover image focus points (CSS object-position) per experiment ── */
-const coverFocusPoints: Record<string, string> = {
+/*
+ * Fallback focus points — used when the Notion "Cover Focus Point" field is empty.
+ * Once you add values in Notion, these are ignored for that experiment.
+ */
+const defaultFocusPoints: Record<string, string> = {
   "claude ux, ui skills .md file": "center 15%",
   "the ux behavioral strategy cards": "center 15%",
   "the freelancers sprint kit": "center 10%",
@@ -87,11 +90,12 @@ export default async function ExperimentsRoute() {
 
   const base = experimentsRaw.length > 0 ? experimentsRaw : fallbackExperiments;
 
-  // Enrich experiments with locally-stored images + cover focus points
+  // Enrich: local images → Notion focus point / gallery fit → fallback focus points
   const experiments = base.map((exp) => {
     const key = exp.name.toLowerCase().trim();
     const imageOverride = localImageOverrides[key];
-    const focusPoint = coverFocusPoints[key];
+    const notionFocus = "coverFocusPoint" in exp ? exp.coverFocusPoint : undefined;
+    const focusPoint = notionFocus || defaultFocusPoints[key];
     return {
       ...exp,
       ...(imageOverride ?? {}),

@@ -504,11 +504,17 @@ export async function getExperiments(): Promise<Experiment[]> {
           : [];
         const videoUrl = getUrl(props["Video URL"]);
         const order = getNumber(props.Order);
+        const coverFocusPoint = getPlainText(props["Cover Focus Point"], "rich_text");
+        const galleryFitRaw = getSelect(props["Gallery Fit"]);
+        const galleryFit: Experiment["galleryFit"] =
+          galleryFitRaw === "contain" ? "contain" : galleryFitRaw === "cover" ? "cover" : undefined;
 
         return {
           id: page.id, name, description, type, category, status, statusLabel,
           url: url || undefined,
           coverUrl: coverUrl || undefined,
+          coverFocusPoint: coverFocusPoint || undefined,
+          galleryFit,
           galleryUrls: galleryUrls.length > 0 ? galleryUrls : undefined,
           galleryCaptions: galleryCaptions.length > 0 ? galleryCaptions : undefined,
           videoUrl: videoUrl || undefined,

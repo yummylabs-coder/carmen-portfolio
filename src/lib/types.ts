@@ -135,6 +135,8 @@ export interface Experiment {
   coverUrl?: string;
   /** CSS object-position value for cover image cropping, e.g. "center 20%" */
   coverFocusPoint?: string;
+  /** How gallery images fill the modal — "cover" crops to fill, "contain" fits within bounds */
+  galleryFit?: "cover" | "contain";
   galleryUrls?: string[];
   galleryCaptions?: string[];
   videoUrl?: string;
