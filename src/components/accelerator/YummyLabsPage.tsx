@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import type { YummyAssetsMap } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
@@ -80,74 +80,97 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 2 — Problem + Role
+   Glassmorphism Video Frame
    ═══════════════════════════════════ */
-function ProblemAndRole() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+function GlassmorphismVideoFrame() {
+  const videoSrc = "/videos/yummy-labs-demo.mp4";
+  const [hasVideo, setHasVideo] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play();
+    } else {
+      v.pause();
+    }
+  };
 
   return (
-    <div ref={ref} className="relative z-10 flex flex-col gap-5 lg:flex-row">
-      {/* The Problem card */}
-      <div className="flex-shrink-0 rounded-3xl bg-[#2216ff] p-6 text-white lg:w-[540px]">
-        <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
-          The problem I saw
-        </span>
-        <h3 className="mb-3 font-brand text-[20px] font-extrabold leading-tight">
-          Bootcamps weren&apos;t cutting it anymore.
-        </h3>
-        <div className="space-y-4 text-[14px] leading-relaxed text-white/85">
-          <p>
-            Designers were paying thousands for courses teaching outdated methods
-            on fake projects. They&apos;d graduate with polished case studies
-            that hiring managers could spot as &quot;concept work&quot; from a
-            mile away.
-          </p>
-          <p>
-            I wanted to build something different: real products, real
-            constraints, real shipped work.
-          </p>
-        </div>
-        <a
-          href={YUMMY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-body text-[14px] font-semibold text-[#2216ff] transition-colors hover:bg-white/90"
-        >
-          Visit yummy-labs.com
-        </a>
-      </div>
+    <div className="relative">
+      {/* Ambient glow behind the frame */}
+      <div className="absolute -inset-3 rounded-3xl bg-white/[0.06] blur-2xl" />
 
-      {/* My Role card */}
-      <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
-        <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
-          My role
-        </span>
-        <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
-          Co-Founder & Sprint Leader
-        </h3>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2">
-          {roles.map((role, i) => (
-            <motion.div
-              key={role.text}
-              initial={{ opacity: 0, x: -10 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-              transition={{ duration: 0.4, delay: 0.15 + i * 0.07, ease: "easeOut" }}
-              className="flex items-center gap-1.5 rounded-lg bg-sand-50 px-3 py-2"
-            >
-              <motion.span
-                className="text-[14px]"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
-                transition={{ duration: 0.4, delay: 0.25 + i * 0.07, type: "spring", stiffness: 200, damping: 12 }}
+      {/* Glassmorphism border frame */}
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.15] bg-white/[0.07] p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl">
+        {/* Inner video area */}
+        <div className="relative aspect-video overflow-hidden rounded-[10px] bg-black/30">
+          {hasVideo ? (
+            <>
+              <video
+                ref={videoRef}
+                src={videoSrc}
+                className="h-full w-full object-cover"
+                onError={() => setHasVideo(false)}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                playsInline
+                loop
+                muted
+              />
+              {/* Play/pause overlay */}
+              <button
+                onClick={togglePlay}
+                className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${
+                  isPlaying
+                    ? "bg-transparent opacity-0 hover:opacity-100 hover:bg-black/10"
+                    : "bg-black/10"
+                }`}
+                aria-label={isPlaying ? "Pause video" : "Play video"}
               >
-                {role.icon}
-              </motion.span>
-              <span className="font-body text-[13px] font-medium text-neutral-700">
-                {role.text}
-              </span>
-            </motion.div>
-          ))}
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-transform hover:scale-110">
+                  {isPlaying ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                      <rect x="6" y="5" width="4" height="14" rx="1" />
+                      <rect x="14" y="5" width="4" height="14" rx="1" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                      <polygon points="8,5 20,12 8,19" />
+                    </svg>
+                  )}
+                </div>
+              </button>
+            </>
+          ) : (
+            /* Placeholder — no video uploaded yet */
+            <div className="relative flex h-full items-center justify-center overflow-hidden">
+              {/* Animated gradient mesh */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1a11cc]/80 via-[#2216ff]/40 to-[#7c3aed]/60" />
+              <div className="absolute -left-8 -top-8 h-32 w-32 animate-pulse rounded-full bg-[#7c3aed]/30 blur-3xl" />
+              <div className="absolute -bottom-8 -right-8 h-32 w-32 animate-pulse rounded-full bg-white/10 blur-3xl [animation-delay:1s]" />
+
+              <div className="relative text-center">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-white/10 backdrop-blur-md">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polygon points="8,5 20,12 8,19" />
+                  </svg>
+                </div>
+                <p className="text-[12px] font-medium text-white/40">Demo coming soon</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -155,7 +178,56 @@ function ProblemAndRole() {
 }
 
 /* ═══════════════════════════════════
-   Section 3 — Stats
+   Section 2 — Problem Hero (full-width blue)
+   ═══════════════════════════════════ */
+function ProblemHero() {
+  return (
+    <div className="relative z-10 overflow-hidden rounded-3xl bg-[#2216ff] p-6 lg:p-8">
+      {/* Subtle radial gradient for depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(124,58,237,0.25),transparent_60%)]" />
+
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
+        {/* Left — Copy */}
+        <div className="flex-1 text-white">
+          <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
+            The problem I saw
+          </span>
+          <h3 className="mb-3 font-brand text-[20px] font-extrabold leading-tight">
+            Bootcamps weren&apos;t cutting it anymore.
+          </h3>
+          <div className="space-y-4 text-[14px] leading-relaxed text-white/85">
+            <p>
+              Designers were paying thousands for courses teaching outdated methods
+              on fake projects. They&apos;d graduate with polished case studies
+              that hiring managers could spot as &quot;concept work&quot; from a
+              mile away.
+            </p>
+            <p>
+              I wanted to build something different: real products, real
+              constraints, real shipped work.
+            </p>
+          </div>
+          <a
+            href={YUMMY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-body text-[14px] font-semibold text-[#2216ff] transition-colors hover:bg-white/90"
+          >
+            Visit yummy-labs.com
+          </a>
+        </div>
+
+        {/* Right — Glassmorphism Video */}
+        <div className="flex-1">
+          <GlassmorphismVideoFrame />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════
+   Section 3 — Role + Stats (side by side)
    ═══════════════════════════════════ */
 /* Stat icons — clean SVG icons replacing emojis */
 const statIcons: Record<string, React.ReactNode> = {
@@ -195,44 +267,80 @@ const statIcons: Record<string, React.ReactNode> = {
   ),
 };
 
-function Stats() {
+function RoleAndStats() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <div ref={ref} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {stats.map((stat, i) => (
-        <motion.div
-          key={stat.label}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
-          className="rounded-2xl border border-sand-300 bg-sand-100 px-[17px] py-5 text-center transition-transform duration-300 ease-out hover:-rotate-2 hover:scale-[1.04]"
-        >
+    <div ref={ref} className="flex flex-col gap-5 lg:flex-row">
+      {/* My Role card — left */}
+      <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
+        <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          My role
+        </span>
+        <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
+          Co-Founder & Sprint Leader
+        </h3>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-2">
+          {roles.map((role, i) => (
+            <motion.div
+              key={role.text}
+              initial={{ opacity: 0, x: -10 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+              transition={{ duration: 0.4, delay: 0.15 + i * 0.07, ease: "easeOut" }}
+              className="flex items-center gap-1.5 rounded-lg bg-sand-50 px-3 py-2"
+            >
+              <motion.span
+                className="text-[14px]"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.4, delay: 0.25 + i * 0.07, type: "spring", stiffness: 200, damping: 12 }}
+              >
+                {role.icon}
+              </motion.span>
+              <span className="font-body text-[13px] font-medium text-neutral-700">
+                {role.text}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Stats — right, 2×2 grid */}
+      <div className="grid flex-1 grid-cols-2 gap-4">
+        {stats.map((stat, i) => (
           <motion.div
-            className="mb-2 flex justify-center text-[#300101]"
-            initial={{ scale: 0.4, opacity: 0 }}
-            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 + i * 0.1, type: "spring", stiffness: 200, damping: 12 }}
+            key={stat.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+            className="rounded-2xl border border-sand-300 bg-sand-100 px-[17px] py-5 text-center transition-transform duration-300 ease-out hover:-rotate-2 hover:scale-[1.04]"
           >
-            {statIcons[stat.label] ?? stat.icon}
+            <motion.div
+              className="mb-2 flex justify-center text-[#300101]"
+              initial={{ scale: 0.4, opacity: 0 }}
+              animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.1, type: "spring", stiffness: 200, damping: 12 }}
+            >
+              {statIcons[stat.label] ?? stat.icon}
+            </motion.div>
+            <div
+              className="font-brand text-[32px] font-extrabold leading-relaxed"
+              style={{
+                background: "linear-gradient(135deg, #2216ff 0%, #2216ff 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              {stat.number}
+            </div>
+            <div className="font-body text-[12px] font-semibold uppercase tracking-[0.03em] text-gray-500">
+              {stat.label}
+            </div>
           </motion.div>
-          <div
-            className="font-brand text-[32px] font-extrabold leading-relaxed"
-            style={{
-              background: "linear-gradient(135deg, #2216ff 0%, #2216ff 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            {stat.number}
-          </div>
-          <div className="font-body text-[12px] font-semibold uppercase tracking-[0.03em] text-gray-500">
-            {stat.label}
-          </div>
-        </motion.div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
@@ -514,8 +622,8 @@ export function YummyLabsPage({ assets }: YummyLabsPageProps) {
   return (
     <PageEntrance>
       <Header assets={assets} />
-      <ProblemAndRole />
-      <Stats />
+      <ProblemHero />
+      <RoleAndStats />
       <HowItWorks />
       <Partners assets={assets} />
       <Testimonials assets={assets} />
