@@ -326,17 +326,26 @@ function PreviewCard({
     >
       {/* ── Image hero ── */}
       <div className="relative h-[200px] overflow-hidden">
-        {experiment.name.toLowerCase() === "ambient os" ? (
-          <AmbientOSCoverMini />
-        ) : experiment.coverUrl ? (
-          <ImageWithShimmer
-            src={experiment.coverUrl}
-            alt={experiment.name}
-            fill
-            sizes="(max-width: 640px) 100vw, 340px"
-            className="object-cover"
-            style={{ objectPosition: experiment.coverFocusPoint || "top" }}
-          />
+        {experiment.coverUrl ? (
+          <>
+            <ImageWithShimmer
+              src={experiment.coverUrl}
+              alt={experiment.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 340px"
+              className="object-cover"
+              style={{
+                objectPosition: experiment.coverFocusPoint || "top",
+                ...(experiment.name.toLowerCase() === "ambient os"
+                  ? { opacity: 0.55, filter: "blur(1px) saturate(0.7)" }
+                  : {}),
+              }}
+            />
+            {/* Softening overlay for Ambient OS cover */}
+            {experiment.name.toLowerCase() === "ambient os" && (
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a]/30 via-transparent to-[#0f172a]/50" />
+            )}
+          </>
         ) : (
           <div
             className="flex h-full items-center justify-center"
