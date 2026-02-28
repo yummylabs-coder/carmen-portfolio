@@ -7,6 +7,87 @@ import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import { StoryViewer } from "@/components/ui/StoryViewer";
 import type { StorySlide } from "@/components/ui/StoryViewer";
+import { AmbientOSGallery } from "./AmbientOSGallery";
+
+/* ─── Animated mini cover for Ambient OS experiment card ─── */
+const MINI_ORBS = [
+  { x: 22, y: 30, size: 13, color: "#FF6B8A", delay: 0, dur: 4 },
+  { x: 73, y: 24, size: 11, color: "#A78BFA", delay: 0.5, dur: 4.5 },
+  { x: 14, y: 66, size: 10, color: "#38BDF8", delay: 1.0, dur: 5 },
+  { x: 50, y: 50, size: 15, color: "#34D399", delay: 1.5, dur: 4.2 },
+  { x: 82, y: 60, size: 11, color: "#FB923C", delay: 2.0, dur: 4.8 },
+  { x: 38, y: 16, size: 9, color: "#F472B6", delay: 0.3, dur: 5.2 },
+  { x: 62, y: 78, size: 9, color: "#FBBF24", delay: 0.8, dur: 4.6 },
+];
+
+function AmbientOSCoverMini() {
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 40%, #0f172a 0%, #030712 70%, #000 100%)",
+      }}
+    >
+      {/* Subtle zone ring */}
+      <svg
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        width="200"
+        height="160"
+        viewBox="-100 -80 200 160"
+      >
+        <ellipse
+          cx={0}
+          cy={0}
+          rx={80}
+          ry={60}
+          fill="none"
+          stroke="rgba(255,255,255,1)"
+          strokeWidth={0.5}
+          strokeDasharray="3 10"
+          opacity={0.06}
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from="0"
+            to="360"
+            dur="30s"
+            repeatCount="indefinite"
+          />
+        </ellipse>
+      </svg>
+
+      {/* Mini floating orbs */}
+      {MINI_ORBS.map((orb, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full ambient-float"
+          style={{
+            left: `${orb.x}%`,
+            top: `${orb.y}%`,
+            width: orb.size,
+            height: orb.size,
+            background: `radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), ${orb.color}70 60%, ${orb.color}20)`,
+            boxShadow: `0 0 ${orb.size * 1.2}px ${orb.color}20`,
+            border: "1px solid rgba(255,255,255,0.08)",
+            animationDuration: `${orb.dur}s`,
+            animationDelay: `${orb.delay}s`,
+          }}
+        />
+      ))}
+
+      {/* Central ambient glow */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[55%] w-[55%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%)",
+        }}
+      />
+    </div>
+  );
+}
 
 /* ─── Tab type ─── */
 type TabKey = "experiments" | "toolkit";
@@ -245,7 +326,9 @@ function PreviewCard({
     >
       {/* ── Image hero ── */}
       <div className="relative h-[200px] overflow-hidden">
-        {experiment.coverUrl ? (
+        {experiment.name.toLowerCase() === "ambient os" ? (
+          <AmbientOSCoverMini />
+        ) : experiment.coverUrl ? (
           <ImageWithShimmer
             src={experiment.coverUrl}
             alt={experiment.name}
@@ -776,17 +859,23 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
         </div>
       </div>
 
-      {/* Gallery Modal — unified StoryViewer */}
+      {/* Gallery Modal — unified StoryViewer / Ambient OS custom gallery */}
       <AnimatePresence>
-        {galleryExperiment && (
-          <StoryViewer
-            slides={toStorySlides(galleryExperiment)}
-            onClose={closeGallery}
-            aspect="landscape"
-            fit={galleryExperiment.galleryFit || "cover"}
-            autoAdvance={false}
-          />
-        )}
+        {galleryExperiment &&
+          (galleryExperiment.name.toLowerCase() === "ambient os" ? (
+            <AmbientOSGallery
+              experiment={galleryExperiment}
+              onClose={closeGallery}
+            />
+          ) : (
+            <StoryViewer
+              slides={toStorySlides(galleryExperiment)}
+              onClose={closeGallery}
+              aspect="landscape"
+              fit={galleryExperiment.galleryFit || "cover"}
+              autoAdvance={false}
+            />
+          ))}
       </AnimatePresence>
     </PageEntrance>
   );

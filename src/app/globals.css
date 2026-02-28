@@ -322,3 +322,40 @@ body {
     color: inherit !important;
   }
 }
+
+/* ─── Ambient OS interactive demo keyframes ─── */
+@keyframes ambient-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+@keyframes ambient-twinkle {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes ambient-pop-in {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ambient-float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+  50% { transform: translate(-50%, -50%) translateY(-5px); }
+}
+
+.ambient-breathe {
+  animation: ambient-breathe ease-in-out infinite;
+}
+
+.ambient-twinkle {
+  animation: ambient-twinkle ease-in-out infinite;
+}
+
+.ambient-pop-in {
+  animation: ambient-pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ambient-float {
+  animation: ambient-float ease-in-out infinite;
+}
