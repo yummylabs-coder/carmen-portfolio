@@ -5,15 +5,18 @@ export const dynamic = "force-dynamic";
 /**
  * GET /api/discord-messages
  *
- * Fetches the last 3 messages from a Discord channel.
+ * Fetches the last 3 messages from the #introduce-yourself channel.
  * Requires DISCORD_BOT_TOKEN and DISCORD_CHANNEL_ID env vars.
  * Falls back gracefully to an empty array if not configured.
- *
- * Response: { messages: Array<{ author: string; avatar: string | null; content: string; timestamp: string }> }
  */
 
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
+
+interface RawReaction {
+  count: number;
+  emoji: { id: string | null; name: string };
+}
 
 export async function GET() {
   // If not configured, return empty — the UI will hide the messages section
@@ -60,16 +63,24 @@ export async function GET() {
         author: { username: string; global_name?: string; avatar?: string; id: string };
         content: string;
         timestamp: string;
+        reactions?: RawReaction[];
       }) => ({
         author: msg.author.global_name || msg.author.username,
         avatar: msg.author.avatar
           ? `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png?size=64`
           : null,
         content:
-          msg.content.length > 120
-            ? msg.content.slice(0, 117) + "..."
+          msg.content.length > 80
+            ? msg.content.slice(0, 77) + "..."
             : msg.content,
         timestamp: msg.timestamp,
+        reactions: (msg.reactions ?? [])
+          .filter((r: RawReaction) => r.emoji.name)
+          .slice(0, 3)
+          .map((r: RawReaction) => ({
+            emoji: r.emoji.name,
+            count: r.count,
+          })),
       }),
     );
 

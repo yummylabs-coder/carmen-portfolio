@@ -28,10 +28,8 @@ export function WorkGrid({ projects, previews = {}, featuredProject }: WorkGridP
     (project: CaseStudy) => {
       const preview = previews[project.title.toLowerCase()];
       // Use preview images if available, otherwise fall back to hero images from main DB
-      const imageUrls =
-        preview?.imageUrls && preview.imageUrls.length > 0
-          ? preview.imageUrls
-          : project.heroImages;
+      const hasPreviewImages = preview?.imageUrls && preview.imageUrls.length > 0;
+      const imageUrls = hasPreviewImages ? preview.imageUrls : project.heroImages;
       setPreviewData({
         title: project.title,
         summary: project.summary,
@@ -40,6 +38,8 @@ export function WorkGrid({ projects, previews = {}, featuredProject }: WorkGridP
         captions: preview?.captions,
         videoUrl: preview?.videoUrl,
         tags: project.tags,
+        // Hero image fallbacks are often full-page screenshots — use contain so they don't crop
+        fit: !hasPreviewImages && project.heroImages?.length ? "contain" : undefined,
       });
     },
     [previews],

@@ -11,13 +11,38 @@ function DiscordIcon({ size = 20, className = "" }: { size?: number; className?:
   );
 }
 
+/* ─── Hash icon for channel names ─── */
+function HashIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+      <line x1="4" y1="9" x2="20" y2="9" />
+      <line x1="4" y1="15" x2="20" y2="15" />
+      <line x1="10" y1="3" x2="8" y2="21" />
+      <line x1="16" y1="3" x2="14" y2="21" />
+    </svg>
+  );
+}
+
 /* ─── Types ─── */
+interface Reaction {
+  emoji: string;
+  count: number;
+}
+
 interface DiscordMessage {
   author: string;
   avatar: string | null;
   content: string;
   timestamp: string;
+  reactions?: Reaction[];
 }
+
+/* ─── Channel tags shown before CTA ─── */
+const channels = [
+  { name: "job-opportunities", emoji: "💼" },
+  { name: "design-feedback", emoji: "🎨" },
+  { name: "design-toolkit-drops", emoji: "🧰" },
+];
 
 export function DiscordCommunityCard() {
   const [memberCount, setMemberCount] = useState<number | null>(null);
@@ -115,46 +140,79 @@ export function DiscordCommunityCard() {
           </div>
         )}
 
-        {/* Recent messages or friendly empty state */}
-        {messages.length > 0 ? (
+        {/* Recent messages from #introduce-yourself */}
+        {messages.length > 0 && (
           <div className="mt-3 flex flex-col gap-1.5">
-            <span className="text-11 font-semibold uppercase tracking-wide text-neutral-400">
-              Recent messages
+            <span className="text-10 font-semibold uppercase tracking-wide text-neutral-400">
+              #introduce-yourself
             </span>
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className="flex items-start gap-2 rounded-lg bg-white/70 px-2.5 py-2"
+                className="flex flex-col gap-1.5 rounded-lg bg-white/70 px-2.5 py-2"
               >
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#5865F2] text-[9px] font-bold text-white">
-                  {msg.avatar ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={msg.avatar}
-                      alt=""
-                      className="h-5 w-5 rounded-full"
-                    />
-                  ) : (
-                    msg.author[0]?.toUpperCase()
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-11 font-semibold text-brand-ink">
-                      {msg.author}
-                    </span>
-                    <span className="text-10 text-neutral-400">
-                      {timeAgo(msg.timestamp)}
-                    </span>
+                <div className="flex items-start gap-2">
+                  {/* Avatar */}
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#5865F2] text-[9px] font-bold text-white">
+                    {msg.avatar ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={msg.avatar}
+                        alt=""
+                        className="h-5 w-5 rounded-full"
+                      />
+                    ) : (
+                      msg.author[0]?.toUpperCase()
+                    )}
                   </div>
-                  <p className="truncate text-11 text-neutral-500">
-                    {msg.content || "Shared an attachment"}
-                  </p>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-11 font-semibold text-brand-ink">
+                        {msg.author}
+                      </span>
+                      <span className="text-10 text-neutral-400">
+                        {timeAgo(msg.timestamp)}
+                      </span>
+                    </div>
+                    <p className="truncate text-11 text-neutral-500">
+                      {msg.content || "Shared an attachment"}
+                    </p>
+                  </div>
                 </div>
+
+                {/* Emoji reactions */}
+                {msg.reactions && msg.reactions.length > 0 && (
+                  <div className="ml-7 flex flex-wrap gap-1">
+                    {msg.reactions.map((r, ri) => (
+                      <span
+                        key={ri}
+                        className="inline-flex items-center gap-0.5 rounded-full border border-sand-200 bg-sand-50 px-1.5 py-0.5 text-[10px]"
+                      >
+                        <span>{r.emoji}</span>
+                        <span className="font-mono text-[9px] text-neutral-400">
+                          {r.count}
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
-        ) : null}
+        )}
+
+        {/* Channel tags — encourage designers to join */}
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {channels.map((ch) => (
+            <span
+              key={ch.name}
+              className="inline-flex items-center gap-1 rounded-md bg-white/80 px-2 py-1 text-[10px] font-medium text-neutral-500"
+            >
+              <HashIcon />
+              {ch.name}
+            </span>
+          ))}
+        </div>
 
         {/* Join CTA */}
         <div className="mt-2.5 flex items-center justify-center gap-2 rounded-lg bg-[#2216ff] px-3.5 py-2 text-12 font-semibold text-white transition-colors group-hover:bg-[#1a10d9]">

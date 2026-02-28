@@ -13,6 +13,7 @@ export interface PreviewModalData {
   captions?: string[];
   videoUrl?: string;
   tags?: string[];
+  fit?: "cover" | "contain";
 }
 
 /* ─── Convert PreviewModalData → StorySlide[] ─── */
@@ -81,6 +82,7 @@ export function PreviewModal({
       onClose={onClose}
       aspect="landscape"
       autoAdvance={false}
+      fit={data.fit}
     />
   );
 }
