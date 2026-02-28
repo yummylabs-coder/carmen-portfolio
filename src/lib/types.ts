@@ -8,6 +8,8 @@ export interface CaseStudy {
   isFeatured?: boolean;
   isComingSoon?: boolean;
   sortOrder?: number;
+  /** Hero images from main DB — used as preview gallery fallback */
+  heroImages?: string[];
 }
 
 export interface ActivityItem {

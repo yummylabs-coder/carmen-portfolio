@@ -110,7 +110,10 @@ function parsePage(page: PageObjectResponse): CaseStudy {
 
   const sortOrder = getNumber(props.Order);
 
-  return { id: page.id, title, summary, coverUrl, slug, tags, isFeatured, isComingSoon, sortOrder };
+  // Hero images — used as fallback for preview galleries on coming-soon cards
+  const heroImages = getAllFiles(props["Hero Images"]);
+
+  return { id: page.id, title, summary, coverUrl, slug, tags, isFeatured, isComingSoon, sortOrder, heroImages: heroImages.length > 0 ? heroImages : undefined };
 }
 
 export async function getFeaturedCaseStudies(): Promise<CaseStudy[]> {

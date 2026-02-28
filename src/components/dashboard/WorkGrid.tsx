@@ -27,11 +27,16 @@ export function WorkGrid({ projects, previews = {}, featuredProject }: WorkGridP
   const openPreview = useCallback(
     (project: CaseStudy) => {
       const preview = previews[project.title.toLowerCase()];
+      // Use preview images if available, otherwise fall back to hero images from main DB
+      const imageUrls =
+        preview?.imageUrls && preview.imageUrls.length > 0
+          ? preview.imageUrls
+          : project.heroImages;
       setPreviewData({
         title: project.title,
         summary: project.summary,
         coverUrl: project.coverUrl,
-        imageUrls: preview?.imageUrls,
+        imageUrls,
         captions: preview?.captions,
         videoUrl: preview?.videoUrl,
         tags: project.tags,

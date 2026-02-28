@@ -334,7 +334,7 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
             href={YUMMY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-body text-[14px] font-semibold text-[#2216ff] transition-colors hover:bg-white/90"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#1a0ed4] px-6 py-3 font-body text-[14px] font-semibold text-sand-100 transition-colors hover:bg-[#150bba]"
           >
             Visit yummy-labs.com
           </a>
@@ -390,6 +390,41 @@ const statIcons: Record<string, React.ReactNode> = {
   ),
 };
 
+/* Role icons — clean SVG icons replacing emojis */
+const roleIcons: Record<string, React.ReactNode> = {
+  "Curriculum design": (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  ),
+  "Lead mentorship": (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
+  "Startup partnerships": (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z" />
+    </svg>
+  ),
+  "Product vision": (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  ),
+  "UX Lead": (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  ),
+};
+
 function RoleAndStats() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
@@ -411,15 +446,15 @@ function RoleAndStats() {
               initial={{ opacity: 0, x: -10 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
               transition={{ duration: 0.4, delay: 0.15 + i * 0.07, ease: "easeOut" }}
-              className="flex items-center gap-1.5 rounded-lg bg-sand-50 px-3 py-2"
+              className="flex items-center gap-2.5 rounded-lg bg-sand-50 px-3 py-2.5"
             >
               <motion.span
-                className="text-[14px]"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-sand-200/60 text-neutral-500"
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
                 transition={{ duration: 0.4, delay: 0.25 + i * 0.07, type: "spring", stiffness: 200, damping: 12 }}
               >
-                {role.icon}
+                {roleIcons[role.text] ?? role.icon}
               </motion.span>
               <span className="font-body text-[13px] font-medium text-neutral-700">
                 {role.text}
@@ -504,9 +539,9 @@ function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.45, delay: 0.15 + i * 0.15 }}
           >
-            {/* Connecting line — visible on desktop between cards */}
+            {/* Connecting arrow — visible on desktop between cards */}
             {i === 0 && (
-              <div className="pointer-events-none absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 translate-x-1/2 lg:block">
+              <div className="pointer-events-none absolute -right-6 top-1/2 z-10 hidden -translate-y-1/2 lg:block">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-sand-300 bg-white shadow-sm">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12" />
@@ -532,8 +567,8 @@ function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
             <div
               className={`h-full rounded-2xl border p-5 ${
                 i === 0
-                  ? "border-[#7c3aed]/20 bg-gradient-to-br from-[#f5f3ff] to-[#ede9fe] lg:mr-5"
-                  : "border-[#7c3aed]/20 bg-gradient-to-br from-[#ede9fe] to-[#e4dffc] lg:ml-5"
+                  ? "border-[#7c3aed]/20 bg-gradient-to-br from-[#f5f3ff] to-[#ede9fe] lg:mr-8"
+                  : "border-[#7c3aed]/20 bg-gradient-to-br from-[#ede9fe] to-[#e4dffc] lg:ml-8"
               }`}
             >
               {/* Week badge + title row */}
@@ -554,7 +589,7 @@ function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
               </p>
 
               {/* Activity list */}
-              <ul className="mb-5 space-y-2">
+              <ul className="space-y-2">
                 {week.activities.map((activity) => (
                   <li key={activity} className="flex items-start gap-2.5 text-[12px] leading-snug text-gray-600">
                     <span className="mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#7c3aed]/10">
@@ -566,33 +601,6 @@ function HowItWorks({ assets }: { assets: YummyAssetsMap }) {
                   </li>
                 ))}
               </ul>
-
-              {/* Tools used this week */}
-              <div className="flex items-center gap-1.5">
-                <span className="mr-1 text-[10px] font-medium uppercase tracking-wider text-neutral-300">
-                  Tools
-                </span>
-                {week.tools.map((slug) => {
-                  const tool = tools.find((t) => t.slug === slug);
-                  const logoUrl = assets.toolLogos[slug];
-                  if (!tool) return null;
-                  return (
-                    <div
-                      key={slug}
-                      className="flex items-center gap-1.5 rounded-full border border-[#7c3aed]/10 bg-white/80 px-2 py-1"
-                    >
-                      <div className="flex h-4 w-4 items-center justify-center overflow-hidden rounded-[3px]">
-                        {logoUrl ? (
-                          <Img src={logoUrl} alt={tool.name} className="h-3.5 w-3.5 object-contain" />
-                        ) : (
-                          <span className="text-[9px] font-bold text-[#7c3aed]">{tool.logoText}</span>
-                        )}
-                      </div>
-                      <span className="text-[11px] font-medium text-gray-500">{tool.name}</span>
-                    </div>
-                  );
-                })}
-              </div>
             </div>
           </motion.div>
         ))}
