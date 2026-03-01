@@ -96,18 +96,14 @@ export function DeviceCarousel({
     };
   }, [autoplay, paused, next, shouldReduce]);
 
-  // Touch/swipe support
-  const touchStartX = useRef(0);
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  }, []);
-  const handleTouchEnd = useCallback(
-    (e: React.TouchEvent) => {
-      const dx = e.changedTouches[0].clientX - touchStartX.current;
-      if (Math.abs(dx) > 40) {
-        if (dx > 0) prev();
-        else next();
-      }
+  // Swipe handler via Framer Motion drag
+  const handleDragEnd = useCallback(
+    (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
+      // Trigger on offset OR velocity (quick flick)
+      const swipe = info.offset.x;
+      const velocity = info.velocity.x;
+      if (swipe > 50 || velocity > 300) prev();
+      else if (swipe < -50 || velocity < -300) next();
     },
     [next, prev],
   );
@@ -245,11 +241,16 @@ export function DeviceCarousel({
       className={className}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
-      {/* Frame + arrows wrapper */}
-      <div className="relative">
+      {/* Frame + arrows wrapper — draggable for swipe */}
+      <motion.div
+        className="relative"
+        style={{ touchAction: "pan-y" }}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.12}
+        onDragEnd={handleDragEnd}
+      >
         {/* Arrows (desktop only) */}
         {slides.length > 1 && (
           <>
@@ -259,7 +260,7 @@ export function DeviceCarousel({
         )}
 
         {renderFrame()}
-      </div>
+      </motion.div>
 
       {/* Caption */}
       <AnimatePresence mode="wait">

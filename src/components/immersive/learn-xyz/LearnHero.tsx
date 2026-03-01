@@ -94,7 +94,7 @@ export function LearnHero() {
           {/* Headline */}
           <LineMask
             as="h1"
-            className="font-brand text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight"
+            className="font-brand text-[clamp(3rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight"
             delay={0.7}
           >
             {HERO.headline}
@@ -134,11 +134,11 @@ export function LearnHero() {
           </motion.div>
         </div>
 
-        {/* ── Right: Figma card images (lg+ only) ── */}
-        <div ref={cardsRef} className="hidden flex-1 lg:block">
-          <div className="relative ml-auto w-full max-w-[540px]">
+        {/* ── Right: Figma card images ── */}
+        <div ref={cardsRef} className="flex-1">
+          <div className="relative mx-auto w-full max-w-[320px] sm:max-w-[400px] lg:ml-auto lg:mr-0 lg:max-w-[540px]">
             {/* Blur glow behind the card cluster */}
-            <div className="pointer-events-none absolute inset-0">
+            <div className="pointer-events-none absolute inset-0 hidden lg:block">
               <div
                 className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full"
                 style={{
@@ -159,7 +159,7 @@ export function LearnHero() {
              *  │                │  │              │
              *  └────────────────┘  └──────────────┘
              */}
-            <div className="relative flex flex-col items-center gap-4">
+            <div className="relative flex flex-col items-center gap-3 lg:gap-4">
               {/* Row 1: Stat card — centred at top */}
               <motion.div
                 initial={shouldReduce ? {} : { opacity: 0, y: 40, scale: 0.95 }}
@@ -172,14 +172,14 @@ export function LearnHero() {
                     alt="Overall Lesson Completion Rate: 85%"
                     width={341}
                     height={111}
-                    className="h-auto w-[340px] drop-shadow-xl"
+                    className="h-auto w-[220px] drop-shadow-xl sm:w-[280px] lg:w-[340px]"
                     priority
                   />
                 </IdleFloat>
               </motion.div>
 
               {/* Row 2: AI Creator (left) + Template (right) */}
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3 lg:gap-4">
                 {/* AI Creator */}
                 <motion.div
                   initial={shouldReduce ? {} : { opacity: 0, y: 40, scale: 0.95 }}
@@ -192,7 +192,7 @@ export function LearnHero() {
                       alt="Creating your lesson with AI — analyzing company knowledge, integrating insights, closing skill gaps"
                       width={242}
                       height={261}
-                      className="h-auto w-[230px] drop-shadow-xl"
+                      className="h-auto w-[145px] drop-shadow-xl sm:w-[180px] lg:w-[230px]"
                       priority
                     />
                   </IdleFloat>
@@ -210,7 +210,7 @@ export function LearnHero() {
                       alt="Cybersecurity Prevention Training template card"
                       width={275}
                       height={161}
-                      className="h-auto w-[260px] drop-shadow-xl"
+                      className="h-auto w-[165px] drop-shadow-xl sm:w-[200px] lg:w-[260px]"
                       priority
                     />
                   </IdleFloat>
