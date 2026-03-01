@@ -14,6 +14,7 @@ interface CaseStudyCardProps {
   slug: string;
   tags?: string[];
   isComingSoon?: boolean;
+  isFeatured?: boolean;
   hasPreview?: boolean;
   onOpenPreview?: () => void;
   priority?: boolean;
@@ -30,10 +31,11 @@ function CardInner({
   coverUrl,
   tags,
   isComingSoon,
+  isFeatured,
   priority,
   selectable,
   selected,
-}: Pick<CaseStudyCardProps, "title" | "summary" | "coverUrl" | "tags" | "isComingSoon" | "priority" | "selectable" | "selected">) {
+}: Pick<CaseStudyCardProps, "title" | "summary" | "coverUrl" | "tags" | "isComingSoon" | "isFeatured" | "priority" | "selectable" | "selected">) {
   const [canHover, setCanHover] = useState(false);
 
   useEffect(() => {
@@ -66,6 +68,13 @@ function CardInner({
           <div className="absolute right-3 top-3 z-10">
             <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-brand-ink backdrop-blur-sm">
               Coming Soon
+            </span>
+          </div>
+        )}
+        {isFeatured && !selectable && !isComingSoon && (
+          <div className="absolute right-3 top-3 z-10">
+            <span className="rounded-full bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-brand-ink backdrop-blur-md">
+              Featured
             </span>
           </div>
         )}
@@ -165,6 +174,7 @@ function CaseStudyCard({
   slug,
   tags,
   isComingSoon,
+  isFeatured,
   hasPreview,
   onOpenPreview,
   priority,
@@ -186,7 +196,7 @@ function CaseStudyCard({
           onSelect?.();
         }}
       >
-        <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} isComingSoon={isComingSoon} priority={priority} selectable selected={selected} />
+        <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} isComingSoon={isComingSoon} isFeatured={isFeatured} priority={priority} selectable selected={selected} />
       </div>
     );
   }
@@ -197,14 +207,14 @@ function CaseStudyCard({
         className={`block ${hasPreview ? "cursor-pointer" : ""} ${className}`}
         onClick={hasPreview && onOpenPreview ? onOpenPreview : undefined}
       >
-        <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} isComingSoon priority={priority} />
+        <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} isComingSoon isFeatured={isFeatured} priority={priority} />
       </div>
     );
   }
 
   return (
     <Link href={`/work/${slug}`} className={`block ${className}`} onClick={handleCurtainClick}>
-      <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} priority={priority} />
+      <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} isFeatured={isFeatured} priority={priority} />
     </Link>
   );
 }

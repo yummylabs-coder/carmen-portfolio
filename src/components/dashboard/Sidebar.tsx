@@ -101,16 +101,18 @@ export function Sidebar({ className = "" }: SidebarProps) {
       style={{ borderRadius: "0 16px 16px 0" }}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-neutral-100 px-4 pb-[17px] pt-4">
-        <AnimatedLogoMark size={38} />
-        <div className="flex flex-col">
-          <span className="font-brand text-14 font-bold text-brand-ink">
-            Carmen&apos;s Space
-          </span>
-          <span className="text-11 text-neutral-400">
-            Product Design &amp; Strategy
-          </span>
-        </div>
+      <div className="border-b border-neutral-100 px-4 pb-[17px] pt-4">
+        <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
+          <AnimatedLogoMark size={38} />
+          <div className="flex flex-col">
+            <span className="font-brand text-14 font-bold text-brand-ink">
+              Carmen&apos;s Space
+            </span>
+            <span className="text-11 text-neutral-400">
+              Product Design &amp; Strategy
+            </span>
+          </div>
+        </Link>
       </div>
 
       {/* Primary nav */}

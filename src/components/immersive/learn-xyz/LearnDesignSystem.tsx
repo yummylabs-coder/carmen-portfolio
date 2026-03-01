@@ -145,7 +145,12 @@ function TokenArchitecture() {
             <div className="flex items-center gap-3">
               <div
                 className="h-8 w-8 shrink-0 rounded-full"
-                style={{ backgroundColor: row.primitive.value }}
+                style={{
+                  backgroundColor: row.primitive.value,
+                  boxShadow: row.primitive.value.toLowerCase() === "#0d0847"
+                    ? "inset 0 0 0 1px rgba(255,255,255,0.25)"
+                    : undefined,
+                }}
               />
               <div>
                 <span className="block text-[13px] font-medium">

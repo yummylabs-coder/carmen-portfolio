@@ -39,6 +39,7 @@ export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
     <ImmersiveShell
       progressColor="#2216FF"
       backButtonBg="rgba(255,254,252,0.92)"
+      isFeatured
     >
       {/* 1. Hero — The Gold Room */}
       <LearnHero />

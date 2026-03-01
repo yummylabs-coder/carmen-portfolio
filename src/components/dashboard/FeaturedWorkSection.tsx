@@ -54,6 +54,7 @@ export function FeaturedWorkSection({ caseStudies }: FeaturedWorkSectionProps) {
               summary={study.summary}
               coverUrl={study.coverUrl}
               slug={study.slug}
+              isFeatured={study.slug === "learn-xyz"}
               className="w-full"
             />
           </motion.div>

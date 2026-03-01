@@ -23,12 +23,15 @@ interface ImmersiveShellProps {
   progressColor?: string;
   /** Background color for the back button area */
   backButtonBg?: string;
+  /** Show a "Featured" badge in the top-right */
+  isFeatured?: boolean;
 }
 
 export function ImmersiveShell({
   children,
   progressColor = "#2216FF",
   backButtonBg = "rgba(255,255,255,0.9)",
+  isFeatured,
 }: ImmersiveShellProps) {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,6 +93,22 @@ export function ImmersiveShell({
         </svg>
         Back
       </motion.button>
+
+      {/* Featured badge — top right */}
+      {isFeatured && (
+        <motion.span
+          className="fixed right-5 top-5 z-[70] rounded-full bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-brand-ink shadow-lg backdrop-blur-md"
+          initial={shouldReduce ? { opacity: 1 } : { opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: duration.slow,
+            delay: shellDelay,
+            ease: ease.expo,
+          }}
+        >
+          Featured
+        </motion.span>
+      )}
 
       {/* Content */}
       <main className="relative z-10">{children}</main>
