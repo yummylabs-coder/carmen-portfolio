@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, DM_Sans, Caveat } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Sans, Caveat, Source_Sans_3 } from "next/font/google";
 import { TransitionProvider } from "@/components/transitions/TransitionProvider";
 import "./globals.css";
 
@@ -21,6 +21,13 @@ const caveat = Caveat({
   subsets: ["latin"],
   variable: "--font-handwritten",
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-learn",
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -57,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${plusJakarta.variable} ${dmSans.variable} ${caveat.variable} font-body antialiased`}
+        className={`${plusJakarta.variable} ${dmSans.variable} ${caveat.variable} ${sourceSans.variable} font-body antialiased`}
       >
         <TransitionProvider>{children}</TransitionProvider>
       </body>

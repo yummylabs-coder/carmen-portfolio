@@ -61,6 +61,11 @@ export const IMAGES = {
   brandVisual:
     "https://framerusercontent.com/images/vqxI0bq3iDCzFJuOlx2gK7nQ.png",
 
+  // Real components from Figma
+  componentActivity: "/images/learn/component-activity.png",
+  componentProgress: "/images/learn/component-progress.png",
+  componentFeatured: "/images/learn/component-featured.png",
+
   // Placeholder office / team photos (replace with real shots)
   teamWorking:
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
@@ -198,6 +203,30 @@ export const DESIGN_SYSTEM = {
       question: "Why 200ms default motion?",
       answer:
         "Fast enough that the UI feels instant. Slow enough that transitions register as intentional. We tested 150ms (too robotic) and 300ms (too sluggish). 200ms is the sweet spot for 'snappy but alive.'",
+    },
+  ],
+
+  componentShowcase: [
+    {
+      name: "Activity Feed",
+      description: "Social learning activity — completions, kudos, team engagement at a glance.",
+      image: "componentActivity" as const,
+      width: 316,
+      height: 428,
+    },
+    {
+      name: "Learning Path Card",
+      description: "Progress tracking through multi-lesson paths with visual completion.",
+      image: "componentProgress" as const,
+      width: 358,
+      height: 143,
+    },
+    {
+      name: "Featured Lesson",
+      description: "Hero card for highlighted content with rich media, author attribution, and CTA.",
+      image: "componentFeatured" as const,
+      width: 358,
+      height: 355,
     },
   ],
 

@@ -44,12 +44,17 @@ export function LearnDesignSystem() {
         <TokenArchitecture />
       </div>
 
-      {/* Moment 2: Component Inspector */}
+      {/* Moment 2: Typography */}
       <div className="mt-24">
-        <ComponentInspector />
+        <Typography />
       </div>
 
-      {/* Moment 3: Design Decisions */}
+      {/* Moment 3: Component Showcase */}
+      <div className="mt-24">
+        <ComponentShowcase />
+      </div>
+
+      {/* Moment 4: Design Decisions */}
       <div className="mt-24">
         <DesignDecisions />
       </div>
@@ -91,7 +96,7 @@ export function LearnDesignSystem() {
 }
 
 /* ================================================================== */
-/*  Moment 1: Token Architecture                                       */
+/*  Moment 1: Token Architecture (click-based)                         */
 /* ================================================================== */
 
 function TokenArchitecture() {
@@ -108,7 +113,7 @@ function TokenArchitecture() {
         Token Architecture
       </h3>
 
-      {/* Column headers — desktop only (redundant when stacked) */}
+      {/* Column headers — desktop only */}
       <div className="mb-4 hidden md:grid md:grid-cols-3 md:gap-4">
         {cols.map((col, ci) => (
           <motion.span
@@ -123,21 +128,20 @@ function TokenArchitecture() {
         ))}
       </div>
 
-      {/* Token rows — stacked on mobile, 3-column grid on md+ */}
+      {/* Token rows — click to toggle */}
       <div className="space-y-3">
         {DESIGN_SYSTEM.tokenArchitecture.map((row, ri) => {
           const isActive = activeRow === ri;
           return (
-            <motion.div
+            <motion.button
               key={ri}
-              className="cursor-pointer rounded-xl p-3 transition-colors md:grid md:grid-cols-3 md:gap-4"
+              className="w-full cursor-pointer rounded-xl p-3 text-left transition-colors md:grid md:grid-cols-3 md:gap-4"
               style={{
                 backgroundColor: isActive
                   ? `${row.primitive.value}12`
                   : "transparent",
               }}
-              onMouseEnter={() => setActiveRow(ri)}
-              onMouseLeave={() => setActiveRow(null)}
+              onClick={() => setActiveRow(isActive ? null : ri)}
               initial={shouldReduce ? {} : { opacity: 0, x: -16 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{
@@ -167,7 +171,7 @@ function TokenArchitecture() {
               {/* Semantic */}
               <div className="mt-2 flex items-center md:mt-0">
                 <span className="mr-2 text-[10px] uppercase tracking-wider opacity-30 md:hidden">
-                  →
+                  &rarr;
                 </span>
                 <motion.span
                   className="rounded-md px-2 py-1 font-mono text-[12px]"
@@ -184,35 +188,52 @@ function TokenArchitecture() {
 
               {/* Component tokens */}
               <div className="mt-2 md:mt-0">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {row.components.map((comp, ci) => (
-                    <motion.span
-                      key={comp}
-                      className="rounded px-1.5 py-0.5 font-mono text-[11px]"
-                      style={{
-                        backgroundColor: isActive
-                          ? `${row.primitive.value}18`
-                          : "rgba(255,255,255,0.04)",
-                      }}
-                      initial={shouldReduce ? {} : { opacity: 0 }}
-                      animate={
-                        inView
-                          ? isActive
-                            ? { opacity: 1, x: 0 }
-                            : { opacity: 0.6, x: 0 }
-                          : {}
-                      }
-                      transition={{
-                        delay: isActive ? ci * 0.05 : 0,
-                        duration: 0.3,
-                      }}
+                <AnimatePresence>
+                  {isActive && (
+                    <motion.div
+                      className="flex flex-wrap items-center gap-1.5"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25, ease: ease.standard }}
                     >
-                      {comp}
-                    </motion.span>
-                  ))}
-                </div>
+                      {row.components.map((comp, ci) => (
+                        <motion.span
+                          key={comp}
+                          className="rounded px-1.5 py-0.5 font-mono text-[11px]"
+                          style={{
+                            backgroundColor: `${row.primitive.value}18`,
+                          }}
+                          initial={{ opacity: 0, x: -4 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            delay: ci * 0.05,
+                            duration: 0.2,
+                          }}
+                        >
+                          {comp}
+                        </motion.span>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                {!isActive && (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {row.components.map((comp) => (
+                      <span
+                        key={comp}
+                        className="rounded px-1.5 py-0.5 font-mono text-[11px] opacity-30"
+                        style={{
+                          backgroundColor: "rgba(255,255,255,0.04)",
+                        }}
+                      >
+                        {comp}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-            </motion.div>
+            </motion.button>
           );
         })}
       </div>
@@ -226,195 +247,151 @@ function TokenArchitecture() {
 }
 
 /* ================================================================== */
-/*  Moment 2: Component Inspector                                      */
+/*  Moment 2: Typography                                                */
 /* ================================================================== */
 
-function ComponentInspector() {
+function Typography() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const shouldReduce = useReducedMotion();
-  const [activeZone, setActiveZone] = useState<string | null>(null);
-
-  const zone = DESIGN_SYSTEM.inspectorZones.find((z) => z.id === activeZone);
 
   return (
     <div ref={ref}>
-      <h3 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
-        Component Inspector
+      <h3 className="mb-8 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+        Typography
       </h3>
-      <p className="mb-8 text-[13px] opacity-40">
-        Tap any part of the card to inspect its design tokens.
-      </p>
 
-      <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-12">
-        {/* The lesson card */}
-        <motion.div
-          className="relative flex-shrink-0"
-          initial={
-            shouldReduce
-              ? {}
-              : { opacity: 0, rotateX: 3, rotateY: -2 }
-          }
-          animate={
-            inView
-              ? { opacity: 1, rotateX: 0, rotateY: 0 }
-              : {}
-          }
-          transition={{ duration: 0.8, ease: ease.expo, delay: 0.2 }}
-          style={{ perspective: 800 }}
-        >
-          <div
-            className="relative w-[248px] rounded-2xl p-4 shadow-lg"
-            style={{ backgroundColor: "#FFFEFC" }}
+      <div className="space-y-10">
+        {DESIGN_SYSTEM.typeSpecimens.map((spec, i) => (
+          <motion.div
+            key={spec.style}
+            className="group"
+            initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{
+              delay: 0.2 + i * 0.15,
+              duration: 0.6,
+              ease: ease.expo,
+            }}
           >
-            {/* Badge */}
-            <div
-              className="mb-3 inline-block cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-semibold"
-              style={{ backgroundColor: "#FECB3A", color: "#300101" }}
-              onClick={() => setActiveZone((p) => p === "badge" ? null : "badge")}
-            >
-              Leadership
+            {/* Meta row */}
+            <div className="mb-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span className="text-[11px] font-semibold uppercase tracking-wider opacity-40">
+                {spec.style}
+              </span>
+              <span className="font-mono text-[11px] opacity-25">
+                {spec.weight} / {spec.size}px / {spec.letterSpacing}
+              </span>
             </div>
 
-            {/* Title */}
-            <h4
-              className="mb-1 cursor-pointer text-[16px] font-semibold leading-tight"
-              style={{ color: "#300101" }}
-              onClick={() => setActiveZone((p) => p === "title" ? null : "title")}
-            >
-              Async Communication
-            </h4>
+            {/* The specimen itself — rendered in Source Sans Pro */}
             <p
-              className="mb-4 text-[12px]"
-              style={{ color: "#503B00" }}
+              className="leading-[1.15]"
+              style={{
+                fontFamily: "var(--font-learn), 'Source Sans 3', sans-serif",
+                fontWeight: spec.weight,
+                fontSize: `clamp(${Math.max(spec.size * 0.5, 14)}px, ${spec.size <= 16 ? "16px" : `${spec.size / 16}vw + 4px`}, ${spec.size}px)`,
+                letterSpacing: spec.letterSpacing,
+              }}
             >
-              Master remote team strategies
+              {spec.sample}
             </p>
 
-            {/* Progress bar */}
-            <div
-              className="mb-4 h-[6px] cursor-pointer overflow-hidden rounded-full"
-              style={{ backgroundColor: "#FFF8E1" }}
-              onClick={() => setActiveZone((p) => p === "progress" ? null : "progress")}
-            >
+            {/* Divider */}
+            {i < DESIGN_SYSTEM.typeSpecimens.length - 1 && (
               <div
-                className="h-full rounded-full"
-                style={{
-                  width: "65%",
-                  backgroundColor: "#2216FF",
-                }}
+                className="mt-8 h-px w-full"
+                style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
               />
-            </div>
-
-            {/* Avatar stack */}
-            <div
-              className="flex cursor-pointer items-center"
-              onClick={() => setActiveZone((p) => p === "avatar" ? null : "avatar")}
-            >
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="h-6 w-6 rounded-full border-2"
-                  style={{
-                    backgroundColor: ["#FF6B6B", "#2216FF", "#00D4AA"][i],
-                    borderColor: "#FFFEFC",
-                    marginLeft: i > 0 ? -6 : 0,
-                    zIndex: 3 - i,
-                    position: "relative",
-                  }}
-                />
-              ))}
-              <span
-                className="ml-2 text-[11px]"
-                style={{ color: "#503B00" }}
-              >
-                +12 learners
-              </span>
-            </div>
-
-            {/* Invisible full-card click zone (behind everything) */}
-            <div
-              className="absolute inset-0 cursor-pointer rounded-2xl"
-              onClick={() => setActiveZone((p) => p === "card-bg" ? null : "card-bg")}
-              style={{ zIndex: -1 }}
-            />
-
-            {/* Active zone ring on card */}
-            <motion.div
-              className="pointer-events-none absolute inset-0 rounded-2xl"
-              animate={{
-                boxShadow: activeZone
-                  ? "0 0 0 2px #FECB3A, 0 0 20px rgba(254,203,58,0.15)"
-                  : "0 0 0 0px transparent, 0 0 0px transparent",
-              }}
-              transition={{ duration: 0.2 }}
-            />
-          </div>
-        </motion.div>
-
-        {/* Inspector panel */}
-        <AnimatePresence mode="wait">
-          {zone ? (
-            <motion.div
-              key={zone.id}
-              className="min-w-[280px] max-w-[360px] rounded-xl border p-5"
-              style={{
-                borderColor: "rgba(255,255,255,0.1)",
-                backgroundColor: "rgba(255,255,255,0.04)",
-              }}
-              initial={shouldReduce ? {} : { opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -8 }}
-              transition={{ duration: 0.2, ease: ease.expo }}
-            >
-              <h4 className="mb-3 text-[14px] font-semibold">
-                {zone.label}
-              </h4>
-
-              <div className="space-y-2">
-                {zone.tokens.map((t) => (
-                  <div
-                    key={t.prop}
-                    className="flex items-baseline justify-between gap-4"
-                  >
-                    <span className="text-[12px] opacity-50">{t.prop}</span>
-                    <div className="text-right">
-                      <span className="block font-mono text-[12px] text-[#FECB3A]">
-                        {t.token}
-                      </span>
-                      <span className="block font-mono text-[11px] opacity-40">
-                        → {t.value}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <p className="mt-4 border-t border-white/10 pt-3 text-[12px] italic opacity-50">
-                {zone.why}
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="empty"
-              className="flex min-h-[200px] min-w-[280px] items-center justify-center rounded-xl border border-dashed p-5"
-              style={{ borderColor: "rgba(255,255,255,0.08)" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.3 }}
-            >
-              <span className="text-[13px] opacity-50">
-                ← Tap the card to inspect tokens
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+          </motion.div>
+        ))}
       </div>
+
+      <motion.p
+        className="mt-8 text-[12px] italic opacity-30"
+        initial={shouldReduce ? {} : { opacity: 0 }}
+        animate={inView ? { opacity: 0.3 } : {}}
+        transition={{ delay: 0.8, duration: 0.5 }}
+      >
+        Source Sans Pro everywhere. Clean enough for data-dense dashboards,
+        warm enough for a learning app.
+      </motion.p>
     </div>
   );
 }
 
 /* ================================================================== */
-/*  Moment 3: Design Decisions                                         */
+/*  Moment 3: Component Showcase (real Figma exports)                   */
+/* ================================================================== */
+
+function ComponentShowcase() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const shouldReduce = useReducedMotion();
+
+  return (
+    <div ref={ref}>
+      <h3 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+        Components
+      </h3>
+      <p className="mb-8 text-[13px] opacity-40">
+        Real components from the design system, exported directly from Figma.
+      </p>
+
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {DESIGN_SYSTEM.componentShowcase.map((comp, i) => (
+          <motion.div
+            key={comp.name}
+            className="group flex flex-col"
+            initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{
+              delay: 0.2 + i * 0.12,
+              duration: 0.6,
+              ease: ease.expo,
+            }}
+          >
+            {/* Component image */}
+            <div
+              className="relative flex items-center justify-center overflow-hidden rounded-xl p-6 transition-transform duration-300 group-hover:scale-[1.02]"
+              style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+            >
+              <Image
+                src={IMAGES[comp.image]}
+                alt={comp.name}
+                width={comp.width}
+                height={comp.height}
+                className="h-auto max-h-[320px] w-auto max-w-full object-contain"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              />
+            </div>
+
+            {/* Label + description */}
+            <div className="mt-4">
+              <h4 className="text-[14px] font-semibold">{comp.name}</h4>
+              <p className="mt-1 text-[13px] leading-relaxed opacity-50">
+                {comp.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.p
+        className="mt-6 text-center text-[12px] italic opacity-30"
+        initial={shouldReduce ? {} : { opacity: 0 }}
+        animate={inView ? { opacity: 0.3 } : {}}
+        transition={{ delay: 0.8, duration: 0.5 }}
+      >
+        {DESIGN_SYSTEM.closingLine}
+      </motion.p>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  Moment 4: Design Decisions                                         */
 /* ================================================================== */
 
 function DesignDecisions() {
