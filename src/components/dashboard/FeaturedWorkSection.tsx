@@ -9,6 +9,15 @@ interface FeaturedWorkSectionProps {
 }
 
 export function FeaturedWorkSection({ caseStudies }: FeaturedWorkSectionProps) {
+  /* Defensive sort — Notion's sort is unstable when Order values tie,
+     so we re-sort by sortOrder with slug as tiebreaker to guarantee
+     deterministic card positions across ISR revalidations. */
+  const sorted = [...caseStudies].sort((a, b) => {
+    const orderDiff = (a.sortOrder ?? 999) - (b.sortOrder ?? 999);
+    if (orderDiff !== 0) return orderDiff;
+    return a.slug.localeCompare(b.slug);
+  });
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 24 }}
@@ -38,7 +47,7 @@ export function FeaturedWorkSection({ caseStudies }: FeaturedWorkSectionProps) {
       </motion.h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {caseStudies.map((study, index) => (
+        {sorted.map((study, index) => (
           <motion.div
             key={study.id}
             initial={{ opacity: 0, y: 20 }}
