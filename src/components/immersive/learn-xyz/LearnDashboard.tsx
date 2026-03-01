@@ -73,7 +73,11 @@ export function LearnDashboard() {
       </SectionVisual>
 
       {/* Gamification illustrations — horizontal row, scroll-driven slide */}
-      <div ref={rowRef} className="mt-20 overflow-hidden">
+      <div
+        ref={rowRef}
+        className="mt-20"
+        style={{ marginLeft: "calc(-50vw + 50%)", marginRight: "calc(-50vw + 50%)", width: "100vw" }}
+      >
         <motion.div
           className="flex items-center justify-center gap-8 sm:gap-12 md:gap-16"
           style={{ x }}

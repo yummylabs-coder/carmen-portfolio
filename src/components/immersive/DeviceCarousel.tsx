@@ -277,27 +277,22 @@ export function DeviceCarousel({
       </AnimatePresence>
 
       {/* Dots */}
-      <div className="mt-4 flex justify-center gap-2.5">
+      <div className="mt-4 flex items-center justify-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className="relative h-2 w-2 rounded-full transition-all duration-200"
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === current
+                ? "w-6"
+                : "w-2 hover:opacity-50"
+            }`}
             style={{
               backgroundColor: "currentColor",
               opacity: i === current ? 1 : 0.25,
             }}
             aria-label={`Go to slide ${i + 1}`}
-          >
-            {i === current && (
-              <motion.div
-                className="absolute inset-[-1px] rounded-full"
-                style={{ backgroundColor: "currentColor" }}
-                layoutId={`dot-${carouselId}`}
-                transition={spring.snappy}
-              />
-            )}
-          </button>
+          />
         ))}
       </div>
     </div>
