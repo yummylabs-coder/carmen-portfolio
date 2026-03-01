@@ -4,14 +4,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { CaseStudy } from "@/lib/types";
 import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
+import { useCurtainTransition } from "@/components/transitions/useCurtainTransition";
 
 interface FeaturedHeroCardProps {
   project: CaseStudy;
 }
 
 export function FeaturedHeroCard({ project }: FeaturedHeroCardProps) {
+  const handleCurtainClick = useCurtainTransition(project.slug);
+
   return (
-    <Link href={`/work/${project.slug}`} className="block">
+    <Link href={`/work/${project.slug}`} className="block" onClick={handleCurtainClick}>
       <motion.article
         whileHover={{ y: -2 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}

@@ -15,6 +15,7 @@ import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useRef, type ReactNode } from "react";
 import { ease, duration } from "@/lib/motion";
+import { usePageTransition } from "@/components/transitions/PageTransitionContext";
 
 interface ImmersiveShellProps {
   children: ReactNode;
@@ -32,6 +33,11 @@ export function ImmersiveShell({
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduce = useReducedMotion();
+  const { isTransitioning } = usePageTransition();
+
+  // Extra delay when arriving via curtain transition so shell UI
+  // doesn't appear before the curtain finishes revealing
+  const shellDelay = isTransitioning ? 1.2 : 0.8;
 
   const { scrollYProgress } = useScroll({ container: undefined });
   const scaleX = useSpring(scrollYProgress, {
@@ -63,7 +69,7 @@ export function ImmersiveShell({
         animate={{ opacity: 1, x: 0 }}
         transition={{
           duration: duration.slow,
-          delay: 0.8,
+          delay: shellDelay,
           ease: ease.expo,
         }}
       >

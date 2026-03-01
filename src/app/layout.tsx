@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, DM_Sans, Caveat } from "next/font/google";
+import { TransitionProvider } from "@/components/transitions/TransitionProvider";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -58,7 +59,7 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} ${dmSans.variable} ${caveat.variable} font-body antialiased`}
       >
-        {children}
+        <TransitionProvider>{children}</TransitionProvider>
       </body>
     </html>
   );

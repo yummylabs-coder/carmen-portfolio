@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 import { CheckIcon } from "@/components/icons/NavIcons";
+import { useCurtainTransition } from "@/components/transitions/useCurtainTransition";
 
 interface CaseStudyCardProps {
   title: string;
@@ -172,6 +173,8 @@ function CaseStudyCard({
   selected,
   onSelect,
 }: CaseStudyCardProps) {
+  const handleCurtainClick = useCurtainTransition(slug);
+
   // Selection mode — card click toggles selection
   if (selectable) {
     return (
@@ -200,7 +203,7 @@ function CaseStudyCard({
   }
 
   return (
-    <Link href={`/work/${slug}`} className={`block ${className}`}>
+    <Link href={`/work/${slug}`} className={`block ${className}`} onClick={handleCurtainClick}>
       <CardInner title={title} summary={summary} coverUrl={coverUrl} tags={tags} priority={priority} />
     </Link>
   );
