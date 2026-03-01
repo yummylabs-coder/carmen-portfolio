@@ -23,7 +23,7 @@ export function LearnBet() {
         className="mt-4 flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20"
       >
         {/* Left: Text */}
-        <div className="flex-1 space-y-6 lg:max-w-[560px]">
+        <div className="flex-1 space-y-6">
           <LineMask
             as="h2"
             className="text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
@@ -33,7 +33,7 @@ export function LearnBet() {
           </LineMask>
 
           <motion.p
-            className="max-w-[480px] text-[17px] leading-[1.8] opacity-80"
+            className="max-w-[640px] text-[17px] leading-[1.8] opacity-80"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             animate={inView ? { opacity: 0.8, y: 0 } : {}}
             transition={{

@@ -57,7 +57,7 @@ export function LearnOutcomes() {
 
       {/* Closing line */}
       <motion.p
-        className="mt-16 max-w-[480px] text-[15px] leading-relaxed opacity-50"
+        className="mt-16 max-w-[640px] text-[15px] leading-relaxed opacity-50"
         initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
         animate={statsInView ? { opacity: 0.5, y: 0 } : {}}
         transition={{ delay: 1.2, duration: duration.slow, ease: ease.standard }}

@@ -46,7 +46,7 @@ export function LearnProblem() {
         </motion.span>
 
         {/* Content — centered */}
-        <div className="relative z-10 mx-auto max-w-[800px]">
+        <div className="relative z-10 mx-auto max-w-[1000px]">
           <LineMask
             as="h2"
             className="mb-8 text-[clamp(2.5rem,7vw,5.5rem)] font-extrabold leading-[1.02] tracking-tight"
@@ -56,7 +56,7 @@ export function LearnProblem() {
           </LineMask>
 
           <motion.p
-            className="mx-auto max-w-[600px] text-[18px] leading-[1.8] opacity-80"
+            className="mx-auto max-w-[640px] text-[18px] leading-[1.8] opacity-80"
             initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
             animate={inView ? { opacity: 0.8, y: 0 } : {}}
             transition={{

@@ -86,7 +86,7 @@ export const BET = {
 
 export const ROLE = {
   headline: "From zero to\nSeries Seed.",
-  body: "I joined as the dedicated design partner from day zero — before there was a product, a brand, or a single screen. Over two years, I shaped the entire product ecosystem: the mobile app learners reach for, the dashboard admins rely on, and the website that convinced investors this was real.",
+  body: "I joined as the dedicated design partner from day zero, before there was a product, a brand, or a single screen. Over two years, I shaped the entire product ecosystem: the mobile app learners reach for, the dashboard admins rely on, and the website that convinced investors this was real.",
   cards: [
     {
       icon: "phone" as const,
@@ -108,8 +108,8 @@ export const ROLE = {
 
 export const DESIGN_SYSTEM = {
   headline: "Bold. Joyful.\nUnmistakable.",
-  body: "Corporate learning tools look corporate. We built a design language that refuses to. Every color, every typeface, every interaction was chosen to spark curiosity — to make people feel like they discovered something good, not like they were assigned homework.",
-  closingLine: "From button to billboard — one system, every surface.",
+  body: "Corporate learning tools look corporate. We built a design language that refuses to. Every color, every typeface, every interaction was chosen to spark curiosity and make people feel like they discovered something good, not like they were assigned homework.",
+  closingLine: "From button to billboard. One system, every surface.",
 
   colors: [
     { name: "Learn Gold", hex: "#FECB3A", semantic: "color.brand.primary", usage: "CTAs, highlights, brand moments" },
@@ -186,7 +186,7 @@ export const DESIGN_SYSTEM = {
     {
       question: "Why an 8px base grid?",
       answer:
-        "8 divides cleanly into screen densities (1x, 2x, 3x). Every margin, padding, and gap is a multiple of 8 — the layout math never breaks, even when engineers round differently.",
+        "8 divides cleanly into screen densities (1x, 2x, 3x). Every margin, padding, and gap is a multiple of 8, so the layout math never breaks, even when engineers round differently.",
     },
     {
       question: "Why 200ms default motion?",
@@ -274,7 +274,7 @@ export const DESIGN_SYSTEM = {
 
 export const MOBILE_APP = {
   headline: "Swipe. Learn.\nRepeat.",
-  body: "The learner app feels more like a social feed than a training portal. Lessons are short, visual, and designed for the moments between meetings. Gamification loops drive engagement. Team-based progress turns learning into a shared experience — not a lonely checkbox.",
+  body: "The learner app feels more like a social feed than a training portal. Lessons are short, visual, and designed for the moments between meetings. Gamification loops drive engagement. Team-based progress turns learning into a shared experience, not a lonely checkbox.",
   screens: [
     { src: "mobile1" as const, alt: "Social learning feed", caption: "A social feed that makes learning communal" },
     { src: "mobile2" as const, alt: "Lesson card", caption: "Snackable, swipeable lesson cards" },
@@ -310,7 +310,7 @@ export const WEBSITE = {
 
 export const OUTCOMES = {
   headline: "$4M raised.\nUdemy noticed.",
-  closingLine: "The numbers that got investors excited — and the design that made them possible.",
+  closingLine: "The numbers that got investors excited, and the design that made them possible.",
   stats: [
     { value: 20, suffix: "+", label: "Global Pilot Clients" },
     { value: 80, suffix: "%", label: "Lesson Completion Rate" },
