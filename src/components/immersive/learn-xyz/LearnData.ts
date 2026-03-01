@@ -1,0 +1,320 @@
+/**
+ * Static content for the Learn.xyz immersive case study.
+ * Separates copy from components for easy editing.
+ */
+
+/* ------------------------------------------------------------------ */
+/*  Images — reuse existing CDN URLs from the old LearnXyzSections     */
+/* ------------------------------------------------------------------ */
+
+export const IMAGES = {
+  // Hero
+  hero: "https://framerusercontent.com/images/sH7xrKlGVFqbCMOXhtedwDhBw4.png",
+
+  // Website screenshots
+  website1:
+    "https://framerusercontent.com/images/RGN9RVmVPpBmBxgpjMIJGYUTo.png",
+  website2:
+    "https://framerusercontent.com/images/mHcxSI4x38ypW2j5KbsXBFVZ5w.png",
+  website3:
+    "https://framerusercontent.com/images/0mGTJh1IjVIUWJIhqj8TZ0pST0.png",
+  website4:
+    "https://framerusercontent.com/images/nfSLHd9TbzDuNSwn7F5OVUQ1oQ.png",
+
+  // Dashboard screenshots
+  dashboard1:
+    "https://framerusercontent.com/images/R3pAF9NBRFR8kWpPGz7Rns5U8Ck.png",
+  dashboard2:
+    "https://framerusercontent.com/images/WxBYtBQ1FMH5LUeZRd7t5eR7kY.png",
+  dashboard3:
+    "https://framerusercontent.com/images/hJ4TJX1fMK5cPYxWv5blnxYnxag.png",
+  dashboard4:
+    "https://framerusercontent.com/images/w1s8NKxEgXvw9NHCBv2KMnKbwI.png",
+  dashboard5:
+    "https://framerusercontent.com/images/Dbo1DZnOMwl9aLhXsFkFh6nA.png",
+
+  // Mobile screenshots
+  mobile1:
+    "https://framerusercontent.com/images/b0gJQxCN4pjnHlvzaOOgXI7xGZQ.png",
+  mobile2:
+    "https://framerusercontent.com/images/L2jlRtlV2xZHgrfpXuYMjEG6c.png",
+  mobile3:
+    "https://framerusercontent.com/images/jm0dDa4gSSqPOqzSYIWtVvTxZ0.png",
+  mobile4:
+    "https://framerusercontent.com/images/y5EqGVQ2LGbXqVW7lkCwFyGmMUY.png",
+  mobile5:
+    "https://framerusercontent.com/images/sqCcZVQxCCZswq3opjXpz4jG8s.png",
+  mobile6:
+    "https://framerusercontent.com/images/UqNNWmNkJbxDFKYhfQYR9O8E.png",
+
+  // GIFs / motion
+  gifWebsite:
+    "https://framerusercontent.com/images/Uj4FrGeoRDHGx4ZPjRElDgBLg.gif",
+  gifDashboard:
+    "https://framerusercontent.com/images/mflf6MR8SXXZ8DrA5MynBhWlUKI.gif",
+  gifMobile:
+    "https://framerusercontent.com/images/rNsqfF1bMlYZFH8G1oXQCeBBQA.gif",
+  gifBrand:
+    "https://framerusercontent.com/images/1Fid9q2TLY5qMaKQTPfQhPX3dM.gif",
+
+  // Misc
+  brandVisual:
+    "https://framerusercontent.com/images/vqxI0bq3iDCzFJuOlx2gK7nQ.png",
+};
+
+/* ------------------------------------------------------------------ */
+/*  Section copy                                                       */
+/* ------------------------------------------------------------------ */
+
+export const HERO = {
+  headline: "Learning that doesn't\nfeel like learning.",
+  meta: "Learn.xyz · Founding Designer · 2022–2025",
+  services: ["Product Design", "Design System", "UX Research", "Brand"],
+  platforms: ["iOS", "Web", "Admin"],
+};
+
+export const PROBLEM = {
+  headline: "Nobody finishes\ncorporate training.",
+  body: "80% of workplace courses go incomplete. The content reads like compliance checklists. The interfaces feel like they were designed in 2011. And the people forced to use them? They alt-tab the second their manager looks away. Learn.xyz started with a provocation: what if professional development felt as good as your favorite app?",
+  stat: "80%",
+};
+
+export const BET = {
+  headline: "What if learning\nfelt like scrolling?",
+  body: "Short-form lessons. Social feeds. Gamification loops. AI-generated content. We designed a platform that turns training into something people actually want to open.",
+};
+
+export const ROLE = {
+  headline: "From zero to\nSeries Seed.",
+  body: "I joined as the dedicated design partner from day zero — before there was a product, a brand, or a single screen. Over two years, I shaped the entire product ecosystem: the mobile app learners reach for, the dashboard admins rely on, and the website that convinced investors this was real.",
+  cards: [
+    {
+      icon: "phone" as const,
+      title: "Mobile App",
+      description: "The experience learners love",
+    },
+    {
+      icon: "laptop" as const,
+      title: "Web Dashboard",
+      description: "The engine admins depend on",
+    },
+    {
+      icon: "globe" as const,
+      title: "Marketing Site",
+      description: "The story that sells it",
+    },
+  ],
+};
+
+export const DESIGN_SYSTEM = {
+  headline: "Bold. Joyful.\nUnmistakable.",
+  body: "Corporate learning tools look corporate. We built a design language that refuses to. Every color, every typeface, every interaction was chosen to spark curiosity — to make people feel like they discovered something good, not like they were assigned homework.",
+  closingLine: "From button to billboard — one system, every surface.",
+
+  colors: [
+    { name: "Learn Gold", hex: "#FECB3A", semantic: "color.brand.primary", usage: "CTAs, highlights, brand moments" },
+    { name: "Warm Brown", hex: "#300101", semantic: "color.text.primary", usage: "Headlines, body text, high-contrast" },
+    { name: "Cocoa", hex: "#503B00", semantic: "color.text.secondary", usage: "Supporting text, captions" },
+    { name: "Brand Blue", hex: "#2216FF", semantic: "color.action.main", usage: "Buttons, links, progress indicators" },
+    { name: "Electric Violet", hex: "#5B4FFF", semantic: "color.action.hover", usage: "Hover states, active indicators" },
+    { name: "Coral", hex: "#FF6B6B", semantic: "color.sentiment.error", usage: "Errors, alerts, urgent badges" },
+    { name: "Mint", hex: "#00D4AA", semantic: "color.sentiment.success", usage: "Success states, completion" },
+    { name: "Cream", hex: "#FFF8E1", semantic: "color.surface.warm", usage: "Backgrounds, cards, soft surfaces" },
+    { name: "Off White", hex: "#FFFEFC", semantic: "color.surface.base", usage: "Page backgrounds, clean surfaces" },
+    { name: "Charcoal", hex: "#2C2C2C", semantic: "color.surface.inverse", usage: "Dark mode, footers, overlays" },
+  ],
+
+  typeSpecimens: [
+    {
+      style: "Display",
+      sample: "Learning that actually sticks.",
+      weight: 700,
+      size: 44,
+      letterSpacing: "-0.03em",
+    },
+    {
+      style: "Heading",
+      sample: "Gamified. Social. AI-powered.",
+      weight: 600,
+      size: 28,
+      letterSpacing: "-0.01em",
+    },
+    {
+      style: "Body",
+      sample:
+        "Lessons are short, engaging, and designed for busy teams. No more boring corporate training that nobody finishes.",
+      weight: 400,
+      size: 16,
+      letterSpacing: "0",
+    },
+  ],
+
+  tokenArchitecture: [
+    {
+      primitive: { name: "Gold 400", value: "#FECB3A" },
+      semantic: "color.brand.primary",
+      components: ["button.cta.bg", "badge.highlight", "nav.active"],
+    },
+    {
+      primitive: { name: "Blue 600", value: "#2216FF" },
+      semantic: "color.action.main",
+      components: ["button.primary.bg", "link.default", "progress.fill"],
+    },
+    {
+      primitive: { name: "Brown 900", value: "#300101" },
+      semantic: "color.text.primary",
+      components: ["heading.default", "card.title", "input.value"],
+    },
+    {
+      primitive: { name: "Cream 50", value: "#FFF8E1" },
+      semantic: "color.surface.warm",
+      components: ["card.bg", "input.bg", "tooltip.bg"],
+    },
+  ],
+
+  decisions: [
+    {
+      question: "Why gold in a sea of corporate blue?",
+      answer:
+        "Every competitor uses blue to signal 'trustworthy enterprise.' Gold says 'this is different' before you read a single word. It's a positioning decision disguised as a color choice.",
+    },
+    {
+      question: "Why one typeface for everything?",
+      answer:
+        "Source Sans Pro is clean enough for data-dense dashboards but warm enough for a learning app. One typeface that works at 11px in a table and 44px on a billboard means less cognitive load and faster design decisions.",
+    },
+    {
+      question: "Why an 8px base grid?",
+      answer:
+        "8 divides cleanly into screen densities (1x, 2x, 3x). Every margin, padding, and gap is a multiple of 8 — the layout math never breaks, even when engineers round differently.",
+    },
+    {
+      question: "Why 200ms default motion?",
+      answer:
+        "Fast enough that the UI feels instant. Slow enough that transitions register as intentional. We tested 150ms (too robotic) and 300ms (too sluggish). 200ms is the sweet spot for 'snappy but alive.'",
+    },
+  ],
+
+  inspectorZones: [
+    {
+      id: "badge",
+      label: "Category Badge",
+      x: 12,
+      y: 8,
+      w: 80,
+      h: 24,
+      tokens: [
+        { prop: "background", token: "color.brand.primary", value: "#FECB3A" },
+        { prop: "text", token: "color.text.on-brand", value: "#300101" },
+        { prop: "radius", token: "radius.pill", value: "999px" },
+        { prop: "padding", token: "space.xs space.sm", value: "4px 8px" },
+      ],
+      why: "Badges use brand gold to signal curated content — not system-generated defaults.",
+    },
+    {
+      id: "title",
+      label: "Lesson Title",
+      x: 12,
+      y: 40,
+      w: 220,
+      h: 28,
+      tokens: [
+        { prop: "font", token: "type.heading.sm", value: "600 / 18px" },
+        { prop: "color", token: "color.text.primary", value: "#300101" },
+        { prop: "spacing", token: "space.xs", value: "4px bottom" },
+      ],
+      why: "Title hierarchy uses weight, not size. Keeps the card compact without sacrificing readability.",
+    },
+    {
+      id: "progress",
+      label: "Progress Bar",
+      x: 12,
+      y: 130,
+      w: 220,
+      h: 8,
+      tokens: [
+        { prop: "fill", token: "color.action.main", value: "#2216FF" },
+        { prop: "track", token: "color.surface.warm", value: "#FFF8E1" },
+        { prop: "radius", token: "radius.sm", value: "4px" },
+        { prop: "height", token: "size.progress", value: "6px" },
+      ],
+      why: "Blue signals active progress. The warm track blends with the card surface, keeping visual noise low.",
+    },
+    {
+      id: "avatar",
+      label: "Avatar Stack",
+      x: 12,
+      y: 155,
+      w: 80,
+      h: 28,
+      tokens: [
+        { prop: "size", token: "size.avatar.sm", value: "24px" },
+        { prop: "border", token: "color.surface.base", value: "#FFFEFC" },
+        { prop: "overlap", token: "space.avatar.overlap", value: "-6px" },
+      ],
+      why: "Overlapping avatars create social proof at a glance — this is a team activity, not solo homework.",
+    },
+    {
+      id: "card-bg",
+      label: "Card Surface",
+      x: 0,
+      y: 0,
+      w: 248,
+      h: 192,
+      tokens: [
+        { prop: "background", token: "color.surface.base", value: "#FFFEFC" },
+        { prop: "radius", token: "radius.lg", value: "16px" },
+        { prop: "shadow", token: "elevation.card", value: "0 2px 8px rgba(0,0,0,0.06)" },
+        { prop: "padding", token: "space.md", value: "16px" },
+      ],
+      why: "Off-white instead of pure white. Feels warmer, more approachable — matching the brand personality.",
+    },
+  ],
+};
+
+export const MOBILE_APP = {
+  headline: "Swipe. Learn.\nRepeat.",
+  body: "The learner app feels more like a social feed than a training portal. Lessons are short, visual, and designed for the moments between meetings. Gamification loops drive engagement. Team-based progress turns learning into a shared experience — not a lonely checkbox.",
+  screens: [
+    { src: "mobile1" as const, alt: "Social learning feed", caption: "A social feed that makes learning communal" },
+    { src: "mobile2" as const, alt: "Lesson card", caption: "Snackable, swipeable lesson cards" },
+    { src: "mobile3" as const, alt: "Gamification", caption: "Gamification that drives real engagement" },
+    { src: "mobile4" as const, alt: "Team progress", caption: "Team-based progress tracking" },
+    { src: "mobile5" as const, alt: "Learning path", caption: "Personalized learning paths" },
+    { src: "mobile6" as const, alt: "Achievements", caption: "Achievements and streaks" },
+  ],
+};
+
+export const DASHBOARD = {
+  headline: "Create a lesson\nin minutes.",
+  body: "Admins don't have time for complex authoring tools. We designed a dashboard where AI generates lesson drafts, content organizes by team or topic, and publishing happens in one click. Smart defaults mean less setup. Preview tools mean fewer surprises.",
+  screens: [
+    { src: "dashboard1" as const, alt: "Lesson creation", caption: "AI-powered lesson creation" },
+    { src: "dashboard2" as const, alt: "Content library", caption: "Organize lessons by team or topic" },
+    { src: "dashboard3" as const, alt: "Analytics", caption: "Engagement insights at a glance" },
+    { src: "dashboard4" as const, alt: "Publish flow", caption: "Preview and publish in one click" },
+    { src: "dashboard5" as const, alt: "Overview", caption: "Smart defaults for fast creation" },
+  ],
+};
+
+export const WEBSITE = {
+  headline: "Not your average\ntraining tool.",
+  body: "The marketing site needed to feel as fresh as the product it represents. We used bold visuals, playful micro-interactions, and conversion-focused copy to make Learn.xyz's pitch instantly clear: this is different, and you want in.",
+  screens: [
+    { src: "website1" as const, alt: "Homepage", caption: "Playful homepage with energy and clarity" },
+    { src: "website2" as const, alt: "Features", caption: "Bold visuals and micro-interactions" },
+    { src: "website3" as const, alt: "Product page", caption: "Clear product storytelling" },
+    { src: "website4" as const, alt: "Social proof", caption: "Conversion-focused with social proof" },
+  ],
+};
+
+export const OUTCOMES = {
+  headline: "$4M raised.\nUdemy noticed.",
+  closingLine: "The numbers that got investors excited — and the design that made them possible.",
+  stats: [
+    { value: 20, suffix: "+", label: "Global Pilot Clients" },
+    { value: 80, suffix: "%", label: "Lesson Completion Rate" },
+    { value: 10, suffix: "/week", label: "Avg. Lessons per Learner" },
+    { value: 1000, suffix: "+", label: "Lessons Created in Week 1" },
+  ],
+};

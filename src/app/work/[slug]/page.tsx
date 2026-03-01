@@ -15,6 +15,12 @@ import { StickyNotesBanner } from "@/components/case-study/StickyNotesBanner";
 import { Outcomes } from "@/components/case-study/Outcomes";
 import { NextCaseStudy } from "@/components/case-study/NextCaseStudy";
 
+/* ─── Immersive case studies (full-screen, no sidebar) ─── */
+import { LearnImmersive } from "@/components/immersive/learn-xyz/LearnImmersive";
+
+/** Slugs that use the immersive full-screen experience instead of DashboardShell */
+const immersiveSlugs = new Set(["learn-xyz"]);
+
 /* ─── Custom interactive sections per case study ─── */
 import { PandoreSections } from "@/components/case-study/sections/PandoreSections";
 import { AusventureSections } from "@/components/case-study/sections/AusventureSections";
@@ -91,6 +97,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
   ]);
 
   const config = getCaseStudyConfig(slug);
+
+  /* ── Immersive full-screen experience for select case studies ── */
+  if (immersiveSlugs.has(slug)) {
+    return <LearnImmersive />;
+  }
 
   return (
     <DashboardShell>
