@@ -83,10 +83,12 @@ function VersionBadge() {
         <span className="text-brand-ink/70">git tag</span>
         <br />
         <span className="text-emerald-600">v14</span>
-        <span className="text-neutral-400"> ← current</span>
+        <span className="text-neutral-400"> ← deployed</span>
         <br />
         <span className="text-yellow-600">v15</span>
-        <span className="text-neutral-400"> ← wip</span>
+        <span className="text-neutral-400"> ← in progress</span>
+        <br />
+        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">improving case studies</span>
       </div>
     </div>
   );
