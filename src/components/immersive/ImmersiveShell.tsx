@@ -47,7 +47,7 @@ export function ImmersiveShell({
   });
 
   return (
-    <div ref={containerRef} className="relative min-h-screen w-full">
+    <div ref={containerRef} className="relative min-h-screen w-full overflow-x-hidden">
       {/* Progress bar */}
       <motion.div
         className="fixed left-0 top-0 z-[80] h-[3px] origin-left"
