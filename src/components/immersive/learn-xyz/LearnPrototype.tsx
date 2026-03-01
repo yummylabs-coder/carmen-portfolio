@@ -27,7 +27,7 @@ export function LearnPrototype() {
         </LineMask>
 
         <motion.p
-          className="mx-auto mb-16 max-w-[640px] text-[17px] leading-[1.8] opacity-80"
+          className="mb-16 max-w-[640px] text-[17px] leading-[1.8] opacity-80"
           initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
           animate={inView ? { opacity: 0.8, y: 0 } : {}}
           transition={{

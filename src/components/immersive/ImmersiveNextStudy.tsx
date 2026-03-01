@@ -19,6 +19,7 @@ interface ImmersiveNextStudyProps {
   slug: string;
   coverUrl: string;
   tag?: string;
+  tags?: string[];
   /** Background color of this section */
   bg?: string;
   /** Text color */
@@ -30,6 +31,7 @@ export function ImmersiveNextStudy({
   slug,
   coverUrl,
   tag,
+  tags,
   bg = "#FFFEFC",
   text = "#300101",
 }: ImmersiveNextStudyProps) {
@@ -66,20 +68,28 @@ export function ImmersiveNextStudy({
           {title}
         </LineMask>
 
-        {/* Tag */}
-        {tag && (
-          <motion.span
-            className="text-[14px] opacity-50"
+        {/* Tags */}
+        {(tags?.length ? tags : tag ? [tag] : []).length > 0 && (
+          <motion.div
+            className="flex flex-wrap justify-center gap-2"
             initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
-            animate={inView ? { opacity: 0.5, y: 0 } : {}}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{
               delay: 0.6,
               duration: duration.normal,
               ease: ease.standard,
             }}
           >
-            {tag}
-          </motion.span>
+            {(tags?.length ? tags : tag ? [tag] : []).map((t) => (
+              <span
+                key={t}
+                className="rounded-full px-3 py-1 text-[13px] opacity-50"
+                style={{ backgroundColor: `${text}08`, border: `1px solid ${text}15` }}
+              >
+                {t}
+              </span>
+            ))}
+          </motion.div>
         )}
 
         {/* Arrow */}

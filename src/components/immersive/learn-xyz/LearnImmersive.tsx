@@ -58,22 +58,8 @@ export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
         overlay="rgba(13,8,71,0.35)"
       />
 
-      {/* — Full-bleed visual pause: brand identity — */}
-      <FullBleedImage
-        src={IMAGES.brandVisual}
-        alt="Learn.xyz brand visual system"
-        overlay="rgba(13,8,71,0.4)"
-      />
-
       {/* 5. Design System — Deep Purple Room */}
       <LearnDesignSystem />
-
-      {/* — Full-bleed visual pause: product overview — */}
-      <FullBleedImage
-        src={IMAGES.hero}
-        alt="Learn.xyz product overview"
-        overlay="rgba(48,1,1,0.15)"
-      />
 
       {/* 6. Mobile App — Charcoal Room */}
       <LearnMobileApp />
@@ -106,7 +92,7 @@ export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
           title={nextProject.title}
           slug={nextProject.slug}
           coverUrl={nextProject.coverUrl}
-          tag={nextProject.tags?.[0]}
+          tags={nextProject.tags}
           bg="#FFFEFC"
           text="#300101"
         />

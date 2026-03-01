@@ -70,7 +70,7 @@ export function LearnProblem() {
           style={{
             fontSize: "clamp(8rem, 28vw, 22rem)",
             color: "#FECB3A",
-            opacity: 0.2,
+            opacity: 1,
             x,
           }}
         >
