@@ -173,15 +173,13 @@ export const DESIGN_SYSTEM = {
 
   colors: [
     { name: "Learn Gold", hex: "#FECB3A", semantic: "color.brand.primary", usage: "CTAs, highlights, brand moments" },
-    { name: "Warm Brown", hex: "#300101", semantic: "color.text.primary", usage: "Headlines, body text, high-contrast" },
-    { name: "Cocoa", hex: "#503B00", semantic: "color.text.secondary", usage: "Supporting text, captions" },
+    { name: "Deep Violet", hex: "#0D0847", semantic: "color.bg.primary", usage: "Backgrounds, sections, copy on light surfaces" },
     { name: "Brand Blue", hex: "#2216FF", semantic: "color.action.main", usage: "Buttons, links, progress indicators" },
     { name: "Electric Violet", hex: "#5B4FFF", semantic: "color.action.hover", usage: "Hover states, active indicators" },
+    { name: "Off White", hex: "#FFFEFC", semantic: "color.surface.base", usage: "Page backgrounds, copy on dark surfaces" },
+    { name: "Cream", hex: "#FFF8E1", semantic: "color.surface.warm", usage: "Cards, inputs, soft surfaces" },
     { name: "Coral", hex: "#FF6B6B", semantic: "color.sentiment.error", usage: "Errors, alerts, urgent badges" },
     { name: "Mint", hex: "#00D4AA", semantic: "color.sentiment.success", usage: "Success states, completion" },
-    { name: "Cream", hex: "#FFF8E1", semantic: "color.surface.warm", usage: "Backgrounds, cards, soft surfaces" },
-    { name: "Off White", hex: "#FFFEFC", semantic: "color.surface.base", usage: "Page backgrounds, clean surfaces" },
-    { name: "Charcoal", hex: "#2C2C2C", semantic: "color.surface.inverse", usage: "Dark mode, footers, overlays" },
   ],
 
   typeSpecimens: [
@@ -221,14 +219,14 @@ export const DESIGN_SYSTEM = {
       components: ["button.primary.bg", "link.default", "progress.fill"],
     },
     {
-      primitive: { name: "Brown 900", value: "#300101" },
-      semantic: "color.text.primary",
-      components: ["heading.default", "card.title", "input.value"],
+      primitive: { name: "Violet 900", value: "#0D0847" },
+      semantic: "color.bg.primary",
+      components: ["section.bg", "heading.on-light", "body.on-light"],
     },
     {
-      primitive: { name: "Cream 50", value: "#FFF8E1" },
-      semantic: "color.surface.warm",
-      components: ["card.bg", "input.bg", "tooltip.bg"],
+      primitive: { name: "White 50", value: "#FFFEFC" },
+      semantic: "color.surface.base",
+      components: ["page.bg", "text.on-dark", "card.surface"],
     },
   ],
 

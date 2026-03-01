@@ -15,7 +15,7 @@ import {
   SectionBody,
   SectionVisual,
 } from "../SectionRoom";
-import { learnRooms, ease, stagger, spring } from "@/lib/motion";
+import { learnRooms, ease, stagger } from "@/lib/motion";
 import { DESIGN_SYSTEM, IMAGES } from "./LearnData";
 
 /* ================================================================== */
@@ -103,7 +103,6 @@ function TokenArchitecture() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const shouldReduce = useReducedMotion();
-  const [activeRow, setActiveRow] = useState<number | null>(null);
 
   const cols = ["Primitive", "Semantic", "Component"];
 
@@ -128,114 +127,69 @@ function TokenArchitecture() {
         ))}
       </div>
 
-      {/* Token rows — click to toggle */}
+      {/* Token rows — static, no interaction */}
       <div className="space-y-3">
-        {DESIGN_SYSTEM.tokenArchitecture.map((row, ri) => {
-          const isActive = activeRow === ri;
-          return (
-            <motion.button
-              key={ri}
-              className="w-full cursor-pointer rounded-xl p-3 text-left transition-colors md:grid md:grid-cols-3 md:gap-4"
-              style={{
-                backgroundColor: isActive
-                  ? `${row.primitive.value}12`
-                  : "transparent",
-              }}
-              onClick={() => setActiveRow(isActive ? null : ri)}
-              initial={shouldReduce ? {} : { opacity: 0, x: -16 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{
-                delay: 0.2 + ri * 0.1,
-                duration: 0.5,
-                ease: ease.expo,
-              }}
-            >
-              {/* Primitive */}
-              <div className="flex items-center gap-3">
-                <motion.div
-                  className="h-5 w-5 shrink-0 rounded-md"
-                  style={{ backgroundColor: row.primitive.value }}
-                  animate={isActive ? { scale: 1.2 } : { scale: 1 }}
-                  transition={spring.snappy}
-                />
-                <div>
-                  <span className="block text-[13px] font-medium">
-                    {row.primitive.name}
-                  </span>
-                  <span className="text-[11px] opacity-40">
-                    {row.primitive.value}
-                  </span>
-                </div>
-              </div>
-
-              {/* Semantic */}
-              <div className="mt-2 flex items-center md:mt-0">
-                <span className="mr-2 text-[10px] uppercase tracking-wider opacity-30 md:hidden">
-                  &rarr;
+        {DESIGN_SYSTEM.tokenArchitecture.map((row, ri) => (
+          <motion.div
+            key={ri}
+            className="rounded-xl p-3 md:grid md:grid-cols-3 md:items-center md:gap-4"
+            initial={shouldReduce ? {} : { opacity: 0, x: -16 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{
+              delay: 0.2 + ri * 0.1,
+              duration: 0.5,
+              ease: ease.expo,
+            }}
+          >
+            {/* Primitive */}
+            <div className="flex items-center gap-3">
+              <div
+                className="h-8 w-8 shrink-0 rounded-full"
+                style={{ backgroundColor: row.primitive.value }}
+              />
+              <div>
+                <span className="block text-[13px] font-medium">
+                  {row.primitive.name}
                 </span>
-                <motion.span
-                  className="rounded-md px-2 py-1 font-mono text-[12px]"
-                  style={{
-                    backgroundColor: isActive
-                      ? `${row.primitive.value}20`
-                      : "rgba(255,255,255,0.06)",
-                  }}
-                  animate={isActive ? { scale: 1.02 } : { scale: 1 }}
-                >
-                  {row.semantic}
-                </motion.span>
+                <span className="text-[11px] opacity-40">
+                  {row.primitive.value}
+                </span>
               </div>
+            </div>
 
-              {/* Component tokens */}
-              <div className="mt-2 md:mt-0">
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.div
-                      className="flex flex-wrap items-center gap-1.5"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25, ease: ease.standard }}
-                    >
-                      {row.components.map((comp, ci) => (
-                        <motion.span
-                          key={comp}
-                          className="rounded px-1.5 py-0.5 font-mono text-[11px]"
-                          style={{
-                            backgroundColor: `${row.primitive.value}18`,
-                          }}
-                          initial={{ opacity: 0, x: -4 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            delay: ci * 0.05,
-                            duration: 0.2,
-                          }}
-                        >
-                          {comp}
-                        </motion.span>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                {!isActive && (
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    {row.components.map((comp) => (
-                      <span
-                        key={comp}
-                        className="rounded px-1.5 py-0.5 font-mono text-[11px] opacity-30"
-                        style={{
-                          backgroundColor: "rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        {comp}
-                      </span>
-                    ))}
-                  </div>
-                )}
+            {/* Semantic */}
+            <div className="mt-2 flex items-center md:mt-0">
+              <span className="mr-2 text-[10px] uppercase tracking-wider opacity-30 md:hidden">
+                &rarr;
+              </span>
+              <span
+                className="rounded-md px-2 py-1 font-mono text-[12px]"
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.06)",
+                }}
+              >
+                {row.semantic}
+              </span>
+            </div>
+
+            {/* Component tokens */}
+            <div className="mt-2 md:mt-0">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {row.components.map((comp) => (
+                  <span
+                    key={comp}
+                    className="rounded px-1.5 py-0.5 font-mono text-[11px] opacity-40"
+                    style={{
+                      backgroundColor: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    {comp}
+                  </span>
+                ))}
               </div>
-            </motion.button>
-          );
-        })}
+            </div>
+          </motion.div>
+        ))}
       </div>
 
       <p className="mt-4 text-[12px] italic opacity-30">
