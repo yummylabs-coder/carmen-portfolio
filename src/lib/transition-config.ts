@@ -41,12 +41,14 @@ const transitionConfigs: Record<string, TransitionConfig> = {
   neotaste: {
     color: "#1C1D28",
     textColor: "#FFFFFF",
+    logoUrl: "/images/logos/neotaste-symbol.svg",
   },
 
   /* Ausventure — Warm teal */
   ausventure: {
     color: "#143B39",
     textColor: "#FFFFFF",
+    logoUrl: "/images/logos/ausventure-symbol.svg",
   },
 
   /* Klasse — Blue */
