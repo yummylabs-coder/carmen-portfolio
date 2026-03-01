@@ -21,17 +21,14 @@ export const IMAGES = {
   website4:
     "https://framerusercontent.com/images/nfSLHd9TbzDuNSwn7F5OVUQ1oQ.png",
 
-  // Dashboard screenshots
-  dashboard1:
-    "https://framerusercontent.com/images/R3pAF9NBRFR8kWpPGz7Rns5U8Ck.png",
-  dashboard2:
-    "https://framerusercontent.com/images/WxBYtBQ1FMH5LUeZRd7t5eR7kY.png",
-  dashboard3:
-    "https://framerusercontent.com/images/hJ4TJX1fMK5cPYxWv5blnxYnxag.png",
-  dashboard4:
-    "https://framerusercontent.com/images/w1s8NKxEgXvw9NHCBv2KMnKbwI.png",
-  dashboard5:
-    "https://framerusercontent.com/images/Dbo1DZnOMwl9aLhXsFkFh6nA.png",
+  // Dashboard screenshots (real Figma exports)
+  dashboard1: "/images/learn/web-dashboard-1.png",
+  dashboard2: "/images/learn/web-dashboard-2.png",
+  dashboard3: "/images/learn/web-dashboard-3.png",
+  dashboard4: "/images/learn/web-dashboard-4.png",
+  dashboard5: "/images/learn/web-dashboard-5.png",
+  dashboard6: "/images/learn/web-dashboard-6.png",
+  dashboard7: "/images/learn/web-dashboard-7.png",
 
   // Mobile screenshots (real Figma exports)
   mobile1: "/images/learn/mobile-app-1.png",
@@ -378,11 +375,13 @@ export const DASHBOARD = {
   headline: "Create a lesson\nin minutes.",
   body: "Admins don't have time for complex authoring tools. We designed a dashboard where AI generates lesson drafts, content organizes by team or topic, and publishing happens in one click. Smart defaults mean less setup. Preview tools mean fewer surprises.",
   screens: [
-    { src: "dashboard1" as const, alt: "Lesson creation", caption: "AI-powered lesson creation" },
-    { src: "dashboard2" as const, alt: "Content library", caption: "Organize lessons by team or topic" },
-    { src: "dashboard3" as const, alt: "Analytics", caption: "Engagement insights at a glance" },
-    { src: "dashboard4" as const, alt: "Publish flow", caption: "Preview and publish in one click" },
-    { src: "dashboard5" as const, alt: "Overview", caption: "Smart defaults for fast creation" },
+    { src: "dashboard1" as const, alt: "Start of lesson or path creation", caption: "Start of lesson or path creation" },
+    { src: "dashboard2" as const, alt: "Files drop", caption: "Files drop" },
+    { src: "dashboard3" as const, alt: "Selecting type of content", caption: "Selecting type of content" },
+    { src: "dashboard4" as const, alt: "Lesson editor", caption: "Lesson editor" },
+    { src: "dashboard5" as const, alt: "Publishing to groups", caption: "Publishing to groups" },
+    { src: "dashboard6" as const, alt: "Publish success and share", caption: "Publish success & Share" },
+    { src: "dashboard7" as const, alt: "Learner completion analytics", caption: "Learner completion analytics" },
   ],
 };
 
