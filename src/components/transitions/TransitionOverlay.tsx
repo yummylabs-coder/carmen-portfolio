@@ -135,90 +135,99 @@ export function TransitionOverlay() {
     borderRadius: 0,
   };
 
+  // Logo visible during hold phase, fades out during reveal
+  const showLogo =
+    phase === "holding" || phase === "navigated" || phase === "revealing";
+  const logoVisible = phase === "holding" || phase === "navigated";
+
   return createPortal(
-    <AnimatePresence mode="wait">
-      {isActive && (
-        <motion.div
-          key="brand-curtain"
-          className="pointer-events-auto z-[9999]"
+    <>
+      {/* Curtain — managed by AnimatePresence / Framer Motion */}
+      <AnimatePresence mode="wait">
+        {isActive && (
+          <motion.div
+            key="brand-curtain"
+            className="pointer-events-auto"
+            style={{
+              position: "fixed",
+              backgroundColor: color,
+              overflow: "hidden",
+              zIndex: 9999,
+            }}
+            initial={initial}
+            animate={
+              phase === "revealing"
+                ? {
+                    y: "-100%",
+                    transition: {
+                      duration: 0.6,
+                      ease: [0.76, 0, 0.24, 1],
+                    },
+                  }
+                : {
+                    ...expanded,
+                    transition: {
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  }
+            }
+            onAnimationComplete={() => {
+              if (phase === "expanding") {
+                onExpandComplete();
+              } else if (phase === "revealing") {
+                onRevealComplete();
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/*
+        Logo — completely outside AnimatePresence.
+        Plain div, CSS transition only. No framer-motion.
+        It never moves. Only opacity changes.
+      */}
+      {showLogo && (
+        <div
           style={{
             position: "fixed",
-            backgroundColor: color,
-            overflow: "hidden",
-            // Ensure it's always on top
-            zIndex: 9999,
-          }}
-          initial={initial}
-          animate={
-            phase === "revealing"
-              ? {
-                  // Slide up and out
-                  y: "-100%",
-                  transition: {
-                    duration: 0.6,
-                    ease: [0.76, 0, 0.24, 1], // expo out
-                  },
-                }
-              : {
-                  // Expand to fill viewport
-                  ...expanded,
-                  transition: {
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1], // expo out — fast launch, smooth settle
-                  },
-                }
-          }
-          onAnimationComplete={() => {
-            if (phase === "expanding") {
-              onExpandComplete();
-            } else if (phase === "revealing") {
-              onRevealComplete();
-            }
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 10000,
+            pointerEvents: "none",
+            opacity: logoVisible ? 1 : 0,
+            transition: logoVisible
+              ? "opacity 0.3s ease-out"
+              : "opacity 0.15s ease-out",
           }}
         >
-          {/* Center content — brand logo during hold */}
-          <motion.div
-            className="flex h-full w-full items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={
-              phase === "holding" || phase === "navigated"
-                ? { opacity: 1 }
-                : { opacity: 0 }
-            }
-            transition={{
-              duration: phase === "revealing" ? 0.2 : 0.3,
-              ease: "easeOut",
-            }}
-          >
-            {/* Logo or wordmark */}
-            {transition?.logoUrl ? (
-              <div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={transition.logoUrl}
-                  alt=""
-                  className="h-20 w-auto object-contain"
-                />
-              </div>
-            ) : (
-              <div style={{ color: textColor, opacity: 0.25 }}>
-                {/* Fallback: concentric rings as a subtle brand moment */}
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 48 48"
-                  fill="none"
-                >
-                  <circle cx="24" cy="24" r="5" fill="currentColor" opacity="0.4" />
-                  <circle cx="24" cy="24" r="14" stroke="currentColor" strokeWidth="1" opacity="0.2" />
-                  <circle cx="24" cy="24" r="23" stroke="currentColor" strokeWidth="0.5" opacity="0.1" />
-                </svg>
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
+          {transition?.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={transition.logoUrl}
+              alt=""
+              style={{ height: 80, width: "auto", objectFit: "contain" }}
+            />
+          ) : (
+            <div style={{ color: textColor, opacity: 0.25 }}>
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+              >
+                <circle cx="24" cy="24" r="5" fill="currentColor" opacity="0.4" />
+                <circle cx="24" cy="24" r="14" stroke="currentColor" strokeWidth="1" opacity="0.2" />
+                <circle cx="24" cy="24" r="23" stroke="currentColor" strokeWidth="0.5" opacity="0.1" />
+              </svg>
+            </div>
+          )}
+        </div>
       )}
-    </AnimatePresence>,
+    </>,
     document.body,
   );
 }

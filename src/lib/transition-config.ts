@@ -20,7 +20,7 @@ const transitionConfigs: Record<string, TransitionConfig> = {
   "learn-xyz": {
     color: "#FECB3A",
     textColor: "#1F004A",
-    logoUrl: "/images/logos/learn-xyz-mascot.png",
+    logoUrl: "/images/logos/learn-xyz-mascot.svg",
   },
 
   /* Pandore — Dark navy */
