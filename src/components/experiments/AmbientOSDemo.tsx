@@ -175,6 +175,8 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
   const orbPos = useRef<{ x: number; y: number }[]>([]);
   const rafRef = useRef(0);
   const t0 = useRef(0);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const tiltRef = useRef({ x: 0, y: 0 });
 
   const [hoveredOrb, setHoveredOrb] = useState<string | null>(null);
   const [expandedOrb, setExpandedOrb] = useState<string | null>(null);
@@ -253,9 +255,27 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
 
         const orbEl = orbElRefs.current[i];
         if (orbEl) {
-          orbEl.style.transform = `translate3d(${p.x - orb.size / 2}px, ${p.y - orb.size / 2}px, 0)`;
+          const breathe = 1 + Math.sin(t * 0.0008 + orb.phase * 2.5) * 0.025;
+          orbEl.style.transform = `translate3d(${p.x - orb.size / 2}px, ${p.y - orb.size / 2}px, 0) scale(${breathe})`;
         }
       });
+
+      // ── Scene 3D tilt from mouse ──
+      const cx = r.width / 2;
+      const cy = r.height / 2;
+      const MAX_TILT = 3;
+      if (m.active) {
+        const nx = Math.max(-1, Math.min(1, (mx - cx) / cx));
+        const ny = Math.max(-1, Math.min(1, (my - cy) / cy));
+        tiltRef.current.x += (-ny * MAX_TILT - tiltRef.current.x) * 0.04;
+        tiltRef.current.y += (nx * MAX_TILT - tiltRef.current.y) * 0.04;
+      } else {
+        tiltRef.current.x *= 0.96;
+        tiltRef.current.y *= 0.96;
+      }
+      if (sceneRef.current) {
+        sceneRef.current.style.transform = `rotateX(${tiltRef.current.x}deg) rotateY(${tiltRef.current.y}deg)`;
+      }
 
       rafRef.current = requestAnimationFrame(tick);
     }
@@ -368,13 +388,21 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
       ref={containerRef}
       className={`relative h-full w-full select-none overflow-visible ${className}`}
       style={{
+        perspective: "800px",
         background:
           "radial-gradient(ellipse at 50% 40%, #0f172a 0%, #030712 60%, #000 100%)",
       }}
       onClick={handleBackdropClick}
     >
-      {/* ── Stars ── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* ── 3D Scene — tilts on mouse for depth parallax ── */}
+      <div
+        ref={sceneRef}
+        className="relative h-full w-full"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+
+      {/* ── Back depth layer — stars ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ transform: "translateZ(-120px)" }}>
         {STARS.map((s, i) => (
           <div
             key={`star-${i}`}
@@ -392,7 +420,8 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
         ))}
       </div>
 
-      {/* ── Zone rings ── */}
+      {/* ── Mid depth layer — rings + glow ── */}
+      <div className="pointer-events-none absolute inset-0" style={{ transform: "translateZ(-50px)" }}>
       <svg
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         width="700"
@@ -418,6 +447,10 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
           background: "radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%)",
         }}
       />
+      </div>{/* close mid depth layer */}
+
+      {/* ── Front depth layer — orbs, effects, UI ── */}
+      <div className="absolute inset-0">
 
       {/* ── Connection lines ── */}
       {renderConnections()}
@@ -478,6 +511,18 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
               style={{
                 background: `radial-gradient(circle, ${orb.glow}35, transparent 70%)`,
                 animationDuration: `${3 + i * 0.4}s`,
+              }}
+            />
+
+            {/* Elevation shadow — floating above surface */}
+            <div
+              className="pointer-events-none absolute left-1/2 -translate-x-1/2"
+              style={{
+                bottom: -orb.size * 0.22,
+                width: orb.size * 1.4,
+                height: orb.size * 0.35,
+                background: `radial-gradient(ellipse, ${orb.color}18 0%, transparent 70%)`,
+                filter: "blur(8px)",
               }}
             />
 
@@ -617,6 +662,9 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
           Tap an orb to explore
         </p>
       </div>
+
+      </div>{/* close front depth layer */}
+      </div>{/* close 3D scene */}
     </div>
   );
 }

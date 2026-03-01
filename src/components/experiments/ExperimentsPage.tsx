@@ -8,6 +8,7 @@ import { PageEntrance } from "@/components/ui/PageEntrance";
 import { StoryViewer } from "@/components/ui/StoryViewer";
 import type { StorySlide } from "@/components/ui/StoryViewer";
 import { AmbientOSGallery } from "./AmbientOSGallery";
+import { AmbientOSCover } from "./AmbientOSCover";
 
 /* ─── Tab type ─── */
 type TabKey = "experiments" | "toolkit";
@@ -246,23 +247,21 @@ function PreviewCard({
     >
       {/* ── Image hero ── */}
       <div className="relative h-[200px] overflow-hidden">
-        {experiment.coverUrl ? (
-          <>
-            <ImageWithShimmer
-              src={experiment.coverUrl}
-              alt={experiment.name}
-              fill
-              sizes="(max-width: 640px) 100vw, 340px"
-              className="object-cover"
-              unoptimized={experiment.coverUrl.startsWith("/images/")}
-              style={{
-                objectPosition: experiment.coverFocusPoint || "top",
-                ...(experiment.name.toLowerCase() === "ambient os"
-                  ? { opacity: 0.45, filter: "blur(6px) saturate(0.6)" }
-                  : {}),
-              }}
-            />
-          </>
+        {/* Ambient OS gets a live animated cover instead of a static image */}
+        {experiment.name.toLowerCase() === "ambient os" ? (
+          <AmbientOSCover />
+        ) : experiment.coverUrl ? (
+          <ImageWithShimmer
+            src={experiment.coverUrl}
+            alt={experiment.name}
+            fill
+            sizes="(max-width: 640px) 100vw, 340px"
+            className="object-cover"
+            unoptimized={experiment.coverUrl.startsWith("/images/")}
+            style={{
+              objectPosition: experiment.coverFocusPoint || "top",
+            }}
+          />
         ) : (
           <div
             className="flex h-full items-center justify-center"

@@ -34,7 +34,9 @@ function buildSlides(experiment: Experiment): GallerySlide[] {
   const images = experiment.galleryUrls ?? [];
   const captions = experiment.galleryCaptions ?? [];
 
+  // Skip the first gallery image — it's a static version of the interactive slide
   images.forEach((url, i) => {
+    if (i === 0) return;
     slides.push({
       type: "image",
       label: captions[i] || experiment.name,
