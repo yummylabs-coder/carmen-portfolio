@@ -72,6 +72,7 @@ export const IMAGES = {
   learning1: "/images/learn/learning-1.png",
   learning2: "/images/learn/learning-2.png",
   learning3: "/images/learn/learning-3.png",
+  learning4: "/images/learn/learning-4.png",
 
   // Placeholder office / team photos (replace with real shots)
   teamWorking:

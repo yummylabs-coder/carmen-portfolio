@@ -2,7 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import { LineMask } from "../LineMask";
 import { SectionRoom, SectionLabel } from "../SectionRoom";
 import { learnRooms, ease, duration } from "@/lib/motion";
@@ -27,7 +27,7 @@ function PhoneFrame({
 }) {
   return (
     <motion.div
-      className="w-[180px] sm:w-[200px] md:w-[220px]"
+      className="w-[180px] shrink-0 sm:w-[200px] md:w-[220px]"
       style={{
         filter:
           "drop-shadow(0 20px 40px rgba(0,0,0,0.15)) drop-shadow(0 8px 16px rgba(0,0,0,0.1))",
@@ -80,19 +80,63 @@ function PhoneFrame({
   );
 }
 
+/* ── Mobile carousel dots ────────────────────────────────────────── */
+
+function CarouselDots({
+  count,
+  current,
+  onSelect,
+}: {
+  count: number;
+  current: number;
+  onSelect: (i: number) => void;
+}) {
+  return (
+    <div className="mt-6 flex justify-center gap-2.5 lg:hidden">
+      {Array.from({ length: count }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => onSelect(i)}
+          className="h-2 w-2 rounded-full transition-all duration-200"
+          style={{
+            backgroundColor: "currentColor",
+            opacity: i === current ? 1 : 0.25,
+          }}
+          aria-label={`Go to screen ${i + 1}`}
+        />
+      ))}
+    </div>
+  );
+}
+
 /* ── Main section ────────────────────────────────────────────────── */
+
+const phones = [
+  { src: IMAGES.learning1, alt: "AI-generated lesson intro — Understanding Edge Computing", floatOffset: 8 },
+  { src: IMAGES.learning2, alt: "Lesson slide with reading content and navigation", floatOffset: -6 },
+  { src: IMAGES.learning3, alt: "AI follow-up questions after completing a lesson", floatOffset: 10 },
+  { src: IMAGES.learning4, alt: "Personalized next steps with goals and badges", floatOffset: -7 },
+];
 
 export function LearnPrototype() {
   const room = learnRooms.prototype;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const shouldReduce = useReducedMotion();
+  const [mobileIndex, setMobileIndex] = useState(0);
 
-  const phones = [
-    { src: IMAGES.learning1, alt: "AI micro-lesson experience", floatOffset: 8 },
-    { src: IMAGES.learning2, alt: "AI suggested follow-up questions", floatOffset: -6 },
-    { src: IMAGES.learning3, alt: "AI recommended next topics", floatOffset: 10 },
-  ];
+  const handleDragEnd = useCallback(
+    (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
+      const swipe = info.offset.x;
+      const velocity = info.velocity.x;
+      if (swipe > 50 || velocity > 300) {
+        setMobileIndex((c) => Math.max(0, c - 1));
+      } else if (swipe < -50 || velocity < -300) {
+        setMobileIndex((c) => Math.min(phones.length - 1, c + 1));
+      }
+    },
+    [],
+  );
 
   return (
     <SectionRoom colors={room}>
@@ -103,7 +147,7 @@ export function LearnPrototype() {
           className="mb-6 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
           delay={0.15}
         >
-          {"AI-assisted micro-lessons\nthat are easy-peazy\nto go through."}
+          {"Bite-sized lessons\npowered by AI."}
         </LineMask>
 
         <motion.p
@@ -116,12 +160,13 @@ export function LearnPrototype() {
             ease: ease.standard,
           }}
         >
-          Learners keep going with AI-suggested next topics and follow-up
-          questions that adapt to what they just learned.
+          AI generates micro-lessons learners can finish in minutes. When
+          they&apos;re done, follow-up questions deepen understanding and
+          personalized next steps keep the momentum going.
         </motion.p>
 
-        {/* Three phone frames side by side */}
-        <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-10">
+        {/* Desktop: 4 phones side by side */}
+        <div className="hidden lg:flex lg:items-center lg:justify-center lg:gap-8">
           {phones.map((phone, i) => (
             <PhoneFrame
               key={i}
@@ -133,6 +178,32 @@ export function LearnPrototype() {
               inView={inView}
             />
           ))}
+        </div>
+
+        {/* Mobile: swipeable carousel */}
+        <div className="w-full overflow-hidden lg:hidden">
+          <motion.div
+            className="flex justify-center"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={handleDragEnd}
+            style={{ touchAction: "pan-y" }}
+          >
+            <PhoneFrame
+              src={phones[mobileIndex].src}
+              alt={phones[mobileIndex].alt}
+              delay={0.5}
+              floatOffset={phones[mobileIndex].floatOffset}
+              shouldReduce={shouldReduce}
+              inView={inView}
+            />
+          </motion.div>
+          <CarouselDots
+            count={phones.length}
+            current={mobileIndex}
+            onSelect={setMobileIndex}
+          />
         </div>
       </div>
     </SectionRoom>
