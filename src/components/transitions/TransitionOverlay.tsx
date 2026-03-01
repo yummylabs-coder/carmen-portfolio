@@ -172,6 +172,10 @@ export function TransitionOverlay() {
                     },
                   }
             }
+            exit={{
+              y: "-100%",
+              transition: { duration: 0 },
+            }}
             onAnimationComplete={() => {
               if (phase === "expanding") {
                 onExpandComplete();
