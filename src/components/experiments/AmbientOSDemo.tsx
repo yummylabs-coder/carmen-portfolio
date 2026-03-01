@@ -366,7 +366,7 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full select-none overflow-hidden ${className}`}
+      className={`relative h-full w-full select-none overflow-visible ${className}`}
       style={{
         background:
           "radial-gradient(ellipse at 50% 40%, #0f172a 0%, #030712 60%, #000 100%)",
@@ -374,7 +374,7 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
       onClick={handleBackdropClick}
     >
       {/* ── Stars ── */}
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {STARS.map((s, i) => (
           <div
             key={`star-${i}`}

@@ -258,24 +258,10 @@ function PreviewCard({
               style={{
                 objectPosition: experiment.coverFocusPoint || "top",
                 ...(experiment.name.toLowerCase() === "ambient os"
-                  ? { opacity: 0.55, filter: "blur(1px) saturate(0.7)" }
+                  ? { opacity: 0.45, filter: "blur(6px) saturate(0.6)" }
                   : {}),
               }}
             />
-            {/* Softening overlay + crisp text for Ambient OS cover */}
-            {experiment.name.toLowerCase() === "ambient os" && (
-              <>
-                <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a]/30 via-transparent to-[#0f172a]/50" />
-                <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center text-center">
-                  <h3 className="font-brand text-[18px] font-bold tracking-tight text-white drop-shadow-md">
-                    {experiment.name}
-                  </h3>
-                  <p className="mt-0.5 max-w-[200px] text-[10px] leading-[1.4] text-white/50">
-                    {experiment.description?.split(".")[0]}
-                  </p>
-                </div>
-              </>
-            )}
           </>
         ) : (
           <div
