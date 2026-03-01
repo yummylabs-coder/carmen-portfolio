@@ -19,7 +19,7 @@ import {
 import { useRef, useState } from "react";
 import { LineMask } from "../LineMask";
 import { SectionRoom, SectionLabel, SectionBody } from "../SectionRoom";
-import { learnRooms, ease, duration, spring } from "@/lib/motion";
+import { learnRooms, ease, spring } from "@/lib/motion";
 import { JOURNEY } from "./LearnData";
 
 /* ── Icons ─────────────────────────────────────────────────────────── */
