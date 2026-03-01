@@ -11,15 +11,13 @@ export const IMAGES = {
   // Hero
   hero: "https://framerusercontent.com/images/sH7xrKlGVFqbCMOXhtedwDhBw4.png",
 
-  // Website screenshots
-  website1:
-    "https://framerusercontent.com/images/RGN9RVmVPpBmBxgpjMIJGYUTo.png",
-  website2:
-    "https://framerusercontent.com/images/mHcxSI4x38ypW2j5KbsXBFVZ5w.png",
-  website3:
-    "https://framerusercontent.com/images/0mGTJh1IjVIUWJIhqj8TZ0pST0.png",
-  website4:
-    "https://framerusercontent.com/images/nfSLHd9TbzDuNSwn7F5OVUQ1oQ.png",
+  // Website screenshots (real Figma exports)
+  website1: "/images/learn/website-1.png",
+  website2: "/images/learn/website-2.png",
+  website3: "/images/learn/website-3.png",
+  website4: "/images/learn/website-4.png",
+  website5: "/images/learn/website-5.png",
+  website6: "/images/learn/website-6.png",
 
   // Dashboard screenshots (real Figma exports)
   dashboard1: "/images/learn/web-dashboard-1.png",
@@ -402,10 +400,12 @@ export const WEBSITE = {
   headline: "Not your average\ntraining tool.",
   body: "The marketing site needed to feel as fresh as the product it represents. We used bold visuals, playful micro-interactions, and conversion-focused copy to make Learn.xyz's pitch instantly clear: this is different, and you want in.",
   screens: [
-    { src: "website1" as const, alt: "Homepage", caption: "Playful homepage with energy and clarity" },
-    { src: "website2" as const, alt: "Features", caption: "Bold visuals and micro-interactions" },
-    { src: "website3" as const, alt: "Product page", caption: "Clear product storytelling" },
-    { src: "website4" as const, alt: "Social proof", caption: "Conversion-focused with social proof" },
+    { src: "website1" as const, alt: "Homepage hero", caption: "Homepage hero" },
+    { src: "website2" as const, alt: "With Learn.xyz comparison", caption: "With Learn.xyz" },
+    { src: "website3" as const, alt: "Without Learn.xyz comparison", caption: "Without Learn.xyz" },
+    { src: "website4" as const, alt: "Playful objection handling", caption: "You won't like Learn.xyz if..." },
+    { src: "website5" as const, alt: "Industry-specific onboarding", caption: "Industry use cases" },
+    { src: "website6" as const, alt: "Pricing page", caption: "Pricing" },
   ],
 };
 
