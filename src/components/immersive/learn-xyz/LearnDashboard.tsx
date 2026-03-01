@@ -31,8 +31,6 @@ interface FloatingIllustrationProps {
   style: React.CSSProperties;
   /** Scroll-driven Y range [from, to] in px */
   scrollY: [number, number];
-  /** Float offset in px */
-  floatOffset: number;
   /** Rotation range [from, to] in degrees */
   rotateRange: [number, number];
   /** Stagger delay */
@@ -48,7 +46,6 @@ function FloatingIllustration({
   size,
   style,
   scrollY,
-  floatOffset,
   rotateRange,
   delay,
   shouldReduce,
@@ -122,7 +119,7 @@ const illustrations = [
     size: "clamp(140px, 18vw, 260px)",
     style: { top: "2%", left: "3%" },
     scrollY: [-40, 40] as [number, number],
-    floatOffset: 8,
+
     rotateRange: [-8, 8] as [number, number],
     delay: 0.1,
   },
@@ -132,7 +129,7 @@ const illustrations = [
     size: "clamp(150px, 20vw, 280px)",
     style: { top: "8%", right: "5%" },
     scrollY: [-50, 30] as [number, number],
-    floatOffset: -6,
+
     rotateRange: [5, -5] as [number, number],
     delay: 0.2,
   },
@@ -142,7 +139,7 @@ const illustrations = [
     size: "clamp(160px, 22vw, 300px)",
     style: { top: "38%", left: "8%" },
     scrollY: [-30, 50] as [number, number],
-    floatOffset: 10,
+
     rotateRange: [-6, 10] as [number, number],
     delay: 0.3,
   },
@@ -152,7 +149,7 @@ const illustrations = [
     size: "clamp(120px, 16vw, 220px)",
     style: { top: "42%", right: "10%" },
     scrollY: [-20, 60] as [number, number],
-    floatOffset: -8,
+
     rotateRange: [8, -4] as [number, number],
     delay: 0.35,
   },
@@ -162,7 +159,7 @@ const illustrations = [
     size: "clamp(140px, 19vw, 270px)",
     style: { bottom: "4%", left: "50%", transform: "translateX(-50%)" },
     scrollY: [-60, 20] as [number, number],
-    floatOffset: 7,
+
     rotateRange: [-10, 6] as [number, number],
     delay: 0.45,
   },
