@@ -31,7 +31,7 @@ export function LearnDesignSystem() {
 
       <LineMask
         as="h2"
-        className="mb-8 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-tight"
+        className="mb-8 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
         delay={0.15}
       >
         {DESIGN_SYSTEM.headline}
@@ -324,7 +324,7 @@ function ComponentInspector() {
               </span>
             </div>
 
-            {/* Invisible full-card hover zone */}
+            {/* Invisible full-card hover zone (behind everything) */}
             <div
               className="absolute inset-0 rounded-2xl"
               onMouseEnter={() => setActiveZone("card-bg")}
@@ -332,21 +332,16 @@ function ComponentInspector() {
               style={{ zIndex: -1 }}
             />
 
-            {/* Active zone highlight */}
-            {activeZone && (
-              <motion.div
-                className="pointer-events-none absolute rounded-lg ring-2"
-                style={{
-                  backgroundColor: "rgba(254,203,58,0.08)",
-                  boxShadow: "0 0 0 2px #FECB3A",
-                }}
-                layoutId="zone-highlight"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              />
-            )}
+            {/* Active zone ring on card */}
+            <motion.div
+              className="pointer-events-none absolute inset-0 rounded-2xl"
+              animate={{
+                boxShadow: activeZone
+                  ? "0 0 0 2px #FECB3A, 0 0 20px rgba(254,203,58,0.15)"
+                  : "0 0 0 0px transparent, 0 0 0px transparent",
+              }}
+              transition={{ duration: 0.2 }}
+            />
           </div>
         </motion.div>
 

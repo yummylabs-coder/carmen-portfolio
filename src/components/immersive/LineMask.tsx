@@ -54,7 +54,7 @@ export function LineMask({
   return (
     <Tag className={className} ref={ref}>
       {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden">
+        <span key={i} className="block overflow-hidden pb-[0.12em]">
           <motion.span
             className="block"
             initial={{ y: "110%" }}

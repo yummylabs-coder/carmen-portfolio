@@ -100,7 +100,20 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   /* ── Immersive full-screen experience for select case studies ── */
   if (immersiveSlugs.has(slug)) {
-    return <LearnImmersive />;
+    return (
+      <LearnImmersive
+        nextProject={
+          nextProject
+            ? {
+                title: nextProject.title,
+                slug: nextProject.slug,
+                coverUrl: nextProject.coverUrl,
+                tags: nextProject.tags,
+              }
+            : null
+        }
+      />
+    );
   }
 
   return (

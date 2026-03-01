@@ -8,7 +8,7 @@
 
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useId } from "react";
 import { ease, spring } from "@/lib/motion";
 
 interface Slide {
@@ -35,6 +35,7 @@ export function DeviceCarousel({
   const [paused, setPaused] = useState(false);
   const shouldReduce = useReducedMotion();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const carouselId = useId();
 
   const next = useCallback(() => {
     setCurrent((c) => (c + 1) % slides.length);
@@ -134,25 +135,23 @@ export function DeviceCarousel({
       </AnimatePresence>
 
       {/* Dots */}
-      <div className="mt-4 flex justify-center gap-2">
+      <div className="mt-4 flex justify-center gap-2.5">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className="relative h-2 w-2 rounded-full transition-colors"
+            className="relative h-2 w-2 rounded-full transition-all duration-200"
             style={{
-              backgroundColor:
-                i === current
-                  ? "currentColor"
-                  : "rgba(255,255,255,0.2)",
+              backgroundColor: "currentColor",
+              opacity: i === current ? 1 : 0.25,
             }}
             aria-label={`Go to slide ${i + 1}`}
           >
             {i === current && (
               <motion.div
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-[-1px] rounded-full"
                 style={{ backgroundColor: "currentColor" }}
-                layoutId="carousel-dot"
+                layoutId={`dot-${carouselId}`}
                 transition={spring.snappy}
               />
             )}

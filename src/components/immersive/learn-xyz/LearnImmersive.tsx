@@ -5,9 +5,12 @@
  *
  * Assembles all section rooms into a single vertical scroll journey.
  * Each section is a full-viewport colored "room."
+ * Full-bleed images create dramatic visual pauses between rooms.
  */
 
 import { ImmersiveShell } from "../ImmersiveShell";
+import { FullBleedImage } from "../FullBleedImage";
+import { ImmersiveNextStudy } from "../ImmersiveNextStudy";
 import { LearnHero } from "./LearnHero";
 import { LearnProblem } from "./LearnProblem";
 import { LearnBet } from "./LearnBet";
@@ -17,8 +20,18 @@ import { LearnMobileApp } from "./LearnMobileApp";
 import { LearnDashboard } from "./LearnDashboard";
 import { LearnWebsite } from "./LearnWebsite";
 import { LearnOutcomes } from "./LearnOutcomes";
+import { IMAGES } from "./LearnData";
 
-export function LearnImmersive() {
+interface LearnImmersiveProps {
+  nextProject?: {
+    title: string;
+    slug: string;
+    coverUrl: string;
+    tags?: string[];
+  } | null;
+}
+
+export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
   return (
     <ImmersiveShell
       progressColor="#2216FF"
@@ -27,7 +40,7 @@ export function LearnImmersive() {
       {/* 1. Hero — The Gold Room */}
       <LearnHero />
 
-      {/* 2. The Problem — The Dark Room */}
+      {/* 2. The Problem — Dark Violet Room */}
       <LearnProblem />
 
       {/* 3. The Bet — Gold Returns */}
@@ -36,8 +49,22 @@ export function LearnImmersive() {
       {/* 4. My Role — Clean White Room */}
       <LearnRole />
 
+      {/* — Full-bleed visual pause: brand identity — */}
+      <FullBleedImage
+        src={IMAGES.brandVisual}
+        alt="Learn.xyz brand visual system"
+        overlay="rgba(13,8,71,0.4)"
+      />
+
       {/* 5. Design System — Deep Purple Room */}
       <LearnDesignSystem />
+
+      {/* — Full-bleed visual pause: product overview — */}
+      <FullBleedImage
+        src={IMAGES.hero}
+        alt="Learn.xyz product overview"
+        overlay="rgba(48,1,1,0.15)"
+      />
 
       {/* 6. Mobile App — Charcoal Room */}
       <LearnMobileApp />
@@ -50,6 +77,18 @@ export function LearnImmersive() {
 
       {/* 9. Outcomes — Brand Blue Room */}
       <LearnOutcomes />
+
+      {/* Next Case Study */}
+      {nextProject && (
+        <ImmersiveNextStudy
+          title={nextProject.title}
+          slug={nextProject.slug}
+          coverUrl={nextProject.coverUrl}
+          tag={nextProject.tags?.[0]}
+          bg="#FFFEFC"
+          text="#300101"
+        />
+      )}
     </ImmersiveShell>
   );
 }

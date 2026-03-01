@@ -42,7 +42,7 @@ export function LearnRole() {
 
       <LineMask
         as="h2"
-        className="mb-8 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-tight"
+        className="mb-8 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
         delay={0.15}
       >
         {ROLE.headline}

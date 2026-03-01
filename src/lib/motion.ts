@@ -185,11 +185,11 @@ export const viewport = {
 
 export const learnRooms = {
   hero:         { bg: "#FECB3A", text: "#300101", accent: "#2216FF" },
-  problem:      { bg: "#1A0A00", text: "#FFF8E1", accent: "#FECB3A" },
+  problem:      { bg: "#1F004A", text: "#FFFFFF", accent: "#FECB3A" },
   bet:          { bg: "#FECB3A", text: "#300101", accent: "#2216FF" },
   role:         { bg: "#FFFEFC", text: "#300101", accent: "#2216FF" },
   designSystem: { bg: "#0D0847", text: "#FFFFFF", accent: "#FECB3A" },
-  mobileApp:    { bg: "#1C1C1C", text: "#FFFFFF", accent: "#FECB3A" },
+  mobileApp:    { bg: "#2C2C2C", text: "#FFFFFF", accent: "#FECB3A" },
   dashboard:    { bg: "#FFF8E1", text: "#300101", accent: "#2216FF" },
   website:      { bg: "#FECB3A", text: "#300101", accent: "#2216FF" },
   outcomes:     { bg: "#2216FF", text: "#FFFFFF", accent: "#FECB3A" },

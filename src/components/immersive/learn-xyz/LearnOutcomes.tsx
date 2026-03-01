@@ -22,7 +22,7 @@ export function LearnOutcomes() {
       <div className="mb-16">
         <LineMask
           as="h2"
-          className="text-[clamp(2.5rem,7vw,5rem)] font-bold leading-[1.05] tracking-tight"
+          className="text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[1.02] tracking-tight"
           delay={0.15}
         >
           {OUTCOMES.headline}
