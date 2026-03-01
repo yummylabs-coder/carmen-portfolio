@@ -68,6 +68,13 @@ export const IMAGES = {
   dsViewLearners: "/images/learn/ds-view-learners.png",
   dsEditorPreview: "/images/learn/ds-editor-preview.png",
 
+  // Gamification illustrations
+  gamifyTarget: "/images/learn/gamify-target.png",
+  gamifyMountain: "/images/learn/gamify-mountain.png",
+  gamifyTreasure: "/images/learn/gamify-treasure.png",
+  gamifyBadge: "/images/learn/gamify-badge.png",
+  gamifyBurst: "/images/learn/gamify-burst.png",
+
   // Learning screens (lesson experience)
   learning1: "/images/learn/learning-1.png",
   learning2: "/images/learn/learning-2.png",
