@@ -27,12 +27,14 @@ const transitionConfigs: Record<string, TransitionConfig> = {
   pandore: {
     color: "#0B1926",
     textColor: "#F9F8FD",
+    logoUrl: "/images/logos/pandore-symbol.svg",
   },
 
   /* Water.day — Dark teal */
   "water-day": {
     color: "#002B35",
     textColor: "#E6F6F8",
+    logoUrl: "/images/logos/water-day-symbol.svg",
   },
 
   /* Neotaste — Dark charcoal */
