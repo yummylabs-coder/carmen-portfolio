@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import { useRef } from "react";
 import { LineMask } from "../LineMask";
 import { SectionRoom, SectionLabel } from "../SectionRoom";
@@ -72,31 +71,6 @@ export function LearnMobileApp() {
         </motion.div>
       </div>
 
-      {/* Interactive prototype GIF below */}
-      <motion.div
-        className="mt-24"
-        initial={shouldReduce ? {} : { opacity: 0, y: 24 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{
-          delay: 0.8,
-          duration: duration.slow,
-          ease: ease.expo,
-        }}
-      >
-        <div className="mx-auto max-w-[400px] overflow-hidden rounded-[28px] shadow-xl">
-          <Image
-            src={IMAGES.gifMobile}
-            alt="Learn.xyz mobile app interactive prototype"
-            width={400}
-            height={711}
-            className="h-auto w-full"
-            unoptimized
-          />
-        </div>
-        <p className="mt-3 text-center text-[13px] italic opacity-30">
-          Interactive prototype: swipe through a real lesson flow
-        </p>
-      </motion.div>
     </SectionRoom>
   );
 }

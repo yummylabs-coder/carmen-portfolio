@@ -1,9 +1,10 @@
 "use client";
 
 /**
- * DeviceCarousel — image carousel with device frame chrome.
- * Supports phone, laptop, and desktop frames.
- * Autoplay with pause on hover. Smooth crossfade transitions.
+ * DeviceCarousel — image carousel with realistic device frame chrome.
+ *
+ * Supports phone (iPhone), laptop (MacBook), and desktop (iMac) frames.
+ * Autoplay with pause on hover. Arrow navigation on desktop, swipe on mobile.
  */
 
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -25,6 +26,47 @@ interface DeviceCarouselProps {
   className?: string;
 }
 
+/* ── Arrow button ─────────────────────────────────────────────────── */
+
+function ArrowButton({
+  direction,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="hidden lg:flex absolute top-1/2 z-30 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-all hover:bg-black/60 hover:scale-110 active:scale-95"
+      style={{
+        width: 40,
+        height: 40,
+        [direction === "prev" ? "left" : "right"]: -56,
+      }}
+      aria-label={direction === "prev" ? "Previous slide" : "Next slide"}
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 18 18"
+        fill="none"
+        className="text-white"
+      >
+        <path
+          d={direction === "prev" ? "M11 14L6 9L11 4" : "M7 4L12 9L7 14"}
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
+/* ── Main component ───────────────────────────────────────────────── */
+
 export function DeviceCarousel({
   slides,
   device,
@@ -41,6 +83,10 @@ export function DeviceCarousel({
     setCurrent((c) => (c + 1) % slides.length);
   }, [slides.length]);
 
+  const prev = useCallback(() => {
+    setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
   // Autoplay
   useEffect(() => {
     if (autoplay <= 0 || paused || shouldReduce) return;
@@ -50,74 +96,169 @@ export function DeviceCarousel({
     };
   }, [autoplay, paused, next, shouldReduce]);
 
+  // Touch/swipe support
+  const touchStartX = useRef(0);
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchStartX.current;
+      if (Math.abs(dx) > 40) {
+        if (dx > 0) prev();
+        else next();
+      }
+    },
+    [next, prev],
+  );
+
   const frameClasses = {
     phone: "mx-auto w-[220px] sm:w-[260px]",
-    laptop: "mx-auto w-full max-w-[720px]",
-    desktop: "mx-auto w-full max-w-[840px]",
+    laptop: "mx-auto w-full max-w-[720px] lg:max-w-[960px]",
+    desktop: "mx-auto w-full max-w-[840px] lg:max-w-[1080px]",
   };
 
-  const aspectClasses = {
-    phone: "aspect-[9/19]",
-    laptop: "aspect-[16/10]",
-    desktop: "aspect-[16/10]",
+  const imageSizes = {
+    phone: "260px",
+    laptop: "(min-width: 1024px) 960px, 720px",
+    desktop: "(min-width: 1024px) 1080px, 840px",
   };
 
-  const radiusClasses = {
-    phone: "rounded-[24px]",
-    laptop: "rounded-xl",
-    desktop: "rounded-xl",
-  };
+  /* ── Render: Screen content (shared by all frames) ────────────── */
+  const screenContent = (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={current}
+        className="absolute inset-0"
+        initial={shouldReduce ? { opacity: 0.5 } : { opacity: 0, scale: 1.02 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+          duration: shouldReduce ? 0.15 : 0.5,
+          ease: ease.smooth,
+        }}
+      >
+        <Image
+          src={slides[current].src}
+          alt={slides[current].alt}
+          fill
+          className="object-cover object-top"
+          sizes={imageSizes[device]}
+        />
+      </motion.div>
+    </AnimatePresence>
+  );
+
+  /* ── Render: Device frame ─────────────────────────────────────── */
+  function renderFrame() {
+    if (device === "phone") {
+      return (
+        <div
+          className={frameClasses.phone}
+          style={{
+            filter:
+              "drop-shadow(0 20px 40px rgba(0,0,0,0.15)) drop-shadow(0 8px 16px rgba(0,0,0,0.1))",
+          }}
+        >
+          <div className="overflow-hidden rounded-[40px] border-[8px] border-[#1d1d1f] bg-[#1d1d1f]">
+            <div className="relative overflow-hidden rounded-[32px] bg-black">
+              {/* Dynamic Island */}
+              <div className="absolute left-1/2 top-[10px] z-20 h-[22px] w-[80px] -translate-x-1/2 rounded-full bg-black" />
+              {/* Screen */}
+              <div className="relative aspect-[9/19.5] w-full overflow-hidden bg-white">
+                {screenContent}
+              </div>
+              {/* Home indicator */}
+              <div className="absolute bottom-[6px] left-1/2 z-20 h-[4px] w-[100px] -translate-x-1/2 rounded-full bg-white/30" />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (device === "laptop") {
+      return (
+        <div
+          className={frameClasses.laptop}
+          style={{
+            filter:
+              "drop-shadow(0 20px 40px rgba(0,0,0,0.15)) drop-shadow(0 8px 16px rgba(0,0,0,0.1))",
+          }}
+        >
+          {/* Screen */}
+          <div className="overflow-hidden rounded-t-[10px] border-[6px] border-b-[18px] border-[#1d1d1f] bg-[#1d1d1f]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+              {screenContent}
+            </div>
+          </div>
+          {/* Base / hinge */}
+          <div
+            className="mx-auto h-[8px] rounded-b-md"
+            style={{
+              width: "104%",
+              marginLeft: "-2%",
+              background:
+                "linear-gradient(180deg, #3a3a3c 0%, #1d1d1f 100%)",
+            }}
+          />
+        </div>
+      );
+    }
+
+    // desktop (iMac)
+    return (
+      <div
+        className={frameClasses.desktop}
+        style={{
+          filter:
+            "drop-shadow(0 20px 40px rgba(0,0,0,0.12)) drop-shadow(0 8px 16px rgba(0,0,0,0.08))",
+        }}
+      >
+        {/* Monitor */}
+        <div className="overflow-hidden rounded-[10px] border-[6px] border-b-0 border-[#1d1d1f] bg-[#1d1d1f]">
+          <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+            {screenContent}
+          </div>
+        </div>
+        {/* Chin */}
+        <div className="flex items-center justify-center rounded-b-[10px] bg-gradient-to-b from-[#e4e4e7] to-[#d4d4d8] py-[8px]">
+          <div className="h-[4px] w-[4px] rounded-full bg-[#a1a1aa]" />
+        </div>
+        {/* Stand */}
+        <div className="flex justify-center">
+          <div
+            className="h-[40px] w-[60px] bg-gradient-to-b from-[#d4d4d8] to-[#c4c4c8]"
+            style={{
+              clipPath: "polygon(15% 0%, 85% 0%, 95% 100%, 5% 100%)",
+            }}
+          />
+        </div>
+        <div className="flex justify-center">
+          <div className="h-[4px] w-[120px] rounded-[2px] bg-gradient-to-b from-[#c4c4c8] to-[#b4b4b8]" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       className={className}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* Device frame */}
-      <div className={frameClasses[device]}>
-        <div
-          className={`relative overflow-hidden bg-black/5 ${radiusClasses[device]} ${aspectClasses[device]}`}
-          style={{
-            boxShadow:
-              device === "phone"
-                ? "0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)"
-                : "0 12px 60px rgba(0,0,0,0.12), 0 2px 12px rgba(0,0,0,0.06)",
-          }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              className="absolute inset-0"
-              initial={shouldReduce ? { opacity: 0.5 } : { opacity: 0, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: shouldReduce ? 0.15 : 0.5,
-                ease: ease.smooth,
-              }}
-            >
-              <Image
-                src={slides[current].src}
-                alt={slides[current].alt}
-                fill
-                className="object-cover"
-                sizes={
-                  device === "phone"
-                    ? "260px"
-                    : device === "laptop"
-                    ? "720px"
-                    : "840px"
-                }
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Device chin (phone only) */}
-        {device === "phone" && (
-          <div className="mx-auto mt-1 h-1 w-1/3 rounded-full bg-white/10" />
+      {/* Frame + arrows wrapper */}
+      <div className="relative">
+        {/* Arrows (desktop only) */}
+        {slides.length > 1 && (
+          <>
+            <ArrowButton direction="prev" onClick={prev} />
+            <ArrowButton direction="next" onClick={next} />
+          </>
         )}
+
+        {renderFrame()}
       </div>
 
       {/* Caption */}

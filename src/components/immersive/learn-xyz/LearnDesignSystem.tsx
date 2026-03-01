@@ -54,31 +54,38 @@ export function LearnDesignSystem() {
         <DesignDecisions />
       </div>
 
-      {/* Brand in motion GIF */}
+      {/* Brand in motion GIF — MacBook frame */}
       <SectionVisual className="mt-24">
-        <div className="relative overflow-hidden rounded-2xl">
-          <Image
-            src={IMAGES.gifBrand}
-            alt="Learn.xyz brand identity animation"
-            width={1200}
-            height={675}
-            className="h-auto w-full"
-            unoptimized
+        <div
+          className="mx-auto w-full max-w-[720px] lg:max-w-[960px]"
+          style={{
+            filter:
+              "drop-shadow(0 20px 40px rgba(0,0,0,0.2)) drop-shadow(0 8px 16px rgba(0,0,0,0.12))",
+          }}
+        >
+          <div className="overflow-hidden rounded-t-[10px] border-[6px] border-b-[18px] border-[#1d1d1f] bg-[#1d1d1f]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+              <Image
+                src={IMAGES.gifBrand}
+                alt="Learn.xyz brand identity animation"
+                fill
+                className="object-cover object-top"
+                sizes="(min-width: 1024px) 960px, 720px"
+                unoptimized
+              />
+            </div>
+          </div>
+          <div
+            className="mx-auto h-[8px] rounded-b-md"
+            style={{
+              width: "104%",
+              marginLeft: "-2%",
+              background: "linear-gradient(180deg, #3a3a3c 0%, #1d1d1f 100%)",
+            }}
           />
         </div>
       </SectionVisual>
 
-      {/* Closing line */}
-      <motion.p
-        className="mt-16 text-center text-[15px] italic opacity-60"
-        style={{ color: learnRooms.designSystem.accent }}
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 0.6, transition: { duration: 0.8, delay: 0.3 } },
-        }}
-      >
-        {DESIGN_SYSTEM.closingLine}
-      </motion.p>
     </SectionRoom>
   );
 }
@@ -101,8 +108,8 @@ function TokenArchitecture() {
         Token Architecture
       </h3>
 
-      {/* Column headers */}
-      <div className="mb-4 grid grid-cols-3 gap-4">
+      {/* Column headers — desktop only (redundant when stacked) */}
+      <div className="mb-4 hidden md:grid md:grid-cols-3 md:gap-4">
         {cols.map((col, ci) => (
           <motion.span
             key={col}
@@ -116,14 +123,14 @@ function TokenArchitecture() {
         ))}
       </div>
 
-      {/* Token rows */}
+      {/* Token rows — stacked on mobile, 3-column grid on md+ */}
       <div className="space-y-3">
         {DESIGN_SYSTEM.tokenArchitecture.map((row, ri) => {
           const isActive = activeRow === ri;
           return (
             <motion.div
               key={ri}
-              className="grid cursor-pointer grid-cols-3 gap-4 rounded-xl p-3 transition-colors"
+              className="cursor-pointer rounded-xl p-3 transition-colors md:grid md:grid-cols-3 md:gap-4"
               style={{
                 backgroundColor: isActive
                   ? `${row.primitive.value}12`
@@ -142,7 +149,7 @@ function TokenArchitecture() {
               {/* Primitive */}
               <div className="flex items-center gap-3">
                 <motion.div
-                  className="h-5 w-5 rounded-md"
+                  className="h-5 w-5 shrink-0 rounded-md"
                   style={{ backgroundColor: row.primitive.value }}
                   animate={isActive ? { scale: 1.2 } : { scale: 1 }}
                   transition={spring.snappy}
@@ -158,7 +165,10 @@ function TokenArchitecture() {
               </div>
 
               {/* Semantic */}
-              <div className="flex items-center">
+              <div className="mt-2 flex items-center md:mt-0">
+                <span className="mr-2 text-[10px] uppercase tracking-wider opacity-30 md:hidden">
+                  →
+                </span>
                 <motion.span
                   className="rounded-md px-2 py-1 font-mono text-[12px]"
                   style={{
@@ -173,32 +183,34 @@ function TokenArchitecture() {
               </div>
 
               {/* Component tokens */}
-              <div className="flex flex-wrap items-center gap-1.5">
-                {row.components.map((comp, ci) => (
-                  <motion.span
-                    key={comp}
-                    className="rounded px-1.5 py-0.5 font-mono text-[11px]"
-                    style={{
-                      backgroundColor: isActive
-                        ? `${row.primitive.value}18`
-                        : "rgba(255,255,255,0.04)",
-                    }}
-                    initial={shouldReduce ? {} : { opacity: 0 }}
-                    animate={
-                      inView
-                        ? isActive
-                          ? { opacity: 1, x: 0 }
-                          : { opacity: 0.6, x: 0 }
-                        : {}
-                    }
-                    transition={{
-                      delay: isActive ? ci * 0.05 : 0,
-                      duration: 0.3,
-                    }}
-                  >
-                    {comp}
-                  </motion.span>
-                ))}
+              <div className="mt-2 md:mt-0">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {row.components.map((comp, ci) => (
+                    <motion.span
+                      key={comp}
+                      className="rounded px-1.5 py-0.5 font-mono text-[11px]"
+                      style={{
+                        backgroundColor: isActive
+                          ? `${row.primitive.value}18`
+                          : "rgba(255,255,255,0.04)",
+                      }}
+                      initial={shouldReduce ? {} : { opacity: 0 }}
+                      animate={
+                        inView
+                          ? isActive
+                            ? { opacity: 1, x: 0 }
+                            : { opacity: 0.6, x: 0 }
+                          : {}
+                      }
+                      transition={{
+                        delay: isActive ? ci * 0.05 : 0,
+                        duration: 0.3,
+                      }}
+                    >
+                      {comp}
+                    </motion.span>
+                  ))}
+                </div>
               </div>
             </motion.div>
           );
@@ -227,11 +239,11 @@ function ComponentInspector() {
 
   return (
     <div ref={ref}>
-      <h3 className="mb-6 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+      <h3 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
         Component Inspector
       </h3>
       <p className="mb-8 text-[13px] opacity-40">
-        Hover over any part of the card to inspect its design tokens.
+        Tap any part of the card to inspect its design tokens.
       </p>
 
       <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:gap-12">
@@ -257,20 +269,18 @@ function ComponentInspector() {
           >
             {/* Badge */}
             <div
-              className="mb-3 inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold"
+              className="mb-3 inline-block cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-semibold"
               style={{ backgroundColor: "#FECB3A", color: "#300101" }}
-              onMouseEnter={() => setActiveZone("badge")}
-              onMouseLeave={() => setActiveZone(null)}
+              onClick={() => setActiveZone((p) => p === "badge" ? null : "badge")}
             >
               Leadership
             </div>
 
             {/* Title */}
             <h4
-              className="mb-1 text-[16px] font-semibold leading-tight"
+              className="mb-1 cursor-pointer text-[16px] font-semibold leading-tight"
               style={{ color: "#300101" }}
-              onMouseEnter={() => setActiveZone("title")}
-              onMouseLeave={() => setActiveZone(null)}
+              onClick={() => setActiveZone((p) => p === "title" ? null : "title")}
             >
               Async Communication
             </h4>
@@ -283,10 +293,9 @@ function ComponentInspector() {
 
             {/* Progress bar */}
             <div
-              className="mb-4 h-[6px] overflow-hidden rounded-full"
+              className="mb-4 h-[6px] cursor-pointer overflow-hidden rounded-full"
               style={{ backgroundColor: "#FFF8E1" }}
-              onMouseEnter={() => setActiveZone("progress")}
-              onMouseLeave={() => setActiveZone(null)}
+              onClick={() => setActiveZone((p) => p === "progress" ? null : "progress")}
             >
               <div
                 className="h-full rounded-full"
@@ -299,9 +308,8 @@ function ComponentInspector() {
 
             {/* Avatar stack */}
             <div
-              className="flex items-center"
-              onMouseEnter={() => setActiveZone("avatar")}
-              onMouseLeave={() => setActiveZone(null)}
+              className="flex cursor-pointer items-center"
+              onClick={() => setActiveZone((p) => p === "avatar" ? null : "avatar")}
             >
               {[0, 1, 2].map((i) => (
                 <div
@@ -324,11 +332,10 @@ function ComponentInspector() {
               </span>
             </div>
 
-            {/* Invisible full-card hover zone (behind everything) */}
+            {/* Invisible full-card click zone (behind everything) */}
             <div
-              className="absolute inset-0 rounded-2xl"
-              onMouseEnter={() => setActiveZone("card-bg")}
-              onMouseLeave={() => setActiveZone(null)}
+              className="absolute inset-0 cursor-pointer rounded-2xl"
+              onClick={() => setActiveZone((p) => p === "card-bg" ? null : "card-bg")}
               style={{ zIndex: -1 }}
             />
 
@@ -396,7 +403,7 @@ function ComponentInspector() {
               animate={{ opacity: 0.3 }}
             >
               <span className="text-[13px] opacity-50">
-                ← Hover the card to inspect tokens
+                ← Tap the card to inspect tokens
               </span>
             </motion.div>
           )}

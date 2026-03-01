@@ -43,19 +43,37 @@ export function LearnDashboard() {
         />
       </SectionVisual>
 
-      {/* Dashboard interaction GIF */}
+      {/* Dashboard interaction GIF in MacBook frame */}
       <SectionVisual className="mt-16">
-        <div className="mx-auto max-w-[720px] overflow-hidden rounded-xl shadow-lg">
-          <Image
-            src={IMAGES.gifDashboard}
-            alt="Learn.xyz dashboard AI lesson builder"
-            width={720}
-            height={450}
-            className="h-auto w-full"
-            unoptimized
+        <div
+          className="mx-auto w-full max-w-[720px] lg:max-w-[960px]"
+          style={{
+            filter:
+              "drop-shadow(0 20px 40px rgba(0,0,0,0.15)) drop-shadow(0 8px 16px rgba(0,0,0,0.1))",
+          }}
+        >
+          <div className="overflow-hidden rounded-t-[10px] border-[6px] border-b-[18px] border-[#1d1d1f] bg-[#1d1d1f]">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+              <Image
+                src={IMAGES.gifDashboard}
+                alt="Learn.xyz dashboard AI lesson builder"
+                fill
+                className="object-cover object-top"
+                sizes="(min-width: 1024px) 960px, 720px"
+                unoptimized
+              />
+            </div>
+          </div>
+          <div
+            className="mx-auto h-[8px] rounded-b-md"
+            style={{
+              width: "104%",
+              marginLeft: "-2%",
+              background: "linear-gradient(180deg, #3a3a3c 0%, #1d1d1f 100%)",
+            }}
           />
         </div>
-        <p className="mt-3 text-center text-[13px] italic opacity-30">
+        <p className="mt-4 text-center text-[13px] italic opacity-30">
           AI-powered lesson builder in action
         </p>
       </SectionVisual>

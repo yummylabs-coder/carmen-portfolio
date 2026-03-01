@@ -193,6 +193,8 @@ export const learnRooms = {
   dashboard:    { bg: "#FFF8E1", text: "#300101", accent: "#2216FF" },
   website:      { bg: "#FECB3A", text: "#300101", accent: "#2216FF" },
   outcomes:     { bg: "#2216FF", text: "#FFFFFF", accent: "#FECB3A" },
+  prototype:    { bg: "#1F004A", text: "#FFFFFF", accent: "#FECB3A" },
+  cta:          { bg: "#300101", text: "#FFFFFF", accent: "#FECB3A" },
 } as const;
 
 export type RoomKey = keyof typeof learnRooms;

@@ -39,7 +39,7 @@ export function ImmersiveShell({
   // doesn't appear before the curtain finishes revealing
   const shellDelay = isTransitioning ? 1.2 : 0.8;
 
-  const { scrollYProgress } = useScroll({ container: undefined });
+  const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 200,
     damping: 30,
@@ -50,7 +50,7 @@ export function ImmersiveShell({
     <div ref={containerRef} className="relative min-h-screen w-full overflow-x-hidden">
       {/* Progress bar */}
       <motion.div
-        className="fixed left-0 top-0 z-[80] h-[3px] origin-left"
+        className="fixed left-0 top-0 z-[80] h-1 w-full origin-left"
         style={{
           scaleX,
           backgroundColor: progressColor,

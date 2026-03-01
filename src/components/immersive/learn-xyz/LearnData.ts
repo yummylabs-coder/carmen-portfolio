@@ -60,6 +60,12 @@ export const IMAGES = {
   // Misc
   brandVisual:
     "https://framerusercontent.com/images/vqxI0bq3iDCzFJuOlx2gK7nQ.png",
+
+  // Placeholder office / team photos (replace with real shots)
+  teamWorking:
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
+  officeCollab:
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80",
 };
 
 /* ------------------------------------------------------------------ */

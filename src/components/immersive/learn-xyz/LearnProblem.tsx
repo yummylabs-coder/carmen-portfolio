@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useRef } from "react";
 import { LineMask } from "../LineMask";
 import { SectionRoom } from "../SectionRoom";
@@ -13,39 +19,28 @@ export function LearnProblem() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const shouldReduce = useReducedMotion();
 
-  return (
-    <SectionRoom colors={room} className="flex items-center justify-center">
-      <div ref={ref} className="relative flex flex-col items-center text-center">
-        {/* Giant "80%" watermark — dramatic, visible, animated */}
-        <motion.span
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-extrabold leading-none"
-          style={{
-            fontSize: "clamp(12rem, 35vw, 28rem)",
-            color: room.accent,
-            opacity: 0,
-          }}
-          animate={
-            inView
-              ? {
-                  opacity: [0, 0.15, 0.1],
-                  scale: shouldReduce ? 1 : [0.8, 1.02, 1],
-                  filter: shouldReduce
-                    ? "blur(0px)"
-                    : ["blur(8px)", "blur(0px)", "blur(0px)"],
-                }
-              : {}
-          }
-          transition={{
-            duration: 1.8,
-            delay: 0.2,
-            ease: ease.expo,
-            times: [0, 0.6, 1],
-          }}
-        >
-          {PROBLEM.stat}
-        </motion.span>
+  /* Scroll-driven horizontal slide for the "80%" */
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
 
-        {/* Content — centered */}
+  const x = useTransform(
+    scrollYProgress,
+    [0, 1],
+    shouldReduce ? ["0%", "0%"] : ["-150%", "150%"]
+  );
+
+  return (
+    <SectionRoom
+      colors={room}
+      className="flex items-center justify-center overflow-hidden"
+    >
+      <div
+        ref={ref}
+        className="flex flex-col items-center text-center"
+      >
+        {/* Content — centered, sits above the sliding 80 */}
         <div className="relative z-10 mx-auto max-w-[1000px]">
           <LineMask
             as="h2"
@@ -68,6 +63,19 @@ export function LearnProblem() {
             {PROBLEM.body}
           </motion.p>
         </div>
+
+        {/* Giant "80%" — scroll-driven horizontal slide, below the copy */}
+        <motion.div
+          className="pointer-events-none mt-10 select-none whitespace-nowrap font-extrabold leading-none"
+          style={{
+            fontSize: "clamp(8rem, 28vw, 22rem)",
+            color: "#FECB3A",
+            opacity: 0.2,
+            x,
+          }}
+        >
+          {PROBLEM.stat}
+        </motion.div>
       </div>
     </SectionRoom>
   );

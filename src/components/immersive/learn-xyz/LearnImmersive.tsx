@@ -17,9 +17,11 @@ import { LearnBet } from "./LearnBet";
 import { LearnRole } from "./LearnRole";
 import { LearnDesignSystem } from "./LearnDesignSystem";
 import { LearnMobileApp } from "./LearnMobileApp";
+import { LearnPrototype } from "./LearnPrototype";
 import { LearnDashboard } from "./LearnDashboard";
 import { LearnWebsite } from "./LearnWebsite";
 import { LearnOutcomes } from "./LearnOutcomes";
+import { LearnCTA } from "./LearnCTA";
 import { IMAGES } from "./LearnData";
 
 interface LearnImmersiveProps {
@@ -49,6 +51,13 @@ export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
       {/* 4. My Role — Clean White Room */}
       <LearnRole />
 
+      {/* — Full-bleed visual pause: team at work — */}
+      <FullBleedImage
+        src={IMAGES.teamWorking}
+        alt="Team collaborating in the office"
+        overlay="rgba(13,8,71,0.35)"
+      />
+
       {/* — Full-bleed visual pause: brand identity — */}
       <FullBleedImage
         src={IMAGES.brandVisual}
@@ -69,14 +78,27 @@ export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
       {/* 6. Mobile App — Charcoal Room */}
       <LearnMobileApp />
 
-      {/* 7. Dashboard — Cream Room */}
+      {/* 7. Interactive Prototype — Dark Violet Room */}
+      <LearnPrototype />
+
+      {/* — Full-bleed visual pause: office collaboration — */}
+      <FullBleedImage
+        src={IMAGES.officeCollab}
+        alt="Team collaboration session"
+        overlay="rgba(48,1,1,0.25)"
+      />
+
+      {/* 8. Dashboard — Cream Room */}
       <LearnDashboard />
 
-      {/* 8. Website — Gold Room */}
+      {/* 9. Website — Gold Room */}
       <LearnWebsite />
 
-      {/* 9. Outcomes — Brand Blue Room */}
+      {/* 10. Outcomes — Brand Blue Room */}
       <LearnOutcomes />
+
+      {/* 11. CTA — Book a Call */}
+      <LearnCTA />
 
       {/* Next Case Study */}
       {nextProject && (

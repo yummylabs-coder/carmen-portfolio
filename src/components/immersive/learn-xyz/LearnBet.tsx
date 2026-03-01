@@ -57,27 +57,30 @@ export function LearnBet() {
             ease: ease.expo,
           }}
         >
-          <div className="relative w-[240px] sm:w-[280px]">
-            <div
-              className="relative overflow-hidden rounded-[28px] shadow-2xl"
-              style={{
-                aspectRatio: "9/19",
-                boxShadow:
-                  "0 20px 60px rgba(48,1,1,0.2), 0 4px 12px rgba(48,1,1,0.08)",
-              }}
-            >
-              <Image
-                src={IMAGES.gifMobile}
-                alt="Learn.xyz mobile app swipe interaction"
-                fill
-                className="object-cover"
-                unoptimized
-              />
+          {/* iPhone frame */}
+          <div
+            className="w-[220px] sm:w-[260px]"
+            style={{
+              filter:
+                "drop-shadow(0 20px 40px rgba(48,1,1,0.2)) drop-shadow(0 8px 16px rgba(48,1,1,0.1))",
+            }}
+          >
+            <div className="overflow-hidden rounded-[40px] border-[8px] border-[#1d1d1f] bg-[#1d1d1f]">
+              <div className="relative overflow-hidden rounded-[32px] bg-black">
+                <div className="absolute left-1/2 top-[10px] z-20 h-[22px] w-[80px] -translate-x-1/2 rounded-full bg-black" />
+                <div className="relative aspect-[9/19.5] w-full overflow-hidden bg-white">
+                  <Image
+                    src={IMAGES.gifMobile}
+                    alt="Learn.xyz mobile app swipe interaction"
+                    fill
+                    className="object-cover object-top"
+                    sizes="260px"
+                    unoptimized
+                  />
+                </div>
+                <div className="absolute bottom-[6px] left-1/2 z-20 h-[4px] w-[100px] -translate-x-1/2 rounded-full bg-white/30" />
+              </div>
             </div>
-            <div
-              className="mx-auto mt-1.5 h-1 w-1/3 rounded-full"
-              style={{ backgroundColor: `${room.text}15` }}
-            />
           </div>
         </motion.div>
       </div>
