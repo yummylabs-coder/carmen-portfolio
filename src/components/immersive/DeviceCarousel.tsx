@@ -9,8 +9,8 @@
 
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect, useCallback, useRef, useId } from "react";
-import { ease, spring } from "@/lib/motion";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { ease } from "@/lib/motion";
 
 interface Slide {
   src: string;
@@ -77,7 +77,6 @@ export function DeviceCarousel({
   const [paused, setPaused] = useState(false);
   const shouldReduce = useReducedMotion();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const carouselId = useId();
 
   const next = useCallback(() => {
     setCurrent((c) => (c + 1) % slides.length);
