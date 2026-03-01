@@ -3,8 +3,9 @@
 /**
  * LearnJourney — animated interactive timeline for the Learn.xyz case study.
  *
- * Vertical timeline with scroll-triggered animations, expandable phases,
- * and a drawing line effect that progresses as the user scrolls.
+ * Desktop: two-column layout — intro text (sticky left), timeline (right).
+ * Mobile: stacked — intro text on top, timeline below.
+ * Scroll-driven progress line + expandable phases.
  */
 
 import {
@@ -74,6 +75,7 @@ function PhaseCard({
   shouldReduce,
   accentColor,
   textColor,
+  bgColor,
 }: {
   phase: (typeof JOURNEY.phases)[number];
   index: number;
@@ -83,10 +85,11 @@ function PhaseCard({
   shouldReduce: boolean | null;
   accentColor: string;
   textColor: string;
+  bgColor: string;
 }) {
   return (
     <motion.div
-      className="relative flex gap-5 md:gap-8"
+      className="relative flex gap-5 md:gap-6"
       initial={shouldReduce ? {} : { opacity: 0, x: -20 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{
@@ -97,13 +100,13 @@ function PhaseCard({
     >
       {/* Timeline node */}
       <div className="relative flex flex-col items-center">
-        {/* The dot */}
+        {/* The dot — solid bg so progress line doesn't show through */}
         <motion.button
           onClick={onToggle}
           className="relative z-10 flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 transition-colors"
           style={{
             borderColor: isExpanded ? accentColor : `${textColor}20`,
-            backgroundColor: isExpanded ? `${accentColor}12` : "transparent",
+            backgroundColor: isExpanded ? `${accentColor}12` : bgColor,
             color: isExpanded ? accentColor : `${textColor}60`,
           }}
           whileHover={{ scale: 1.1 }}
@@ -142,7 +145,7 @@ function PhaseCard({
       </div>
 
       {/* Content */}
-      <div className="flex-1 pb-10 md:pb-14">
+      <div className="flex-1 pb-8 md:pb-12">
         <button
           onClick={onToggle}
           className="w-full cursor-pointer text-left"
@@ -165,7 +168,7 @@ function PhaseCard({
 
           {/* Title */}
           <h3
-            className="text-[20px] font-bold leading-tight md:text-[24px]"
+            className="text-[18px] font-bold leading-tight md:text-[22px]"
             style={{ color: textColor }}
           >
             {phase.title}
@@ -183,7 +186,7 @@ function PhaseCard({
               className="overflow-hidden"
             >
               <p
-                className="mt-3 max-w-[480px] text-[15px] leading-[1.7]"
+                className="mt-3 text-[14px] leading-[1.7]"
                 style={{ color: `${textColor}90` }}
               >
                 {phase.description}
@@ -223,75 +226,79 @@ export function LearnJourney() {
   return (
     <SectionRoom colors={room}>
       <div ref={ref}>
-        <SectionLabel accentColor={room.accent}>The Journey</SectionLabel>
+        {/* Two-column layout: text left, timeline right on desktop */}
+        <div className="lg:flex lg:items-start lg:gap-20">
+          {/* ── Left: intro text (sticky on desktop) ── */}
+          <div className="lg:w-[42%] lg:shrink-0 lg:sticky lg:top-28 lg:self-start">
+            <SectionLabel accentColor={room.accent}>The Journey</SectionLabel>
 
-        <LineMask
-          as="h2"
-          className="mb-4 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
-          delay={0.15}
-        >
-          {JOURNEY.headline}
-        </LineMask>
+            <LineMask
+              as="h2"
+              className="mb-4 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
+              delay={0.15}
+            >
+              {JOURNEY.headline}
+            </LineMask>
 
-        {/* Duration badge */}
-        <motion.div
-          className="mb-6 flex items-center gap-3"
-          initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.3, duration: 0.5, ease: ease.standard }}
-        >
-          <span
-            className="rounded-full px-3 py-1 text-[13px] font-medium"
-            style={{
-              backgroundColor: `${room.accent}10`,
-              color: room.accent,
-            }}
-          >
-            {JOURNEY.duration}
-          </span>
-        </motion.div>
-
-        <SectionBody>{JOURNEY.body}</SectionBody>
-
-        {/* Timeline */}
-        <div ref={timelineRef} className="relative mt-16 md:mt-20">
-          {/* The animated progress line (behind the dots) */}
-          {!shouldReduce && (
+            {/* Duration badge */}
             <motion.div
-              className="absolute left-[19px] top-0 w-[2px] origin-top md:left-[19px]"
-              style={{
-                height: lineHeight,
-                background: `linear-gradient(180deg, ${room.accent} 0%, ${room.accent}40 100%)`,
-                zIndex: 1,
-              }}
-            />
-          )}
+              className="mb-6 flex items-center gap-3"
+              initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.3, duration: 0.5, ease: ease.standard }}
+            >
+              <span
+                className="rounded-full px-3 py-1 text-[13px] font-medium"
+                style={{
+                  backgroundColor: `${room.accent}10`,
+                  color: room.accent,
+                }}
+              >
+                {JOURNEY.duration}
+              </span>
+            </motion.div>
 
-          {/* Static track line */}
-          <div
-            className="absolute left-[19px] top-0 h-full w-[2px] md:left-[19px]"
-            style={{
-              backgroundColor: `${room.text}08`,
-            }}
-          />
+            <SectionBody>{JOURNEY.body}</SectionBody>
+          </div>
 
-          {/* Phase cards */}
-          <div className="relative z-10">
-            {JOURNEY.phases.map((phase, i) => (
-              <PhaseCard
-                key={phase.label}
-                phase={phase}
-                index={i}
-                isExpanded={expandedIndex === i}
-                onToggle={() =>
-                  setExpandedIndex(expandedIndex === i ? null : i)
-                }
-                inView={inView}
-                shouldReduce={shouldReduce}
-                accentColor={room.accent}
-                textColor={room.text}
+          {/* ── Right: interactive timeline ── */}
+          <div ref={timelineRef} className="relative mt-16 lg:mt-0 lg:flex-1">
+            {/* Animated progress line — BEHIND the dots (no z-index) */}
+            {!shouldReduce && (
+              <motion.div
+                className="absolute left-[19px] top-0 w-[2px] origin-top"
+                style={{
+                  height: lineHeight,
+                  background: `linear-gradient(180deg, ${room.accent} 0%, ${room.accent}40 100%)`,
+                }}
               />
-            ))}
+            )}
+
+            {/* Static track line */}
+            <div
+              className="absolute left-[19px] top-0 h-full w-[2px]"
+              style={{ backgroundColor: `${room.text}08` }}
+            />
+
+            {/* Phase cards — z-10 keeps icons above the progress line */}
+            <div className="relative z-10">
+              {JOURNEY.phases.map((phase, i) => (
+                <PhaseCard
+                  key={phase.label}
+                  phase={phase}
+                  index={i}
+                  isExpanded={expandedIndex === i}
+                  onToggle={() =>
+                    setExpandedIndex(expandedIndex === i ? null : i)
+                  }
+                  inView={inView}
+                  shouldReduce={shouldReduce}
+                  accentColor={room.accent}
+                  textColor={room.text}
+                  bgColor={room.bg}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -477,6 +477,18 @@ export function LearnHero() {
         {/* ── Right: animated cards (lg+ only) ── */}
         <div ref={cardsRef} className="hidden flex-1 lg:block">
           <div className="relative ml-auto h-[440px] w-full max-w-[540px]">
+            {/* Blur glow behind the card cluster */}
+            <div className="pointer-events-none absolute inset-0">
+              <div
+                className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(34,22,255,0.14) 0%, rgba(13,8,71,0.07) 40%, transparent 68%)",
+                  filter: "blur(60px)",
+                }}
+              />
+            </div>
+
             {/* Stat card — upper right (arrives first) */}
             <div className="absolute right-0 top-0 z-10">
               <IdleFloat delay={1} amplitude={shouldReduce ? 0 : 5}>
@@ -506,6 +518,15 @@ export function LearnHero() {
           </div>
         </div>
       </div>
+
+      {/* Subtle depth gradient — bottom (mobile) + behind cards (additional ambient) */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[280px]"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(13,8,71,0.06) 0%, rgba(34,22,255,0.03) 40%, transparent 100%)",
+        }}
+      />
 
       {/* Scroll hint */}
       <motion.div

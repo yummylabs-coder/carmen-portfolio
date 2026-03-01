@@ -85,7 +85,7 @@ export const HERO = {
 };
 
 export const JOURNEY = {
-  headline: "Two years.\nOne vision.",
+  headline: "Three years.\nOne vision.",
   duration: "2022 – 2025",
   body: "From a blank Figma file to a funded product used by teams worldwide. Here's how the work unfolded.",
   phases: [
