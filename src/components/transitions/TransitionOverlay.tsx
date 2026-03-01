@@ -176,30 +176,28 @@ export function TransitionOverlay() {
             }
           }}
         >
-          {/* Center content — brand wordmark during hold */}
+          {/* Center content — brand logo during hold */}
           <motion.div
             className="flex h-full w-full items-center justify-center"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0 }}
             animate={
               phase === "holding" || phase === "navigated"
-                ? { opacity: 1, scale: 1 }
-                : phase === "revealing"
-                  ? { opacity: 0, scale: 1.05 }
-                  : { opacity: 0, scale: 0.9 }
+                ? { opacity: 1 }
+                : { opacity: 0 }
             }
             transition={{
-              duration: 0.3,
-              ease: [0.25, 0.4, 0.25, 1],
+              duration: phase === "revealing" ? 0.2 : 0.3,
+              ease: "easeOut",
             }}
           >
             {/* Logo or wordmark */}
             {transition?.logoUrl ? (
-              <div style={{ opacity: 0.35 }}>
+              <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={transition.logoUrl}
                   alt=""
-                  className="h-12 w-auto object-contain"
+                  className="h-20 w-auto object-contain"
                 />
               </div>
             ) : (
