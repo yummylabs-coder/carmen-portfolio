@@ -33,19 +33,15 @@ export const IMAGES = {
   dashboard5:
     "https://framerusercontent.com/images/Dbo1DZnOMwl9aLhXsFkFh6nA.png",
 
-  // Mobile screenshots
-  mobile1:
-    "https://framerusercontent.com/images/b0gJQxCN4pjnHlvzaOOgXI7xGZQ.png",
-  mobile2:
-    "https://framerusercontent.com/images/L2jlRtlV2xZHgrfpXuYMjEG6c.png",
-  mobile3:
-    "https://framerusercontent.com/images/jm0dDa4gSSqPOqzSYIWtVvTxZ0.png",
-  mobile4:
-    "https://framerusercontent.com/images/y5EqGVQ2LGbXqVW7lkCwFyGmMUY.png",
-  mobile5:
-    "https://framerusercontent.com/images/sqCcZVQxCCZswq3opjXpz4jG8s.png",
-  mobile6:
-    "https://framerusercontent.com/images/UqNNWmNkJbxDFKYhfQYR9O8E.png",
+  // Mobile screenshots (real Figma exports)
+  mobile1: "/images/learn/mobile-app-1.png",
+  mobile2: "/images/learn/mobile-app-2.png",
+  mobile3: "/images/learn/mobile-app-3.png",
+  mobile4: "/images/learn/mobile-app-4.png",
+  mobile5: "/images/learn/mobile-app-5.png",
+  mobile6: "/images/learn/mobile-app-6.png",
+  mobile7: "/images/learn/mobile-app-7.png",
+  mobile8: "/images/learn/mobile-app-8.png",
 
   // GIFs / motion
   gifWebsite:
@@ -366,12 +362,14 @@ export const MOBILE_APP = {
   headline: "Swipe. Learn.\nRepeat.",
   body: "The learner app feels more like a social feed than a training portal. Lessons are short, visual, and designed for the moments between meetings. Gamification loops drive engagement. Team-based progress turns learning into a shared experience, not a lonely checkbox.",
   screens: [
-    { src: "mobile1" as const, alt: "Social learning feed", caption: "A social feed that makes learning communal" },
-    { src: "mobile2" as const, alt: "Lesson card", caption: "Snackable, swipeable lesson cards" },
-    { src: "mobile3" as const, alt: "Gamification", caption: "Gamification that drives real engagement" },
-    { src: "mobile4" as const, alt: "Team progress", caption: "Team-based progress tracking" },
-    { src: "mobile5" as const, alt: "Learning path", caption: "Personalized learning paths" },
-    { src: "mobile6" as const, alt: "Achievements", caption: "Achievements and streaks" },
+    { src: "mobile1" as const, alt: "Home feed with notification", caption: "Home Feed | Notification Announcement" },
+    { src: "mobile2" as const, alt: "Notification center", caption: "Notification Center" },
+    { src: "mobile3" as const, alt: "Learner profile", caption: "Learner Profile" },
+    { src: "mobile4" as const, alt: "Create a learning group", caption: "Create a learning group 'Circles'" },
+    { src: "mobile5" as const, alt: "Post in your Circle", caption: "Post in your Circle" },
+    { src: "mobile6" as const, alt: "Streaks", caption: "Streaks" },
+    { src: "mobile7" as const, alt: "Learning paths", caption: "Learning Paths" },
+    { src: "mobile8" as const, alt: "Lesson creation for learners", caption: "Lesson Creation Learner" },
   ],
 };
 
