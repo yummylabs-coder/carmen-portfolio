@@ -84,6 +84,55 @@ export const HERO = {
   platforms: ["iOS", "Web", "Admin"],
 };
 
+export const JOURNEY = {
+  headline: "Two years.\nOne vision.",
+  duration: "2022 – 2025",
+  body: "From a blank Figma file to a funded product used by teams worldwide. Here's how the work unfolded.",
+  phases: [
+    {
+      label: "Discover",
+      title: "Research & Strategy",
+      description:
+        "Interviewed 30+ L&D managers and learners. Mapped the competitive landscape. Identified the core insight: people don't hate learning — they hate the tools.",
+      quarter: "Q1 2022",
+      icon: "search" as const,
+    },
+    {
+      label: "Define",
+      title: "Brand & Design System",
+      description:
+        "Created the visual identity from scratch — the gold palette, the type system, the token architecture. Built a component library that scales from mobile to marketing.",
+      quarter: "Q2 2022",
+      icon: "palette" as const,
+    },
+    {
+      label: "Design",
+      title: "Mobile App & Dashboard",
+      description:
+        "Designed the learner-facing iOS app and the admin dashboard in parallel. Social feeds, gamification loops, AI-powered lesson creation — all from one design system.",
+      quarter: "Q3–Q4 2022",
+      icon: "layers" as const,
+    },
+    {
+      label: "Ship",
+      title: "Launch & Iterate",
+      description:
+        "Shipped the MVP to 5 pilot clients. Ran weekly usability sessions. Iterated on onboarding, lesson flow, and team features based on real usage data.",
+      quarter: "2023",
+      icon: "rocket" as const,
+    },
+    {
+      label: "Scale",
+      title: "Growth & Funding",
+      description:
+        "Expanded to 20+ global pilot clients. Designed the marketing site that helped close $4M in seed funding. Udemy noticed.",
+      quarter: "2024–2025",
+      icon: "trending" as const,
+      isHighlight: true,
+    },
+  ],
+};
+
 export const PROBLEM = {
   headline: "Nobody finishes\ncorporate training.",
   body: "80% of workplace courses go incomplete. The content reads like compliance checklists. The interfaces feel like they were designed in 2011. And the people forced to use them? They alt-tab the second their manager looks away. Learn.xyz started with a provocation: what if professional development felt as good as your favorite app?",

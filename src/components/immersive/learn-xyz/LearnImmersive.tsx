@@ -12,6 +12,7 @@ import { ImmersiveShell } from "../ImmersiveShell";
 import { FullBleedImage } from "../FullBleedImage";
 import { ImmersiveNextStudy } from "../ImmersiveNextStudy";
 import { LearnHero } from "./LearnHero";
+import { LearnJourney } from "./LearnJourney";
 import { LearnProblem } from "./LearnProblem";
 import { LearnBet } from "./LearnBet";
 import { LearnRole } from "./LearnRole";
@@ -42,7 +43,10 @@ export function LearnImmersive({ nextProject }: LearnImmersiveProps) {
       {/* 1. Hero — The Gold Room */}
       <LearnHero />
 
-      {/* 2. The Problem — Dark Violet Room */}
+      {/* 2. The Journey — Cream Room */}
+      <LearnJourney />
+
+      {/* 3. The Problem — Dark Violet Room */}
       <LearnProblem />
 
       {/* 3. The Bet — Gold Returns */}

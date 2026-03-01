@@ -185,6 +185,7 @@ export const viewport = {
 
 export const learnRooms = {
   hero:         { bg: "#FECB3A", text: "#300101", accent: "#2216FF" },
+  journey:      { bg: "#FFFEFC", text: "#300101", accent: "#2216FF" },
   problem:      { bg: "#1F004A", text: "#FFFFFF", accent: "#FECB3A" },
   bet:          { bg: "#FECB3A", text: "#300101", accent: "#2216FF" },
   role:         { bg: "#FFFEFC", text: "#300101", accent: "#2216FF" },
