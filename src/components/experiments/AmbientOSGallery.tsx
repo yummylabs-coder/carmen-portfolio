@@ -98,9 +98,19 @@ export function AmbientOSGallery({
   const slides = buildSlides(experiment);
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const savedScrollY = useRef(0);
 
   const slide = slides[current];
+
+  /* ── Detect mobile ── */
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const goNext = useCallback(() => {
     if (current < slides.length - 1) {
@@ -177,7 +187,7 @@ export function AmbientOSGallery({
         </svg>
       </button>
 
-      {/* ── Navigation arrows ── */}
+      {/* ── Navigation arrows (desktop only for interactive, always for images) ── */}
       {current > 0 && (
         <button
           onClick={(e) => {
@@ -186,16 +196,7 @@ export function AmbientOSGallery({
           }}
           className="absolute left-3 top-1/2 z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:left-5"
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M10 3L5 8L10 13" />
           </svg>
         </button>
@@ -208,29 +209,32 @@ export function AmbientOSGallery({
           }}
           className="absolute right-3 top-1/2 z-30 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-5"
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M6 3L11 8L6 13" />
           </svg>
         </button>
       )}
 
       {/* ── Main content area ── */}
-      <div className="relative z-10 flex w-full max-w-[820px] flex-col items-center px-12 sm:px-16">
+      <div className={`relative z-10 flex w-full flex-col items-center ${
+        isMobile && slide.type === "interactive"
+          ? "h-full px-0 py-14"
+          : "max-w-[820px] px-4 sm:px-12 md:px-16"
+      }`}>
         {/* Slide container */}
         <div
           className={`relative w-full rounded-2xl ${
-            slide.type === "interactive" ? "overflow-visible" : "overflow-hidden"
+            slide.type === "interactive" ? "overflow-hidden" : "overflow-hidden"
+          } ${
+            isMobile && slide.type === "interactive"
+              ? "flex-1"
+              : ""
           }`}
-          style={{ aspectRatio: "16 / 10" }}
+          style={
+            isMobile && slide.type === "interactive"
+              ? undefined
+              : { aspectRatio: "16 / 10" }
+          }
         >
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -247,7 +251,7 @@ export function AmbientOSGallery({
               className="absolute inset-0"
             >
               {slide.type === "interactive" ? (
-                <AmbientOSDemo className="h-full w-full rounded-2xl" />
+                <AmbientOSDemo className="h-full w-full rounded-2xl" mobile={isMobile} />
               ) : slide.imageUrl ? (
                 <div className="relative h-full w-full">
                   <Image
@@ -265,43 +269,47 @@ export function AmbientOSGallery({
           </AnimatePresence>
         </div>
 
-        {/* Caption */}
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={current}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2 }}
-            className="mt-3 text-center text-13 font-medium text-white/70"
-          >
-            {slide.caption || slide.label}
-          </motion.p>
-        </AnimatePresence>
+        {/* Caption + navigation */}
+        <div className={`flex flex-col items-center ${
+          isMobile && slide.type === "interactive" ? "pb-2 pt-3" : "mt-3"
+        }`}>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={current}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="text-center text-13 font-medium text-white/70"
+            >
+              {slide.caption || slide.label}
+            </motion.p>
+          </AnimatePresence>
 
-        {/* Dot indicators */}
-        <div className="mt-3 flex gap-1.5">
-          {slides.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                setDirection(i > current ? 1 : -1);
-                setCurrent(i);
-              }}
-              aria-label={`Go to slide ${i + 1}: ${s.label}`}
-              className={`h-1.5 rounded-full transition-all duration-200 ${
-                i === current
-                  ? "w-6 bg-white"
-                  : "w-1.5 bg-white/30 hover:bg-white/50"
-              }`}
-            />
-          ))}
+          {/* Dot indicators */}
+          <div className="mt-2 flex gap-1.5">
+            {slides.map((s, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setDirection(i > current ? 1 : -1);
+                  setCurrent(i);
+                }}
+                aria-label={`Go to slide ${i + 1}: ${s.label}`}
+                className={`h-1.5 rounded-full transition-all duration-200 ${
+                  i === current
+                    ? "w-6 bg-white"
+                    : "w-1.5 bg-white/30 hover:bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Slide counter */}
+          <p className="mt-1.5 text-[10px] text-white/25">
+            {current + 1} / {slides.length}
+          </p>
         </div>
-
-        {/* Slide counter */}
-        <p className="mt-2 text-[10px] text-white/25">
-          {current + 1} / {slides.length}
-        </p>
       </div>
     </motion.div>,
     document.body,

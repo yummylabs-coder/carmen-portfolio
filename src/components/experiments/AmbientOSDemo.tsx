@@ -84,7 +84,7 @@ interface OrbDef {
   hy: number;
   size: number;
   phase: number;
-  connections: string[]; // ids of related orbs
+  connections: string[];
 }
 
 const ORBS: OrbDef[] = [
@@ -146,14 +146,19 @@ const ORBS: OrbDef[] = [
   },
 ];
 
-/* ─── Physics constants ─── */
+/* ── Physics constants ── */
 const ATTRACT_RADIUS = 200;
 const ATTRACT_FORCE = 35;
 const DRIFT_AMP = 14;
 const DRIFT_SPEED = 0.0005;
 const LERP = 0.045;
 
-/* ─── Deterministic stars (SSR-safe) ─── */
+/* Mobile-specific physics — gentler, smaller */
+const M_DRIFT_AMP = 8;
+const M_ATTRACT_RADIUS = 120;
+const M_ATTRACT_FORCE = 20;
+
+/* ── Deterministic stars (SSR-safe) ── */
 function seededRandom(seed: number) {
   const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
   return x - Math.floor(x);
@@ -167,8 +172,95 @@ const STARS = Array.from({ length: 35 }, (_, i) => ({
   delay: seededRandom(i * 13) * 3,
 }));
 
+/* ─── Mobile concept panel ─── */
+function ConceptPanel({
+  orb,
+  onClose,
+}: {
+  orb: OrbDef;
+  onClose: () => void;
+}) {
+  const Icon = ICON_MAP[orb.id];
+  return (
+    <div
+      className="absolute inset-x-0 bottom-0 z-30 ambient-card-enter"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div
+        className="mx-3 mb-3 rounded-2xl px-5 py-4"
+        style={{
+          background: "rgba(15, 23, 42, 0.92)",
+          backdropFilter: "blur(24px)",
+          border: `1px solid ${orb.color}30`,
+          boxShadow: `0 -4px 30px rgba(0,0,0,0.5), 0 0 40px ${orb.color}10`,
+        }}
+      >
+        {/* Header row */}
+        <div className="mb-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div
+              className="flex h-8 w-8 items-center justify-center rounded-lg"
+              style={{ background: `${orb.color}25` }}
+            >
+              {Icon && <Icon size={16} />}
+            </div>
+            <span
+              className="text-[14px] font-semibold"
+              style={{ color: orb.color }}
+            >
+              {orb.label}
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white/50"
+          >
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Concept */}
+        <p className="text-[13px] leading-[1.6] text-white/60">
+          {orb.concept}
+        </p>
+
+        {/* Connected to */}
+        <div className="mt-3 flex items-center gap-1.5 border-t border-white/[0.06] pt-2.5">
+          <span className="text-[9px] uppercase tracking-wider text-white/25">
+            Connected to
+          </span>
+          {orb.connections.map((cId) => {
+            const c = ORBS.find((o) => o.id === cId);
+            if (!c) return null;
+            return (
+              <span
+                key={cId}
+                className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                style={{
+                  background: `${c.color}15`,
+                  color: `${c.color}99`,
+                }}
+              >
+                {c.label}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
-export function AmbientOSDemo({ className = "" }: { className?: string }) {
+export function AmbientOSDemo({
+  className = "",
+  mobile = false,
+}: {
+  className?: string;
+  mobile?: boolean;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const orbElRefs = useRef<(HTMLDivElement | null)[]>([]);
   const mouseRef = useRef({ x: -9999, y: -9999, active: false });
@@ -183,13 +275,15 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
   const [ripple, setRipple] = useState<{ id: string; key: number } | null>(null);
   const [notifs, setNotifs] = useState<Record<string, number>>({});
 
+  /* Mobile orb size scale */
+  const sizeScale = mobile ? 0.72 : 1;
+
   /* ── Click handler ── */
   const handleOrbClick = useCallback(
     (orbId: string) => {
       if (expandedOrb === orbId) {
         setExpandedOrb(null);
       } else {
-        // Trigger ripple
         setRipple({ id: orbId, key: Date.now() });
         setExpandedOrb(orbId);
       }
@@ -209,14 +303,18 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
     if (!r) return;
     orbPos.current = ORBS.map((o) => ({
       x: o.hx * r.width,
-      y: o.hy * r.height,
+      y: o.hy * (mobile ? r.height * 0.75 : r.height),
     }));
-  }, []);
+  }, [mobile]);
 
   /* ── RAF animation loop ── */
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+
+    const driftAmp = mobile ? M_DRIFT_AMP : DRIFT_AMP;
+    const attractRadius = mobile ? M_ATTRACT_RADIUS : ATTRACT_RADIUS;
+    const attractForce = mobile ? M_ATTRACT_FORCE : ATTRACT_FORCE;
 
     function tick() {
       const r = el!.getBoundingClientRect();
@@ -224,17 +322,17 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
       const m = mouseRef.current;
       const mx = m.x - r.left;
       const my = m.y - r.top;
+      const areaH = mobile ? r.height * 0.75 : r.height;
 
       ORBS.forEach((orb, i) => {
         const p = orbPos.current[i];
         if (!p) return;
 
         const hx = orb.hx * r.width;
-        const hy = orb.hy * r.height;
+        const hy = orb.hy * areaH;
 
-        const dx = Math.sin(t * DRIFT_SPEED + orb.phase) * DRIFT_AMP;
-        const dy =
-          Math.cos(t * DRIFT_SPEED * 0.7 + orb.phase + 1.5) * DRIFT_AMP * 0.8;
+        const dx = Math.sin(t * DRIFT_SPEED + orb.phase) * driftAmp;
+        const dy = Math.cos(t * DRIFT_SPEED * 0.7 + orb.phase + 1.5) * driftAmp * 0.8;
 
         let tx = hx + dx;
         let ty = hy + dy;
@@ -243,8 +341,8 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
           const ax = mx - tx;
           const ay = my - ty;
           const dist = Math.sqrt(ax * ax + ay * ay);
-          if (dist < ATTRACT_RADIUS && dist > 1) {
-            const s = (1 - dist / ATTRACT_RADIUS) * ATTRACT_FORCE;
+          if (dist < attractRadius && dist > 1) {
+            const s = (1 - dist / attractRadius) * attractForce;
             tx += (ax / dist) * s;
             ty += (ay / dist) * s;
           }
@@ -255,26 +353,29 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
 
         const orbEl = orbElRefs.current[i];
         if (orbEl) {
+          const sz = orb.size * sizeScale;
           const breathe = 1 + Math.sin(t * 0.0008 + orb.phase * 2.5) * 0.025;
-          orbEl.style.transform = `translate3d(${p.x - orb.size / 2}px, ${p.y - orb.size / 2}px, 0) scale(${breathe})`;
+          orbEl.style.transform = `translate3d(${p.x - sz / 2}px, ${p.y - sz / 2}px, 0) scale(${breathe})`;
         }
       });
 
       // ── Scene 3D tilt from mouse ──
-      const cx = r.width / 2;
-      const cy = r.height / 2;
-      const MAX_TILT = 3;
-      if (m.active) {
-        const nx = Math.max(-1, Math.min(1, (mx - cx) / cx));
-        const ny = Math.max(-1, Math.min(1, (my - cy) / cy));
-        tiltRef.current.x += (-ny * MAX_TILT - tiltRef.current.x) * 0.04;
-        tiltRef.current.y += (nx * MAX_TILT - tiltRef.current.y) * 0.04;
-      } else {
-        tiltRef.current.x *= 0.96;
-        tiltRef.current.y *= 0.96;
-      }
-      if (sceneRef.current) {
-        sceneRef.current.style.transform = `rotateX(${tiltRef.current.x}deg) rotateY(${tiltRef.current.y}deg)`;
+      if (!mobile) {
+        const cx = r.width / 2;
+        const cy = r.height / 2;
+        const MAX_TILT = 3;
+        if (m.active) {
+          const nx = Math.max(-1, Math.min(1, (mx - cx) / cx));
+          const ny = Math.max(-1, Math.min(1, (my - cy) / cy));
+          tiltRef.current.x += (-ny * MAX_TILT - tiltRef.current.x) * 0.04;
+          tiltRef.current.y += (nx * MAX_TILT - tiltRef.current.y) * 0.04;
+        } else {
+          tiltRef.current.x *= 0.96;
+          tiltRef.current.y *= 0.96;
+        }
+        if (sceneRef.current) {
+          sceneRef.current.style.transform = `rotateX(${tiltRef.current.x}deg) rotateY(${tiltRef.current.y}deg)`;
+        }
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -282,7 +383,7 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
 
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  }, [mobile, sizeScale]);
 
   /* ── Mouse tracking ── */
   useEffect(() => {
@@ -386,23 +487,26 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full select-none overflow-visible ${className}`}
+      className={`relative h-full w-full select-none overflow-hidden ${className}`}
       style={{
-        perspective: "800px",
+        perspective: mobile ? undefined : "800px",
         background:
           "radial-gradient(ellipse at 50% 40%, #0f172a 0%, #030712 60%, #000 100%)",
       }}
       onClick={handleBackdropClick}
     >
-      {/* ── 3D Scene — tilts on mouse for depth parallax ── */}
+      {/* ── 3D Scene — tilts on mouse for depth parallax (desktop only) ── */}
       <div
         ref={sceneRef}
         className="relative h-full w-full"
-        style={{ transformStyle: "preserve-3d" }}
+        style={mobile ? undefined : { transformStyle: "preserve-3d" }}
       >
 
       {/* ── Back depth layer — stars ── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ transform: "translateZ(-120px)" }}>
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        style={mobile ? undefined : { transform: "translateZ(-120px)" }}
+      >
         {STARS.map((s, i) => (
           <div
             key={`star-${i}`}
@@ -421,7 +525,10 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
       </div>
 
       {/* ── Mid depth layer — rings + glow ── */}
-      <div className="pointer-events-none absolute inset-0" style={{ transform: "translateZ(-50px)" }}>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={mobile ? undefined : { transform: "translateZ(-50px)" }}
+      >
       <svg
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         width="700"
@@ -435,9 +542,11 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
         <ellipse cx={0} cy={0} rx={260} ry={210} fill="none" stroke="rgba(255,255,255,1)" strokeWidth={0.5} strokeDasharray="2 14" opacity={0.04}>
           <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="35s" repeatCount="indefinite" />
         </ellipse>
-        <ellipse cx={0} cy={0} rx={340} ry={280} fill="none" stroke="rgba(255,255,255,1)" strokeWidth={0.5} strokeDasharray="4 20" opacity={0.03}>
-          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="50s" repeatCount="indefinite" />
-        </ellipse>
+        {!mobile && (
+          <ellipse cx={0} cy={0} rx={340} ry={280} fill="none" stroke="rgba(255,255,255,1)" strokeWidth={0.5} strokeDasharray="4 20" opacity={0.03}>
+            <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="50s" repeatCount="indefinite" />
+          </ellipse>
+        )}
       </svg>
 
       {/* ── Ambient central glow ── */}
@@ -464,8 +573,8 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
             left: orbPos.current[ORBS.findIndex((o) => o.id === ripple.id)]?.x ?? 0,
             top: orbPos.current[ORBS.findIndex((o) => o.id === ripple.id)]?.y ?? 0,
             transform: "translate(-50%, -50%)",
-            width: 200,
-            height: 200,
+            width: mobile ? 120 : 200,
+            height: mobile ? 120 : 200,
             borderRadius: "50%",
             border: `1.5px solid ${ORBS.find((o) => o.id === ripple.id)?.color ?? "#fff"}`,
           }}
@@ -483,6 +592,7 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
         const isExpanded = expandedOrb === orb.id;
         const isDimmed = expandedOrb !== null && !isExpanded && !ORBS.find((o) => o.id === expandedOrb)?.connections.includes(orb.id);
         const Icon = ICON_MAP[orb.id];
+        const sz = orb.size * sizeScale;
 
         return (
           <div
@@ -492,8 +602,8 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
             }}
             className="absolute left-0 top-0 will-change-transform"
             style={{
-              width: orb.size,
-              height: orb.size,
+              width: sz,
+              height: sz,
               zIndex: isExpanded ? 20 : 10,
               opacity: isDimmed ? 0.3 : 1,
               transition: "opacity 0.4s ease",
@@ -518,9 +628,9 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
             <div
               className="pointer-events-none absolute left-1/2 -translate-x-1/2"
               style={{
-                bottom: -orb.size * 0.22,
-                width: orb.size * 1.4,
-                height: orb.size * 0.35,
+                bottom: -sz * 0.22,
+                width: sz * 1.4,
+                height: sz * 0.35,
                 background: `radial-gradient(ellipse, ${orb.color}18 0%, transparent 70%)`,
                 filter: "blur(8px)",
               }}
@@ -545,13 +655,13 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
             >
               {Icon && (
                 <span style={{ opacity: 0.9 }}>
-                  <Icon size={orb.size * 0.38} />
+                  <Icon size={sz * 0.38} />
                 </span>
               )}
             </div>
 
-            {/* Label — on hover (when nothing expanded) */}
-            {!expandedOrb && (
+            {/* Label — on hover (desktop only, when nothing expanded) */}
+            {!mobile && !expandedOrb && (
               <div
                 className="pointer-events-none absolute left-1/2 whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-medium text-white/80 backdrop-blur-md transition-all duration-200"
                 style={{
@@ -566,13 +676,23 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
               </div>
             )}
 
+            {/* Mobile: always show label below orb */}
+            {mobile && !expandedOrb && (
+              <div
+                className="pointer-events-none absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[9px] font-medium text-white/50"
+                style={{ top: sz + 4 }}
+              >
+                {orb.label}
+              </div>
+            )}
+
             {/* Notification badge */}
             {notifs[orb.id] && notifs[orb.id]! > 0 && !isExpanded && (
               <div
                 className="absolute flex items-center justify-center rounded-full bg-red-500 font-mono text-[8px] font-bold text-white ambient-pop-in"
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: mobile ? 14 : 16,
+                  height: mobile ? 14 : 16,
                   top: -2,
                   right: -2,
                   boxShadow: "0 0 8px rgba(239,68,68,0.5)",
@@ -582,8 +702,8 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
               </div>
             )}
 
-            {/* ── Expanded concept card ── */}
-            {isExpanded && (
+            {/* ── Desktop: Expanded concept card (floating below orb) ── */}
+            {!mobile && isExpanded && (
               <div
                 className="absolute left-1/2 z-30 w-[220px] ambient-card-enter"
                 style={{ top: orb.size + 12 }}
@@ -598,7 +718,6 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
                     boxShadow: `0 4px 30px rgba(0,0,0,0.4), 0 0 20px ${orb.color}10`,
                   }}
                 >
-                  {/* Card header */}
                   <div className="mb-2 flex items-center gap-2">
                     <div
                       className="flex h-6 w-6 items-center justify-center rounded-md"
@@ -606,20 +725,13 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
                     >
                       {Icon && <Icon size={14} />}
                     </div>
-                    <span
-                      className="text-[12px] font-semibold"
-                      style={{ color: orb.color }}
-                    >
+                    <span className="text-[12px] font-semibold" style={{ color: orb.color }}>
                       {orb.label}
                     </span>
                   </div>
-
-                  {/* Concept description */}
                   <p className="text-[11px] leading-[1.55] text-white/60">
                     {orb.concept}
                   </p>
-
-                  {/* Connected to */}
                   <div className="mt-2.5 flex items-center gap-1 border-t border-white/[0.06] pt-2">
                     <span className="text-[9px] uppercase tracking-wider text-white/25">
                       Connected to
@@ -631,10 +743,7 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
                         <span
                           key={cId}
                           className="rounded-full px-1.5 py-0.5 text-[9px] font-medium"
-                          style={{
-                            background: `${c.color}15`,
-                            color: `${c.color}99`,
-                          }}
+                          style={{ background: `${c.color}15`, color: `${c.color}99` }}
                         >
                           {c.label}
                         </span>
@@ -653,17 +762,23 @@ export function AmbientOSDemo({ className = "" }: { className?: string }) {
         className="absolute bottom-4 left-0 right-0 text-center transition-opacity duration-300 sm:bottom-5"
         style={{ opacity: expandedOrb ? 0 : 1 }}
       >
-        <p className="hidden text-[11px] tracking-wide text-white/20 sm:block">
-          {expandedOrbData
-            ? ""
-            : "Tap an orb to explore the spatial interaction model"}
+        <p className={`text-[11px] tracking-wide text-white/20 ${mobile ? "" : "hidden sm:block"}`}>
+          {mobile ? "Tap an orb to explore" : "Tap an orb to explore the spatial interaction model"}
         </p>
-        <p className="text-[11px] tracking-wide text-white/20 sm:hidden">
-          Tap an orb to explore
-        </p>
+        {!mobile && (
+          <p className="text-[11px] tracking-wide text-white/20 sm:hidden">
+            Tap an orb to explore
+          </p>
+        )}
       </div>
 
       </div>{/* close front depth layer */}
+
+      {/* ── Mobile: Bottom concept panel ── */}
+      {mobile && expandedOrbData && (
+        <ConceptPanel orb={expandedOrbData} onClose={() => setExpandedOrb(null)} />
+      )}
+
       </div>{/* close 3D scene */}
     </div>
   );
