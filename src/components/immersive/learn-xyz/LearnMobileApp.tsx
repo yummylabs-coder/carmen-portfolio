@@ -28,20 +28,21 @@ export function LearnMobileApp() {
     <SectionRoom colors={room}>
       <SectionLabel accentColor={room.accent}>Mobile App</SectionLabel>
 
+      {/* Headline — full width, above the split layout */}
+      <LineMask
+        as="h2"
+        className="mb-8 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
+        delay={0.15}
+      >
+        {MOBILE_APP.headline}
+      </LineMask>
+
       <div
         ref={ref}
-        className="mt-4 flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20"
+        className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20"
       >
-        {/* Left: Text */}
-        <div className="flex-1 space-y-6">
-          <LineMask
-            as="h2"
-            className="text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
-            delay={0.15}
-          >
-            {MOBILE_APP.headline}
-          </LineMask>
-
+        {/* Left: Body text */}
+        <div className="flex-1">
           <motion.p
             className="max-w-[640px] text-[17px] leading-[1.8] opacity-80"
             initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
