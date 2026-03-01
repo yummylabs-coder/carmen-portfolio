@@ -6,7 +6,7 @@ import {
   useReducedMotion,
   AnimatePresence,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { LineMask } from "../LineMask";
 import {
@@ -17,6 +17,79 @@ import {
 } from "../SectionRoom";
 import { learnRooms, ease, stagger } from "@/lib/motion";
 import { DESIGN_SYSTEM, IMAGES } from "./LearnData";
+
+/* ================================================================== */
+/*  Lesson Editor — MacBook frame with tab-switching right panel        */
+/* ================================================================== */
+
+/** Right panel width as a percentage of the full layout (1300 / 4173) */
+const RIGHT_PANEL_PCT = 31.15;
+
+function LessonEditorFrame() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduce = useReducedMotion();
+  const [showLearners, setShowLearners] = useState(false);
+
+  // Auto-toggle between Chat ↔ Learners view every 4s
+  useEffect(() => {
+    if (!inView || shouldReduce) return;
+    const id = setInterval(() => setShowLearners((v) => !v), 4000);
+    return () => clearInterval(id);
+  }, [inView, shouldReduce]);
+
+  return (
+    <div
+      ref={ref}
+      className="mx-auto w-full max-w-[720px] lg:max-w-[960px]"
+      style={{
+        filter:
+          "drop-shadow(0 20px 40px rgba(0,0,0,0.2)) drop-shadow(0 8px 16px rgba(0,0,0,0.12))",
+      }}
+    >
+      <div className="overflow-hidden rounded-t-[10px] border-[6px] border-b-[18px] border-[#1d1d1f] bg-[#1d1d1f]">
+        <div className="relative aspect-[16/10] w-full overflow-hidden">
+          {/* Base layer: full layout with Chat tab active */}
+          <Image
+            src={IMAGES.dsEditorChat}
+            alt="Learn.xyz lesson editor — AI chat assistant helps create lessons"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 960px, 720px"
+            priority
+          />
+
+          {/* Overlay: "What learners will see" panel — covers right 31% */}
+          <motion.div
+            className="absolute bottom-0 right-0 top-0"
+            style={{ width: `${RIGHT_PANEL_PCT}%` }}
+            initial={false}
+            animate={{ opacity: showLearners ? 1 : 0 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
+          >
+            <Image
+              src={IMAGES.dsViewLearners}
+              alt="What learners will see — mobile preview of generated lesson"
+              fill
+              className="object-cover"
+              sizes="300px"
+            />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* MacBook chin */}
+      <div
+        className="mx-auto h-[8px] rounded-b-md"
+        style={{
+          width: "104%",
+          marginLeft: "-2%",
+          background: "linear-gradient(180deg, #3a3a3c 0%, #1d1d1f 100%)",
+        }}
+      />
+    </div>
+  );
+}
 
 /* ================================================================== */
 /*  Main Section                                                       */
@@ -59,36 +132,9 @@ export function LearnDesignSystem() {
         <DesignDecisions />
       </div>
 
-      {/* Brand in motion GIF — MacBook frame */}
+      {/* Lesson Editor — MacBook frame with animated right panel */}
       <SectionVisual className="mt-24">
-        <div
-          className="mx-auto w-full max-w-[720px] lg:max-w-[960px]"
-          style={{
-            filter:
-              "drop-shadow(0 20px 40px rgba(0,0,0,0.2)) drop-shadow(0 8px 16px rgba(0,0,0,0.12))",
-          }}
-        >
-          <div className="overflow-hidden rounded-t-[10px] border-[6px] border-b-[18px] border-[#1d1d1f] bg-[#1d1d1f]">
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
-              <Image
-                src={IMAGES.gifBrand}
-                alt="Learn.xyz brand identity animation"
-                fill
-                className="object-cover object-top"
-                sizes="(min-width: 1024px) 960px, 720px"
-                unoptimized
-              />
-            </div>
-          </div>
-          <div
-            className="mx-auto h-[8px] rounded-b-md"
-            style={{
-              width: "104%",
-              marginLeft: "-2%",
-              background: "linear-gradient(180deg, #3a3a3c 0%, #1d1d1f 100%)",
-            }}
-          />
-        </div>
+        <LessonEditorFrame />
       </SectionVisual>
 
     </SectionRoom>

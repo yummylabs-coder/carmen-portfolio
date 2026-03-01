@@ -70,6 +70,10 @@ export const IMAGES = {
   betHeader: "/images/learn/bet-header.png",
   betFeed: "/images/learn/bet-feed-full.png",
 
+  // Design System — lesson editor with animated right panel
+  dsEditorChat: "/images/learn/ds-editor-chat.png",
+  dsViewLearners: "/images/learn/ds-view-learners.png",
+
   // Placeholder office / team photos (replace with real shots)
   teamWorking:
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
