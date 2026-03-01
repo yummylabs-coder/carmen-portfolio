@@ -66,6 +66,10 @@ export const IMAGES = {
   componentProgress: "/images/learn/component-progress.png",
   componentFeatured: "/images/learn/component-featured.png",
 
+  // Bet section — scrollable phone feed
+  betHeader: "/images/learn/bet-header.png",
+  betFeed: "/images/learn/bet-feed-full.png",
+
   // Placeholder office / team photos (replace with real shots)
   teamWorking:
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
