@@ -68,6 +68,11 @@ export const IMAGES = {
   dsViewLearners: "/images/learn/ds-view-learners.png",
   dsEditorPreview: "/images/learn/ds-editor-preview.png",
 
+  // Learning screens (lesson experience)
+  learning1: "/images/learn/learning-1.png",
+  learning2: "/images/learn/learning-2.png",
+  learning3: "/images/learn/learning-3.png",
+
   // Placeholder office / team photos (replace with real shots)
   teamWorking:
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
