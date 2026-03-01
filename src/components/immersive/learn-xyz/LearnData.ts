@@ -18,6 +18,7 @@ export const IMAGES = {
   website4: "/images/learn/website-4.png",
   website5: "/images/learn/website-5.png",
   website6: "/images/learn/website-6.png",
+  website7: "/images/learn/website-7.png",
 
   // Dashboard screenshots (real Figma exports)
   dashboard1: "/images/learn/web-dashboard-1.png",
@@ -406,6 +407,7 @@ export const WEBSITE = {
     { src: "website4" as const, alt: "Playful objection handling", caption: "You won't like Learn.xyz if..." },
     { src: "website5" as const, alt: "Industry-specific onboarding", caption: "Industry use cases" },
     { src: "website6" as const, alt: "Pricing page", caption: "Pricing" },
+    { src: "website7" as const, alt: "BYOB — bring your own data with AI learning engine", caption: "Bring Your Own Data" },
   ],
 };
 

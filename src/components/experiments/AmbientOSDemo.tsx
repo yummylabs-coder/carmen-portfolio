@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Monoline SVG icons — thin white strokes, futuristic/spatial feel
@@ -171,87 +172,6 @@ const STARS = Array.from({ length: 35 }, (_, i) => ({
   dur: 3 + seededRandom(i * 11) * 4,
   delay: seededRandom(i * 13) * 3,
 }));
-
-/* ─── Mobile concept panel ─── */
-function ConceptPanel({
-  orb,
-  onClose,
-}: {
-  orb: OrbDef;
-  onClose: () => void;
-}) {
-  const Icon = ICON_MAP[orb.id];
-  return (
-    <div
-      className="absolute inset-x-0 bottom-0 z-30 ambient-card-enter"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div
-        className="mx-3 mb-3 rounded-2xl px-5 py-4"
-        style={{
-          background: "rgba(15, 23, 42, 0.92)",
-          backdropFilter: "blur(24px)",
-          border: `1px solid ${orb.color}30`,
-          boxShadow: `0 -4px 30px rgba(0,0,0,0.5), 0 0 40px ${orb.color}10`,
-        }}
-      >
-        {/* Header row */}
-        <div className="mb-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-lg"
-              style={{ background: `${orb.color}25` }}
-            >
-              {Icon && <Icon size={16} />}
-            </div>
-            <span
-              className="text-[14px] font-semibold"
-              style={{ color: orb.color }}
-            >
-              {orb.label}
-            </span>
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white/50"
-          >
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-              <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Concept */}
-        <p className="text-[13px] leading-[1.6] text-white/60">
-          {orb.concept}
-        </p>
-
-        {/* Connected to */}
-        <div className="mt-3 flex items-center gap-1.5 border-t border-white/[0.06] pt-2.5">
-          <span className="text-[9px] uppercase tracking-wider text-white/25">
-            Connected to
-          </span>
-          {orb.connections.map((cId) => {
-            const c = ORBS.find((o) => o.id === cId);
-            if (!c) return null;
-            return (
-              <span
-                key={cId}
-                className="rounded-full px-2 py-0.5 text-[10px] font-medium"
-                style={{
-                  background: `${c.color}15`,
-                  color: `${c.color}99`,
-                }}
-              >
-                {c.label}
-              </span>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
 export function AmbientOSDemo({
@@ -487,7 +407,7 @@ export function AmbientOSDemo({
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full select-none overflow-hidden ${className}`}
+      className={`relative h-full w-full select-none ${className}`}
       style={{
         perspective: mobile ? undefined : "800px",
         background:
@@ -774,12 +694,90 @@ export function AmbientOSDemo({
 
       </div>{/* close front depth layer */}
 
-      {/* ── Mobile: Bottom concept panel ── */}
-      {mobile && expandedOrbData && (
-        <ConceptPanel orb={expandedOrbData} onClose={() => setExpandedOrb(null)} />
-      )}
-
       </div>{/* close 3D scene */}
+
+      {/* ── Mobile: Full-screen bottom sheet via portal (escapes all overflow clips) ── */}
+      {mobile && expandedOrbData && typeof window !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-x-0 bottom-0 z-[260] ambient-card-enter"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className="mx-4 mb-4 rounded-2xl px-5 py-5"
+              style={{
+                background: "rgba(15, 23, 42, 0.95)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+                border: `1px solid ${expandedOrbData.color}30`,
+                boxShadow: `0 -4px 30px rgba(0,0,0,0.5), 0 0 40px ${expandedOrbData.color}10`,
+              }}
+            >
+              {/* Header row */}
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-xl"
+                    style={{ background: `${expandedOrbData.color}25` }}
+                  >
+                    {(() => {
+                      const Icon = ICON_MAP[expandedOrbData.id];
+                      return Icon ? <Icon size={20} /> : null;
+                    })()}
+                  </div>
+                  <span
+                    className="text-[16px] font-semibold"
+                    style={{ color: expandedOrbData.color }}
+                  >
+                    {expandedOrbData.label}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setExpandedOrb(null)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/50"
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M4 4L12 12M4 12L12 4"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Concept */}
+              <p className="text-[14px] leading-[1.7] text-white/60">
+                {expandedOrbData.concept}
+              </p>
+
+              {/* Connected to */}
+              <div className="mt-3.5 flex items-center gap-2 border-t border-white/[0.06] pt-3">
+                <span className="text-[10px] uppercase tracking-wider text-white/25">
+                  Connected to
+                </span>
+                {expandedOrbData.connections.map((cId) => {
+                  const c = ORBS.find((o) => o.id === cId);
+                  if (!c) return null;
+                  return (
+                    <span
+                      key={cId}
+                      className="rounded-full px-2.5 py-1 text-[11px] font-medium"
+                      style={{
+                        background: `${c.color}15`,
+                        color: `${c.color}99`,
+                      }}
+                    >
+                      {c.label}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
