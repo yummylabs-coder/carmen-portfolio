@@ -69,6 +69,7 @@ export const IMAGES = {
   // Design System — lesson editor with animated right panel
   dsEditorChat: "/images/learn/ds-editor-chat.png",
   dsViewLearners: "/images/learn/ds-view-learners.png",
+  dsEditorPreview: "/images/learn/ds-editor-preview.png",
 
   // Placeholder office / team photos (replace with real shots)
   teamWorking:

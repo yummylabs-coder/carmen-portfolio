@@ -22,19 +22,16 @@ import { DESIGN_SYSTEM, IMAGES } from "./LearnData";
 /*  Lesson Editor — MacBook frame with tab-switching right panel        */
 /* ================================================================== */
 
-/** Right panel width as a percentage of the full layout (1300 / 4173) */
-const RIGHT_PANEL_PCT = 31.15;
-
 function LessonEditorFrame() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const shouldReduce = useReducedMotion();
-  const [showLearners, setShowLearners] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
-  // Auto-toggle between Chat ↔ Learners view every 4s
+  // Auto-toggle between Chat ↔ Preview view every 4s
   useEffect(() => {
     if (!inView || shouldReduce) return;
-    const id = setInterval(() => setShowLearners((v) => !v), 4000);
+    const id = setInterval(() => setShowPreview((v) => !v), 4000);
     return () => clearInterval(id);
   }, [inView, shouldReduce]);
 
@@ -59,20 +56,19 @@ function LessonEditorFrame() {
             priority
           />
 
-          {/* Overlay: "What learners will see" panel — covers right 31% */}
+          {/* Overlay: full layout with Preview tab active — crossfades over base */}
           <motion.div
-            className="absolute bottom-0 right-0 top-0"
-            style={{ width: `${RIGHT_PANEL_PCT}%` }}
+            className="absolute inset-0"
             initial={false}
-            animate={{ opacity: showLearners ? 1 : 0 }}
+            animate={{ opacity: showPreview ? 1 : 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
           >
             <Image
-              src={IMAGES.dsViewLearners}
-              alt="What learners will see — mobile preview of generated lesson"
+              src={IMAGES.dsEditorPreview}
+              alt="Learn.xyz lesson editor — preview of what learners will see"
               fill
               className="object-cover"
-              sizes="300px"
+              sizes="(min-width: 1024px) 960px, 720px"
             />
           </motion.div>
         </div>
