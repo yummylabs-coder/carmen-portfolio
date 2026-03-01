@@ -183,7 +183,7 @@ export function DeviceCarousel({
         >
           {/* Screen */}
           <div className="overflow-hidden rounded-t-[10px] border-[6px] border-b-[18px] border-[#1d1d1f] bg-[#1d1d1f]">
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+            <div className="relative aspect-[1440/932] w-full overflow-hidden bg-white">
               {screenContent}
             </div>
           </div>
