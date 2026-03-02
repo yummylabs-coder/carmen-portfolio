@@ -22,11 +22,11 @@ import { DASHBOARD, IMAGES } from "./LearnData";
 /* ── Illustration config ─────────────────────────────────────────── */
 
 const illustrations = [
-  { src: IMAGES.gamifyTarget, alt: "Target achievement" },
-  { src: IMAGES.gamifyMountain, alt: "Mountain peak achievement" },
-  { src: IMAGES.gamifyBurst, alt: "Achievement burst" },
-  { src: IMAGES.gamifyTreasure, alt: "Treasure chest reward" },
-  { src: IMAGES.gamifyBadge, alt: "Graduation badge" },
+  { src: IMAGES.gamifyTarget, alt: "Target achievement", float: { y: 8, rotate: 3, duration: 4.2, delay: 0 } },
+  { src: IMAGES.gamifyMountain, alt: "Mountain peak achievement", float: { y: 6, rotate: -2, duration: 5.0, delay: 0.5 } },
+  { src: IMAGES.gamifyBurst, alt: "Achievement burst", float: { y: 10, rotate: 4, duration: 3.8, delay: 1.0 } },
+  { src: IMAGES.gamifyTreasure, alt: "Treasure chest reward", float: { y: 7, rotate: -3, duration: 4.6, delay: 0.3 } },
+  { src: IMAGES.gamifyBadge, alt: "Graduation badge", float: { y: 9, rotate: 2.5, duration: 5.2, delay: 0.8 } },
 ];
 
 /* ── Main section ────────────────────────────────────────────────── */
@@ -83,9 +83,23 @@ export function LearnDashboard() {
           style={{ x }}
         >
           {illustrations.map((ill, i) => (
-            <div
+            <motion.div
               key={i}
               className="w-[clamp(160px,22vw,300px)] shrink-0"
+              animate={
+                shouldReduce
+                  ? {}
+                  : {
+                      y: [-ill.float.y, ill.float.y, -ill.float.y],
+                      rotate: [-ill.float.rotate, ill.float.rotate, -ill.float.rotate],
+                    }
+              }
+              transition={{
+                duration: ill.float.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: ill.float.delay,
+              }}
             >
               <Image
                 src={ill.src}
@@ -95,7 +109,7 @@ export function LearnDashboard() {
                 className="h-auto w-full"
                 sizes="(min-width: 1024px) 300px, 22vw"
               />
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
