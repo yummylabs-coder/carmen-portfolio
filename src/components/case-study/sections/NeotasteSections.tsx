@@ -127,7 +127,7 @@ function ClipboardIcon() {
 }
 
 /* ═══════════════════════════════════
-   Section 1 — Our Role
+   Section 1 — The Sprint
    ═══════════════════════════════════ */
 function RoleSection({ accentColor }: { accentColor: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -143,21 +143,31 @@ function RoleSection({ accentColor }: { accentColor: string }) {
 
   return (
     <div ref={ref} className="mx-auto max-w-3xl">
+      {/* Centered intro */}
       <SectionReveal>
-        <SectionLabel label="Our Role" accentColor={accentColor} />
-        <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
-          From assumptions to answers in 14 days
-        </h2>
+        <div className="text-center">
+          <SectionLabel label="The Sprint" accentColor={accentColor} centered />
+          <h2 className="mx-auto mt-4 max-w-[600px] font-brand text-36 font-bold leading-[1.2] text-brand-ink mobile:text-28">
+            From assumptions to answers in 14&nbsp;days
+          </h2>
+          <p className="mx-auto mt-5 max-w-[540px] text-17 leading-[1.7] text-neutral-600">
+            Neotaste wanted to boost engagement but had competing ideas about
+            what to improve. I ran a focused design sprint — conducting user
+            interviews, mapping friction points, and testing concepts — to find
+            what would actually move the needle.
+          </p>
+        </div>
       </SectionReveal>
 
-      <div className="mt-8 space-y-3">
+      {/* Activity items — 2-column grid on desktop */}
+      <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {activities.map((a, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.4, delay: 0.15 + i * 0.08, ease: "easeOut" }}
-            className="flex items-start gap-3 rounded-lg border border-sand-200 bg-white p-4"
+            className="flex items-start gap-3 rounded-xl border border-sand-200 bg-white p-4"
           >
             <span className="mt-0.5 flex-shrink-0">{a.icon}</span>
             <p className="text-14 leading-relaxed text-neutral-600">{a.text}</p>
@@ -165,15 +175,15 @@ function RoleSection({ accentColor }: { accentColor: string }) {
         ))}
       </div>
 
-      <SectionReveal delay={0.4} className="mt-6">
+      <SectionReveal delay={0.4} className="mt-8">
         <div
-          className="rounded-xl p-5"
+          className="rounded-xl p-5 text-center"
           style={{ backgroundColor: `${accentColor}10` }}
         >
-          <p className="text-14 leading-relaxed text-neutral-600">
+          <p className="mx-auto max-w-[560px] text-14 leading-relaxed text-neutral-600">
             Instead of sinking months into features with uncertain impact, the
             sprint gave Neotaste evidence-backed clarity on what would truly
-            move the needle, plus a prototype their team could confidently
+            move the needle — plus a prototype their team could confidently
             build from.
           </p>
         </div>
@@ -210,7 +220,7 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
           Two blockers killing growth
         </h2>
         <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
-          Through early user interviews, we discovered two critical blockers
+          Through early user interviews, I discovered two critical blockers
           hurting Neotaste&apos;s growth. These weren&apos;t just UX issues.
           They were business problems directly impacting retention and viral
           loops.
@@ -262,7 +272,7 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
           Smarter discovery
         </h2>
         <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
-          Users wanted more control and less noise. We tested a progressive
+          Users wanted more control and less noise. I tested a progressive
           taste profile and smarter saved places to make discovery feel
           personal, and worth coming back to.
         </p>
@@ -301,7 +311,7 @@ function InvitesSection({ accentColor }: { accentColor: string }) {
         <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
           Invites were key to growth, but felt buried. Users wanted easier
           sharing, clearer entry points, and the option to involve friends at
-          the moment of booking. We tested quick wins alongside deeper
+          the moment of booking. I tested quick wins alongside deeper
           structural changes.
         </p>
       </SectionReveal>
@@ -343,7 +353,7 @@ function OutcomeSection({ accentColor }: { accentColor: string }) {
         What the sprint delivered
       </h2>
       <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
-        In 14 days, we went from open questions to a validated product
+        In 14 days, I went from open questions to a validated product
         strategy. The team walked away with clear priorities, tested
         prototypes, and the confidence to ship.
       </p>
