@@ -158,10 +158,10 @@ export function TransitionOverlay() {
             animate={
               phase === "revealing"
                 ? {
-                    y: "-100%",
+                    opacity: 0,
                     transition: {
-                      duration: 0.6,
-                      ease: [0.76, 0, 0.24, 1],
+                      duration: 0.5,
+                      ease: [0.25, 0.4, 0.25, 1],
                     },
                   }
                 : {
@@ -173,7 +173,7 @@ export function TransitionOverlay() {
                   }
             }
             exit={{
-              y: "-100%",
+              opacity: 0,
               transition: { duration: 0 },
             }}
             onAnimationComplete={() => {
