@@ -43,7 +43,7 @@ function NavLink({ href, label, icon: Icon, active }: NavLinkProps) {
       className={`flex h-[42px] items-center gap-1 rounded-md px-2 py-[7px] text-13 transition-colors ${
         active
           ? "bg-blue-50 font-semibold text-blue-700"
-          : "font-medium text-text-tertiary hover:bg-sand-100"
+          : "font-medium text-[#7b6a61] hover:bg-sand-100"
       }`}
     >
       <Icon size={16} />
@@ -99,18 +99,18 @@ export function Sidebar({ className = "" }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col border-r border-sand-300 bg-white pb-[3px] ${className}`}
+      className={`fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col border-r border-[#f3ede7] bg-[#fcfaf8] pb-[3px] ${className}`}
       style={{ borderRadius: "0 16px 16px 0" }}
     >
       {/* Header */}
-      <div className="border-b border-neutral-100 px-4 pb-[17px] pt-4">
+      <div className="border-b border-[#f3ede7] px-4 pb-[17px] pt-4">
         <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
           <AnimatedLogoMark size={38} />
           <div className="flex flex-col">
             <span className="font-brand text-14 font-bold text-brand-ink">
               Carmen&apos;s Space
             </span>
-            <span className="text-11 text-neutral-400">
+            <span className="text-[12px] text-[#7b6a61]">
               Product Design &amp; Strategy
             </span>
           </div>
