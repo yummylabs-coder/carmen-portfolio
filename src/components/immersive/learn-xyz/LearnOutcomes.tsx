@@ -19,18 +19,11 @@ interface ChartProps {
   reduce: boolean | null;
 }
 
-/* ── Helper: polar coordinate for arcs ─────────────────────── */
-
-function polar(cx: number, cy: number, r: number, deg: number) {
-  const rad = ((deg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-}
-
 /* ═══════════════════════════════════════════════════════════════
    1. DOT GLOBE — 20+ Global Pilot Clients
-   A sphere of dots with "land" (filled gold) and "ocean" (faint
-   outlines). Dots shrink near edges for a 3-D illusion. Animates
-   radially outward from the center.
+   A sphere of dots with "land" (filled gold) and "ocean" (visible
+   outline circles). The circular boundary is clearly defined.
+   Dots shrink slightly near edges for a subtle 3-D illusion.
    ═══════════════════════════════════════════════════════════════ */
 
 // 13×13 bitmap — 0: empty, 1: ocean dot, 2: land dot
@@ -76,7 +69,7 @@ function DotGlobeChart({ inView, delay, reduce }: ChartProps) {
       className="mx-auto h-auto w-full max-w-[182px]"
     >
       {dots.map((d, i) => {
-        const edge = 1 - (d.dist / maxR) * 0.45;
+        const edge = 1 - (d.dist / maxR) * 0.25; // subtler edge scaling
         const dotR = 3.6 * edge;
         const stagger = (d.dist / maxR) * 0.7;
 
@@ -89,10 +82,10 @@ function DotGlobeChart({ inView, delay, reduce }: ChartProps) {
             fill={GOLD}
             initial={
               reduce
-                ? { scale: 1, opacity: 0.9 * edge }
+                ? { scale: 1, opacity: 0.9 }
                 : { scale: 0, opacity: 0 }
             }
-            animate={inView ? { scale: 1, opacity: 0.9 * edge } : {}}
+            animate={inView ? { scale: 1, opacity: 0.9 } : {}}
             transition={{
               delay: delay + stagger,
               duration: 0.4,
@@ -107,13 +100,13 @@ function DotGlobeChart({ inView, delay, reduce }: ChartProps) {
             r={dotR}
             fill="none"
             stroke={GOLD}
-            strokeWidth={0.7}
+            strokeWidth={1.2}
             initial={
               reduce
-                ? { scale: 1, opacity: 0.18 * edge }
+                ? { scale: 1, opacity: 0.45 }
                 : { scale: 0, opacity: 0 }
             }
-            animate={inView ? { scale: 1, opacity: 0.18 * edge } : {}}
+            animate={inView ? { scale: 1, opacity: 0.45 } : {}}
             transition={{
               delay: delay + stagger,
               duration: 0.35,
@@ -127,32 +120,18 @@ function DotGlobeChart({ inView, delay, reduce }: ChartProps) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   2. SEGMENTED RADIAL — 80 % Lesson Completion Rate
-   24 individual arc segments that light up sequentially.
-   19 are filled gold, 5 are faint track. Creates a dramatic
-   sweep-on effect. Big "80 %" label in the center.
+   2. GRADIENT RADIAL — 80 % Lesson Completion Rate
+   A single smooth ring that sweeps from faint to fully saturated
+   gold over 80 % of its circumference. Center shows a checkmark
+   icon instead of the number (since the number is already below).
    ═══════════════════════════════════════════════════════════════ */
 
-function SegmentedRadialChart({ inView, delay, reduce }: ChartProps) {
-  const total = 24;
-  const filled = Math.round(total * 0.8); // 19 lit segments
+function GradientRadialChart({ inView, delay, reduce }: ChartProps) {
   const cx = 90;
   const cy = 90;
-  const r = 72;
-  const gapDeg = 3;
-  const segDeg = (360 - total * gapDeg) / total;
-
-  const arcs = Array.from({ length: total }, (_, i) => {
-    const a1 = i * (segDeg + gapDeg);
-    const a2 = a1 + segDeg;
-    const s = polar(cx, cy, r, a1);
-    const e = polar(cx, cy, r, a2);
-    return {
-      d: `M ${s.x} ${s.y} A ${r} ${r} 0 0 1 ${e.x} ${e.y}`,
-      lit: i < filled,
-      i,
-    };
-  });
+  const r = 70;
+  const circumference = 2 * Math.PI * r;
+  const fillLength = circumference * 0.8;
 
   return (
     <svg
@@ -160,46 +139,74 @@ function SegmentedRadialChart({ inView, delay, reduce }: ChartProps) {
       fill="none"
       className="mx-auto h-auto w-full max-w-[180px]"
     >
-      {arcs.map((a) => (
-        <motion.path
-          key={a.i}
-          d={a.d}
-          stroke={a.lit ? GOLD : TRACK}
-          strokeWidth={a.lit ? 8 : 4}
-          strokeLinecap="round"
-          initial={
-            reduce
-              ? { opacity: a.lit ? 0.9 : 0.25, pathLength: 1 }
-              : { opacity: 0, pathLength: 0 }
-          }
-          animate={
-            inView
-              ? { opacity: a.lit ? 0.9 : 0.25, pathLength: 1 }
-              : {}
-          }
-          transition={{
-            delay: delay + a.i * 0.04,
-            duration: 0.3,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        />
-      ))}
+      <defs>
+        {/* Gradient goes from dim (start) to bright (end of stroke) */}
+        <linearGradient
+          id="radialStroke"
+          gradientUnits="userSpaceOnUse"
+          x1="155"
+          y1="20"
+          x2="20"
+          y2="100"
+        >
+          <stop offset="0%" stopColor={GOLD} stopOpacity="0.15" />
+          <stop offset="50%" stopColor={GOLD} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={GOLD} stopOpacity="1" />
+        </linearGradient>
+      </defs>
 
-      {/* Center percentage */}
-      <motion.text
-        x={cx}
-        y={cy + 10}
-        textAnchor="middle"
-        fill={GOLD}
-        fontSize="30"
-        fontWeight="800"
-        fontFamily="system-ui, sans-serif"
-        initial={reduce ? { opacity: 0.45 } : { opacity: 0 }}
-        animate={inView ? { opacity: 0.45 } : {}}
-        transition={{ delay: delay + 0.9, duration: 0.5 }}
-      >
-        80%
-      </motion.text>
+      {/* Track ring (full circle, very faint) */}
+      <circle
+        cx={cx}
+        cy={cy}
+        r={r}
+        stroke={TRACK}
+        strokeWidth="8"
+      />
+
+      {/* Gradient-filled 80% arc */}
+      <motion.circle
+        cx={cx}
+        cy={cy}
+        r={r}
+        stroke="url(#radialStroke)"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        transform={`rotate(-90 ${cx} ${cy})`}
+        initial={
+          reduce
+            ? { strokeDashoffset: circumference - fillLength }
+            : { strokeDashoffset: circumference }
+        }
+        animate={
+          inView
+            ? { strokeDashoffset: circumference - fillLength }
+            : {}
+        }
+        transition={{
+          delay: delay + 0.1,
+          duration: 1.6,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+      />
+
+      {/* Center: checkmark icon */}
+      <motion.path
+        d="M76,92 L85,101 L106,78"
+        stroke={GOLD}
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+        initial={reduce ? { pathLength: 1, opacity: 0.5 } : { pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 0.5 } : {}}
+        transition={{
+          delay: delay + 1.2,
+          duration: 0.5,
+          ease: [0.16, 1, 0.3, 1],
+        }}
+      />
     </svg>
   );
 }
@@ -282,21 +289,18 @@ function PillBarsChart({ inView, delay, reduce }: ChartProps) {
    4. JOY S-CURVE — 1000+ Lessons Created in Week 1
    A smooth cubic-bezier "joy" curve rising from bottom-left to
    top-right. Gradient area fill underneath, two labelled data-
-   point markers ("Day 1" and "Week 1") with glowing rings.
+   point markers ("Day 1" above, "Week 1" below). The Week 1
+   endpoint pulses gently.
    ═══════════════════════════════════════════════════════════════ */
 
 function JoyCurveChart({ inView, delay, reduce }: ChartProps) {
-  const line = "M 15,138 C 55,138 75,22 250,18";
-  const area = "M 15,138 C 55,138 75,22 250,18 L 260,18 L 260,148 L 15,148 Z";
-
-  const markers = [
-    { x: 30, y: 137, label: "Day 1", labelOff: -26 },
-    { x: 235, y: 20, label: "Week 1", labelOff: -26 },
-  ];
+  // Shifted down 15px to make room for Week 1 label above
+  const line = "M 20,152 C 60,152 80,38 250,34";
+  const area = "M 20,152 C 60,152 80,38 250,34 L 260,34 L 260,168 L 20,168 Z";
 
   return (
     <svg
-      viewBox="0 0 272 158"
+      viewBox="0 0 280 175"
       fill="none"
       className="mx-auto h-auto w-full max-w-[272px]"
     >
@@ -331,80 +335,110 @@ function JoyCurveChart({ inView, delay, reduce }: ChartProps) {
         }}
       />
 
-      {/* Data-point markers */}
-      {markers.map((m, i) => (
-        <g key={m.label}>
-          {/* Glow ring */}
-          <motion.circle
-            cx={m.x}
-            cy={m.y}
-            r={14}
-            fill={GOLD}
-            initial={
-              reduce
-                ? { opacity: 0.1, scale: 1 }
-                : { opacity: 0, scale: 0 }
-            }
-            animate={inView ? { opacity: 0.1, scale: 1 } : {}}
-            transition={{
-              delay: delay + 0.9 + i * 0.3,
-              duration: 0.4,
-              ease: "backOut",
-            }}
-          />
-          {/* Center dot */}
-          <motion.circle
-            cx={m.x}
-            cy={m.y}
-            r={5.5}
-            fill={GOLD}
-            initial={reduce ? { scale: 1 } : { scale: 0 }}
-            animate={inView ? { scale: 1 } : {}}
-            transition={{
-              delay: delay + 0.9 + i * 0.3,
-              duration: 0.35,
-              ease: "backOut",
-            }}
-          />
-          {/* Label pill */}
-          <motion.g
-            initial={reduce ? { opacity: 0.85 } : { opacity: 0, y: 5 }}
-            animate={inView ? { opacity: 0.85, y: 0 } : {}}
-            transition={{
-              delay: delay + 1.1 + i * 0.3,
-              duration: 0.4,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+      {/* ── Day 1 marker (bottom-left, label ABOVE the line) ── */}
+      <g>
+        {/* Glow ring */}
+        <motion.circle
+          cx={35}
+          cy={150}
+          r={14}
+          fill={GOLD}
+          initial={reduce ? { opacity: 0.1, scale: 1 } : { opacity: 0, scale: 0 }}
+          animate={inView ? { opacity: 0.1, scale: 1 } : {}}
+          transition={{ delay: delay + 0.9, duration: 0.4, ease: "backOut" }}
+        />
+        {/* Dot */}
+        <motion.circle
+          cx={35}
+          cy={150}
+          r={5.5}
+          fill={GOLD}
+          initial={reduce ? { scale: 1 } : { scale: 0 }}
+          animate={inView ? { scale: 1 } : {}}
+          transition={{ delay: delay + 0.9, duration: 0.35, ease: "backOut" }}
+        />
+        {/* Label pill — well above the line */}
+        <motion.g
+          initial={reduce ? { opacity: 0.85 } : { opacity: 0, y: 5 }}
+          animate={inView ? { opacity: 0.85, y: 0 } : {}}
+          transition={{ delay: delay + 1.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <rect x={9} y={115} width="52" height="18" rx="9" fill="rgba(255,255,255,0.14)" />
+          <text
+            x={35}
+            y={128}
+            textAnchor="middle"
+            fill="white"
+            fontSize="9"
+            fontWeight="600"
+            fontFamily="system-ui, sans-serif"
           >
-            <rect
-              x={m.x - 26}
-              y={m.y + m.labelOff}
-              width="52"
-              height="18"
-              rx="9"
-              fill="rgba(255,255,255,0.14)"
-            />
-            <text
-              x={m.x}
-              y={m.y + m.labelOff + 13}
-              textAnchor="middle"
-              fill="white"
-              fontSize="9"
-              fontWeight="600"
-              fontFamily="system-ui, sans-serif"
-            >
-              {m.label}
-            </text>
-          </motion.g>
-        </g>
-      ))}
+            Day 1
+          </text>
+        </motion.g>
+      </g>
+
+      {/* ── Week 1 marker (top-right, label ABOVE with pulse) ── */}
+      <g>
+        {/* Pulsing glow ring */}
+        <motion.circle
+          cx={240}
+          cy={34}
+          r={14}
+          fill={GOLD}
+          initial={reduce ? { opacity: 0.12, scale: 1 } : { opacity: 0, scale: 0 }}
+          animate={
+            inView
+              ? {
+                  opacity: [0.08, 0.2, 0.08],
+                  scale: [1, 1.3, 1],
+                }
+              : {}
+          }
+          transition={{
+            delay: delay + 1.2,
+            duration: 2.4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        {/* Dot */}
+        <motion.circle
+          cx={240}
+          cy={34}
+          r={5.5}
+          fill={GOLD}
+          initial={reduce ? { scale: 1 } : { scale: 0 }}
+          animate={inView ? { scale: 1 } : {}}
+          transition={{ delay: delay + 1.2, duration: 0.35, ease: "backOut" }}
+        />
+        {/* Label pill — positioned above, within viewBox */}
+        <motion.g
+          initial={reduce ? { opacity: 0.85 } : { opacity: 0, y: 5 }}
+          animate={inView ? { opacity: 0.85, y: 0 } : {}}
+          transition={{ delay: delay + 1.4, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <rect x={212} y={3} width="56" height="18" rx="9" fill="rgba(255,255,255,0.14)" />
+          <text
+            x={240}
+            y={16}
+            textAnchor="middle"
+            fill="white"
+            fontSize="9"
+            fontWeight="600"
+            fontFamily="system-ui, sans-serif"
+          >
+            Week 1
+          </text>
+        </motion.g>
+      </g>
     </svg>
   );
 }
 
 /* ── Chart registry ──────────────────────────────────────────── */
 
-const CHARTS = [DotGlobeChart, SegmentedRadialChart, PillBarsChart, JoyCurveChart];
+const CHARTS = [DotGlobeChart, GradientRadialChart, PillBarsChart, JoyCurveChart];
 
 /* ── Main section ────────────────────────────────────────────── */
 
@@ -430,14 +464,14 @@ export function LearnOutcomes() {
           </LineMask>
         </div>
 
-        {/* Stats grid with charts */}
+        {/* Stats grid — 2 cols mobile, 4 cols desktop */}
         <div
           ref={statsRef}
-          className="mx-auto grid w-full max-w-[780px] grid-cols-2 gap-x-8 gap-y-14 md:gap-x-16 md:gap-y-16"
+          className="mx-auto grid w-full max-w-[780px] grid-cols-2 gap-x-8 gap-y-14 md:gap-x-12 lg:max-w-[1100px] lg:grid-cols-4 lg:gap-x-10 lg:gap-y-10"
         >
           {OUTCOMES.stats.map((stat, i) => {
             const Chart = CHARTS[i];
-            const d = i * 0.25;
+            const d = i * 0.2;
             return (
               <motion.div
                 key={stat.label}
@@ -451,7 +485,7 @@ export function LearnOutcomes() {
                 }}
               >
                 {/* Data viz chart */}
-                <div className="mb-5 flex h-[180px] w-full items-center justify-center">
+                <div className="mb-5 flex h-[180px] w-full items-center justify-center lg:h-[150px]">
                   <Chart
                     inView={statsInView}
                     delay={d}
@@ -460,7 +494,7 @@ export function LearnOutcomes() {
                 </div>
 
                 {/* Animated number */}
-                <div className="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-tight">
+                <div className="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-tight lg:text-[clamp(1.75rem,3vw,2.75rem)]">
                   <AnimatedCounter
                     value={stat.value}
                     suffix={stat.suffix}
@@ -469,7 +503,7 @@ export function LearnOutcomes() {
                 </div>
 
                 {/* Label */}
-                <p className="mt-2 text-[14px] opacity-60">{stat.label}</p>
+                <p className="mt-2 text-[14px] opacity-60 lg:text-[13px]">{stat.label}</p>
               </motion.div>
             );
           })}
