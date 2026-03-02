@@ -39,11 +39,18 @@ export interface BrandColors {
   accentColor: string;
 }
 
-interface CaseStudyConfig {
+export interface CaseStudyConfig {
   readTime: string;
   timelineDuration: string;
   timelineSteps: TimelineStep[];
   brand: BrandColors;
+  /** Override the Notion summary text in the hero */
+  summaryOverride?: string;
+  /** Full-bleed atmospheric image URL shown right after hero */
+  atmosphericImage?: {
+    src: string;
+    alt: string;
+  };
 }
 
 /**
@@ -214,6 +221,12 @@ const configs: Record<string, CaseStudyConfig> = {
   /* ── Neotaste ── Dark green hero ───────────────────────────── */
   "neotaste": {
     readTime: "~4 min read",
+    summaryOverride:
+      "I led a 14-day design sprint for NeoTaste, turning competing ideas into a validated product roadmap. This saved months of unproven development for a platform with millions of users.",
+    atmosphericImage: {
+      src: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?w=1920&q=80&auto=format",
+      alt: "Friends laughing and toasting over dinner at a restaurant",
+    },
     timelineDuration: "2 weeks",
     timelineSteps: [
       {

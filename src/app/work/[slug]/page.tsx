@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCaseStudyBySlug, getCaseStudySections, getNextCaseStudy, getAllProjects } from "@/lib/notion";
 import { getCaseStudyConfig } from "@/lib/case-study-config";
+import { AtmosphericImage } from "@/components/case-study/AtmosphericImage";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ProgressBar } from "@/components/case-study/ProgressBar";
 import { HeroSection } from "@/components/case-study/HeroSection";
@@ -98,6 +99,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   const config = getCaseStudyConfig(slug);
 
+  /* Apply config overrides to study data */
+  const studyWithOverrides = config.summaryOverride
+    ? { ...study, summary: config.summaryOverride }
+    : study;
+
   /* ── Immersive full-screen experience for select case studies ── */
   if (immersiveSlugs.has(slug)) {
     return (
@@ -125,7 +131,16 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
       <div className="flex flex-col gap-14">
         {/* Branded Hero (includes breadcrumb, full-bleed bg) */}
-        <HeroSection study={study} readTime={config.readTime} brand={config.brand} />
+        <HeroSection study={studyWithOverrides} readTime={config.readTime} brand={config.brand} />
+
+        {/* Full-bleed atmospheric image (right after hero, no gap) */}
+        {config.atmosphericImage && (
+          <AtmosphericImage
+            src={config.atmosphericImage.src}
+            alt={config.atmosphericImage.alt}
+            brandBg={config.brand.bg}
+          />
+        )}
 
         {/* Full-bleed Main Hero Image */}
         {study.mainHeroImage && (

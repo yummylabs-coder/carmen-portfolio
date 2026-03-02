@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
 import {
   SectionReveal,
   DeviceMockupCarousel,
@@ -124,28 +123,6 @@ function ClipboardIcon() {
       <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
       <path d="m9 14 2 2 4-4" />
     </motion.svg>
-  );
-}
-
-/* ═══════════════════════════════════
-   Atmospheric Restaurant Image
-   ═══════════════════════════════════ */
-function RestaurantHeroImage() {
-  return (
-    <SectionReveal>
-      <div className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl">
-        <Image
-          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80&auto=format"
-          alt="People dining in a warm, atmospheric restaurant"
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 820px"
-          priority
-        />
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-      </div>
-    </SectionReveal>
   );
 }
 
@@ -397,7 +374,6 @@ interface NeotasteSectionsProps {
 export function NeotasteSections({ accentColor }: NeotasteSectionsProps) {
   return (
     <div className="flex flex-col gap-20">
-      <RestaurantHeroImage />
       <RoleSection accentColor={accentColor} />
       <FrictionSection accentColor={accentColor} />
       <DiscoverySection accentColor={accentColor} />
