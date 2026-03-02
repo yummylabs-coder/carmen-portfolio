@@ -396,3 +396,12 @@ body {
 .ambient-cover-drift {
   animation: ambient-cover-drift 7s ease-in-out infinite;
 }
+
+/* ─── Neotaste hero chip float ─── */
+@keyframes neo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.neo-float {
+  animation: neo-float ease-in-out infinite;
+}

@@ -51,6 +51,8 @@ export interface CaseStudyConfig {
     src: string;
     alt: string;
   };
+  /** Custom animated hero visual (replaces the static hero image) */
+  heroVisual?: string;
 }
 
 /**
@@ -227,6 +229,7 @@ const configs: Record<string, CaseStudyConfig> = {
       src: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?w=1920&q=80&auto=format",
       alt: "Friends laughing and toasting over dinner at a restaurant",
     },
+    heroVisual: "neotaste-discovery",
     timelineDuration: "2 weeks",
     timelineSteps: [
       {

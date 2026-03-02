@@ -5,11 +5,17 @@ import type { CaseStudyDetail } from "@/lib/types";
 import type { BrandColors } from "@/lib/case-study-config";
 import { Breadcrumb } from "./Breadcrumb";
 import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
+import { NeotasteHeroVisual } from "./NeotasteHeroVisual";
+
+const heroVisualMap: Record<string, React.ComponentType> = {
+  "neotaste-discovery": NeotasteHeroVisual,
+};
 
 interface HeroSectionProps {
   study: CaseStudyDetail;
   readTime: string;
   brand: BrandColors;
+  heroVisual?: string;
 }
 
 function ClockIcon() {
@@ -44,8 +50,9 @@ function isSvg(url: string): boolean {
   return /\.svg(\?|$)/i.test(url);
 }
 
-export function HeroSection({ study, readTime, brand }: HeroSectionProps) {
+export function HeroSection({ study, readTime, brand, heroVisual }: HeroSectionProps) {
   const heroImage = study.heroImages?.[0] || "";
+  const CustomVisual = heroVisual ? heroVisualMap[heroVisual] : null;
 
   return (
     <section
@@ -206,8 +213,17 @@ export function HeroSection({ study, readTime, brand }: HeroSectionProps) {
           </motion.div>
         </div>
 
-        {/* Right column — hero image */}
-        {heroImage && (
+        {/* Right column — custom visual or hero image */}
+        {CustomVisual ? (
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+            className="flex items-center justify-center lg:w-[45%]"
+          >
+            <CustomVisual />
+          </motion.div>
+        ) : heroImage ? (
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -236,7 +252,7 @@ export function HeroSection({ study, readTime, brand }: HeroSectionProps) {
               )}
             </div>
           </motion.div>
-        )}
+        ) : null}
       </div>
     </section>
   );

@@ -131,7 +131,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
       <div className="flex flex-col gap-14">
         {/* Branded Hero (includes breadcrumb, full-bleed bg) */}
-        <HeroSection study={studyWithOverrides} readTime={config.readTime} brand={config.brand} />
+        <HeroSection study={studyWithOverrides} readTime={config.readTime} brand={config.brand} heroVisual={config.heroVisual} />
 
         {/* Full-bleed atmospheric image (right after hero, no gap) */}
         {config.atmosphericImage && (
