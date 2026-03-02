@@ -28,10 +28,10 @@ function LessonEditorFrame() {
   const shouldReduce = useReducedMotion();
   const [showPreview, setShowPreview] = useState(false);
 
-  // Auto-toggle between Chat ↔ Preview view every 4s
+  // Auto-toggle between Chat ↔ Preview view every 2.5s
   useEffect(() => {
     if (!inView || shouldReduce) return;
-    const id = setInterval(() => setShowPreview((v) => !v), 4000);
+    const id = setInterval(() => setShowPreview((v) => !v), 2500);
     return () => clearInterval(id);
   }, [inView, shouldReduce]);
 
@@ -61,7 +61,7 @@ function LessonEditorFrame() {
             className="absolute inset-0"
             initial={false}
             animate={{ opacity: showPreview ? 1 : 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           >
             <Image
               src={IMAGES.dsEditorPreview}
