@@ -97,7 +97,7 @@ export function ImmersiveShell({
       {/* Featured badge — top right */}
       {isFeatured && (
         <motion.span
-          className="fixed right-5 top-5 z-[70] rounded-full bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-brand-ink shadow-lg backdrop-blur-md"
+          className="fixed right-5 top-5 z-[70] rounded-full bg-white/60 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-brand-ink/70 backdrop-blur-md"
           initial={shouldReduce ? { opacity: 1 } : { opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{
