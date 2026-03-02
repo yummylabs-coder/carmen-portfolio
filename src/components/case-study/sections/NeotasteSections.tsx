@@ -40,16 +40,19 @@ const IMAGES = {
   gif2: "https://framerusercontent.com/images/i6Y4SvWqua5TpT0vAar5VCOO4.gif",
 };
 
-/* ─── Animated activity icons ─── */
-function SearchIcon() {
+/* ─── Activity icons (animated on scroll) ─── */
+const iconProps = {
+  width: 22, height: 22, viewBox: "0 0 24 24", fill: "none",
+  stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const,
+  className: "text-emerald-700",
+};
+
+function SearchIcon({ animate }: { animate?: boolean }) {
   return (
-    <motion.svg
-      width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    <motion.svg {...iconProps}
       initial={{ scale: 0.6, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      animate={animate ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="text-emerald-700"
     >
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
@@ -57,15 +60,12 @@ function SearchIcon() {
   );
 }
 
-function MapIcon() {
+function MapIcon({ animate }: { animate?: boolean }) {
   return (
-    <motion.svg
-      width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    <motion.svg {...iconProps}
       initial={{ scale: 0.6, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      animate={animate ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.05 }}
-      className="text-emerald-700"
     >
       <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
       <line x1="9" x2="9" y1="3" y2="18" />
@@ -74,15 +74,12 @@ function MapIcon() {
   );
 }
 
-function BeakerIcon() {
+function BeakerIcon({ animate }: { animate?: boolean }) {
   return (
-    <motion.svg
-      width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    <motion.svg {...iconProps}
       initial={{ scale: 0.6, opacity: 0, rotate: -10 }}
-      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+      animate={animate ? { scale: 1, opacity: 1, rotate: 0 } : { scale: 0.6, opacity: 0, rotate: -10 }}
       transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
-      className="text-emerald-700"
     >
       <path d="M4.5 3h15" />
       <path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3" />
@@ -91,15 +88,12 @@ function BeakerIcon() {
   );
 }
 
-function UsersIcon() {
+function UsersIcon({ animate }: { animate?: boolean }) {
   return (
-    <motion.svg
-      width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    <motion.svg {...iconProps}
       initial={{ scale: 0.6, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      animate={animate ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.15 }}
-      className="text-emerald-700"
     >
       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
       <circle cx="9" cy="7" r="4" />
@@ -109,15 +103,12 @@ function UsersIcon() {
   );
 }
 
-function ClipboardIcon() {
+function ClipboardIcon({ animate }: { animate?: boolean }) {
   return (
-    <motion.svg
-      width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    <motion.svg {...iconProps}
       initial={{ scale: 0.6, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      animate={animate ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
-      className="text-emerald-700"
     >
       <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
       <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
@@ -134,11 +125,11 @@ function RoleSection({ accentColor }: { accentColor: string }) {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   const activities = [
-    { icon: <SearchIcon />, text: "Deep-dived into user behavior to surface the real pain points in discovery and booking" },
-    { icon: <MapIcon />, text: "Mapped the product landscape to identify highest-leverage opportunities" },
-    { icon: <BeakerIcon />, text: "Prototyped two competing concepts to test engagement and retention" },
-    { icon: <UsersIcon />, text: "Validated with real users to learn which approach resonated" },
-    { icon: <ClipboardIcon />, text: "Delivered a prioritized roadmap so the team knew exactly what to build next" },
+    { icon: (a: boolean) => <SearchIcon animate={a} />, title: "User Research", text: "Deep-dived into user behavior to surface the real pain points in discovery and booking" },
+    { icon: (a: boolean) => <MapIcon animate={a} />, title: "Opportunity Mapping", text: "Mapped the product landscape to identify highest-leverage opportunities" },
+    { icon: (a: boolean) => <BeakerIcon animate={a} />, title: "Concept Testing", text: "Prototyped two competing concepts to test engagement and retention" },
+    { icon: (a: boolean) => <UsersIcon animate={a} />, title: "User Validation", text: "Validated with real users to learn which approach resonated" },
+    { icon: (a: boolean) => <ClipboardIcon animate={a} />, title: "Prioritized Roadmap", text: "Delivered a prioritized roadmap so the team knew exactly what to build next" },
   ];
 
   return (
@@ -152,14 +143,14 @@ function RoleSection({ accentColor }: { accentColor: string }) {
           </h2>
           <p className="mx-auto mt-5 max-w-[540px] text-17 leading-[1.7] text-neutral-600">
             Neotaste wanted to boost engagement but had competing ideas about
-            what to improve. I ran a focused design sprint — conducting user
-            interviews, mapping friction points, and testing concepts — to find
+            what to improve. I ran a focused design sprint, conducting user
+            interviews, mapping friction points, and testing concepts to find
             what would actually move the needle.
           </p>
         </div>
       </SectionReveal>
 
-      {/* Activity items — 2-column grid on desktop */}
+      {/* Activity items — 2-column grid, last item spans full */}
       <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {activities.map((a, i) => (
           <motion.div
@@ -167,10 +158,13 @@ function RoleSection({ accentColor }: { accentColor: string }) {
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.4, delay: 0.15 + i * 0.08, ease: "easeOut" }}
-            className="flex items-start gap-3 rounded-xl border border-sand-200 bg-white p-4"
+            className={`flex items-start gap-3 rounded-xl border border-sand-200 bg-white p-4${i === activities.length - 1 ? " sm:col-span-2" : ""}`}
           >
-            <span className="mt-0.5 flex-shrink-0">{a.icon}</span>
-            <p className="text-14 leading-relaxed text-neutral-600">{a.text}</p>
+            <span className="mt-0.5 flex-shrink-0">{a.icon(isInView)}</span>
+            <div>
+              <p className="text-14 font-semibold leading-snug text-brand-ink">{a.title}</p>
+              <p className="mt-0.5 text-13 leading-relaxed text-neutral-500">{a.text}</p>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -183,7 +177,7 @@ function RoleSection({ accentColor }: { accentColor: string }) {
           <p className="mx-auto max-w-[560px] text-14 leading-relaxed text-neutral-600">
             Instead of sinking months into features with uncertain impact, the
             sprint gave Neotaste evidence-backed clarity on what would truly
-            move the needle — plus a prototype their team could confidently
+            move the needle, plus a prototype their team could confidently
             build from.
           </p>
         </div>
