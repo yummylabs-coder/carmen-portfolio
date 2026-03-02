@@ -223,12 +223,8 @@ export function AmbientOSGallery({
       }`}>
         {/* Slide container */}
         <div
-          className={`relative w-full rounded-2xl ${
-            slide.type === "interactive" ? "" : "overflow-hidden"
-          } ${
-            isMobile && slide.type === "interactive"
-              ? "flex-1"
-              : ""
+          className={`relative w-full overflow-hidden rounded-2xl ${
+            isMobile && slide.type === "interactive" ? "flex-1" : ""
           }`}
           style={
             isMobile && slide.type === "interactive"

@@ -52,10 +52,10 @@ function MobileVersionBadge() {
         <span className="text-brand-ink/70">git tag</span>
         <br />
         <span className="text-emerald-600">v14</span>
-        <span className="text-neutral-400"> &larr; current</span>
+        <span className="text-neutral-400"> &larr; deployed</span>
         <br />
         <span className="text-yellow-600">v15</span>
-        <span className="text-neutral-400"> &larr; wip</span>
+        <span className="text-neutral-400"> &larr; in progress</span>
       </div>
     </div>
   );

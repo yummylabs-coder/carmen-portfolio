@@ -407,7 +407,7 @@ export function AmbientOSDemo({
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full select-none ${className}`}
+      className={`relative h-full w-full select-none overflow-hidden ${className}`}
       style={{
         perspective: mobile ? undefined : "800px",
         background:
@@ -704,7 +704,7 @@ export function AmbientOSDemo({
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="mx-4 mb-4 rounded-2xl px-5 py-5"
+              className="mx-4 mb-4 max-h-[50vh] overflow-y-auto rounded-2xl px-5 py-5"
               style={{
                 background: "rgba(15, 23, 42, 0.95)",
                 backdropFilter: "blur(24px)",
