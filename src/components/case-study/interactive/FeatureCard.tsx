@@ -22,6 +22,7 @@ interface FeatureCardProps {
   index: number;
   isInView: boolean;
   accentColor?: string;
+  showMockup?: boolean;
 }
 
 interface FeatureGridProps {
@@ -30,7 +31,39 @@ interface FeatureGridProps {
   columns?: 2 | 3;
   /** Accent color for the number badge */
   accentColor?: string;
+  /** When true, mockups are always visible instead of expand-on-click */
+  showMockups?: boolean;
   className?: string;
+}
+
+function PhoneMockup({ src, alt, compact }: { src: string; alt: string; compact?: boolean }) {
+  const size = compact ? "max-w-[130px]" : "max-w-[200px]";
+  const bezel = compact ? "rounded-[20px] border-[4px]" : "rounded-[28px] border-[6px]";
+  const inner = compact ? "rounded-[16px]" : "rounded-[22px]";
+  const notch = compact ? "h-[12px] w-[44px] top-[6px]" : "h-[16px] w-[60px] top-[8px]";
+
+  return (
+    <div className={`mx-auto w-full ${size}`}>
+      <div
+        className={`overflow-hidden ${bezel} border-[#1d1d1f] bg-[#1d1d1f]`}
+        style={{ filter: compact ? "drop-shadow(0 6px 12px rgba(0,0,0,0.1))" : "drop-shadow(0 10px 20px rgba(0,0,0,0.12))" }}
+      >
+        <div className={`relative overflow-hidden ${inner} bg-black`}>
+          <div className={`absolute left-1/2 ${notch} z-20 -translate-x-1/2 rounded-full bg-black`} />
+          <div className="relative aspect-[9/19.5] w-full overflow-hidden bg-white">
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              unoptimized
+              className="object-cover object-top"
+              sizes={compact ? "130px" : "200px"}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function FeatureCardInner({
@@ -38,6 +71,7 @@ function FeatureCardInner({
   index,
   isInView,
   accentColor = "#2216ff",
+  showMockup = false,
 }: FeatureCardProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -46,9 +80,9 @@ function FeatureCardInner({
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.45, delay: index * 0.07, ease: "easeOut" }}
-      onClick={() => feature.mockupSrc && setExpanded(!expanded)}
+      onClick={() => !showMockup && feature.mockupSrc && setExpanded(!expanded)}
       className={`group relative overflow-hidden rounded-xl border border-sand-200 bg-white p-5 transition-all hover:border-sand-300 hover:shadow-sm ${
-        feature.mockupSrc ? "cursor-pointer" : ""
+        !showMockup && feature.mockupSrc ? "cursor-pointer" : ""
       }`}
     >
       {/* Number badge */}
@@ -71,44 +105,32 @@ function FeatureCardInner({
         {feature.description}
       </p>
 
-      {/* Expandable mockup */}
-      <AnimatePresence>
-        {expanded && feature.mockupSrc && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="mt-4 overflow-hidden"
-          >
-            <div className="mx-auto w-full max-w-[200px]">
-              <div
-                className="overflow-hidden rounded-[28px] border-[6px] border-[#1d1d1f] bg-[#1d1d1f]"
-                style={{
-                  filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.12))",
-                }}
-              >
-                <div className="relative overflow-hidden rounded-[22px] bg-black">
-                  <div className="absolute left-1/2 top-[8px] z-20 h-[16px] w-[60px] -translate-x-1/2 rounded-full bg-black" />
-                  <div className="relative aspect-[9/19.5] w-full overflow-hidden bg-white">
-                    <Image
-                      src={feature.mockupSrc}
-                      alt={feature.mockupAlt ?? feature.title}
-                      fill
-                      unoptimized
-                      className="object-cover object-top"
-                      sizes="200px"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Always-visible compact mockup */}
+      {showMockup && feature.mockupSrc && (
+        <div className="mt-4">
+          <PhoneMockup src={feature.mockupSrc} alt={feature.mockupAlt ?? feature.title} compact />
+        </div>
+      )}
 
-      {/* Expand hint */}
-      {feature.mockupSrc && !expanded && (
+      {/* Expandable mockup (legacy mode) */}
+      {!showMockup && (
+        <AnimatePresence>
+          {expanded && feature.mockupSrc && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="mt-4 overflow-hidden"
+            >
+              <PhoneMockup src={feature.mockupSrc} alt={feature.mockupAlt ?? feature.title} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* Expand hint (legacy mode only) */}
+      {!showMockup && feature.mockupSrc && !expanded && (
         <div className="mt-3 flex items-center gap-1 text-11 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100">
           <svg
             width="12"
@@ -130,12 +152,14 @@ function FeatureCardInner({
 /**
  * Responsive grid of numbered feature cards.
  * Cards stagger-reveal on scroll.
- * Cards with mockupSrc expand on click to show a mini phone preview.
+ * When showMockups is true, phone mockups are always visible.
+ * Otherwise, cards with mockupSrc expand on click to show a mini phone preview.
  */
 export function FeatureGrid({
   features,
   columns = 3,
   accentColor,
+  showMockups = false,
   className,
 }: FeatureGridProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -158,6 +182,7 @@ export function FeatureGrid({
           index={i}
           isInView={isInView}
           accentColor={accentColor}
+          showMockup={showMockups}
         />
       ))}
     </div>
