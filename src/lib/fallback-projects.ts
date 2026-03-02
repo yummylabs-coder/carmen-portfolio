@@ -42,10 +42,10 @@ export const fallbackProjects: CaseStudy[] = [
     id: "2",
     title: "Pandore",
     summary:
-      "Brand identity and landing page for an AI consulting firm positioning itself as a trusted partner for enterprise AI adoption.",
+      "Design system and marketing website for an AI consulting firm positioning itself as a trusted partner for enterprise AI adoption.",
     coverUrl: "/covers/pandore.png",
     slug: "pandore",
-    tags: ["Branding", "Web Design"],
+    tags: ["Design System", "Marketing Website"],
     isFeatured: false,
     sortOrder: 2,
   },

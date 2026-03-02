@@ -8,7 +8,6 @@ import {
 } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { LineMask } from "../LineMask";
 import {
   SectionRoom,
   SectionLabel,
@@ -93,18 +92,52 @@ function LessonEditorFrame() {
 
 export function LearnDesignSystem() {
   const room = learnRooms.designSystem;
+  const shouldReduce = useReducedMotion();
 
   return (
     <SectionRoom colors={room} autoHeight={false} padding="px-6 md:px-16 lg:px-24 py-24 md:py-36">
       <SectionLabel accentColor={room.accent}>Design System</SectionLabel>
 
-      <LineMask
-        as="h2"
-        className="mb-8 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight"
-        delay={0.15}
-      >
-        {DESIGN_SYSTEM.headline}
-      </LineMask>
+      {/* Headline — "Joyful." in italic brand gold */}
+      <h2 className="mb-8 text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.02] tracking-tight">
+        {shouldReduce ? (
+          <>
+            Bold.{" "}
+            <span className="italic" style={{ color: room.accent }}>
+              Joyful.
+            </span>{" "}
+            Unmistakable.
+          </>
+        ) : (
+          <>
+            <span className="block overflow-hidden pb-[0.12em]">
+              <motion.span
+                className="block"
+                initial={{ y: "110%" }}
+                whileInView={{ y: "0%" }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.7, ease: ease.expo, delay: 0.15 }}
+              >
+                Bold.{" "}
+                <span className="italic" style={{ color: room.accent }}>
+                  Joyful.
+                </span>
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden pb-[0.12em]">
+              <motion.span
+                className="block"
+                initial={{ y: "110%" }}
+                whileInView={{ y: "0%" }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.7, ease: ease.expo, delay: 0.27 }}
+              >
+                Unmistakable.
+              </motion.span>
+            </span>
+          </>
+        )}
+      </h2>
 
       <SectionBody>{DESIGN_SYSTEM.body}</SectionBody>
 
