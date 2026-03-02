@@ -35,12 +35,16 @@ export function NeotasteHeroVisual() {
       className="relative mx-auto w-full max-w-[395px] overflow-hidden rounded-2xl bg-[#0a2817]"
       style={{ aspectRatio: "7/10" }}
     >
-      {/* ── 1. Sonar ripple rings ── */}
+      {/* ── 1. Sonar ripple glow (soft fill, no border) ── */}
       {[0, 1, 2].map((i) => (
         <motion.div
           key={`ripple-${i}`}
-          className="pointer-events-none absolute left-[49%] top-[55%] size-[80px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#29f77c]/15"
-          animate={{ scale: [0.5, 5.5], opacity: [0.5, 0] }}
+          className="pointer-events-none absolute left-[49%] top-[55%] size-[80px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(41, 247, 124, 0.12) 0%, rgba(41, 247, 124, 0.04) 50%, transparent 70%)",
+          }}
+          animate={{ scale: [0.5, 6], opacity: [0.8, 0] }}
           transition={{
             duration: 5.5,
             delay: i * 1.8,
@@ -50,9 +54,9 @@ export function NeotasteHeroVisual() {
         />
       ))}
 
-      {/* ── 2. Static concentric rings ── */}
+      {/* ── 2. Static concentric rings (structure only, no animation) ── */}
       {RING_SIZES.map((size, i) => (
-        <motion.div
+        <div
           key={`ring-${i}`}
           className="pointer-events-none absolute left-[49%] top-[55%] rounded-full border"
           style={{
@@ -60,14 +64,7 @@ export function NeotasteHeroVisual() {
             height: size,
             marginLeft: -size / 2,
             marginTop: -size / 2,
-            borderColor: `rgba(41, 247, 124, ${0.06 + i * 0.025})`,
-          }}
-          animate={{ opacity: [0.4, 0.7, 0.4] }}
-          transition={{
-            duration: 5,
-            delay: i * 0.6,
-            repeat: Infinity,
-            ease: "easeInOut",
+            borderColor: `rgba(41, 247, 124, ${0.07 + i * 0.02})`,
           }}
         />
       ))}
