@@ -74,6 +74,10 @@ export const IMAGES = {
   gamifyBadge: "/images/learn/gamify-badge.png",
   gamifyBurst: "/images/learn/gamify-burst.png",
 
+  // Overlay cards (floating on full-bleed images)
+  overlayLearningPath: "/images/learn/overlay-learning-path.png",
+  overlayLeaderboard: "/images/learn/overlay-leaderboard.png",
+
   // Learning screens (lesson experience)
   learning1: "/images/learn/learning-1.png",
   learning2: "/images/learn/learning-2.png",
