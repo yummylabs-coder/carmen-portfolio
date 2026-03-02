@@ -11,7 +11,7 @@ export function Outcomes({ outcomes }: OutcomesProps) {
 
   return (
     <ScrollReveal>
-      <section className="flex flex-col gap-5">
+      <section className="mx-auto max-w-3xl flex flex-col gap-5">
         <h2 className="font-brand text-[24px] font-bold text-brand-ink">
           Outcomes
         </h2>

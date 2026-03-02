@@ -34,7 +34,7 @@ function StickyNotesIllustration() {
 export function StickyNotesBanner() {
   return (
     <ScrollReveal>
-      <section className="flex flex-col items-center gap-6 rounded-2xl bg-brand-ink p-8 sm:flex-row sm:gap-8">
+      <section className="mx-auto max-w-3xl flex flex-col items-center gap-6 rounded-2xl bg-brand-ink p-8 sm:flex-row sm:gap-8">
         <StickyNotesIllustration />
         <div className="flex flex-1 flex-col gap-1.5 text-center sm:text-left">
           <p className="font-brand text-[20px] font-bold text-white/90">

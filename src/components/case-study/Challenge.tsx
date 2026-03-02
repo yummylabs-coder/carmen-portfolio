@@ -16,7 +16,7 @@ export function Challenge({ text }: ChallengeProps) {
   return (
     <ScrollReveal>
       <section
-        className="rounded-3xl px-6 py-8 md:px-10 md:py-12"
+        className="mx-auto max-w-3xl rounded-3xl px-6 py-8 md:px-10 md:py-12"
         style={{
           background:
             "linear-gradient(145deg, #300101 0%, #421414 100%)",
