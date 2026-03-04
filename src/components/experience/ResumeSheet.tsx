@@ -163,7 +163,7 @@ export function ResumeSheet({ open, onClose, entries }: ResumeSheetProps) {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="text-neutral-400"
+                  className="text-neutral-600"
                 >
                   <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                   <polyline points="14 2 14 8 20 8" />
@@ -199,7 +199,7 @@ export function ResumeSheet({ open, onClose, entries }: ResumeSheetProps) {
                 {/* Close button */}
                 <button
                   onClick={onClose}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-sand-100 text-neutral-400 transition-colors hover:bg-sand-200 hover:text-neutral-600"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-sand-100 text-neutral-600 transition-colors hover:bg-sand-200 hover:text-neutral-600"
                   aria-label="Close"
                 >
                   <svg width="12" height="12" viewBox="0 0 16 16" fill="none">

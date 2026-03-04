@@ -6,9 +6,11 @@ import type { BrandColors } from "@/lib/case-study-config";
 import { Breadcrumb } from "./Breadcrumb";
 import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 import { NeotasteHeroVisual } from "./NeotasteHeroVisual";
+import { WaterdayHeroVisual } from "./WaterdayHeroVisual";
 
 const heroVisualMap: Record<string, React.ComponentType> = {
   "neotaste-discovery": NeotasteHeroVisual,
+  "waterday-cards": WaterdayHeroVisual,
 };
 
 interface HeroSectionProps {
@@ -219,7 +221,7 @@ export function HeroSection({ study, readTime, brand, heroVisual }: HeroSectionP
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="flex items-center justify-center lg:w-[45%]"
+            className="flex items-center justify-center pt-8 lg:w-[45%] lg:pt-0"
           >
             <CustomVisual />
           </motion.div>

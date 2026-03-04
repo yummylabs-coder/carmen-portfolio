@@ -160,7 +160,7 @@ function RoleSection({ accentColor }: { accentColor: string }) {
               {a.icon}
             </motion.div>
             <h4 className="text-14 font-semibold text-brand-ink">{a.label}</h4>
-            <p className="mt-1 text-12 text-neutral-400">{a.desc}</p>
+            <p className="mt-1 text-12 text-neutral-600">{a.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -264,7 +264,7 @@ function WebsiteSection({ accentColor }: { accentColor: string }) {
             />
           </div>
         </div>
-        <p className="mt-2 text-center text-12 text-neutral-400">
+        <p className="mt-2 text-center text-12 text-neutral-600">
           Interactive website prototype
         </p>
       </SectionReveal>
@@ -353,7 +353,7 @@ function MobileAppSection({ accentColor }: { accentColor: string }) {
             />
           </div>
         </div>
-        <p className="mt-2 text-center text-12 text-neutral-400">
+        <p className="mt-2 text-center text-12 text-neutral-600">
           Interactive prototype demo
         </p>
       </SectionReveal>

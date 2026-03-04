@@ -15,6 +15,8 @@ import { ProcessTimeline } from "@/components/case-study/ProcessTimeline";
 import { StickyNotesBanner } from "@/components/case-study/StickyNotesBanner";
 import { Outcomes } from "@/components/case-study/Outcomes";
 import { NextCaseStudy } from "@/components/case-study/NextCaseStudy";
+import { NeotasteAtmosphericOverlay } from "@/components/case-study/NeotasteAtmosphericOverlay";
+import { WaterdayAtmosphericOverlay } from "@/components/case-study/WaterdayAtmosphericOverlay";
 
 /* ─── Immersive case studies (full-screen, no sidebar) ─── */
 import { LearnImmersive } from "@/components/immersive/learn-xyz/LearnImmersive";
@@ -41,6 +43,7 @@ const customSectionMap: Record<string, React.ComponentType<{ accentColor: string
    skip the shared Notion-sourced ones to avoid duplicates. */
 const skipSharedSections: Record<string, { role?: boolean; outcomes?: boolean }> = {
   "learn-xyz": { role: true, outcomes: true },
+  "water-day": { outcomes: true },
 };
 
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
@@ -129,7 +132,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
         nextProject={nextProject ? { title: nextProject.title, slug: nextProject.slug, coverUrl: nextProject.coverUrl, tags: nextProject.tags } : null}
       />
 
-      <div className="flex flex-col gap-14">
+      <div className="flex flex-col gap-14 pt-[44px] lg:pt-0">
         {/* Branded Hero (includes breadcrumb, full-bleed bg) */}
         <HeroSection study={studyWithOverrides} readTime={config.readTime} brand={config.brand} heroVisual={config.heroVisual} />
 
@@ -139,7 +142,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
             src={config.atmosphericImage.src}
             alt={config.atmosphericImage.alt}
             brandBg={config.brand.bg}
-          />
+          >
+            {slug === "neotaste" && <NeotasteAtmosphericOverlay />}
+            {slug === "water-day" && <WaterdayAtmosphericOverlay />}
+          </AtmosphericImage>
         )}
 
         {/* Full-bleed Main Hero Image */}
@@ -175,6 +181,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
           <ProcessTimeline
             duration={config.timelineDuration}
             steps={config.timelineSteps}
+            accentColor={config.brand.accentColor}
           />
         )}
 
@@ -183,7 +190,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
         {/* Outcomes — skip if custom sections handle it */}
         {!skipSharedSections[slug]?.outcomes && (
-          <Outcomes outcomes={study.outcomes} />
+          <Outcomes outcomes={study.outcomes} accentColor={config.brand.accentColor} />
         )}
 
         {/* Next Case Study */}

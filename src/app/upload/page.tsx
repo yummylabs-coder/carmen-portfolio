@@ -41,7 +41,7 @@ export default function UploadPage() {
       <div className="w-full max-w-md space-y-6 rounded-2xl border border-neutral-800 bg-neutral-900 p-8">
         <div>
           <h1 className="text-lg font-bold text-white">Upload Video</h1>
-          <p className="mt-1 text-sm text-neutral-400">
+          <p className="mt-1 text-sm text-neutral-600">
             Upload an MP4 to Vercel Blob. The URL is permanent &amp; CDN-cached.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function UploadPage() {
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
                 className="hidden"
               />
-              <p className="text-sm text-neutral-400">
+              <p className="text-sm text-neutral-600">
                 {file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)` : "Click to select MP4"}
               </p>
             </div>

@@ -135,7 +135,6 @@ export function DeviceMockupCarousel({
   const [direction, setDirection] = useState(1);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const touchStartX = useRef(0);
 
   const total = slides.length;
   const Shell = shells[device];
@@ -160,20 +159,20 @@ export function DeviceMockupCarousel({
     return () => clearInterval(timer);
   }, [autoPlay, isPaused, isInView, next, total]);
 
-  // Touch handlers
-  function handleTouchStart(e: React.TouchEvent) {
-    touchStartX.current = e.touches[0].clientX;
-  }
-
-  function handleTouchEnd(e: React.TouchEvent) {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        // Swipe left → next
+  // Drag handler — uses Framer Motion velocity + offset for natural swipe feel
+  function handleDragEnd(
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: { offset: { x: number }; velocity: { x: number } },
+  ) {
+    const { offset, velocity } = info;
+    // Trigger on fast swipe (velocity) OR sufficient drag distance
+    if (Math.abs(velocity.x) > 300 || Math.abs(offset.x) > 30) {
+      if (offset.x < 0) {
+        // Dragged left → next
         setDirection(1);
         setCurrent((prev) => (prev + 1) % total);
       } else {
-        // Swipe right → prev
+        // Dragged right → prev
         setDirection(-1);
         setCurrent((prev) => (prev - 1 + total) % total);
       }
@@ -197,8 +196,6 @@ export function DeviceMockupCarousel({
       className={className}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       <Shell>
         <AnimatePresence custom={direction} mode="wait">
@@ -222,11 +219,22 @@ export function DeviceMockupCarousel({
             />
           </motion.div>
         </AnimatePresence>
+
+        {/* Drag overlay — captures swipe/drag gestures */}
+        {total > 1 && (
+          <motion.div
+            className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={handleDragEnd}
+          />
+        )}
       </Shell>
 
       {/* Caption */}
       {slides[current].caption && (
-        <p className="mt-3 text-center text-13 text-neutral-400">
+        <p className="mt-3 text-center text-13 text-neutral-600">
           {slides[current].caption}
         </p>
       )}

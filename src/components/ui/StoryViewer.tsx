@@ -39,6 +39,8 @@ export interface StorySlide {
   videoUrl?: string;
   label: string;
   caption?: string;
+  /** Per-slide fit override — takes priority over the viewer-level fit prop */
+  fit?: "cover" | "contain";
 }
 
 export interface StoryViewerProps {
@@ -374,13 +376,13 @@ export function StoryViewer({
                       alt={slide.label}
                       fill
                       sizes="(max-width: 640px) 100vw, 800px"
-                      className={fit === "contain" ? "object-contain" : "object-cover"}
+                      className={(slide.fit || fit) === "contain" ? "object-contain" : "object-cover"}
                       quality={85}
                       priority
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-sand-100">
-                      <span className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+                      <span className="text-sm font-medium uppercase tracking-wider text-neutral-600">
                         {slide.label}
                       </span>
                     </div>

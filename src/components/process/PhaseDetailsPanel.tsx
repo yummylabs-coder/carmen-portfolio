@@ -20,7 +20,7 @@ export function PhaseDetailsPanel({ phase, imageUrl }: PhaseDetailsPanelProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="py-10 text-center text-neutral-400"
+            className="py-10 text-center text-neutral-600"
           >
             <div className="mb-3 text-[32px] opacity-50">&#x1F446;</div>
             <p className="text-14 leading-[1.5]">
@@ -49,7 +49,7 @@ export function PhaseDetailsPanel({ phase, imageUrl }: PhaseDetailsPanelProps) {
 
             {/* When I use this */}
             <div className="mb-4">
-              <h4 className="mb-[6px] font-body text-11 font-semibold uppercase tracking-[0.05em] text-neutral-400">
+              <h4 className="mb-[6px] font-body text-11 font-semibold uppercase tracking-[0.05em] text-neutral-600">
                 When I use this
               </h4>
               <p className="text-13 leading-[1.6] text-neutral-600">
@@ -59,7 +59,7 @@ export function PhaseDetailsPanel({ phase, imageUrl }: PhaseDetailsPanelProps) {
 
             {/* I skip this when */}
             <div className={imageUrl ? "mb-4" : ""}>
-              <h4 className="mb-[6px] font-body text-11 font-semibold uppercase tracking-[0.05em] text-neutral-400">
+              <h4 className="mb-[6px] font-body text-11 font-semibold uppercase tracking-[0.05em] text-neutral-600">
                 I skip this when...
               </h4>
               <div className="rounded-md border-l-[3px] border-[#f97316] bg-[#ffedd5] px-3 py-[10px] text-12 leading-[1.5] text-[#c2410c]">

@@ -100,9 +100,9 @@ const configs: Record<string, CaseStudyConfig> = {
     brand: {
       bg: "#FECB3A",
       headlineText: "#300101",
-      bodyText: "#503B00",
+      bodyText: "#3D2D00",
       partnerText: "#785900",
-      breadcrumbLink: "#856200",
+      breadcrumbLink: "#5B4401",
       breadcrumbSeparator: "#B28402",
       breadcrumbActive: "#300101",
       badgeBg: "#300101",
@@ -110,7 +110,7 @@ const configs: Record<string, CaseStudyConfig> = {
       readTimeText: "#5B4401",
       tagBg: "#F4B80F",
       tagBorder: "#CF9A00",
-      tagText: "#826000",
+      tagText: "#5A4500",
       ctaBg: "#2216FF",
       ctaText: "#FFFFFF",
       ctaRadius: "8px",
@@ -170,6 +170,11 @@ const configs: Record<string, CaseStudyConfig> = {
   /* ── Water.day ── Dark teal hero ───────────────────────────── */
   "water-day": {
     readTime: "~5 min read",
+    heroVisual: "waterday-cards",
+    atmosphericImage: {
+      src: "/images/water-day/atmospheric.jpg",
+      alt: "Aerial view of crystal-clear turquoise ocean water",
+    },
     timelineDuration: "~6 weeks",
     timelineSteps: [
       {
@@ -226,8 +231,8 @@ const configs: Record<string, CaseStudyConfig> = {
     summaryOverride:
       "I led a 14-day design sprint for NeoTaste, turning competing ideas into a validated product roadmap. This saved months of unproven development for a platform with millions of users.",
     atmosphericImage: {
-      src: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?w=1920&q=80&auto=format",
-      alt: "Friends laughing and toasting over dinner at a restaurant",
+      src: "/images/neotaste/atmospheric.jpg",
+      alt: "Friends sharing burgers and fries at a restaurant with colorful tile floor",
     },
     heroVisual: "neotaste-discovery",
     timelineDuration: "2 weeks",

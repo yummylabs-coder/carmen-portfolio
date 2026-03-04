@@ -37,7 +37,7 @@ export function CurateBar({ selectedCount, onCreateLink, onCancel }: CurateBarPr
           <div className="flex items-center gap-3">
             <button
               onClick={onCancel}
-              className="text-13 font-medium text-neutral-400 transition-colors hover:text-neutral-600"
+              className="text-13 font-medium text-neutral-600 transition-colors hover:text-neutral-600"
             >
               Cancel
             </button>

@@ -95,7 +95,7 @@ function FeatureCardInner({
 
       {/* Icon */}
       {feature.icon && (
-        <div className="mb-2 h-6 w-6 text-neutral-400">{feature.icon}</div>
+        <div className="mb-2 h-6 w-6 text-neutral-600">{feature.icon}</div>
       )}
 
       <h4 className="mb-1 text-15 font-semibold text-brand-ink">
@@ -131,7 +131,7 @@ function FeatureCardInner({
 
       {/* Expand hint (legacy mode only) */}
       {!showMockup && feature.mockupSrc && !expanded && (
-        <div className="mt-3 flex items-center gap-1 text-11 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="mt-3 flex items-center gap-1 text-11 text-neutral-600 opacity-0 transition-opacity group-hover:opacity-100">
           <svg
             width="12"
             height="12"

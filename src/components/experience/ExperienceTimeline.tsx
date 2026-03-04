@@ -101,7 +101,7 @@ function ChevronIcon({ open }: { open: boolean }) {
       fill="none"
       animate={{ rotate: open ? 180 : 0 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
-      className="shrink-0 text-neutral-400"
+      className="shrink-0 text-neutral-600"
     >
       <path
         d="M5 8l5 5 5-5"
@@ -172,7 +172,7 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
       <div className="pb-6 pt-4">
         {/* Roles Timeline */}
         <div className="mb-5">
-          <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+          <h4 className="mb-3 text-[12px] font-semibold uppercase tracking-wider text-neutral-600">
             Roles
           </h4>
           <div className="space-y-2">
@@ -184,7 +184,7 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
                 <span className="text-13 font-medium text-brand-ink">
                   {role.title}
                 </span>
-                <span className="text-[12px] text-neutral-400">
+                <span className="text-[12px] text-neutral-600">
                   {role.start} - {role.end}
                 </span>
               </div>
@@ -194,7 +194,7 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
 
         {/* What I Learned */}
         <div className="mb-5">
-          <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+          <h4 className="mb-2 text-[12px] font-semibold uppercase tracking-wider text-neutral-600">
             What I Learned
           </h4>
           <p className="text-13 leading-relaxed text-neutral-600">
@@ -213,7 +213,7 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
             />
           ) : (
             <div className="flex h-[180px] items-center justify-center sm:h-[220px]">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-300">
+              <span className="text-[12px] font-medium uppercase tracking-wider text-neutral-500">
                 Product screenshot coming soon
               </span>
             </div>
@@ -265,8 +265,8 @@ function TimelineEntry({
                 </span>
               )}
             </div>
-            <p className="text-13 text-neutral-500">{entry.roleSummary}</p>
-            <p className="mt-1 text-[12px] text-neutral-400">
+            <p className="text-13 text-neutral-600">{entry.roleSummary}</p>
+            <p className="mt-1 text-[12px] text-neutral-600">
               {entry.dateRange}
             </p>
           </div>
@@ -329,7 +329,7 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
           <h1 className="font-brand text-22 font-bold text-brand-ink">
             Experience
           </h1>
-          <p className="text-14 leading-[1.6] text-neutral-400">
+          <p className="text-14 leading-[1.6] text-neutral-600">
             Where I&apos;ve been and what I&apos;ve learned along the way
           </p>
         </div>
@@ -348,7 +348,7 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-neutral-400"
+            className="text-neutral-600"
           >
             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
             <polyline points="14 2 14 8 20 8" />

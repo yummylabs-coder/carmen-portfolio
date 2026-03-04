@@ -126,12 +126,12 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
     <>
       <div className="fixed left-0 right-0 top-[60px] z-[35] flex h-[40px] items-center bg-white/95 backdrop-blur-sm lg:top-0 lg:z-[60] lg:left-[240px] lg:h-[36px]">
         {/* Progress track — softer, thinner, gradient fill — flush to bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-[4px] bg-neutral-100/50">
+        <div className="absolute bottom-0 left-0 right-0 h-[5px] bg-neutral-200/70">
           <div
             className="h-full transition-all duration-300 ease-out"
             style={{
               width: `${progress}%`,
-              background: `linear-gradient(90deg, ${progressBarColor}25, ${progressBarColor}80, ${progressBarColor})`,
+              background: `linear-gradient(90deg, ${progressBarColor}aa, ${progressBarColor})`,
               borderRadius: "0 2px 2px 0",
             }}
           />
@@ -156,7 +156,7 @@ export function ProgressBar({ progressBarColor = "#2216FF", nextProject }: Progr
           <span className={`text-14 ${isComplete ? "animate-celebrate" : ""}`}>
             {msg.emoji}
           </span>
-          <span className="text-11 font-medium text-neutral-400">
+          <span className="text-11 font-medium text-neutral-600">
             {progress}%
           </span>
         </div>

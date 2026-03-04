@@ -27,7 +27,7 @@ export default function CaseStudyError({
       <h2 className="font-brand text-20 font-bold text-brand-ink">
         Something went wrong
       </h2>
-      <p className="max-w-sm text-14 leading-relaxed text-neutral-400">
+      <p className="max-w-sm text-14 leading-relaxed text-neutral-600">
         This case study had a hiccup loading. Try again or head back to browse
         all work.
       </p>

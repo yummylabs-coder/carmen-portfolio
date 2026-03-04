@@ -37,12 +37,12 @@ export function ResumeContent({ entries, isPrintMode }: ResumeContentProps) {
         <h1 className="font-brand text-[24px] font-bold leading-tight text-brand-ink sm:text-[28px]">
           {resumeProfile.name}
         </h1>
-        <p className="mt-1 text-[15px] font-medium text-neutral-500">
+        <p className="mt-1 text-[15px] font-medium text-neutral-700">
           {resumeProfile.title}
         </p>
 
         {/* Contact row — compact, inline pills */}
-        <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] text-neutral-500">
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] text-neutral-600">
           <ContactLink
             href={`mailto:${resumeProfile.email}`}
             icon={
@@ -112,13 +112,13 @@ export function ResumeContent({ entries, isPrintMode }: ResumeContentProps) {
                 <h3 className="font-brand text-[14px] font-bold text-brand-ink">
                   {entry.company}
                 </h3>
-                <span className="shrink-0 whitespace-nowrap text-[11px] font-medium text-neutral-400">
+                <span className="shrink-0 whitespace-nowrap text-[12px] font-medium text-neutral-600">
                   {entry.dateRange}
                 </span>
               </div>
 
               {/* Role summary */}
-              <p className="mt-0.5 text-[12px] font-medium text-neutral-500">
+              <p className="mt-0.5 text-[12px] font-medium text-neutral-700">
                 {entry.roleSummary}
               </p>
 
@@ -130,8 +130,8 @@ export function ResumeContent({ entries, isPrintMode }: ResumeContentProps) {
                       key={idx}
                       className="flex items-baseline justify-between text-[11px]"
                     >
-                      <span className="text-neutral-500">{role.title}</span>
-                      <span className="text-neutral-400">
+                      <span className="text-neutral-600">{role.title}</span>
+                      <span className="text-neutral-600">
                         {role.start} - {role.end}
                       </span>
                     </div>
@@ -186,9 +186,9 @@ export function ResumeContent({ entries, isPrintMode }: ResumeContentProps) {
                       <p className="text-[13px] font-semibold text-brand-ink">
                         {edu.institution}
                       </p>
-                      <p className="text-[11.5px] text-neutral-500">{edu.degree}</p>
+                      <p className="text-[12px] text-neutral-600">{edu.degree}</p>
                     </div>
-                    <span className="shrink-0 text-[11px] font-medium text-neutral-400">
+                    <span className="shrink-0 text-[12px] font-medium text-neutral-600">
                       {edu.year}
                     </span>
                   </div>
@@ -216,9 +216,9 @@ function ContactLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-brand-ink"
+      className="inline-flex items-center gap-1 text-neutral-600 transition-colors hover:text-brand-ink"
     >
-      <span className="text-neutral-400">{icon}</span>
+      <span className="text-neutral-600">{icon}</span>
       {label}
     </a>
   );

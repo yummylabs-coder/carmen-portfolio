@@ -16,7 +16,7 @@ export function Challenge({ text }: ChallengeProps) {
   return (
     <ScrollReveal>
       <section
-        className="mx-auto max-w-3xl rounded-3xl px-6 py-8 md:px-10 md:py-12"
+        className="mx-auto max-w-5xl rounded-3xl px-6 py-8 md:px-10 md:py-12"
         style={{
           background:
             "linear-gradient(145deg, #300101 0%, #421414 100%)",
@@ -29,7 +29,7 @@ export function Challenge({ text }: ChallengeProps) {
 
         {/* Heading — first paragraph promoted to heading */}
         {heading && (
-          <h2 className="mt-5 max-w-[756px] font-brand text-[22px] font-bold leading-[1.5] text-white md:text-[26px]">
+          <h2 className="mt-5 max-w-[760px] font-brand text-[22px] font-bold leading-[1.5] text-white md:text-[26px]">
             {heading}
           </h2>
         )}
@@ -40,7 +40,7 @@ export function Challenge({ text }: ChallengeProps) {
             {body.map((paragraph, i) => (
               <p
                 key={i}
-                className="max-w-[700px] text-16 leading-[1.8] text-white/70"
+                className="max-w-[760px] text-16 leading-[1.8] text-white/70"
               >
                 {paragraph}
               </p>

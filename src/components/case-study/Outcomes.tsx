@@ -4,14 +4,15 @@ import { ScrollReveal } from "@/components/dashboard/ScrollReveal";
 
 interface OutcomesProps {
   outcomes: { metric: string; description: string }[];
+  accentColor?: string;
 }
 
-export function Outcomes({ outcomes }: OutcomesProps) {
+export function Outcomes({ outcomes, accentColor }: OutcomesProps) {
   if (outcomes.length === 0) return null;
 
   return (
     <ScrollReveal>
-      <section className="mx-auto max-w-3xl flex flex-col gap-5">
+      <section className="mx-auto max-w-5xl flex flex-col gap-5">
         <h2 className="font-brand text-[24px] font-bold text-brand-ink">
           Outcomes
         </h2>
@@ -24,7 +25,16 @@ export function Outcomes({ outcomes }: OutcomesProps) {
         >
           {outcomes.map((outcome, i) => (
             <ScrollReveal key={i} delay={i * 0.1}>
-              <div className="flex flex-col gap-2 rounded-2xl bg-blue-50 p-6">
+              <div
+                className={`flex flex-col gap-2 rounded-2xl p-6 ${
+                  accentColor ? "" : "bg-blue-50"
+                }`}
+                style={
+                  accentColor
+                    ? { backgroundColor: `${accentColor}10` }
+                    : undefined
+                }
+              >
                 <span className="text-[20px]">{"\u{1F3AF}"}</span>
                 <h3 className="font-brand text-[20px] font-bold text-brand-ink">
                   {outcome.metric}

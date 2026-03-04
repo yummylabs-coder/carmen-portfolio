@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { AnimatedLogoMark } from "@/components/icons/AnimatedLogoMark";
 import { MenuIcon, CloseIcon } from "@/components/icons/NavIcons";
 import { GlobalShareButton } from "@/components/share/GlobalShareButton";
@@ -12,12 +13,12 @@ interface MobileHeaderProps {
 export function MobileHeader({ isMenuOpen, onToggleMenu }: MobileHeaderProps) {
   return (
     <header className="fixed inset-x-0 top-0 z-40 flex h-[60px] items-center justify-between border-b border-sand-300 bg-white px-4 lg:hidden">
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         <AnimatedLogoMark size={32} />
         <span className="font-brand text-14 font-bold text-brand-ink">
           Carmen&apos;s Space
         </span>
-      </div>
+      </Link>
       <div className="flex items-center gap-1">
         <GlobalShareButton variant="header" />
         <button

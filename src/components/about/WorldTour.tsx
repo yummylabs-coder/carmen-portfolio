@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import type { TravelDestination } from "@/lib/types";
 
 /* ─── Coordinates lookup (capital/major city per country) ─── */
@@ -128,11 +129,14 @@ function BoardingPass({ dest }: { dest: TravelDestination }) {
           </div>
           <div className="h-[100px] w-[100px] shrink-0">
             {dest.stampUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={dest.stampUrl}
                 alt={`${dest.name} stamp`}
+                width={100}
+                height={100}
                 className="h-full w-full object-contain"
+                loading="lazy"
+                unoptimized
               />
             ) : (
               <PlaceholderStamp code={dest.code} />
@@ -192,7 +196,7 @@ export function WorldTour({ destinations }: { destinations: TravelDestination[] 
           <h2 className="font-brand text-15 font-semibold text-brand-ink">
             My World Tour
           </h2>
-          <p className="mt-0.5 text-12 text-neutral-400">
+          <p className="mt-0.5 text-12 text-neutral-600">
             {destinations.length} destination{destinations.length !== 1 ? "s" : ""} and counting
           </p>
         </div>

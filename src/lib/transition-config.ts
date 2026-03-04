@@ -37,9 +37,9 @@ const transitionConfigs: Record<string, TransitionConfig> = {
     logoUrl: "/images/logos/water-day-symbol.svg",
   },
 
-  /* Neotaste — Dark charcoal */
+  /* Neotaste — Dark green (matches hero bg) */
   neotaste: {
-    color: "#1C1D28",
+    color: "#092B18",
     textColor: "#FFFFFF",
     logoUrl: "/images/logos/neotaste-symbol.svg",
   },

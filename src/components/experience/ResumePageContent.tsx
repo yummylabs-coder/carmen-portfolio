@@ -63,7 +63,7 @@ export function ResumePageContent({ entries }: ResumePageContentProps) {
           <h1 className="font-brand text-22 font-bold text-brand-ink">
             Resume
           </h1>
-          <p className="mt-0.5 text-14 text-neutral-400">
+          <p className="mt-0.5 text-14 text-neutral-600">
             Carmen Rincon, Product Designer &amp; Strategist
           </p>
         </div>
@@ -83,7 +83,7 @@ export function ResumePageContent({ entries }: ResumePageContentProps) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-neutral-400"
+              className="text-neutral-600"
             >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />

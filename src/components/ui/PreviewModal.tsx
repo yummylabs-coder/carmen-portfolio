@@ -14,6 +14,8 @@ export interface PreviewModalData {
   videoUrl?: string;
   tags?: string[];
   fit?: "cover" | "contain";
+  /** Per-image fit overrides — index matches imageUrls order */
+  slideFits?: ("cover" | "contain")[];
 }
 
 /* ─── Convert PreviewModalData → StorySlide[] ─── */
@@ -37,8 +39,9 @@ function toStorySlides(data: PreviewModalData): StorySlide[] {
       slides.push({
         id: `img-${i}`,
         imageUrl: url,
-        label: captions[i] || data.title,
+        label: data.title,
         caption: captions[i],
+        fit: data.slideFits?.[i],
       });
     });
   }

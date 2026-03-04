@@ -51,7 +51,7 @@ export default async function WorkPage() {
               <h1 className="font-brand text-22 font-bold text-brand-ink">
                 My work
               </h1>
-              <p className="text-14 leading-[1.6] text-neutral-400">
+              <p className="text-14 leading-[1.6] text-neutral-600">
                 A selection of my most recent case studies
               </p>
             </div>

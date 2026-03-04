@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { VersionDetailsModal } from "./VersionDetailsModal";
 import {
   HomeIcon,
   WorkIcon,
@@ -31,7 +33,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /* ─── Compact version badge (terminal style) ─── */
-function MobileVersionBadge() {
+function MobileVersionBadge({ onViewDetails }: { onViewDetails: () => void }) {
   return (
     <div className="rounded-xl border border-sand-300 bg-sand-100 px-4 py-3">
       {/* Traffic lights + building indicator */}
@@ -48,15 +50,29 @@ function MobileVersionBadge() {
       </div>
       {/* Terminal content */}
       <div className="font-mono text-[11px] leading-[1.6]">
-        <span className="text-neutral-400">~/portfolio $</span>{" "}
+        <span className="text-neutral-600">~/portfolio $</span>{" "}
         <span className="text-brand-ink/70">git tag</span>
         <br />
         <span className="text-emerald-600">v14</span>
-        <span className="text-neutral-400"> &larr; deployed</span>
+        <span className="text-neutral-600"> &larr; deployed</span>
         <br />
         <span className="text-yellow-600">v15</span>
-        <span className="text-neutral-400"> &larr; in progress</span>
+        <span className="text-neutral-600"> &larr; in progress</span>
+        <br />
+        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">improving case studies</span>
       </div>
+      {/* View details link */}
+      <button
+        onClick={onViewDetails}
+        className="mt-2.5 flex items-center gap-1 font-mono text-[10px] text-neutral-600 transition-colors hover:text-brand-ink/60"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+        view details
+      </button>
     </div>
   );
 }
@@ -68,8 +84,40 @@ interface MobileMenuProps {
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const pathname = usePathname();
+  const [showDetails, setShowDetails] = useState(false);
+
+  // Lock background scroll when menu is open (iOS-compatible)
+  const savedScrollY = useRef(0);
+  useEffect(() => {
+    if (isOpen) {
+      savedScrollY.current = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${savedScrollY.current}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, savedScrollY.current);
+    }
+    return () => {
+      if (document.body.style.position === "fixed") {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.overflow = "";
+        window.scrollTo(0, savedScrollY.current);
+      }
+    };
+  }, [isOpen]);
 
   return (
+    <>
     <AnimatePresence>
       {isOpen && (
         <>
@@ -79,7 +127,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 top-[60px] z-20 bg-brand-ink/60 backdrop-blur-[2px] lg:hidden"
+            className="fixed inset-0 top-[60px] z-[36] bg-brand-ink/60 backdrop-blur-[2px] lg:hidden"
             onClick={onClose}
           />
 
@@ -88,7 +136,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed inset-x-0 top-[60px] z-30 border-b border-sand-300 bg-white p-4 shadow-lg lg:hidden"
+            className="fixed inset-x-0 top-[60px] z-[38] max-h-[calc(100dvh-60px)] overflow-y-auto border-b border-sand-300 bg-white p-4 shadow-lg lg:hidden"
           >
             <nav className="flex flex-col gap-1">
               {allNav.map((item) => (
@@ -110,11 +158,20 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
             {/* Version badge */}
             <div className="mt-4">
-              <MobileVersionBadge />
+              <MobileVersionBadge
+                onViewDetails={() => {
+                  onClose();
+                  // Small delay so menu scroll-lock cleanup runs first
+                  setTimeout(() => setShowDetails(true), 250);
+                }}
+              />
             </div>
           </motion.div>
         </>
       )}
     </AnimatePresence>
+
+    <VersionDetailsModal isOpen={showDetails} onClose={() => setShowDetails(false)} />
+  </>
   );
 }

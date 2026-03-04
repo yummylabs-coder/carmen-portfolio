@@ -16,6 +16,22 @@ interface WorkGridProps {
   featuredProject?: CaseStudy;
 }
 
+/* ── Klasse caption & fit overrides (Notion has placeholders) ── */
+const KLASSE_CAPTIONS = [
+  "Quick sign-up — magic link or Google, under two minutes",
+  "Personalized onboarding experience",
+  "Create and structure your learning space",
+  "Course builder and lesson design",
+  "Content and curriculum editor",
+  "Student dashboard and progress tracking",
+  "Course discovery and enrollment",
+  "Mobile-first learning experience",
+];
+const KLASSE_FITS: ("cover" | "contain")[] = [
+  "cover", "cover", "contain", "cover",
+  "cover", "cover", "cover", "contain",
+];
+
 export function WorkGrid({ projects, previews = {}, featuredProject }: WorkGridProps) {
   const [previewData, setPreviewData] = useState<PreviewModalData | null>(null);
 
@@ -30,16 +46,17 @@ export function WorkGrid({ projects, previews = {}, featuredProject }: WorkGridP
       // Use preview images if available, otherwise fall back to hero images from main DB
       const hasPreviewImages = preview?.imageUrls && preview.imageUrls.length > 0;
       const imageUrls = hasPreviewImages ? preview.imageUrls : project.heroImages;
+      const isKlasse = project.slug === "klasse";
       setPreviewData({
         title: project.title,
         summary: project.summary,
         coverUrl: project.coverUrl,
         imageUrls,
-        captions: preview?.captions,
+        captions: isKlasse ? KLASSE_CAPTIONS : preview?.captions,
         videoUrl: preview?.videoUrl,
         tags: project.tags,
-        // Hero image fallbacks are often full-page screenshots — use contain so they don't crop
-        fit: !hasPreviewImages && project.heroImages?.length ? "contain" : undefined,
+        fit: "cover",
+        slideFits: isKlasse ? KLASSE_FITS : undefined,
       });
     },
     [previews],

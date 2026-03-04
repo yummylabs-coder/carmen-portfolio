@@ -183,7 +183,7 @@ function TokenArchitecture() {
 
   return (
     <div ref={ref}>
-      <h3 className="mb-6 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+      <h3 className="mb-6 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-75">
         Token Architecture
       </h3>
 
@@ -291,7 +291,7 @@ function Typography() {
 
   return (
     <div ref={ref}>
-      <h3 className="mb-8 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+      <h3 className="mb-8 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-75">
         Typography
       </h3>
 
@@ -366,10 +366,10 @@ function ComponentShowcase() {
 
   return (
     <div ref={ref}>
-      <h3 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+      <h3 className="mb-2 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-75">
         Components
       </h3>
-      <p className="mb-8 text-[13px] opacity-40">
+      <p className="mb-8 text-[13px] opacity-70">
         Real components from the design system, exported directly from Figma.
       </p>
 
@@ -404,7 +404,7 @@ function ComponentShowcase() {
             {/* Label + description */}
             <div className="mt-4">
               <h4 className="text-[14px] font-semibold">{comp.name}</h4>
-              <p className="mt-1 text-[13px] leading-relaxed opacity-50">
+              <p className="mt-1 text-[13px] leading-relaxed opacity-75">
                 {comp.description}
               </p>
             </div>
@@ -436,7 +436,7 @@ function DesignDecisions() {
 
   return (
     <div ref={ref}>
-      <h3 className="mb-6 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-50">
+      <h3 className="mb-6 text-[13px] font-semibold uppercase tracking-[0.12em] opacity-75">
         Design Decisions
       </h3>
 
@@ -491,7 +491,7 @@ function DesignDecisions() {
                     transition={{ duration: 0.3, ease: ease.standard }}
                     className="overflow-hidden"
                   >
-                    <p className="mt-4 text-[13px] leading-relaxed opacity-60">
+                    <p className="mt-4 text-[13px] leading-relaxed opacity-80">
                       {d.answer}
                     </p>
                   </motion.div>

@@ -12,10 +12,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { Experiment } from "@/lib/types";
 import { AmbientOSDemo } from "./AmbientOSDemo";
+import { InteractionLayerDemo } from "./InteractionLayerDemo";
 
 /* ─── Slide type ─── */
 interface GallerySlide {
   type: "interactive" | "image";
+  component?: "orbs" | "interaction-layer";
   label: string;
   caption?: string;
   imageUrl?: string;
@@ -26,17 +28,24 @@ function buildSlides(experiment: Experiment): GallerySlide[] {
   const slides: GallerySlide[] = [
     {
       type: "interactive",
+      component: "orbs",
       label: "Ambient OS",
       caption: "Apps as Contextual Orbs — interactive spatial interface",
+    },
+    {
+      type: "interactive",
+      component: "interaction-layer",
+      label: "Interaction Layer",
+      caption: "Voice + Gesture + Haptics — multi-modal interaction layer",
     },
   ];
 
   const images = experiment.galleryUrls ?? [];
   const captions = experiment.galleryCaptions ?? [];
 
-  // Skip the first gallery image — it's a static version of the interactive slide
+  // Skip first two gallery images — they're static versions of interactive slides
   images.forEach((url, i) => {
-    if (i === 0) return;
+    if (i <= 1) return;
     slides.push({
       type: "image",
       label: captions[i] || experiment.name,
@@ -247,7 +256,11 @@ export function AmbientOSGallery({
               className="absolute inset-0"
             >
               {slide.type === "interactive" ? (
-                <AmbientOSDemo className="h-full w-full rounded-2xl" mobile={isMobile} />
+                slide.component === "interaction-layer" ? (
+                  <InteractionLayerDemo className="h-full w-full rounded-2xl" mobile={isMobile} />
+                ) : (
+                  <AmbientOSDemo className="h-full w-full rounded-2xl" mobile={isMobile} />
+                )
               ) : slide.imageUrl ? (
                 <div className="relative h-full w-full">
                   <Image

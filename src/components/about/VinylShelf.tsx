@@ -89,7 +89,7 @@ function SoundIndicator() {
         <path d="M15.54 8.46a5 5 0 0 1 0 7.07" className="animate-pulse" />
         <path d="M19.07 4.93a10 10 0 0 1 0 14.14" className="animate-pulse" style={{ animationDelay: "150ms" }} />
       </svg>
-      <span className="text-[10px] font-medium text-neutral-400">Playing</span>
+      <span className="text-[10px] font-medium text-neutral-600">Playing</span>
     </div>
   );
 }
@@ -266,16 +266,39 @@ function Vinyl({
     onPlayChange(null);
   }, [onPlayChange]);
 
-  // Mobile: tap to toggle
+  // Mobile: tap to toggle — use <audio> element directly (most reliable)
   const handleTap = useCallback(() => {
     if (canHover.current) return;
     if (isPlaying) {
+      // Stop
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      if (sourceRef.current) {
+        try { sourceRef.current.stop(); } catch { /* ok */ }
+        sourceRef.current = null;
+      }
       onPlayChange(null);
     } else {
-      playMobile();
+      // Play via <audio> element — called directly in tap handler (user gesture)
+      // <audio> elements don't have CORS restrictions, so Deezer CDN URL works directly
+      if (previewUrl && audioRef.current) {
+        const el = audioRef.current;
+        el.src = previewUrl;
+        el.load();
+        el.volume = 0.3;
+        el.play().catch(() => {
+          // <audio> failed — fall back to Web Audio API path
+          playMobile();
+        });
+      } else if (proxyUrl) {
+        // No preview URL yet or no audio element — try Web Audio API
+        playMobile();
+      }
       onPlayChange(track.id);
     }
-  }, [isPlaying, onPlayChange, track.id, playMobile]);
+  }, [isPlaying, onPlayChange, track.id, previewUrl, proxyUrl, playMobile]);
 
   const color = labelColors[index % labelColors.length];
   const isWhiteLabel = color === "#ffffff";
@@ -389,7 +412,7 @@ function Vinyl({
           <div className="font-brand text-13 font-semibold leading-tight text-brand-ink">
             {track.title}
           </div>
-          <div className="mt-0.5 text-[11px] text-neutral-400">
+          <div className="mt-0.5 text-[11px] text-neutral-600">
             {track.artist}
           </div>
         </div>
@@ -431,7 +454,7 @@ export function VinylShelf({ tracks }: VinylShelfProps) {
         <h2 className="font-brand text-15 font-semibold text-brand-ink">
           On Rotation
         </h2>
-        <p className="mt-0.5 text-12 text-neutral-400">
+        <p className="mt-0.5 text-12 text-neutral-600">
           What I&apos;m listening to lately
           <span className="sm:hidden"> · Tap to play</span>
         </p>

@@ -40,10 +40,11 @@ function RibbonPhoto({
           sizes="220px"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           quality={70}
+          loading="lazy"
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-sand-200">
-          <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-600">
             {photo.label}
           </span>
         </div>
@@ -113,7 +114,7 @@ export function PhotoMosaic({ photos }: PhotoMosaicProps) {
           <h2 className="font-brand text-15 font-semibold text-brand-ink">
             When I&apos;m not designing
           </h2>
-          <p className="mt-0.5 text-12 text-neutral-400">
+          <p className="mt-0.5 text-12 text-neutral-600">
             Hover to pause &middot; tap to explore
           </p>
         </div>

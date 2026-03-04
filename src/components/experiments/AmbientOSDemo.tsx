@@ -194,6 +194,7 @@ export function AmbientOSDemo({
   const [expandedOrb, setExpandedOrb] = useState<string | null>(null);
   const [ripple, setRipple] = useState<{ id: string; key: number } | null>(null);
   const [notifs, setNotifs] = useState<Record<string, number>>({});
+  const [cardScreenPos, setCardScreenPos] = useState<{x: number; y: number} | null>(null);
 
   /* Mobile orb size scale */
   const sizeScale = mobile ? 0.72 : 1;
@@ -203,17 +204,32 @@ export function AmbientOSDemo({
     (orbId: string) => {
       if (expandedOrb === orbId) {
         setExpandedOrb(null);
+        setCardScreenPos(null);
       } else {
         setRipple({ id: orbId, key: Date.now() });
         setExpandedOrb(orbId);
+        if (!mobile) {
+          const idx = ORBS.findIndex((o) => o.id === orbId);
+          const orbEl = orbElRefs.current[idx];
+          if (orbEl) {
+            const rect = orbEl.getBoundingClientRect();
+            setCardScreenPos({
+              x: rect.left + rect.width / 2,
+              y: rect.bottom + 12,
+            });
+          }
+        }
       }
     },
-    [expandedOrb],
+    [expandedOrb, mobile],
   );
 
   /* ── Close on backdrop click ── */
   const handleBackdropClick = useCallback(() => {
-    if (expandedOrb) setExpandedOrb(null);
+    if (expandedOrb) {
+      setExpandedOrb(null);
+      setCardScreenPos(null);
+    }
   }, [expandedOrb]);
 
   /* ── Init orb positions ── */
@@ -622,57 +638,6 @@ export function AmbientOSDemo({
               </div>
             )}
 
-            {/* ── Desktop: Expanded concept card (floating below orb) ── */}
-            {!mobile && isExpanded && (
-              <div
-                className="absolute left-1/2 z-30 w-[220px] ambient-card-enter"
-                style={{ top: orb.size + 12 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div
-                  className="relative -translate-x-1/2 rounded-xl px-4 py-3.5"
-                  style={{
-                    background: "rgba(15, 23, 42, 0.85)",
-                    backdropFilter: "blur(20px)",
-                    border: `1px solid ${orb.color}30`,
-                    boxShadow: `0 4px 30px rgba(0,0,0,0.4), 0 0 20px ${orb.color}10`,
-                  }}
-                >
-                  <div className="mb-2 flex items-center gap-2">
-                    <div
-                      className="flex h-6 w-6 items-center justify-center rounded-md"
-                      style={{ background: `${orb.color}25` }}
-                    >
-                      {Icon && <Icon size={14} />}
-                    </div>
-                    <span className="text-[12px] font-semibold" style={{ color: orb.color }}>
-                      {orb.label}
-                    </span>
-                  </div>
-                  <p className="text-[11px] leading-[1.55] text-white/60">
-                    {orb.concept}
-                  </p>
-                  <div className="mt-2.5 flex items-center gap-1 border-t border-white/[0.06] pt-2">
-                    <span className="text-[9px] uppercase tracking-wider text-white/25">
-                      Connected to
-                    </span>
-                    {orb.connections.map((cId) => {
-                      const c = ORBS.find((o) => o.id === cId);
-                      if (!c) return null;
-                      return (
-                        <span
-                          key={cId}
-                          className="rounded-full px-1.5 py-0.5 text-[9px] font-medium"
-                          style={{ background: `${c.color}15`, color: `${c.color}99` }}
-                        >
-                          {c.label}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         );
       })}
@@ -696,11 +661,71 @@ export function AmbientOSDemo({
 
       </div>{/* close 3D scene */}
 
+      {/* ── Desktop: Expanded concept card via portal (escapes overflow clips) ── */}
+      {!mobile && expandedOrbData && cardScreenPos && typeof window !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed z-[250]"
+            style={{
+              left: cardScreenPos.x,
+              top: cardScreenPos.y,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className="w-[220px] -translate-x-1/2 rounded-xl px-4 py-3.5 ambient-card-enter"
+              style={{
+                background: "rgba(15, 23, 42, 0.85)",
+                backdropFilter: "blur(20px)",
+                border: `1px solid ${expandedOrbData.color}30`,
+                boxShadow: `0 4px 30px rgba(0,0,0,0.4), 0 0 20px ${expandedOrbData.color}10`,
+              }}
+            >
+              <div className="mb-2 flex items-center gap-2">
+                <div
+                  className="flex h-6 w-6 items-center justify-center rounded-md"
+                  style={{ background: `${expandedOrbData.color}25` }}
+                >
+                  {(() => {
+                    const Icon = ICON_MAP[expandedOrbData.id];
+                    return Icon ? <Icon size={14} /> : null;
+                  })()}
+                </div>
+                <span className="text-[12px] font-semibold" style={{ color: expandedOrbData.color }}>
+                  {expandedOrbData.label}
+                </span>
+              </div>
+              <p className="text-[11px] leading-[1.55] text-white/60">
+                {expandedOrbData.concept}
+              </p>
+              <div className="mt-2.5 flex items-center gap-1 border-t border-white/[0.06] pt-2">
+                <span className="text-[9px] uppercase tracking-wider text-white/25">
+                  Connected to
+                </span>
+                {expandedOrbData.connections.map((cId) => {
+                  const c = ORBS.find((o) => o.id === cId);
+                  if (!c) return null;
+                  return (
+                    <span
+                      key={cId}
+                      className="rounded-full px-1.5 py-0.5 text-[9px] font-medium"
+                      style={{ background: `${c.color}15`, color: `${c.color}99` }}
+                    >
+                      {c.label}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
+
       {/* ── Mobile: Full-screen bottom sheet via portal (escapes all overflow clips) ── */}
       {mobile && expandedOrbData && typeof window !== "undefined" &&
         createPortal(
           <div
-            className="fixed inset-x-0 bottom-0 z-[260] ambient-card-enter"
+            className="fixed inset-x-0 bottom-0 z-[260] ambient-sheet-enter"
             onClick={(e) => e.stopPropagation()}
           >
             <div

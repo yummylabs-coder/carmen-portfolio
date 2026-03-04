@@ -114,11 +114,11 @@ function StatsRow() {
           key={s.label}
           className="rounded-xl bg-[#2216ff] p-5 text-center"
         >
-          <div className="mx-auto mb-2 h-7 w-7 text-white/70">{s.icon}</div>
+          <div className="mx-auto mb-2 h-7 w-7 text-white/90">{s.icon}</div>
           <div className="font-brand text-22 font-bold text-[#FFFEFC]">
             {s.value}
           </div>
-          <div className="text-12 text-white/70">{s.label}</div>
+          <div className="text-12 text-white/90">{s.label}</div>
         </div>
       ))}
     </div>
@@ -208,7 +208,7 @@ function NoteForm() {
           <h3 className="font-brand text-15 font-bold text-brand-ink">
             Note sent!
           </h3>
-          <p className="text-13 text-neutral-400">
+          <p className="text-13 text-neutral-600">
             I&apos;ll get back to you soon.
           </p>
         </div>
@@ -217,14 +217,14 @@ function NoteForm() {
           <h2 className="mt-1 font-brand text-15 font-bold text-brand-ink">
             Leave me a note &#128221;
           </h2>
-          <p className="mb-3 text-12 text-neutral-400">
+          <p className="mb-3 text-12 text-neutral-600">
             I&apos;ll get back to you soon!
           </p>
 
           <form onSubmit={handleSubmit}>
             {/* Purpose Selector — icon cards in grid */}
             <div className="mb-3">
-              <label className="mb-1.5 block text-12 font-medium text-neutral-500">
+              <label className="mb-1.5 block text-12 font-medium text-neutral-600">
                 What&apos;s this about?
               </label>
               <div className="grid grid-cols-3 gap-2 mobile:grid-cols-2">
@@ -254,7 +254,7 @@ function NoteForm() {
             <div className="mb-2.5">
               <label
                 htmlFor="contact-email"
-                className="mb-1 block text-12 font-medium text-neutral-500"
+                className="mb-1 block text-12 font-medium text-neutral-600"
               >
                 Your email
               </label>
@@ -272,7 +272,7 @@ function NoteForm() {
             <div className="mb-3">
               <label
                 htmlFor="contact-message"
-                className="mb-1 block text-12 font-medium text-neutral-500"
+                className="mb-1 block text-12 font-medium text-neutral-600"
               >
                 Your message
               </label>
@@ -311,7 +311,7 @@ function NoteForm() {
 function EmailCard() {
   return (
     <div className="rounded-xl bg-brand-ink p-4 text-white">
-      <div className="mb-1 text-11 opacity-70">Email me directly</div>
+      <div className="mb-1 text-12 opacity-90">Email me directly</div>
       <a
         href="mailto:carmenrincon92@gmail.com"
         className="mb-3 block font-brand text-14 font-semibold text-white hover:underline"
@@ -347,7 +347,7 @@ export function ContactPage() {
             &#128075;
           </span>
         </h1>
-        <p className="text-14 leading-[1.6] text-neutral-400">
+        <p className="text-14 leading-[1.6] text-neutral-600">
           Whether you have a project in mind, want to collaborate, or just want
           to say hi, I&apos;d love to hear from you.
         </p>

@@ -12,7 +12,7 @@ interface NextCaseStudyProps {
 export function NextCaseStudy({ project }: NextCaseStudyProps) {
   return (
     <ScrollReveal>
-      <section className="mx-auto max-w-3xl flex flex-col gap-4">
+      <section className="mx-auto max-w-5xl flex flex-col gap-4">
         <span className="text-12 font-semibold uppercase tracking-[1px] text-neutral-500">
           Next Case Study
         </span>

@@ -48,7 +48,7 @@ export function SharePacketCard({
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-sand-100 px-2.5 py-0.5 text-11 font-medium text-neutral-400"
+                className="rounded-full bg-sand-100 px-2.5 py-0.5 text-11 font-medium text-neutral-600"
               >
                 {tag}
               </span>

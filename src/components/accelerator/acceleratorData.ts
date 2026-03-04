@@ -15,6 +15,7 @@ export interface Partner {
   description: string;
   logoText: string;
   slug: string;
+  stealth?: boolean;
 }
 
 export interface Tool {
@@ -51,10 +52,11 @@ export const roles = [
 
 export const partners: Partner[] = [
   {
-    name: "Cathouse",
+    name: "Stealth Startup",
     description: "New-Gen Homebuying\nWith the Former VP Product, Tinder",
-    logoText: "C",
+    logoText: "?",
     slug: "partner-cathouse",
+    stealth: true,
   },
   {
     name: "Twenty.com",

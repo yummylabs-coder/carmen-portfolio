@@ -100,7 +100,7 @@ export function LearnRole() {
               {card.title}
             </h3>
             <p
-              className="text-[13px] opacity-60"
+              className="text-[13px] opacity-80"
               style={{ color: room.text }}
             >
               {card.description}

@@ -54,7 +54,7 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
           Yummy Labs
         </h1>
       </div>
-      <p className="text-14 leading-[1.6] text-neutral-400">
+      <p className="text-14 leading-[1.6] text-neutral-600">
         Design accelerator I co-founded to help designers grow through real
         startup sprints
       </p>
@@ -551,7 +551,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
       <h3 className="mb-1 font-brand text-[20px] font-bold leading-tight text-gray-800">
         2-week sprints. Real startups. Shipped products.
       </h3>
-      <p className="mb-5 text-[13px] leading-relaxed text-neutral-400">
+      <p className="mb-5 text-[13px] leading-relaxed text-neutral-600">
         Tap a day to see what you&rsquo;d be working on.
       </p>
 
@@ -561,7 +561,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
         <div className="flex items-center justify-between border-b border-sand-200 px-4 py-3 sm:px-5">
           <div>
             <div className="font-brand text-[15px] font-semibold text-brand-ink">{monthName}</div>
-            <div className="text-[11px] font-medium text-neutral-400">
+            <div className="text-[11px] font-medium text-neutral-600">
               Week {activeWeek + 1} · {weekRanges[activeWeek]}
             </div>
           </div>
@@ -597,7 +597,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
               <span
                 key={i}
                 className={`text-[11px] font-semibold ${
-                  i >= 5 ? "text-neutral-300" : "text-neutral-400"
+                  i >= 5 ? "text-neutral-400" : "text-neutral-600"
                 }`}
               >
                 {letter}
@@ -678,11 +678,11 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
                       Module {selectedDay.moduleNumber}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 rounded-md bg-sand-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-neutral-400">
+                    <span className="inline-flex items-center gap-1 rounded-md bg-sand-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em] text-neutral-600">
                       {selectedDay?.isRestDay ? "Rest day" : "Day off"}
                     </span>
                   )}
-                  <span className={`text-[11px] ${selectedDay?.isRestDay ? "text-neutral-400" : "text-sand-500"}`}>
+                  <span className={`text-[11px] ${selectedDay?.isRestDay ? "text-neutral-600" : "text-sand-500"}`}>
                     {selectedDay
                       ? new Date(selectedDay.date + "T12:00:00").toLocaleDateString("en-US", {
                           weekday: "long",
@@ -698,7 +698,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
                   {selectedDay?.name}
                 </h4>
                 <p className={`text-[13px] leading-relaxed ${
-                  selectedDay?.isRestDay ? "text-neutral-400" : "text-sand-500"
+                  selectedDay?.isRestDay ? "text-neutral-600" : "text-sand-500"
                 }`}>
                   {selectedDay?.description}
                 </p>
@@ -746,7 +746,7 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
                 key={partner.name}
                 className="flex-1 rounded-2xl border border-sand-300 bg-sand-100 p-4 text-center"
               >
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
+                <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-neutral-50${partner.stealth ? " blur-[6px]" : ""}`}>
                   {logoUrl ? (
                     <Img src={logoUrl} alt={partner.name} className="h-8 w-8 object-contain" />
                   ) : (

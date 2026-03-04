@@ -11,11 +11,11 @@ export function OurRole({ description }: OurRoleProps) {
 
   return (
     <ScrollReveal>
-      <section className="mx-auto max-w-3xl flex flex-col gap-4">
+      <section className="mx-auto max-w-5xl flex flex-col gap-4">
         <h2 className="font-brand text-[24px] font-bold text-brand-ink">
           My Role
         </h2>
-        <div className="max-w-[756px] whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
+        <div className="max-w-[760px] whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
           {description}
         </div>
       </section>

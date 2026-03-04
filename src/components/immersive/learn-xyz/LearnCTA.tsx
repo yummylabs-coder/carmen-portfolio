@@ -147,7 +147,7 @@ export function LearnCTA() {
             height="16"
             viewBox="0 0 16 16"
             fill="none"
-            className="opacity-60"
+            className="opacity-80"
           >
             <path
               d="M6 12L10 8L6 4"

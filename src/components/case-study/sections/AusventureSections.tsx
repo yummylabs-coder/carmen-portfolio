@@ -78,12 +78,12 @@ const typeSamples = [
    ═══════════════════════════════════ */
 function AtAGlance({ accentColor }: { accentColor: string }) {
   return (
-    <SectionReveal className="mx-auto max-w-3xl">
+    <SectionReveal className="mx-auto max-w-5xl">
       <SectionLabel label="At a Glance" accentColor={accentColor} />
       <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
         A goldmine hidden behind friction
       </h2>
-      <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+      <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
         Ausventure was sitting on a goldmine of premium travel packages, but
         their digital experience was stuck in the past. Users were getting lost
         in static pages, and the path to purchase was confusing. We partnered
@@ -145,13 +145,13 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
   ];
 
   return (
-    <div ref={ref} className="mx-auto max-w-3xl">
+    <div ref={ref} className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="The Problem" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Three critical blockers
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           Ausventure had the inventory, but lacked the digital infrastructure.
           Their existing site was static and difficult to navigate, forcing
           users to work hard just to find pricing or availability.
@@ -167,7 +167,7 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
             transition={{ duration: 0.45, delay: 0.2 + i * 0.1, ease: "easeOut" }}
             className="rounded-xl border border-sand-200 bg-white p-5 text-center"
           >
-            <div className="mx-auto mb-3 h-8 w-8 text-neutral-400">
+            <div className="mx-auto mb-3 h-8 w-8 text-neutral-600">
               {b.icon}
             </div>
             <h4 className="text-15 font-semibold text-brand-ink">{b.title}</h4>
@@ -186,13 +186,13 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
    ═══════════════════════════════════ */
 function DesignLanguageSection({ accentColor }: { accentColor: string }) {
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Design System" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Systemizing the adventure
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           To solve the friction, we started from scratch with a strong design
           system. We moved Ausventure away from inconsistent styles to a
           unified, tokenized UI kit &mdash; warm, adventurous, and built for
@@ -256,13 +256,13 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <SectionReveal className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
+      <SectionReveal>
         <SectionLabel label="Discovery Engine" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Reducing cognitive load with smart filtering
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           Ausventure operates a two-sided marketplace: Campers and Experiences.
           Mixing them created confusion. We architected a split-path journey
           using progressive disclosure &mdash; users are guided through a
@@ -351,13 +351,13 @@ function KPISection({ accentColor }: { accentColor: string }) {
   ];
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Impact" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Measuring the impact
         </h2>
-        <p className="mt-4 mb-8 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 mb-8 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           The redesign delivered measurable improvements across every key metric
           &mdash; from form completion to brand perception.
         </p>
