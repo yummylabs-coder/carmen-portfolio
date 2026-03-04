@@ -23,7 +23,7 @@ export function AboutPageContent({ photos, destinations, tracks }: AboutPageCont
         <h1 className="font-brand text-22 font-bold text-brand-ink">
           About Me
         </h1>
-        <p className="text-14 leading-[1.6] text-neutral-400">
+        <p className="text-14 leading-[1.6] text-neutral-600">
           The person behind the pixels
         </p>
       </div>

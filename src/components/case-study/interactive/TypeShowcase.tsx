@@ -74,7 +74,7 @@ export function TypeShowcase({
           {fontName}
         </span>
         {fontCategory && (
-          <span className="text-12 text-neutral-400">{fontCategory}</span>
+          <span className="text-12 text-neutral-600">{fontCategory}</span>
         )}
       </motion.div>
 
@@ -86,7 +86,7 @@ export function TypeShowcase({
         className="border-b border-sand-200 bg-white px-6 py-4 sm:px-8"
       >
         <p
-          className="text-[15px] leading-loose tracking-[0.06em] text-neutral-400"
+          className="text-[15px] leading-loose tracking-[0.06em] text-neutral-600"
           style={{ fontFamily: `'${fontName}', sans-serif` }}
         >
           Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv
@@ -109,7 +109,7 @@ export function TypeShowcase({
             className="px-6 py-5 sm:px-8"
           >
             <div className="mb-2.5 flex items-center justify-between gap-4">
-              <span className="text-11 font-semibold uppercase tracking-widest text-neutral-400">
+              <span className="text-11 font-semibold uppercase tracking-widest text-neutral-600">
                 {sample.label}
               </span>
               <span className="shrink-0 rounded-full border border-sand-200 bg-white px-2.5 py-0.5 font-mono text-10 text-neutral-300">

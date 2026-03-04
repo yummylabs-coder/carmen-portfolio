@@ -97,7 +97,7 @@ export function VersionDetailsModal({ isOpen, onClose }: VersionDetailsModalProp
                   <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
                   <span className="h-3 w-3 rounded-full bg-[#28c840]" />
                 </div>
-                <span className="font-mono text-[11px] text-neutral-400">
+                <span className="font-mono text-[11px] text-neutral-600">
                   ~/portfolio
                 </span>
               </div>
@@ -109,7 +109,7 @@ export function VersionDetailsModal({ isOpen, onClose }: VersionDetailsModalProp
 
             {/* Commit log */}
             <div className="px-5 py-4">
-              <div className="mb-3 font-mono text-[11px] text-neutral-400">
+              <div className="mb-3 font-mono text-[11px] text-neutral-600">
                 $ git log --oneline
               </div>
 
@@ -134,7 +134,7 @@ export function VersionDetailsModal({ isOpen, onClose }: VersionDetailsModalProp
                       <span className="mt-0.5 text-[13px] font-medium text-brand-ink/80">
                         {c.message}
                       </span>
-                      <span className="mt-0.5 font-mono text-[10px] text-neutral-400">
+                      <span className="mt-0.5 font-mono text-[10px] text-neutral-600">
                         {c.date}
                       </span>
                     </div>

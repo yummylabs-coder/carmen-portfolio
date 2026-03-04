@@ -130,7 +130,7 @@ export function ResumeContent({ entries, isPrintMode }: ResumeContentProps) {
                       key={idx}
                       className="flex items-baseline justify-between text-[11px]"
                     >
-                      <span className="text-neutral-500">{role.title}</span>
+                      <span className="text-neutral-600">{role.title}</span>
                       <span className="text-neutral-600">
                         {role.start} - {role.end}
                       </span>

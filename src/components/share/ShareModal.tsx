@@ -113,7 +113,7 @@ export function ShareModal({ open, onClose, url, title }: ShareModalProps) {
               <h3 className="font-brand text-15 font-bold text-brand-ink">Share</h3>
               <button
                 onClick={onClose}
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-sand-100 text-neutral-400 transition-colors hover:bg-sand-200 hover:text-neutral-600"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-sand-100 text-neutral-600 transition-colors hover:bg-sand-200 hover:text-neutral-700"
               >
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
                   <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -136,14 +136,14 @@ export function ShareModal({ open, onClose, url, title }: ShareModalProps) {
                     <span className="font-brand text-14 font-bold text-brand-ink">
                       Carmen Rincon
                     </span>
-                    <span className="text-11 text-neutral-400">
+                    <span className="text-11 text-neutral-600">
                       Product Design &amp; Strategy
                     </span>
                   </div>
                 </div>
                 {/* URL */}
                 <div className="border-t border-sand-200 bg-sand-50 px-4 py-2">
-                  <span className="block truncate text-12 text-neutral-400">
+                  <span className="block truncate text-12 text-neutral-600">
                     {shareUrl}
                   </span>
                 </div>

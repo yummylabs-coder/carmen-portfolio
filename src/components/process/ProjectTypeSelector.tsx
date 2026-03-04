@@ -12,7 +12,7 @@ interface ProjectTypeSelectorProps {
 export function ProjectTypeSelector({ activeMode, onChange }: ProjectTypeSelectorProps) {
   return (
     <div>
-      <p className="mb-[10px] font-body text-11 font-semibold uppercase tracking-[0.06em] text-neutral-400">
+      <p className="mb-[10px] font-body text-11 font-semibold uppercase tracking-[0.06em] text-neutral-600">
         What kind of project?
       </p>
       <div className="flex flex-wrap gap-1 rounded-xl border border-sand-300 bg-sand-100 p-1">
@@ -26,7 +26,7 @@ export function ProjectTypeSelector({ activeMode, onChange }: ProjectTypeSelecto
               className={`relative flex items-center gap-2 rounded-lg px-4 py-2 text-13 font-medium transition-all ${
                 isActive
                   ? "bg-white text-brand-ink shadow-sm"
-                  : "text-neutral-400 hover:text-neutral-600"
+                  : "text-neutral-600 hover:text-neutral-600"
               }`}
             >
               <span className="text-[16px]">{btn.emoji}</span>

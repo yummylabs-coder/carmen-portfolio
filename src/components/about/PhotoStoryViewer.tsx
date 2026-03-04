@@ -268,7 +268,7 @@ export function PhotoStoryViewer({
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-sand-100">
-                    <span className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+                    <span className="text-sm font-medium uppercase tracking-wider text-neutral-600">
                       {photo.label}
                     </span>
                   </div>

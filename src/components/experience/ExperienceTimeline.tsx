@@ -101,7 +101,7 @@ function ChevronIcon({ open }: { open: boolean }) {
       fill="none"
       animate={{ rotate: open ? 180 : 0 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
-      className="shrink-0 text-neutral-400"
+      className="shrink-0 text-neutral-600"
     >
       <path
         d="M5 8l5 5 5-5"
@@ -348,7 +348,7 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-neutral-400"
+            className="text-neutral-600"
           >
             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
             <polyline points="14 2 14 8 20 8" />

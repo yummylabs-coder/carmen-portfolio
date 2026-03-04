@@ -63,7 +63,7 @@ export function ValuesCard() {
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[16px] transition-all duration-200 ${
                     isOpen
                       ? "rotate-45 bg-blue-500 text-white"
-                      : "bg-white text-neutral-400"
+                      : "bg-white text-neutral-600"
                   }`}
                 >
                   +

@@ -15,7 +15,7 @@ export function SharePacketHeader({ companyName, projectCount, note }: SharePack
           <AnimatedLogoMark size={30} />
           <div className="flex flex-col">
             <span className="font-brand text-13 font-bold text-brand-ink">Carmen Rincon</span>
-            <span className="text-11 text-neutral-400">Product Design &amp; Strategy</span>
+            <span className="text-11 text-neutral-600">Product Design &amp; Strategy</span>
           </div>
         </Link>
         <Link
@@ -35,7 +35,7 @@ export function SharePacketHeader({ companyName, projectCount, note }: SharePack
             ? `Curated for ${companyName}`
             : "Hey! Take a look at these"}
         </h1>
-        <p className="mt-1 text-14 text-neutral-400">
+        <p className="mt-1 text-14 text-neutral-600">
           {companyName
             ? `Carmen curated ${projectCount} case ${projectCount === 1 ? "study" : "studies"} for ${companyName}`
             : `${projectCount} hand-picked case ${projectCount === 1 ? "study" : "studies"} from Carmen\u2019s portfolio`}
@@ -43,7 +43,7 @@ export function SharePacketHeader({ companyName, projectCount, note }: SharePack
 
         {note && (
           <div className="mt-4 rounded-xl border border-sand-200 bg-sand-50 px-4 py-3">
-            <p className="text-11 font-medium uppercase tracking-wide text-neutral-400">A message for you</p>
+            <p className="text-11 font-medium uppercase tracking-wide text-neutral-600">A message for you</p>
             <p className="mt-1 text-14 leading-relaxed text-neutral-600">{decodeURIComponent(note)}</p>
           </div>
         )}

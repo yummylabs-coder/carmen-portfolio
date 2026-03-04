@@ -89,19 +89,19 @@ const ralewaySamples = [
    ═══════════════════════════════════ */
 function ChallengeSection({ accentColor }: { accentColor: string }) {
   return (
-    <SectionReveal className="mx-auto max-w-3xl">
+    <SectionReveal className="mx-auto max-w-5xl">
       <SectionLabel label="The Challenge" accentColor={accentColor} />
       <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
         Building credibility from day one
       </h2>
-      <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+      <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
         As they entered the market, Pandore needed a brand that looked credible
         from day one &mdash; sharp, future-facing, and human, without being
         overdesigned. They weren&apos;t looking for a full brand universe, just a
         strong, scalable foundation. Something they could launch quickly to build
         trust with partners, clients, and investors.
       </p>
-      <p className="mt-3 text-16 leading-[1.8] text-neutral-600">
+      <p className="mt-3 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
         Alongside it, a clear landing page to start attracting clients and
         establish a confident online presence.
       </p>
@@ -122,13 +122,13 @@ function VoiceSection({ accentColor }: { accentColor: string }) {
   ];
 
   return (
-    <div ref={ref} className="mx-auto max-w-3xl">
+    <div ref={ref} className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Brand Voice" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Defined the voice
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           Pandore needed to sound like what they are: experts in AI with a
           deeply human approach. We created a brand voice that balances
           authority with warmth &mdash; confident, clear, and relatable to both
@@ -165,13 +165,13 @@ function VoiceSection({ accentColor }: { accentColor: string }) {
    ═══════════════════════════════════ */
 function ColorSystemSection({ accentColor }: { accentColor: string }) {
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Color System" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Curated the color system
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           We designed a palette that reflects Pandore&apos;s dual nature:
           forward-looking and deeply human. Deep blue signals trust and
           expertise. A vibrant electric blue adds energy and modernity. Soft
@@ -191,13 +191,13 @@ function ColorSystemSection({ accentColor }: { accentColor: string }) {
    ═══════════════════════════════════ */
 function TypeSystemSection({ accentColor }: { accentColor: string }) {
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Typography" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Curated a type system
         </h2>
-        <p className="mt-4 mb-8 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 mb-8 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           Selected a typeface that feels modern and intelligent, but still warm.
           The rounded geometry and open shapes of Raleway strike a balance
           between precision and approachability &mdash; perfect for a brand
@@ -223,13 +223,13 @@ function SymbolSection({ accentColor }: { accentColor: string }) {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <div ref={ref} className="mx-auto max-w-3xl">
+    <div ref={ref} className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Brand Mark" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Created a modular symbol
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           We designed a mark that&apos;s simple, smart, and full of meaning: an
           isometric cube that subtly hides a &ldquo;P.&rdquo; It evokes
           building blocks, systems thinking, and scalable ideas &mdash; core to
@@ -286,7 +286,7 @@ function SymbolSection({ accentColor }: { accentColor: string }) {
         </motion.div>
       </div>
 
-      <p className="mt-6 text-center text-13 text-neutral-400">
+      <p className="mt-6 text-center text-13 text-neutral-600">
         The emblem works in static and dynamic formats, creating flexible brand
         patterns across media.
       </p>
@@ -308,13 +308,13 @@ function PatternsSection({ accentColor }: { accentColor: string }) {
   ];
 
   return (
-    <div ref={ref} className="mx-auto max-w-3xl">
+    <div ref={ref} className="mx-auto max-w-5xl">
       <SectionReveal>
         <SectionLabel label="Brand Patterns" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Built brand patterns around core values
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           We extended the emblem into a modular system of patterns that mirror
           how Pandore helps clients grow: transform, adapt, and scale. Each
           pattern visually reflects a key principle of AI adoption.
@@ -365,12 +365,12 @@ function PatternsSection({ accentColor }: { accentColor: string }) {
    ═══════════════════════════════════ */
 function OutcomeSection({ accentColor }: { accentColor: string }) {
   return (
-    <SectionReveal className="mx-auto max-w-3xl">
+    <SectionReveal className="mx-auto max-w-5xl">
       <SectionLabel label="Outcome" accentColor={accentColor} />
       <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
         A fast, future-ready brand
       </h2>
-      <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+      <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
         Pandore launched with a brand that made them instantly credible to
         clients, partners, and investors &mdash; all in just three weeks.
       </p>
@@ -404,13 +404,13 @@ function LandingPageSection({ accentColor }: { accentColor: string }) {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <SectionReveal className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
+      <SectionReveal>
         <SectionLabel label="The Landing Page" accentColor={accentColor} />
         <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
           Designed for instant trust
         </h2>
-        <p className="mt-4 text-16 leading-[1.8] text-neutral-600">
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           We created a high-impact landing page that made Pandore&apos;s
           expertise visible from the first scroll. It wasn&apos;t about
           buzzwords &mdash; it was about making their sharp thinking and

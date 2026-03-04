@@ -156,7 +156,7 @@ function Lightbox({
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-neutral-100">
-                    <span className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+                    <span className="text-sm font-medium uppercase tracking-wider text-neutral-600">
                       {photo.label}
                     </span>
                   </div>
@@ -284,7 +284,7 @@ export function PhotoWall({ photos }: PhotoWallProps) {
           >
             <ShuffleIcon className="transition-transform duration-300 group-hover:rotate-180" />
             <span>Shuffle</span>
-            <span className="ml-0.5 text-neutral-400">
+            <span className="ml-0.5 text-neutral-600">
               {rotation + 1}/{totalRotations}
             </span>
           </button>
@@ -318,7 +318,7 @@ export function PhotoWall({ photos }: PhotoWallProps) {
                   </div>
                 ) : (
                   <div className={`flex w-full items-center justify-center bg-neutral-200 ${getAspectRatio(photo.size)}`}>
-                    <span className="text-[10px] font-medium uppercase tracking-wide text-neutral-400">
+                    <span className="text-[10px] font-medium uppercase tracking-wide text-neutral-600">
                       {photo.label}
                     </span>
                   </div>

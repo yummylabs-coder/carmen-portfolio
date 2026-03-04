@@ -152,7 +152,7 @@ function TabBar({
             className={`relative flex items-center gap-1.5 rounded-lg px-4 py-2 text-13 font-medium transition-all ${
               isActive
                 ? "bg-white text-brand-ink shadow-sm"
-                : "text-neutral-400 hover:text-neutral-600"
+                : "text-neutral-600 hover:text-neutral-600"
             }`}
           >
             <span className={isActive ? "text-[#2216ff]" : ""}>{tab.icon}</span>
@@ -161,7 +161,7 @@ function TabBar({
               className={`ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold ${
                 isActive
                   ? "bg-[#2216ff]/10 text-[#2216ff]"
-                  : "bg-neutral-200/60 text-neutral-400"
+                  : "bg-neutral-200/60 text-neutral-600"
               }`}
             >
               {count}
@@ -479,7 +479,7 @@ function PreviewCardLight({
                 </svg>
               </span>
             ) : isComingSoon ? (
-              <span className="text-11 text-neutral-400">Coming soon</span>
+              <span className="text-11 text-neutral-600">Coming soon</span>
             ) : null}
           </div>
         </div>
@@ -508,7 +508,7 @@ function EmptyState({ tab }: { tab: TabKey }) {
       <p className="font-brand text-15 font-semibold text-brand-ink">
         {isToolkit ? "Toolkit items coming soon" : "No experiments yet"}
       </p>
-      <p className="mt-1 max-w-[280px] text-13 text-neutral-400">
+      <p className="mt-1 max-w-[280px] text-13 text-neutral-600">
         {isToolkit
           ? "Resources, templates, and tools I've built for designers will show up here."
           : "Side projects and prototypes will appear here as I build them."}
@@ -752,7 +752,7 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
         <h1 className="font-brand text-22 font-bold text-brand-ink">
           The Lab
         </h1>
-        <p className="text-14 leading-[1.6] text-neutral-400">
+        <p className="text-14 leading-[1.6] text-neutral-600">
           Side projects, tools, and resources I&apos;ve built for designers and
           for my own curiosity.
         </p>

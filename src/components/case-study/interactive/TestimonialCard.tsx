@@ -71,7 +71,7 @@ export function TestimonialCard({
         )}
         <div>
           <div className="text-14 font-semibold text-brand-ink">{name}</div>
-          <div className="text-12 text-neutral-400">{role}</div>
+          <div className="text-12 text-neutral-600">{role}</div>
         </div>
       </div>
 

@@ -122,7 +122,7 @@ export function DiscordCommunityCard() {
                 <span className="font-mono text-12 font-semibold text-brand-ink">
                   {memberCount.toLocaleString()}
                 </span>
-                <span className="text-11 text-neutral-400">members</span>
+                <span className="text-11 text-neutral-600">members</span>
               </div>
             )}
             {onlineCount !== null && onlineCount > 0 && (
@@ -134,7 +134,7 @@ export function DiscordCommunityCard() {
                 <span className="font-mono text-12 font-semibold text-emerald-600">
                   {onlineCount.toLocaleString()}
                 </span>
-                <span className="text-11 text-neutral-400">online</span>
+                <span className="text-11 text-neutral-600">online</span>
               </div>
             )}
           </div>
@@ -186,7 +186,7 @@ export function DiscordCommunityCard() {
                         className="inline-flex items-center gap-0.5 rounded-full border border-sand-200 bg-sand-50 px-1.5 py-0.5 text-[10px]"
                       >
                         <span>{r.emoji}</span>
-                        <span className="font-mono text-[9px] text-neutral-400">
+                        <span className="font-mono text-[9px] text-neutral-600">
                           {r.count}
                         </span>
                       </span>

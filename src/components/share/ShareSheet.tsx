@@ -173,13 +173,13 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                 <h3 className="font-brand text-16 font-bold text-brand-ink">
                   Share curated case studies
                 </h3>
-                <p className="mt-0.5 text-12 text-neutral-400">
+                <p className="mt-0.5 text-12 text-neutral-600">
                   Create a curated link anyone can open
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sand-100 text-neutral-400 transition-colors hover:bg-sand-200 hover:text-neutral-600"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sand-100 text-neutral-600 transition-colors hover:bg-sand-200 hover:text-neutral-700"
                 aria-label="Close"
               >
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
@@ -274,7 +274,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
 
               {/* RIGHT COLUMN — live preview (desktop only on side, mobile stacked above actions) */}
               <div className="border-t border-sand-200 px-5 py-4 sm:w-[300px] sm:shrink-0 sm:border-t-0 sm:py-5">
-                <p className="mb-2.5 text-11 font-medium uppercase tracking-wide text-neutral-400">
+                <p className="mb-2.5 text-11 font-medium uppercase tracking-wide text-neutral-600">
                   What they&apos;ll see
                 </p>
                 <div className="overflow-hidden rounded-xl border border-sand-200 bg-sand-50">
@@ -290,7 +290,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                       <span className="font-brand text-12 font-bold text-brand-ink">
                         Carmen Rincon
                       </span>
-                      <span className="text-10 text-neutral-400">
+                      <span className="text-10 text-neutral-600">
                         Product Design &amp; Strategy
                       </span>
                     </div>
@@ -303,7 +303,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                         ? `Curated for ${companyName.trim()}`
                         : "Selected Work"}
                     </p>
-                    <p className="mt-0.5 text-11 text-neutral-400">
+                    <p className="mt-0.5 text-11 text-neutral-600">
                       {selectedProjects.length} case {selectedProjects.length === 1 ? "study" : "studies"} from Carmen&apos;s portfolio
                     </p>
 
@@ -330,7 +330,7 @@ export function ShareSheet({ open, onClose, selectedProjects }: ShareSheetProps)
                         </div>
                       ))}
                       {selectedProjects.length > 4 && (
-                        <div className="flex h-10 w-14 items-center justify-center rounded-md border border-sand-200 bg-sand-100 text-11 font-medium text-neutral-400">
+                        <div className="flex h-10 w-14 items-center justify-center rounded-md border border-sand-200 bg-sand-100 text-11 font-medium text-neutral-600">
                           +{selectedProjects.length - 4}
                         </div>
                       )}
