@@ -12,7 +12,7 @@ export const IMAGES = {
   hero: "https://framerusercontent.com/images/sH7xrKlGVFqbCMOXhtedwDhBw4.png",
 
   // Website screenshots (real Figma exports)
-  website1: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/0dd06ff6-39d4-4b5c-a769-c94c7d2cd633",
+  website1: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/d6a582a2-509c-4ae5-a5d3-49ae189d2efd",
   website2: "/images/learn/website-2.png",
   website3: "/images/learn/website-3.png",
   website4: "/images/learn/website-4.png",

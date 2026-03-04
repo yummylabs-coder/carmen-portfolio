@@ -15,7 +15,7 @@ import { SectionLabel } from "@/components/case-study/SectionLabel";
 /* ─── Image URLs from Framer CDN ─── */
 const IMAGES = {
   // Website screenshots (desktop ratio)
-  website1: "https://framerusercontent.com/images/GdDgVHSXV0oh656wOd1NtBiFE.png?scale-down-to=2048",
+  website1: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/d6a582a2-509c-4ae5-a5d3-49ae189d2efd",
   website2: "https://framerusercontent.com/images/gI1TZl2l19xIFAEezG9DgZAJVg.png?scale-down-to=2048",
   website3: "https://framerusercontent.com/images/QiCSr8neFCjs9bTGySyufxoqcM.png?scale-down-to=2048",
   website4: "https://framerusercontent.com/images/kkm2Nu0rO5N0INFaOHj9disT1M8.png?scale-down-to=2048",

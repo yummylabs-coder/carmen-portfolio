@@ -117,7 +117,7 @@ export function GreetingSection() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.12, duration: 0.4, ease: "easeOut" }}
-          className="max-w-[700px] text-14 text-neutral-600"
+          className="max-w-[580px] text-14 text-neutral-600"
         >
           Welcome to my cozy corner of the internet. I&apos;m a product designer
           who builds things people genuinely enjoy using.
