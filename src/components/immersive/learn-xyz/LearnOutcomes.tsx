@@ -503,7 +503,7 @@ export function LearnOutcomes() {
                 </div>
 
                 {/* Label */}
-                <p className="mt-2 text-[14px] opacity-60 lg:text-[13px]">{stat.label}</p>
+                <p className="mt-2 text-[14px] opacity-80 lg:text-[13px]">{stat.label}</p>
               </motion.div>
             );
           })}
@@ -511,9 +511,9 @@ export function LearnOutcomes() {
 
         {/* Closing line */}
         <motion.p
-          className="mx-auto mt-16 max-w-[640px] text-[15px] leading-relaxed opacity-50"
+          className="mx-auto mt-16 max-w-[640px] text-[15px] leading-relaxed opacity-75"
           initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
-          animate={statsInView ? { opacity: 0.5, y: 0 } : {}}
+          animate={statsInView ? { opacity: 0.75, y: 0 } : {}}
           transition={{
             delay: 1.2,
             duration: duration.slow,

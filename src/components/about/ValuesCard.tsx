@@ -79,7 +79,7 @@ export function ValuesCard() {
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-5 pb-4 text-13 leading-relaxed text-neutral-500">
+                    <p className="px-5 pb-4 text-13 leading-relaxed text-neutral-600">
                       {v.body}
                     </p>
                   </motion.div>

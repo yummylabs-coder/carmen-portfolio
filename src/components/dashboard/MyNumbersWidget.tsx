@@ -35,7 +35,7 @@ function YearTimeline() {
           </motion.div>
           {/* Show first and last year labels */}
           {(i === 0 || i === years.length - 1) && (
-            <span className="text-[9px] tabular-nums text-neutral-400">
+            <span className="text-[10px] tabular-nums text-neutral-600">
               {i === years.length - 1 ? "Now" : year}
             </span>
           )}
@@ -103,7 +103,7 @@ function AvatarCluster() {
         initial={{ opacity: 0, x: -5 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.3 }}
-        className="ml-2 text-11 font-medium text-neutral-400"
+        className="ml-2 text-12 font-medium text-neutral-600"
       >
         +92 more
       </motion.span>
@@ -188,7 +188,7 @@ export function MyNumbersWidget() {
                 value={9}
                 className="font-brand text-32 font-bold leading-none text-[#2216FF]"
               />
-              <p className="mt-1 text-12 font-medium text-neutral-500">
+              <p className="mt-1 text-12 font-medium text-neutral-600">
                 years in product
               </p>
               <YearTimeline />
@@ -211,10 +211,10 @@ export function MyNumbersWidget() {
                 suffix="+"
                 className="font-brand text-32 font-bold leading-none text-[#4B3AFF]"
               />
-              <p className="mt-1 text-12 font-medium text-neutral-500">
+              <p className="mt-1 text-12 font-medium text-neutral-600">
                 products shipped
               </p>
-              <p className="mt-0.5 text-11 text-neutral-400">
+              <p className="mt-0.5 text-12 text-neutral-600">
                 Across 5 industries
               </p>
               <ProductGrid />
@@ -238,11 +238,11 @@ export function MyNumbersWidget() {
                   suffix="+"
                   className="font-brand text-32 font-bold leading-none text-[#7C5CFF]"
                 />
-                <span className="text-14 font-medium text-neutral-500">
+                <span className="text-14 font-medium text-neutral-600">
                   designers mentored
                 </span>
               </div>
-              <p className="mt-0.5 text-11 text-neutral-400">
+              <p className="mt-0.5 text-12 text-neutral-600">
                 Through Yummy Labs
               </p>
               <AvatarCluster />

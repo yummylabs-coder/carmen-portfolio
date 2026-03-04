@@ -84,7 +84,7 @@ export function HeroCard() {
           <h2 className="font-brand text-[20px] font-bold text-white">
             Hey, I&apos;m Carmen
           </h2>
-          <p className="text-12 text-white/40">A little letter about me</p>
+          <p className="text-12 text-white/75">A little letter about me</p>
         </div>
       </div>
 

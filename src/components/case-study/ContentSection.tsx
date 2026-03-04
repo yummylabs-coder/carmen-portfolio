@@ -87,7 +87,7 @@ function SectionMedia({
           <div key={i} className="flex flex-col items-center gap-2">
             <PhoneFrame src={src} alt={captions[i] || `${title} screen ${i + 1}`} />
             {captions[i] && (
-              <p className="text-center text-13 italic text-neutral-500">
+              <p className="text-center text-13 italic text-neutral-600">
                 {captions[i]}
               </p>
             )}
@@ -103,7 +103,7 @@ function SectionMedia({
       <div className="flex flex-col items-center gap-2">
         <PhoneFrame src={images[0]} alt={captions[0] || `${title} screen`} />
         {captions[0] && (
-          <p className="text-center text-13 italic text-neutral-500">
+          <p className="text-center text-13 italic text-neutral-600">
             {captions[0]}
           </p>
         )}
@@ -117,7 +117,7 @@ function SectionMedia({
       <div className="flex flex-col items-center gap-2">
         <LaptopFrame src={images[0]} alt={captions[0] || `${title} screenshot`} />
         {captions[0] && (
-          <p className="text-center text-13 italic text-neutral-500">
+          <p className="text-center text-13 italic text-neutral-600">
             {captions[0]}
           </p>
         )}
@@ -131,7 +131,7 @@ function SectionMedia({
       <div className="flex flex-col items-center gap-2">
         <DesktopFrame src={images[0]} alt={captions[0] || `${title} screenshot`} />
         {captions[0] && (
-          <p className="text-center text-13 italic text-neutral-500">
+          <p className="text-center text-13 italic text-neutral-600">
             {captions[0]}
           </p>
         )}
@@ -151,7 +151,7 @@ function SectionMedia({
           />
         </div>
         {captions[0] && (
-          <p className="mt-2 px-5 text-center text-13 italic text-neutral-500 sm:px-8 md:px-12">
+          <p className="mt-2 px-5 text-center text-13 italic text-neutral-600 sm:px-8 md:px-12">
             {captions[0]}
           </p>
         )}
@@ -174,7 +174,7 @@ function SectionMedia({
               />
             </div>
             {captions[i] && (
-              <figcaption className="text-center text-13 italic text-neutral-500">
+              <figcaption className="text-center text-13 italic text-neutral-600">
                 {captions[i]}
               </figcaption>
             )}
@@ -219,7 +219,7 @@ function SectionMedia({
           )}
         </div>
         {captions[0] && (
-          <figcaption className="text-center text-13 italic text-neutral-500">
+          <figcaption className="text-center text-13 italic text-neutral-600">
             {captions[0]}
           </figcaption>
         )}
@@ -250,7 +250,7 @@ function SectionMedia({
             />
           </div>
           {captions[i] && (
-            <figcaption className="text-center text-13 italic text-neutral-500">
+            <figcaption className="text-center text-13 italic text-neutral-600">
               {captions[i]}
             </figcaption>
           )}
@@ -281,13 +281,13 @@ export function ContentSection({ section, accentColor }: ContentSectionProps) {
           <RichText
             segments={section.introText}
             accentColor={accentColor}
-            className="max-w-[756px] text-[20px] leading-[1.65] text-neutral-700 md:text-[22px]"
+            className="max-w-[760px] text-[20px] leading-[1.65] text-neutral-700 md:text-[22px]"
           />
         )}
 
         {/* Plain description */}
         {section.description && (
-          <div className="max-w-[756px] whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
+          <div className="max-w-[760px] whitespace-pre-line text-16 leading-[1.8] text-neutral-600">
             {section.description}
           </div>
         )}

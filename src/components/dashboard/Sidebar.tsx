@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { VersionDetailsModal } from "./VersionDetailsModal";
 import { AnimatedLogoMark } from "@/components/icons/AnimatedLogoMark";
 import {
   HomeIcon,
@@ -43,7 +45,7 @@ function NavLink({ href, label, icon: Icon, active }: NavLinkProps) {
       className={`flex h-[42px] items-center gap-1 rounded-md px-2 py-[7px] text-13 transition-colors ${
         active
           ? "bg-blue-50 font-semibold text-blue-700"
-          : "font-medium text-[#7b6a61] hover:bg-sand-100"
+          : "font-medium text-[#5C4E46] hover:bg-sand-100"
       }`}
     >
       <Icon size={16} />
@@ -62,7 +64,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /* ─── Portfolio version badge (lab/terminal style) ─── */
-function VersionBadge() {
+function VersionBadge({ onViewDetails }: { onViewDetails: () => void }) {
   return (
     <div className="rounded-xl border border-sand-300 bg-sand-100 px-4 py-3">
       {/* Traffic lights */}
@@ -72,32 +74,49 @@ function VersionBadge() {
           <span className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
           <span className="h-2 w-2 rounded-full bg-[#28c840]" />
         </div>
-        <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.5px] text-yellow-600">
+        <span className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.5px] text-yellow-700">
           <span className="inline-block h-1 w-1 animate-pulse rounded-full bg-yellow-600" />
           building
         </span>
       </div>
       {/* Terminal content */}
       <div className="font-mono text-[11px] leading-[1.6]">
-        <span className="text-neutral-400">~/portfolio $</span>{" "}
+        <span className="text-neutral-600">~/portfolio $</span>{" "}
         <span className="text-brand-ink/70">git tag</span>
         <br />
         <span className="text-emerald-600">v14</span>
-        <span className="text-neutral-400"> ← deployed</span>
+        <span className="text-neutral-600"> ← deployed</span>
         <br />
         <span className="text-yellow-600">v15</span>
-        <span className="text-neutral-400"> ← in progress</span>
+        <span className="text-neutral-600"> ← in progress</span>
         <br />
         <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">improving case studies</span>
+        <br />
+        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">optimizing loading times</span>
       </div>
+      {/* View details link */}
+      <button
+        onClick={onViewDetails}
+        className="mt-2.5 flex items-center gap-1 font-mono text-[11px] text-neutral-600 transition-colors hover:text-brand-ink/60"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+        view details
+      </button>
     </div>
   );
 }
 
 export function Sidebar({ className = "" }: SidebarProps) {
   const pathname = usePathname();
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
+    <>
+    <VersionDetailsModal isOpen={showDetails} onClose={() => setShowDetails(false)} />
     <aside
       className={`fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col border-r border-[#f3ede7] bg-[#fcfaf8] pb-[3px] ${className}`}
       style={{ borderRadius: "0 16px 16px 0" }}
@@ -110,7 +129,7 @@ export function Sidebar({ className = "" }: SidebarProps) {
             <span className="font-brand text-14 font-bold text-brand-ink">
               Carmen&apos;s Space
             </span>
-            <span className="text-[12px] text-[#7b6a61]">
+            <span className="text-[12px] text-[#5C4E46]">
               Product Design &amp; Strategy
             </span>
           </div>
@@ -153,12 +172,13 @@ export function Sidebar({ className = "" }: SidebarProps) {
         {/* Footer CTAs */}
         <div className="flex flex-col gap-2">
           {/* Portfolio version badge */}
-          <VersionBadge />
+          <VersionBadge onViewDetails={() => setShowDetails(true)} />
 
           {/* Share portfolio */}
           <GlobalShareButton variant="sidebar" />
         </div>
       </nav>
     </aside>
+    </>
   );
 }

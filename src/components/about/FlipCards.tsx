@@ -139,7 +139,7 @@ export function FlipCards() {
                   <h3 className="font-brand text-14 font-semibold text-brand-ink">
                     {card.front}
                   </h3>
-                  <span className="ml-auto rounded bg-white px-2 py-1 text-[10px] text-neutral-400">
+                  <span className="ml-auto rounded bg-white px-2 py-1 text-[11px] text-neutral-600">
                     {canHover.current ? "Hover me" : "Tap me"}
                   </span>
                 </div>

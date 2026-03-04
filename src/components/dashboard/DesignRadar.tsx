@@ -343,7 +343,7 @@ function TopicBubble({
         }}
       >
         <div
-          className="rounded-lg px-3 py-1.5 text-center text-[11px] leading-snug text-brand-ink/70"
+          className="rounded-lg px-3 py-1.5 text-center text-[12px] leading-snug text-brand-ink/80"
           style={{
             backgroundColor: "rgba(255, 252, 248, 0.7)",
             backdropFilter: "blur(12px)",
@@ -513,10 +513,10 @@ function ExpandedOverlay({
 
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-3 px-10 text-center sm:px-14">
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-brand-ink/40">
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-ink/70">
                 {topic.topic}
               </span>
-              <p className="text-[12px] leading-[1.6] text-brand-ink/75 sm:text-[13px]">
+              <p className="text-[13px] leading-[1.6] text-brand-ink/85 sm:text-[13px]">
                 {copy}
               </p>
             </div>
@@ -536,7 +536,7 @@ function ExpandedOverlay({
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="absolute bottom-8 text-[11px] text-brand-ink/30"
+          className="absolute bottom-8 text-[12px] text-brand-ink/60"
         >
           tap anywhere to close
         </motion.p>
@@ -587,7 +587,7 @@ export function DesignRadar({ topics }: DesignRadarProps) {
           <h3 className="font-brand text-15 font-bold text-brand-ink">
             Design Radar
           </h3>
-          <p className="mt-0.5 text-12 text-neutral-400">
+          <p className="mt-0.5 text-12 text-neutral-600">
             What I&apos;m currently exploring
           </p>
         </div>
