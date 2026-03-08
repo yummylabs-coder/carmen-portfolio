@@ -2,6 +2,7 @@ import "server-only";
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import type { CaseStudy, CaseStudyDetail, CaseStudySection, RichTextSpan, SectionLayout, AboutPhoto, Favorite, ExperienceEntry, Experiment, ExperimentPreviewMap, CaseStudyPreviewMap, YummyAsset, YummyAssetsMap, ProcessPhaseImages, TravelDestination, Track, RadarTopic, SprintDay } from "./types";
+import { staticCoverMap } from "./fallback-projects";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID!;
@@ -87,15 +88,20 @@ function parsePage(page: PageObjectResponse): CaseStudy {
     getPlainText(props.Slug, "rich_text") ||
     title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-  // Cover: check the "Cover" file property first, then fall back to page cover
+  // Cover: prefer local static covers (fast CDN), then Notion file property, then page cover
   let coverUrl = "/cover-placeholder.svg";
-  const coverFile = getFiles(props.Cover);
-  if (coverFile) {
-    coverUrl = coverFile;
-  } else if (page.cover?.type === "external") {
-    coverUrl = page.cover.external.url;
-  } else if (page.cover?.type === "file") {
-    coverUrl = page.cover.file.url;
+  const localCover = staticCoverMap[slug];
+  if (localCover) {
+    coverUrl = localCover;
+  } else {
+    const coverFile = getFiles(props.Cover);
+    if (coverFile) {
+      coverUrl = coverFile;
+    } else if (page.cover?.type === "external") {
+      coverUrl = page.cover.external.url;
+    } else if (page.cover?.type === "file") {
+      coverUrl = page.cover.file.url;
+    }
   }
 
   // Tags: combine Services + Platform multi-selects
@@ -176,14 +182,20 @@ function parseCaseStudyDetail(page: PageObjectResponse): CaseStudyDetail {
   const order = getNumber(props.Order);
   const status = getSelect(props.Status);
 
+  // Cover: prefer local static covers (fast CDN), then Notion file property, then page cover
   let coverUrl = "/cover-placeholder.svg";
-  const coverFile = getFiles(props.Cover);
-  if (coverFile) {
-    coverUrl = coverFile;
-  } else if (page.cover?.type === "external") {
-    coverUrl = page.cover.external.url;
-  } else if (page.cover?.type === "file") {
-    coverUrl = page.cover.file.url;
+  const localCover2 = staticCoverMap[slug];
+  if (localCover2) {
+    coverUrl = localCover2;
+  } else {
+    const coverFile = getFiles(props.Cover);
+    if (coverFile) {
+      coverUrl = coverFile;
+    } else if (page.cover?.type === "external") {
+      coverUrl = page.cover.external.url;
+    } else if (page.cover?.type === "file") {
+      coverUrl = page.cover.file.url;
+    }
   }
 
   const heroImages = getAllFiles(props["Hero Images"]);
