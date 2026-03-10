@@ -300,12 +300,6 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
         {/* Left — Copy */}
         <div className="flex-1 text-white">
-          {/* Logo */}
-          {assets.branding["logo"] && (
-            <div className="mb-4 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/90">
-              <Img src={assets.branding["logo"]} alt="Yummy Labs" className="h-full w-full object-contain" />
-            </div>
-          )}
           <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
             The problem I saw
           </span>
@@ -328,8 +322,13 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
             href={YUMMY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#1a0ed4] px-6 py-3 font-body text-[14px] font-semibold text-sand-100 transition-colors hover:bg-[#150bba]"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#1a0ed4] px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-colors hover:bg-[#150bba]"
           >
+            {assets.branding["logo"] && (
+              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-md bg-white/90">
+                <Img src={assets.branding["logo"]} alt="" className="h-full w-full object-contain" />
+              </span>
+            )}
             Visit yummy-labs.com
           </a>
         </div>
