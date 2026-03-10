@@ -336,7 +336,7 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
 
         {/* Right — Glassmorphism Video */}
         <div className="flex-1">
-          <GlassmorphismVideoFrame videoUrl={assets.videos["demo-video"]} />
+          <GlassmorphismVideoFrame videoUrl="/videos/carmenvideo.mp4" />
         </div>
       </div>
     </div>
