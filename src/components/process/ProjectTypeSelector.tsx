@@ -23,14 +23,25 @@ export function ProjectTypeSelector({ activeMode, onChange }: ProjectTypeSelecto
               key={btn.id}
               whileTap={{ scale: 0.97 }}
               onClick={() => onChange(btn.id)}
-              className={`relative flex items-center gap-2 rounded-lg px-4 py-2 text-13 font-medium transition-all ${
+              className={`relative flex items-center gap-2 rounded-lg px-4 py-2 text-13 font-medium transition-colors ${
                 isActive
-                  ? "bg-white text-brand-ink shadow-sm"
+                  ? "text-brand-ink"
                   : "text-neutral-600 hover:text-neutral-600"
               }`}
             >
-              <span className="text-[16px]">{btn.emoji}</span>
-              <span>{btn.label}</span>
+              {isActive && (
+                <motion.span
+                  layoutId="project-type-pill"
+                  className="absolute inset-0 rounded-lg bg-white shadow-sm"
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 30,
+                  }}
+                />
+              )}
+              <span className="relative text-[16px]">{btn.emoji}</span>
+              <span className="relative">{btn.label}</span>
             </motion.button>
           );
         })}
