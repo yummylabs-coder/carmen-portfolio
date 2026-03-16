@@ -91,9 +91,11 @@ const cards = [
 export function FlipCards() {
   const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
   const canHover = useRef(false);
+  const prefersReducedMotion = useRef(false);
 
   useEffect(() => {
     canHover.current = window.matchMedia("(hover: hover)").matches;
+    prefersReducedMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }, []);
 
   return (
@@ -112,7 +114,7 @@ export function FlipCards() {
             <div
               key={i}
               className="h-[88px] cursor-pointer"
-              style={{ perspective: "1000px" }}
+              style={{ perspective: "900px" }}
               onClick={() => setFlippedIndex(isFlipped ? null : i)}
               onMouseEnter={() => {
                 if (canHover.current) setFlippedIndex(i);
@@ -122,10 +124,18 @@ export function FlipCards() {
               }}
             >
               <div
-                className="relative h-full w-full transition-transform duration-500"
+                className="relative h-full w-full"
                 style={{
                   transformStyle: "preserve-3d",
-                  transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
+                  transition: prefersReducedMotion.current
+                    ? "opacity 0.01ms"
+                    : "transform 420ms cubic-bezier(0.4, 0.0, 0.15, 1), box-shadow 350ms ease-out",
+                  transform: isFlipped
+                    ? "rotateY(180deg) translateY(-2px) scale(1.01)"
+                    : "rotateY(0deg) translateY(0px) scale(1)",
+                  boxShadow: isFlipped
+                    ? "0 6px 16px rgba(0,0,0,0.08)"
+                    : "0 0px 0px rgba(0,0,0,0)",
                 }}
               >
                 {/* Front */}
