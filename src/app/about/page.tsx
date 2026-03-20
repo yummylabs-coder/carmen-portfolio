@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { AboutPageContent } from "@/components/about/AboutPageContent";
-import { getTravelDestinations, getTracks } from "@/lib/notion";
+import { getTracks } from "@/lib/notion";
 import { aboutPhotos } from "@/lib/about-photos";
+import { travelDestinations } from "@/lib/travel-data";
 
 export const metadata: Metadata = {
   title: "About",
@@ -13,11 +14,9 @@ export const metadata: Metadata = {
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 export default async function AboutPage() {
-  const [destinations, tracks] = await Promise.all([
-    getTravelDestinations(),
-    getTracks(),
-  ]);
+  const tracks = await getTracks();
   const photos = aboutPhotos;
+  const destinations = travelDestinations;
 
   return (
     <DashboardShell>
