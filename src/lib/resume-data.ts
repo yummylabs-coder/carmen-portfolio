@@ -5,7 +5,7 @@ export const resumeProfile = {
   title: "Product Designer & Strategist",
   email: "carmenrincon92@gmail.com",
   portfolio: "carmen-portfolio-iota.vercel.app",
-  linkedin: "linkedin.com/in/carmenrincon",
+  linkedin: "linkedin.com/in/carmenerincon",
   accelerator: "yummy-labs.com",
   summary:
     "Product designer with 9+ years of experience building end-to-end digital products across startups and scale-ups. I specialize in turning complex problems into clear, delightful user experiences, from early research and strategy through high-fidelity design systems and production code. Passionate about AI-powered tools and helping other designers level up their craft.",

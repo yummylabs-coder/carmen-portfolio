@@ -319,7 +319,7 @@ function EmailCard() {
         carmenrincon92@gmail.com
       </a>
       <a
-        href="https://linkedin.com/in/carmenrincon"
+        href="https://www.linkedin.com/in/carmenerincon/"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center gap-[6px] rounded-lg bg-white/15 px-3 py-1.5 text-12 font-medium text-white transition-colors hover:bg-white/25"
