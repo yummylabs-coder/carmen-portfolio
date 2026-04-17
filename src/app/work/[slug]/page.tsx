@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCaseStudyBySlug, getCaseStudySections, getNextCaseStudy, getAllProjects } from "@/lib/notion";
 import { getCaseStudyConfig } from "@/lib/case-study-config";
+import { fallbackProjects, getStaticCover } from "@/lib/fallback-projects";
+import type { CaseStudyDetail } from "@/lib/types";
 import { AtmosphericImage } from "@/components/case-study/AtmosphericImage";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ProgressBar } from "@/components/case-study/ProgressBar";
@@ -101,8 +103,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CaseStudyPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const study = await getCaseStudyBySlug(slug);
-  if (!study) notFound();
+  let study = await getCaseStudyBySlug(slug);
+
+  // Fallback: if Notion is down but we have hardcoded sections, render with minimal data
+  if (!study) {
+    const fb = fallbackProjects.find((p) => p.slug === slug);
+    if (fb && customSectionMap[slug]) {
+      study = {
+        id: fb.id,
+        title: fb.title,
+        slug: fb.slug,
+        partner: "",
+        headline: "",
+        summary: fb.summary,
+        overview: "",
+        challenge: "",
+        coverUrl: getStaticCover(slug),
+        heroImages: [],
+        mainHeroImage: "",
+        roleDescription: "",
+        services: [],
+        platform: [],
+        industry: "",
+        projectType: "",
+        websiteUrl: "",
+        outcomes: [],
+        order: fb.sortOrder ?? 0,
+        status: "Published",
+      } satisfies CaseStudyDetail;
+    } else {
+      notFound();
+    }
+  }
 
   const [sections, nextProject] = await Promise.all([
     getCaseStudySections(study.id),
