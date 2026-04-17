@@ -6,30 +6,42 @@ import Image from "next/image";
 const smooth = [0.25, 0.1, 0.25, 1] as const;
 
 /**
- * Animated hero visual for the Ausventure case study.
- * Compass centered in the container with destination chips
- * stacked vertically to the right of it.
+ * Ausventure hero — compass centered with destination badges
+ * floating at the corners, slightly overlapping the ring.
+ * "Locating..." sits directly below the compass.
  */
 
 const DESTINATIONS = [
   {
     text: "Great Barrier Reef",
     image: "/images/ausventure/great-barrier-reef.avif",
+    // Top-right corner of compass
+    style: { top: "-8%", right: "-35%" },
+    floatY: [-3, 3, -3] as number[],
+    floatDuration: 4.5,
     delay: 0,
   },
   {
     text: "Blue Mountains",
     image: "/images/ausventure/blue-mountains.avif",
+    // Middle-right, slightly outside
+    style: { top: "38%", right: "-42%" },
+    floatY: [-4, 4, -4] as number[],
+    floatDuration: 5.2,
     delay: 0.3,
   },
   {
     text: "Milford Sound",
     image: "/images/ausventure/milford-sound.avif",
+    // Bottom-left corner of compass
+    style: { bottom: "2%", left: "-30%" },
+    floatY: [-3, 3, -3] as number[],
+    floatDuration: 4.8,
     delay: 0.6,
   },
-] as const;
+];
 
-/** Generate tick marks around the compass — all off-white */
+/** Generate tick marks — all off-white */
 function CompassTicks() {
   const ticks = [];
   for (let deg = 0; deg < 360; deg += 6) {
@@ -61,49 +73,41 @@ export function AusventureHeroVisual() {
 
   return (
     <motion.div
-      className="relative mx-auto flex w-full max-w-[420px] flex-col items-center justify-center"
-      style={{ minHeight: 460 }}
+      className="relative mx-auto flex w-full max-w-[380px] flex-col items-center justify-center"
+      style={{ minHeight: 420 }}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8, ease: smooth }}
     >
-      {/* ── Layout: compass centered, chips stacked to the right ── */}
-      <div className="relative flex items-center gap-4">
-        {/* Compass */}
+      {/* ── Compass wrapper — badges positioned relative to this ── */}
+      <div className="relative">
+        {/* Compass SVG — slightly bigger */}
         <motion.div
-          className="relative shrink-0"
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2, ease: smooth }}
         >
           <svg
-            width="220"
-            height="220"
+            width="240"
+            height="240"
             viewBox="-20 -20 260 260"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            {/* Outer circle */}
             <circle cx="110" cy="110" r="100" stroke="#F2E9DA" strokeWidth="1" opacity="0.35" />
-            {/* Tick marks */}
             <CompassTicks />
-            {/* Inner circle */}
             <circle cx="110" cy="110" r="78" stroke="#F2E9DA" strokeWidth="0.8" opacity="0.2" />
-            {/* Center glow */}
             <circle cx="110" cy="110" r="30" fill="url(#centerGlow)" opacity="0.15" />
-            {/* Crosshair */}
             <line x1="110" y1="85" x2="110" y2="135" stroke="#F2E9DA" strokeWidth="0.6" opacity="0.2" />
             <line x1="85" y1="110" x2="135" y2="110" stroke="#F2E9DA" strokeWidth="0.6" opacity="0.2" />
-            {/* Cardinal directions — outside the ring */}
+            {/* Cardinal directions — outside ring */}
             <text x="110" y="-6" textAnchor="middle" fill="#F2E9DA" fontSize="14" fontWeight="800" fontFamily="'Archivo', system-ui">N</text>
             <text x="110" y="234" textAnchor="middle" fill="#F2E9DA" fontSize="12" fontWeight="600" fontFamily="'Archivo', system-ui" opacity="0.6">S</text>
             <text x="-10" y="114" textAnchor="middle" fill="#F2E9DA" fontSize="12" fontWeight="600" fontFamily="'Archivo', system-ui" opacity="0.6">W</text>
             <text x="230" y="114" textAnchor="middle" fill="#F2E9DA" fontSize="12" fontWeight="600" fontFamily="'Archivo', system-ui" opacity="0.6">E</text>
-            {/* Red north marker */}
             <polygon points="110,5 106,13 114,13" fill="#E8543E" />
             <line x1="110" y1="-1" x2="110" y2="5" stroke="#F2E9DA" strokeWidth="2.5" />
-            {/* Center dot */}
             <circle cx="110" cy="110" r="3.5" fill="#F2E9DA" />
             <circle cx="110" cy="110" r="1.5" fill="#19323A" />
             <defs>
@@ -142,17 +146,31 @@ export function AusventureHeroVisual() {
           </motion.div>
         </motion.div>
 
-        {/* Destination chips — stacked vertically to the right */}
-        <div className="flex flex-col gap-3">
-          {DESTINATIONS.map((dest, i) => (
+        {/* ── Destination badges — absolutely positioned at compass corners ── */}
+        {DESTINATIONS.map((dest, i) => (
+          <motion.div
+            key={dest.text}
+            className="absolute z-10"
+            style={dest.style}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.6,
+              delay: shouldReduce ? 0.3 + i * 0.15 : 4.2 + dest.delay,
+              ease: smooth,
+            }}
+          >
             <motion.div
-              key={dest.text}
-              initial={{ opacity: 0, x: 20, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
+              animate={
+                shouldReduce
+                  ? {}
+                  : { y: dest.floatY }
+              }
               transition={{
-                duration: 0.6,
-                delay: shouldReduce ? 0.3 + i * 0.15 : 4.2 + dest.delay,
-                ease: smooth,
+                duration: dest.floatDuration,
+                delay: 5 + i * 0.3,
+                repeat: Infinity,
+                ease: "easeInOut",
               }}
             >
               <div className="flex items-center gap-2.5 rounded-full border border-white/15 bg-[#19323A]/75 py-1.5 pl-1.5 pr-4 backdrop-blur-lg">
@@ -171,13 +189,13 @@ export function AusventureHeroVisual() {
                 </span>
               </div>
             </motion.div>
-          ))}
-        </div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* "Locating..." — centered below compass */}
+      {/* "Locating..." — directly below compass, no gap */}
       <motion.p
-        className="mt-6 text-center font-brand text-[15px] font-medium tracking-[0.08em] text-white/50"
+        className="mt-2 text-center font-brand text-[15px] font-medium tracking-[0.08em] text-white/50"
         initial={{ opacity: 0 }}
         animate={
           shouldReduce
