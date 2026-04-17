@@ -391,9 +391,7 @@ const BOOKING_PHONES = [
 
 const BOOKING_DESKTOPS = [
   { src: "/images/ausventure/desktop-2.png", alt: "Camper detail page with vehicle specs and pricing" },
-  { src: "/images/ausventure/desktop-3.png", alt: "Camper booking flow with date and route selection" },
   { src: "/images/ausventure/desktop-4.png", alt: "Experience detail page with activity info and gallery" },
-  { src: "/images/ausventure/desktop-5.png", alt: "Experience booking flow with group size and payment" },
 ];
 
 const BOOKING_FLOAT_OFFSETS = [7, -5, 8, -6];
@@ -491,47 +489,38 @@ function BookingSection({ accentColor }: { accentColor: string }) {
           }}
         />
 
-        {/* Desktop: 2×2 grid with iMac frames */}
-        <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {BOOKING_DESKTOPS.map((screen, i) => (
-            <motion.div
-              key={screen.src}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-            >
-              <DesktopFrame src={screen.src} alt={screen.alt} />
-            </motion.div>
+        {/* Row 1: Camper — 1 full-width iMac */}
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <DesktopFrame src={BOOKING_DESKTOPS[0].src} alt={BOOKING_DESKTOPS[0].alt} />
+        </motion.div>
+
+        {/* Row 2: Camper — 3 floating phones */}
+        <div className="relative mt-8 flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+          {BOOKING_PHONES.slice(0, 3).map((phone, i) => (
+            <BookingPhone key={phone.src} src={phone.src} alt={phone.alt} index={i} inView={isInView} />
           ))}
         </div>
 
-        {/* Mobile: 4 floating phones in a row */}
-        <div className="relative mt-10">
-          {/* Desktop: single row */}
-          <div className="hidden items-center justify-center gap-5 sm:flex lg:gap-7">
-            {BOOKING_PHONES.map((phone, i) => (
-              <BookingPhone
-                key={phone.src}
-                src={phone.src}
-                alt={phone.alt}
-                index={i}
-                inView={isInView}
-              />
-            ))}
-          </div>
-          {/* Mobile: 2×2 grid */}
-          <div className="grid grid-cols-2 gap-4 sm:hidden">
-            {BOOKING_PHONES.map((phone, i) => (
-              <div key={phone.src} className="flex justify-center">
-                <BookingPhone
-                  src={phone.src}
-                  alt={phone.alt}
-                  index={i}
-                  inView={isInView}
-                />
-              </div>
-            ))}
-          </div>
+        {/* Row 3: Experience — 1 full-width iMac */}
+        <motion.div
+          className="relative mt-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+        >
+          <DesktopFrame src={BOOKING_DESKTOPS[1].src} alt={BOOKING_DESKTOPS[1].alt} />
+        </motion.div>
+
+        {/* Row 4: Experience — 3 floating phones */}
+        <div className="relative mt-8 flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+          {BOOKING_PHONES.slice(1, 4).map((phone, i) => (
+            <BookingPhone key={phone.src} src={phone.src} alt={phone.alt} index={i} inView={isInView} />
+          ))}
         </div>
       </div>
     </div>
