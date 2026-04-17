@@ -32,16 +32,23 @@ const IMAGES = {
 
 /* ─── Color palette ─── */
 const ausventureColors = [
-  { name: "Deep Teal", hex: "#143B39" },
-  { name: "Ocean Teal", hex: "#11607D" },
-  { name: "Forest", hex: "#2A5553" },
-  { name: "Sea Foam", hex: "#8AB5B3" },
-  { name: "Mist", hex: "#C4D8D7" },
-  { name: "Warm Cream", hex: "#F2E9DA" },
-  { name: "Sand", hex: "#E8DCC8" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Charcoal", hex: "#2C2C2C" },
-  { name: "Bark", hex: "#5A4A3A" },
+  // Primary
+  { name: "Brand Blue", hex: "#19323A" },
+  { name: "Brand Orange", hex: "#F58639" },
+  { name: "Brand White", hex: "#FFFCFA" },
+  // Secondary
+  { name: "Light Blue", hex: "#C3E1E1" },
+  { name: "Green", hex: "#DBDD82" },
+  // Tones
+  { name: "Dark Blue 600", hex: "#12252B" },
+  { name: "Dark Blue 500", hex: "#2E5C6B" },
+  { name: "Light Blue 300", hex: "#559CAA" },
+  { name: "Light Blue 200", hex: "#99CCCC" },
+  { name: "Warm Orange 500", hex: "#F16C11" },
+  // Neutrals
+  { name: "Grey 500", hex: "#626C72" },
+  { name: "Beige 400", hex: "#FCF4EA" },
+  { name: "Copy Black", hex: "#0F1F24" },
 ];
 
 /* ─── Typography ─── */
