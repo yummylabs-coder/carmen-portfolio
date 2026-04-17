@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import {
@@ -526,6 +526,7 @@ const AUSVENTURE_OUTCOMES = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function OutcomeSection({ accentColor }: { accentColor: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
