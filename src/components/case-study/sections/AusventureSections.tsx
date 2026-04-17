@@ -54,33 +54,30 @@ const ausventureColors = [
 ];
 
 /* ─── Typography ─── */
-const archivoUrl = "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Figtree:wght@400;500;600&display=swap";
-const typeSamples = [
-  {
-    label: "Display",
-    text: "Experience Australia & New Zealand. Like never before.",
-    fontFamily: "'Archivo', sans-serif",
-    fontWeight: 800,
-    fontSize: 42,
-    letterSpacing: "-0.02em",
-  },
-  {
-    label: "Heading",
-    text: "Let the road be the experience of a lifetime.",
-    fontFamily: "'Archivo', sans-serif",
-    fontWeight: 600,
-    fontSize: 26,
-    letterSpacing: "-0.01em",
-  },
-  {
-    label: "Body",
-    text: "Premium self-drive tours across Australia and New Zealand, designed for travellers who want freedom with confidence.",
-    fontFamily: "'Figtree', sans-serif",
-    fontWeight: 400,
-    fontSize: 16,
-    lineHeight: 1.7,
-  },
+const fontsUrl = "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap";
+
+/* Display + Headings: Archivo */
+const archivoSamples = [
+  { label: "H1", text: "Experience Australia & New Zealand", fontFamily: "'Archivo', sans-serif", fontWeight: 800, fontSize: 42, lineHeight: 1.1 },
+  { label: "H2", text: "Let the road be the experience", fontFamily: "'Archivo', sans-serif", fontWeight: 800, fontSize: 32, lineHeight: 1.14 },
+  { label: "H3", text: "This is a title", fontFamily: "'Archivo', sans-serif", fontWeight: 800, fontSize: 26, lineHeight: 1.13 },
+  { label: "H4", text: "This is a title", fontFamily: "'Archivo', sans-serif", fontWeight: 700, fontSize: 22, lineHeight: 1.25 },
+  { label: "H5", text: "This is a title", fontFamily: "'Archivo', sans-serif", fontWeight: 600, fontSize: 18, lineHeight: 1.25 },
+  { label: "H6", text: "This is a title", fontFamily: "'Archivo', sans-serif", fontWeight: 700, fontSize: 16, lineHeight: 1.4 },
 ];
+
+/* Body: Figtree */
+const figtreeSamples = [
+  { label: "L/Regular", text: "Premium self-drive tours across Australia and New Zealand.", fontFamily: "'Figtree', sans-serif", fontWeight: 400, fontSize: 18, lineHeight: 1.33 },
+  { label: "L/Bold", text: "Premium self-drive tours across Australia and New Zealand.", fontFamily: "'Figtree', sans-serif", fontWeight: 700, fontSize: 18, lineHeight: 1.33 },
+  { label: "M/Regular", text: "Designed for travellers who want freedom with confidence.", fontFamily: "'Figtree', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: 1.38 },
+  { label: "M/Bold", text: "Designed for travellers who want freedom with confidence.", fontFamily: "'Figtree', sans-serif", fontWeight: 700, fontSize: 16, lineHeight: 1.38 },
+  { label: "S/Regular", text: "This is your body", fontFamily: "'Figtree', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: 1.43 },
+  { label: "S/Bold", text: "This is your body", fontFamily: "'Figtree', sans-serif", fontWeight: 700, fontSize: 14, lineHeight: 1.43 },
+  { label: "Caption", text: "This is your body", fontFamily: "'Figtree', sans-serif", fontWeight: 500, fontSize: 12, lineHeight: 1.33 },
+  { label: "Button", text: "This is your body", fontFamily: "'Figtree', sans-serif", fontWeight: 600, fontSize: 16, lineHeight: 1.25 },
+];
+
 
 /* ═══════════════════════════════════
    Section 1 — At a Glance
@@ -252,14 +249,25 @@ function DesignLanguageSection({ accentColor }: { accentColor: string }) {
         <ColorPalette colors={ausventureColors} />
       </div>
 
-      {/* Typography */}
+      {/* Typography — Archivo (Display/Headings) */}
       <div className="mt-10">
-        <h3 className="mb-4 text-14 font-semibold text-brand-ink">Typography</h3>
+        <h3 className="mb-4 text-14 font-semibold text-brand-ink">Display &amp; Headings</h3>
         <TypeShowcase
           fontName="Archivo"
           fontCategory="Grotesque Sans-Serif"
-          samples={typeSamples}
-          googleFontUrl={archivoUrl}
+          samples={archivoSamples}
+          googleFontUrl={fontsUrl}
+        />
+      </div>
+
+      {/* Typography — Figtree (Body) */}
+      <div className="mt-10">
+        <h3 className="mb-4 text-14 font-semibold text-brand-ink">Body &amp; UI Text</h3>
+        <TypeShowcase
+          fontName="Figtree"
+          fontCategory="Geometric Sans-Serif"
+          samples={figtreeSamples}
+          googleFontUrl={fontsUrl}
         />
       </div>
 
