@@ -489,9 +489,9 @@ function BookingSection({ accentColor }: { accentColor: string }) {
           }}
         />
 
-        {/* Row 1: Camper — 1 full-width iMac */}
+        {/* Row 1: Camper — 1 iMac (capped smaller to balance with phones) */}
         <motion.div
-          className="relative"
+          className="relative mx-auto max-w-[700px]"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -506,9 +506,9 @@ function BookingSection({ accentColor }: { accentColor: string }) {
           ))}
         </div>
 
-        {/* Row 3: Experience — 1 full-width iMac */}
+        {/* Row 3: Experience — 1 iMac (capped smaller to balance with phones) */}
         <motion.div
-          className="relative mt-10"
+          className="relative mx-auto mt-10 max-w-[700px]"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
