@@ -382,13 +382,15 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
    ═══════════════════════════════════ */
 
 /* Placeholder images — replace with dedicated Figma exports when ready */
-const BOOKING_PHONES = [
+const BOOKING_PHONES_ROW1 = [
   { src: "/images/ausventure/booking-phone-1.png", alt: "Camper detail page on mobile" },
   { src: "/images/ausventure/booking-phone-2.png", alt: "Camper booking flow on mobile" },
   { src: "/images/ausventure/booking-phone-3.png", alt: "Camper inquiry form on mobile" },
-  { src: "/images/ausventure/phone-4.png", alt: "Experience detail page on mobile" },
-  { src: "/images/ausventure/phone-5.png", alt: "Experience booking flow on mobile" },
-  { src: "/images/ausventure/phone-3.png", alt: "Experience inquiry on mobile" },
+];
+
+const BOOKING_PHONES_ROW2 = [
+  { src: "/images/ausventure/booking-phone-4.png", alt: "Experience detail page on mobile" },
+  { src: "/images/ausventure/booking-phone-5.png", alt: "Experience booking flow on mobile" },
 ];
 
 const BOOKING_DESKTOPS = [
@@ -503,7 +505,7 @@ function BookingSection({ accentColor }: { accentColor: string }) {
 
         {/* Row 2: Camper — 3 floating phones */}
         <div className="relative mt-8 flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
-          {BOOKING_PHONES.slice(0, 3).map((phone, i) => (
+          {BOOKING_PHONES_ROW1.map((phone, i) => (
             <BookingPhone key={phone.src} src={phone.src} alt={phone.alt} index={i} inView={isInView} />
           ))}
         </div>
@@ -520,7 +522,7 @@ function BookingSection({ accentColor }: { accentColor: string }) {
 
         {/* Row 4: Experience — 3 floating phones */}
         <div className="relative mt-8 flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
-          {BOOKING_PHONES.slice(3, 6).map((phone, i) => (
+          {BOOKING_PHONES_ROW2.map((phone, i) => (
             <BookingPhone key={phone.src} src={phone.src} alt={phone.alt} index={i} inView={isInView} />
           ))}
         </div>
