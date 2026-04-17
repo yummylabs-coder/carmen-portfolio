@@ -390,7 +390,7 @@ const BOOKING_PHONES = [
 ];
 
 const BOOKING_DESKTOPS = [
-  { src: "/images/ausventure/desktop-2.png", alt: "Camper detail page with vehicle specs and pricing" },
+  { src: "/images/ausventure/booking-desktop-1.png", alt: "Camper detail page with vehicle specs and pricing" },
   { src: "/images/ausventure/desktop-4.png", alt: "Experience detail page with activity info and gallery" },
 ];
 
