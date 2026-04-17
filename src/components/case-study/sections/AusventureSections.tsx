@@ -391,7 +391,7 @@ const BOOKING_PHONES = [
 
 const BOOKING_DESKTOPS = [
   { src: "/images/ausventure/booking-desktop-1.png", alt: "Camper detail page with vehicle specs and pricing" },
-  { src: "/images/ausventure/desktop-4.png", alt: "Experience detail page with activity info and gallery" },
+  { src: "/images/ausventure/booking-desktop-2.png", alt: "Experience detail page with activity info and gallery" },
 ];
 
 const BOOKING_FLOAT_OFFSETS = [7, -5, 8, -6];
