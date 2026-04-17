@@ -389,8 +389,8 @@ const BOOKING_PHONES_ROW1 = [
 ];
 
 const BOOKING_PHONES_ROW2 = [
-  { src: "/images/ausventure/booking-phone-4.png", alt: "Experience detail page on mobile" },
-  { src: "/images/ausventure/booking-phone-5.png", alt: "Experience booking flow on mobile" },
+  { src: "/images/ausventure/booking-phone-5.png", alt: "Experience confirm and pay on mobile" },
+  { src: "/images/ausventure/booking-phone-4.png", alt: "Experience booking confirmation on mobile" },
 ];
 
 const BOOKING_DESKTOPS = [
