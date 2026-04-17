@@ -11,6 +11,7 @@ import {
   TestimonialCard,
 } from "@/components/case-study/interactive";
 import { SectionLabel } from "@/components/case-study/SectionLabel";
+import { DesktopFrame } from "@/components/case-study/DesktopFrame";
 
 /* ─── Image URLs ─── */
 const IMAGES = {
@@ -376,31 +377,81 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
 
 /* ═══════════════════════════════════
    Section 5 — From Browsing to Booking
+   Branded backdrop with floating device frames
+   (Neotaste Invites pattern adapted for desktop + mobile)
    ═══════════════════════════════════ */
 
-/* Placeholder images — replace with Figma exports when ready */
-const BOOKING_SCREENS = {
-  camper: {
-    desktop: [
-      { src: "/images/ausventure/desktop-2.png", alt: "Camper detail page with vehicle specs and pricing" },
-      { src: "/images/ausventure/desktop-3.png", alt: "Camper booking flow with date and route selection" },
-    ],
-    mobile: [
-      { src: "/images/ausventure/phone-2.png", alt: "Camper detail page on mobile" },
-      { src: "/images/ausventure/phone-3.png", alt: "Camper booking flow on mobile" },
-    ],
-  },
-  experience: {
-    desktop: [
-      { src: "/images/ausventure/desktop-4.png", alt: "Experience detail page with activity info and gallery" },
-      { src: "/images/ausventure/desktop-5.png", alt: "Experience booking flow with group size and payment" },
-    ],
-    mobile: [
-      { src: "/images/ausventure/phone-4.png", alt: "Experience detail page on mobile" },
-      { src: "/images/ausventure/phone-5.png", alt: "Experience booking flow on mobile" },
-    ],
-  },
-};
+/* Placeholder images — replace with dedicated Figma exports when ready */
+const BOOKING_PHONES = [
+  { src: "/images/ausventure/phone-2.png", alt: "Camper detail page on mobile" },
+  { src: "/images/ausventure/phone-3.png", alt: "Camper booking flow on mobile" },
+  { src: "/images/ausventure/phone-4.png", alt: "Experience detail page on mobile" },
+  { src: "/images/ausventure/phone-5.png", alt: "Experience booking flow on mobile" },
+];
+
+const BOOKING_DESKTOPS = [
+  { src: "/images/ausventure/desktop-2.png", alt: "Camper detail page with vehicle specs and pricing" },
+  { src: "/images/ausventure/desktop-3.png", alt: "Camper booking flow with date and route selection" },
+  { src: "/images/ausventure/desktop-4.png", alt: "Experience detail page with activity info and gallery" },
+  { src: "/images/ausventure/desktop-5.png", alt: "Experience booking flow with group size and payment" },
+];
+
+const BOOKING_FLOAT_OFFSETS = [7, -5, 8, -6];
+
+/** Floating phone with proper iPhone bezel matching Neotaste pattern */
+function BookingPhone({
+  src,
+  alt,
+  index,
+  inView,
+}: {
+  src: string;
+  alt: string;
+  index: number;
+  inView: boolean;
+}) {
+  const floatOffset = BOOKING_FLOAT_OFFSETS[index];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={
+        inView
+          ? { opacity: 1, y: [floatOffset, -floatOffset, floatOffset] as number[] }
+          : { opacity: 0, y: 40 }
+      }
+      transition={{
+        opacity: { duration: 0.7, delay: index * 0.1, ease: "easeOut" },
+        y: {
+          delay: 0.5 + index * 0.15,
+          duration: 6,
+          ease: "easeInOut",
+          repeat: Infinity,
+          repeatType: "mirror" as const,
+        },
+      }}
+      className="w-[140px] flex-shrink-0 sm:w-[160px] md:w-[180px] lg:w-[200px]"
+    >
+      <div
+        className="overflow-hidden rounded-[28px] border-[6px] border-[#1d1d1f] bg-[#1d1d1f] sm:rounded-[32px] sm:border-[7px] md:rounded-[36px] md:border-[8px]"
+        style={{
+          filter: "drop-shadow(0 16px 32px rgba(0,0,0,0.2)) drop-shadow(0 6px 12px rgba(0,0,0,0.12))",
+        }}
+      >
+        <div className="relative overflow-hidden rounded-[22px] bg-black sm:rounded-[25px] md:rounded-[28px]">
+          {/* Dynamic Island */}
+          <div className="absolute left-1/2 top-[8px] z-10 h-[16px] w-[56px] -translate-x-1/2 rounded-full bg-black sm:top-[9px] sm:h-[18px] sm:w-[64px] md:top-[10px] md:h-[20px] md:w-[72px]" />
+          {/* Screen */}
+          <div className="aspect-[9/19.5] w-full overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+          </div>
+          {/* Home indicator */}
+          <div className="absolute bottom-[4px] left-1/2 z-10 h-[3px] w-[72px] -translate-x-1/2 rounded-full bg-white/30 sm:bottom-[5px] sm:h-[3.5px] sm:w-[84px] md:bottom-[6px] md:h-[4px] md:w-[92px]" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 function BookingSection({ accentColor }: { accentColor: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -421,107 +472,64 @@ function BookingSection({ accentColor }: { accentColor: string }) {
         </p>
       </SectionReveal>
 
-      <div ref={ref} className="mt-10 flex flex-col gap-12">
-        {/* ── Camper Journey ── */}
-        <div>
-          <div className="mb-4 flex items-center gap-2">
-            <span className="text-20">🏕️</span>
-            <h3 className="text-16 font-semibold text-brand-ink">Camper Journey</h3>
-          </div>
+      {/* ── Desktop screens on branded backdrop ── */}
+      <div
+        ref={ref}
+        className="relative mt-10 overflow-hidden rounded-2xl px-4 py-10 sm:px-6 sm:py-12 md:px-8 md:py-14"
+        style={{
+          background: "linear-gradient(170deg, #12252B 0%, #19323A 50%, #2E5C6B 100%)",
+        }}
+      >
+        {/* Subtle glow */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: 500,
+            height: 500,
+            background: `radial-gradient(circle, ${accentColor}12 0%, transparent 70%)`,
+            filter: "blur(60px)",
+          }}
+        />
 
-          {/* Desktop pair */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {BOOKING_SCREENS.camper.desktop.map((screen, i) => (
-              <motion.div
-                key={screen.src}
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.12, ease: "easeOut" }}
-                className="overflow-hidden rounded-xl border border-sand-200 bg-white"
-              >
-                <Image
-                  src={screen.src}
-                  alt={screen.alt}
-                  width={1440}
-                  height={900}
-                  className="w-full object-cover object-top"
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile pair */}
-          <div className="mt-4 flex justify-center gap-4 sm:gap-6">
-            {BOOKING_SCREENS.camper.mobile.map((screen, i) => (
-              <motion.div
-                key={screen.src}
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                transition={{ duration: 0.5, delay: 0.3 + i * 0.12, ease: "easeOut" }}
-                className="w-[140px] overflow-hidden rounded-2xl border-[3px] border-neutral-800 bg-white sm:w-[160px] lg:w-[180px]"
-              >
-                <Image
-                  src={screen.src}
-                  alt={screen.alt}
-                  width={390}
-                  height={845}
-                  className="w-full object-cover"
-                  sizes="180px"
-                />
-              </motion.div>
-            ))}
-          </div>
+        {/* Desktop: 2×2 grid with iMac frames */}
+        <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {BOOKING_DESKTOPS.map((screen, i) => (
+            <motion.div
+              key={screen.src}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
+            >
+              <DesktopFrame src={screen.src} alt={screen.alt} />
+            </motion.div>
+          ))}
         </div>
 
-        {/* ── Experience Journey ── */}
-        <div>
-          <div className="mb-4 flex items-center gap-2">
-            <span className="text-20">🏄</span>
-            <h3 className="text-16 font-semibold text-brand-ink">Experience Journey</h3>
-          </div>
-
-          {/* Desktop pair */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {BOOKING_SCREENS.experience.desktop.map((screen, i) => (
-              <motion.div
-                key={screen.src}
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                transition={{ duration: 0.5, delay: 0.5 + i * 0.12, ease: "easeOut" }}
-                className="overflow-hidden rounded-xl border border-sand-200 bg-white"
-              >
-                <Image
-                  src={screen.src}
-                  alt={screen.alt}
-                  width={1440}
-                  height={900}
-                  className="w-full object-cover object-top"
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                />
-              </motion.div>
+        {/* Mobile: 4 floating phones in a row */}
+        <div className="relative mt-10">
+          {/* Desktop: single row */}
+          <div className="hidden items-center justify-center gap-5 sm:flex lg:gap-7">
+            {BOOKING_PHONES.map((phone, i) => (
+              <BookingPhone
+                key={phone.src}
+                src={phone.src}
+                alt={phone.alt}
+                index={i}
+                inView={isInView}
+              />
             ))}
           </div>
-
-          {/* Mobile pair */}
-          <div className="mt-4 flex justify-center gap-4 sm:gap-6">
-            {BOOKING_SCREENS.experience.mobile.map((screen, i) => (
-              <motion.div
-                key={screen.src}
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                transition={{ duration: 0.5, delay: 0.7 + i * 0.12, ease: "easeOut" }}
-                className="w-[140px] overflow-hidden rounded-2xl border-[3px] border-neutral-800 bg-white sm:w-[160px] lg:w-[180px]"
-              >
-                <Image
-                  src={screen.src}
-                  alt={screen.alt}
-                  width={390}
-                  height={845}
-                  className="w-full object-cover"
-                  sizes="180px"
+          {/* Mobile: 2×2 grid */}
+          <div className="grid grid-cols-2 gap-4 sm:hidden">
+            {BOOKING_PHONES.map((phone, i) => (
+              <div key={phone.src} className="flex justify-center">
+                <BookingPhone
+                  src={phone.src}
+                  alt={phone.alt}
+                  index={i}
+                  inView={isInView}
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
