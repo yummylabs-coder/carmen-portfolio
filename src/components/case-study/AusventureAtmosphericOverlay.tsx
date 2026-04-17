@@ -1,36 +1,75 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+
+const TYPEWRITER_TEXT = "3,500+ Experiences & Campers in New Zealand and Australia";
 
 /**
- * Atmospheric overlay for Ausventure — a bold destination stat
- * that sits on top of a full-bleed landscape photo.
- * Pattern matches Water.day's "70%" overlay.
+ * Atmospheric overlay for Ausventure — a typewriter effect
+ * in the bottom-left that types out the key stat.
  */
 export function AusventureAtmosphericOverlay() {
-  return (
-    <div className="relative flex flex-col items-center text-center">
-      {/* "21" — large, bold, staggered entrance */}
-      <motion.span
-        initial={{ opacity: 0, y: 40, scale: 0.85 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        className="font-brand text-[clamp(104px,18vw,180px)] font-extrabold leading-none text-white drop-shadow-[0_6px_40px_rgba(0,0,0,0.5)]"
-      >
-        21
-      </motion.span>
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduce = useReducedMotion();
+  const [displayedChars, setDisplayedChars] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
 
-      {/* Subtitle — fades in after the number */}
-      <motion.span
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-1 text-[clamp(18px,2.5vw,22px)] font-medium tracking-[0.06em] text-white/85 drop-shadow-[0_2px_14px_rgba(0,0,0,0.35)]"
+  // Typewriter effect — type one character at a time
+  useEffect(() => {
+    if (!isInView) return;
+
+    if (shouldReduce) {
+      // Show full text immediately for reduced motion
+      setDisplayedChars(TYPEWRITER_TEXT.length);
+      return;
+    }
+
+    if (displayedChars >= TYPEWRITER_TEXT.length) {
+      // Done typing — blink cursor a few times then hide
+      const blinkTimer = setTimeout(() => setShowCursor(false), 2000);
+      return () => clearTimeout(blinkTimer);
+    }
+
+    const speed = displayedChars === 0 ? 400 : 35 + Math.random() * 25;
+    const timer = setTimeout(() => {
+      setDisplayedChars((prev) => prev + 1);
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [isInView, displayedChars, shouldReduce]);
+
+  // Cursor blink
+  useEffect(() => {
+    if (!isInView || !showCursor) return;
+    const interval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+    return () => clearInterval(interval);
+  }, [isInView, showCursor]);
+
+  return (
+    <div ref={ref} className="relative mx-auto h-full w-full max-w-[1200px]">
+      {/* Bottom-left typewriter text */}
+      <motion.div
+        className="absolute bottom-[8%] left-[4%] max-w-[500px] sm:bottom-[10%] sm:left-[5%]"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
-        destinations across Australia &amp; New Zealand
-      </motion.span>
+        <p
+          className="font-brand text-[24px] font-bold leading-[1.3] text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)] sm:text-[32px]"
+        >
+          {TYPEWRITER_TEXT.slice(0, displayedChars)}
+          {displayedChars < TYPEWRITER_TEXT.length && showCursor && (
+            <span className="ml-[1px] inline-block h-[1em] w-[2px] translate-y-[2px] bg-white" />
+          )}
+          {displayedChars >= TYPEWRITER_TEXT.length && showCursor && (
+            <span className="ml-[1px] inline-block h-[1em] w-[2px] translate-y-[2px] bg-white" />
+          )}
+        </p>
+      </motion.div>
     </div>
   );
 }

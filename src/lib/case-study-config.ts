@@ -339,8 +339,8 @@ const configs: Record<string, CaseStudyConfig> = {
     },
     heroVisual: "ausventure-compass",
     atmosphericImage: {
-      src: "/covers/ausventure.svg",
-      alt: "Ausventure Travel — premium Australian self-drive tour experience",
+      src: "/images/ausventure/atmospheric.avif",
+      alt: "Ausventure Travel — panoramic landscape of Australia",
     },
   },
 
