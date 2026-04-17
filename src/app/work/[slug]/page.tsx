@@ -49,10 +49,18 @@ const skipSharedSections: Record<string, { role?: boolean; outcomes?: boolean }>
 
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
+/** Fallback slugs so pages build even when Notion API is unavailable */
+const FALLBACK_SLUGS = ["water-day", "pandore", "neotaste", "learn-xyz", "ausventure", "klasse"];
+
 /** Pre-build all case study pages at deploy time */
 export async function generateStaticParams() {
   const projects = await getAllProjects();
-  return projects.map((p) => ({ slug: p.slug }));
+  const slugs = projects.length > 0
+    ? projects.map((p) => p.slug)
+    : FALLBACK_SLUGS;
+  // De-dupe in case Notion returns some but not all
+  const unique = Array.from(new Set([...slugs, ...FALLBACK_SLUGS]));
+  return unique.map((slug) => ({ slug }));
 }
 
 interface PageProps {
