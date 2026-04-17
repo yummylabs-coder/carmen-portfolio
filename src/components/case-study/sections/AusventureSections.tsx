@@ -375,7 +375,163 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
 }
 
 /* ═══════════════════════════════════
-   Section 5 — Before & After
+   Section 5 — From Browsing to Booking
+   ═══════════════════════════════════ */
+
+/* Placeholder images — replace with Figma exports when ready */
+const BOOKING_SCREENS = {
+  camper: {
+    desktop: [
+      { src: "/images/ausventure/desktop-2.png", alt: "Camper detail page with vehicle specs and pricing" },
+      { src: "/images/ausventure/desktop-3.png", alt: "Camper booking flow with date and route selection" },
+    ],
+    mobile: [
+      { src: "/images/ausventure/phone-2.png", alt: "Camper detail page on mobile" },
+      { src: "/images/ausventure/phone-3.png", alt: "Camper booking flow on mobile" },
+    ],
+  },
+  experience: {
+    desktop: [
+      { src: "/images/ausventure/desktop-4.png", alt: "Experience detail page with activity info and gallery" },
+      { src: "/images/ausventure/desktop-5.png", alt: "Experience booking flow with group size and payment" },
+    ],
+    mobile: [
+      { src: "/images/ausventure/phone-4.png", alt: "Experience detail page on mobile" },
+      { src: "/images/ausventure/phone-5.png", alt: "Experience booking flow on mobile" },
+    ],
+  },
+};
+
+function BookingSection({ accentColor }: { accentColor: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <div className="mx-auto w-full max-w-5xl">
+      <SectionReveal>
+        <SectionLabel label="Conversion" accentColor={accentColor} />
+        <h2 className="mt-4 font-brand text-28 font-bold text-brand-ink">
+          From browsing to booking
+        </h2>
+        <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
+          Discovery is only half the product. I designed the detail and booking
+          flows to build confidence at every step, with rich imagery, social
+          proof, and progressive forms that guide users from interest to
+          commitment without friction.
+        </p>
+      </SectionReveal>
+
+      <div ref={ref} className="mt-10 flex flex-col gap-12">
+        {/* ── Camper Journey ── */}
+        <div>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-20">🏕️</span>
+            <h3 className="text-16 font-semibold text-brand-ink">Camper Journey</h3>
+          </div>
+
+          {/* Desktop pair */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {BOOKING_SCREENS.camper.desktop.map((screen, i) => (
+              <motion.div
+                key={screen.src}
+                initial={{ opacity: 0, y: 24 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                transition={{ duration: 0.5, delay: 0.1 + i * 0.12, ease: "easeOut" }}
+                className="overflow-hidden rounded-xl border border-sand-200 bg-white"
+              >
+                <Image
+                  src={screen.src}
+                  alt={screen.alt}
+                  width={1440}
+                  height={900}
+                  className="w-full object-cover object-top"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Mobile pair */}
+          <div className="mt-4 flex justify-center gap-4 sm:gap-6">
+            {BOOKING_SCREENS.camper.mobile.map((screen, i) => (
+              <motion.div
+                key={screen.src}
+                initial={{ opacity: 0, y: 24 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.12, ease: "easeOut" }}
+                className="w-[140px] overflow-hidden rounded-2xl border-[3px] border-neutral-800 bg-white sm:w-[160px] lg:w-[180px]"
+              >
+                <Image
+                  src={screen.src}
+                  alt={screen.alt}
+                  width={390}
+                  height={845}
+                  className="w-full object-cover"
+                  sizes="180px"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Experience Journey ── */}
+        <div>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-20">🏄</span>
+            <h3 className="text-16 font-semibold text-brand-ink">Experience Journey</h3>
+          </div>
+
+          {/* Desktop pair */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {BOOKING_SCREENS.experience.desktop.map((screen, i) => (
+              <motion.div
+                key={screen.src}
+                initial={{ opacity: 0, y: 24 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                transition={{ duration: 0.5, delay: 0.5 + i * 0.12, ease: "easeOut" }}
+                className="overflow-hidden rounded-xl border border-sand-200 bg-white"
+              >
+                <Image
+                  src={screen.src}
+                  alt={screen.alt}
+                  width={1440}
+                  height={900}
+                  className="w-full object-cover object-top"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Mobile pair */}
+          <div className="mt-4 flex justify-center gap-4 sm:gap-6">
+            {BOOKING_SCREENS.experience.mobile.map((screen, i) => (
+              <motion.div
+                key={screen.src}
+                initial={{ opacity: 0, y: 24 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                transition={{ duration: 0.5, delay: 0.7 + i * 0.12, ease: "easeOut" }}
+                className="w-[140px] overflow-hidden rounded-2xl border-[3px] border-neutral-800 bg-white sm:w-[160px] lg:w-[180px]"
+              >
+                <Image
+                  src={screen.src}
+                  alt={screen.alt}
+                  width={390}
+                  height={845}
+                  className="w-full object-cover"
+                  sizes="180px"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════
+   Section 6 — Before & After
    ═══════════════════════════════════ */
 function BeforeAfterSection({ accentColor }: { accentColor: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -689,6 +845,7 @@ export function AusventureSections({ accentColor }: AusventureSectionsProps) {
       <FrictionSection accentColor={accentColor} />
       <DesignLanguageSection accentColor={accentColor} />
       <DiscoverySection accentColor={accentColor} />
+      <BookingSection accentColor={accentColor} />
       <BeforeAfterSection accentColor={accentColor} />
       <TestimonialSection accentColor={accentColor} />
       <OutcomeSection accentColor={accentColor} />
