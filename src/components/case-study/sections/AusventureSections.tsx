@@ -22,10 +22,10 @@ const IMAGES = {
   desktop5: "/images/ausventure/desktop-5.png",
   // Phone screenshots
   phone1: "/images/ausventure/phone-1.png",
-  phone2: "https://framerusercontent.com/images/MgtTzpkh0MsFK0WdEK0rROhOs.png?scale-down-to=1024",
-  phone3: "https://framerusercontent.com/images/jAyrpM1EUnUCtPybBlfh2SJXnr4.png?scale-down-to=1024",
-  phone4: "https://framerusercontent.com/images/cJ5UI1z1lbCKTi2fC9waAWM58Go.png",
-  phone5: "https://framerusercontent.com/images/gMrqss2z0hNStKDHAaxAUj6v8.png",
+  phone2: "/images/ausventure/phone-2.png",
+  phone3: "/images/ausventure/phone-3.png",
+  phone4: "/images/ausventure/phone-4.png",
+  phone5: "/images/ausventure/phone-5.png",
   // Design system banner
   componentBanner: "https://framerusercontent.com/images/sjejdcnoLD6YTmDOI3xBqDuczCA.png?scale-down-to=2048",
   // Anne's avatar
