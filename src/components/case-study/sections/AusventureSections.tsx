@@ -445,7 +445,7 @@ function BookingPhone({
           {/* Screen */}
           <div className="aspect-[9/19.5] w-full overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+            <img src={src} alt={alt} className="h-full w-full object-contain" loading="lazy" />
           </div>
           {/* Home indicator */}
           <div className="absolute bottom-[4px] left-1/2 z-10 h-[3px] w-[72px] -translate-x-1/2 rounded-full bg-white/30 sm:bottom-[5px] sm:h-[3.5px] sm:w-[84px] md:bottom-[6px] md:h-[4px] md:w-[92px]" />
