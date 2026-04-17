@@ -7,41 +7,47 @@ const smooth = [0.25, 0.1, 0.25, 1] as const;
 
 /**
  * Animated hero visual for the Ausventure case study.
- * A detailed compass inspired by real compass UI — with tick marks,
- * cardinal directions, and a red north marker.
+ * Centered compass with off-white elements on dark hero bg.
+ * Cardinal labels sit OUTSIDE the compass ring for clarity.
  *
  * Animation sequence:
  *  1. Compass fades in, needle rotates (searching)
- *  2. "Locating..." text appears
+ *  2. "Locating..." text appears centered below compass
  *  3. Needle settles, text fades
- *  4. Destination chips fly in with photo thumbnails
+ *  4. Destination chips fly in around the compass
  */
 
 const DESTINATIONS = [
   {
     text: "Great Barrier Reef",
     image: "/images/ausventure/great-barrier-reef.avif",
-    top: "8%",
-    left: "4%",
+    // Top-left of compass
+    top: "6%",
+    left: "50%",
+    xOffset: "-120%",
     delay: 0,
   },
   {
     text: "Blue Mountains",
     image: "/images/ausventure/blue-mountains.avif",
-    top: "38%",
-    left: "55%",
+    // Right of compass
+    top: "42%",
+    left: "50%",
+    xOffset: "30%",
     delay: 0.3,
   },
   {
     text: "Milford Sound",
     image: "/images/ausventure/milford-sound.avif",
-    top: "75%",
-    left: "8%",
+    // Bottom-left of compass
+    top: "78%",
+    left: "50%",
+    xOffset: "-120%",
     delay: 0.6,
   },
 ] as const;
 
-/** Generate tick marks around the compass */
+/** Generate tick marks around the compass — all off-white */
 function CompassTicks() {
   const ticks = [];
   for (let deg = 0; deg < 360; deg += 6) {
@@ -59,9 +65,9 @@ function CompassTicks() {
         y1={110 - r1 * Math.cos(rad)}
         x2={110 + r2 * Math.sin(rad)}
         y2={110 - r2 * Math.cos(rad)}
-        stroke="#333"
+        stroke="#F2E9DA"
         strokeWidth={width}
-        opacity={isCardinal ? 0.9 : isMajor ? 0.5 : 0.25}
+        opacity={isCardinal ? 0.9 : isMajor ? 0.45 : 0.2}
       />
     );
   }
@@ -73,63 +79,64 @@ export function AusventureHeroVisual() {
 
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[380px]"
+      className="relative mx-auto flex w-full max-w-[380px] flex-col items-center"
       style={{ aspectRatio: "380/520" }}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8, ease: smooth }}
     >
-      {/* ── Compass ── */}
+      {/* ── Compass — centered ── */}
       <motion.div
-        className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[55%]"
         initial={{ opacity: 0, scale: 0.85 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease: smooth }}
       >
+        {/* SVG viewBox is 260x260 to fit cardinal labels outside the 220-diameter ring */}
         <svg
-          width="220"
-          height="220"
-          viewBox="0 0 220 220"
+          width="260"
+          height="260"
+          viewBox="-20 -20 260 260"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
           {/* Outer circle */}
-          <circle cx="110" cy="110" r="100" stroke="#ccc" strokeWidth="1" opacity="0.6" />
+          <circle cx="110" cy="110" r="100" stroke="#F2E9DA" strokeWidth="1" opacity="0.35" />
 
-          {/* Tick marks */}
+          {/* Tick marks — off-white */}
           <CompassTicks />
 
           {/* Inner circle */}
-          <circle cx="110" cy="110" r="78" stroke="#ddd" strokeWidth="0.8" opacity="0.4" />
+          <circle cx="110" cy="110" r="78" stroke="#F2E9DA" strokeWidth="0.8" opacity="0.2" />
 
           {/* Center glow */}
-          <circle cx="110" cy="110" r="30" fill="url(#centerGlow)" opacity="0.25" />
+          <circle cx="110" cy="110" r="30" fill="url(#centerGlow)" opacity="0.15" />
 
-          {/* Crosshair */}
-          <line x1="110" y1="85" x2="110" y2="135" stroke="#333" strokeWidth="0.6" opacity="0.3" />
-          <line x1="85" y1="110" x2="135" y2="110" stroke="#333" strokeWidth="0.6" opacity="0.3" />
+          {/* Crosshair — off-white */}
+          <line x1="110" y1="85" x2="110" y2="135" stroke="#F2E9DA" strokeWidth="0.6" opacity="0.2" />
+          <line x1="85" y1="110" x2="135" y2="110" stroke="#F2E9DA" strokeWidth="0.6" opacity="0.2" />
 
-          {/* Cardinal directions */}
-          <text x="110" y="28" textAnchor="middle" fill="#1a1a1a" fontSize="15" fontWeight="800" fontFamily="'Archivo', system-ui">N</text>
-          <text x="110" y="205" textAnchor="middle" fill="#888" fontSize="13" fontWeight="600" fontFamily="'Archivo', system-ui">S</text>
-          <text x="16" y="115" textAnchor="middle" fill="#888" fontSize="13" fontWeight="600" fontFamily="'Archivo', system-ui">W</text>
-          <text x="204" y="115" textAnchor="middle" fill="#888" fontSize="13" fontWeight="600" fontFamily="'Archivo', system-ui">E</text>
+          {/* Cardinal directions — OUTSIDE the compass ring */}
+          <text x="110" y="-6" textAnchor="middle" fill="#F2E9DA" fontSize="14" fontWeight="800" fontFamily="'Archivo', system-ui">N</text>
+          <text x="110" y="234" textAnchor="middle" fill="#F2E9DA" fontSize="12" fontWeight="600" fontFamily="'Archivo', system-ui" opacity="0.6">S</text>
+          <text x="-10" y="114" textAnchor="middle" fill="#F2E9DA" fontSize="12" fontWeight="600" fontFamily="'Archivo', system-ui" opacity="0.6">W</text>
+          <text x="230" y="114" textAnchor="middle" fill="#F2E9DA" fontSize="12" fontWeight="600" fontFamily="'Archivo', system-ui" opacity="0.6">E</text>
 
-          {/* Red north marker (triangle above N) */}
-          <polygon points="110,5 105,14 115,14" fill="#E8543E" />
+          {/* Red north marker (triangle) */}
+          <polygon points="110,5 106,13 114,13" fill="#E8543E" />
 
-          {/* Black line above N marker */}
-          <line x1="110" y1="0" x2="110" y2="5" stroke="#1a1a1a" strokeWidth="3" />
+          {/* Line above N marker */}
+          <line x1="110" y1="-1" x2="110" y2="5" stroke="#F2E9DA" strokeWidth="2.5" />
 
           {/* Center dot */}
-          <circle cx="110" cy="110" r="3.5" fill="#1a1a1a" />
-          <circle cx="110" cy="110" r="1.5" fill="white" />
+          <circle cx="110" cy="110" r="3.5" fill="#F2E9DA" />
+          <circle cx="110" cy="110" r="1.5" fill="#19323A" />
 
           <defs>
             <radialGradient id="centerGlow" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%" stopColor="#ccc" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#ccc" stopOpacity="0" />
+              <stop offset="0%" stopColor="#F2E9DA" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#F2E9DA" stopOpacity="0" />
             </radialGradient>
           </defs>
         </svg>
@@ -156,19 +163,19 @@ export function AusventureHeroVisual() {
           <svg width="60" height="60" viewBox="0 0 60 60" fill="none" aria-hidden="true">
             {/* North needle (red/orange) */}
             <polygon points="30,6 26,28 34,28" fill="#E8543E" />
-            {/* South needle (light grey) */}
-            <polygon points="30,54 26,32 34,32" fill="#ccc" />
+            {/* South needle (off-white) */}
+            <polygon points="30,54 26,32 34,32" fill="#F2E9DA" opacity="0.5" />
             {/* Center ring */}
-            <circle cx="30" cy="30" r="5" fill="white" stroke="#333" strokeWidth="1.5" />
-            <circle cx="30" cy="30" r="2" fill="#333" />
+            <circle cx="30" cy="30" r="5" fill="#F2E9DA" stroke="#F2E9DA" strokeWidth="1" opacity="0.9" />
+            <circle cx="30" cy="30" r="2" fill="#19323A" />
           </svg>
         </motion.div>
       </motion.div>
 
-      {/* ── "Locating..." text ── */}
+      {/* ── "Locating..." — centered below compass ── */}
       <motion.p
-        className="absolute left-1/2 -translate-x-1/2 text-center font-brand text-[16px] font-medium tracking-wide text-white/70"
-        style={{ top: "72%" }}
+        className="absolute left-1/2 -translate-x-1/2 text-center font-brand text-[15px] font-medium tracking-[0.08em] text-white/50"
+        style={{ top: "calc(50% + 100px)" }}
         initial={{ opacity: 0 }}
         animate={
           shouldReduce
@@ -181,15 +188,19 @@ export function AusventureHeroVisual() {
           ease: "easeInOut",
         }}
       >
-        Locating…
+        Locating&hellip;
       </motion.p>
 
-      {/* ── Destination chips with photo thumbnails ── */}
+      {/* ── Destination chips — positioned around the compass ── */}
       {DESTINATIONS.map((dest, i) => (
         <motion.div
           key={dest.text}
           className="absolute"
-          style={{ top: dest.top, left: dest.left }}
+          style={{
+            top: dest.top,
+            left: dest.left,
+            transform: `translateX(${dest.xOffset})`,
+          }}
           initial={{ opacity: 0, y: 30, scale: 0.85 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{
