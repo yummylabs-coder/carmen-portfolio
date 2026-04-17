@@ -261,18 +261,27 @@ function DesignLanguageSection({ accentColor }: { accentColor: string }) {
         />
       </div>
 
-      {/* Component banner */}
+      {/* Component Library Examples */}
       <SectionReveal className="mt-10">
-        <h3 className="mb-4 text-14 font-semibold text-brand-ink">Component Library</h3>
-        <div className="overflow-hidden rounded-xl border border-sand-200">
-          <Image
-            src={IMAGES.componentBanner}
-            alt="Ausventure component library — buttons, cards, forms, and navigation"
-            width={2048}
-            height={600}
-            className="w-full object-cover"
-            sizes="(max-width: 1024px) 100vw, 1024px"
-          />
+        <h3 className="mb-4 text-14 font-semibold text-brand-ink">Component Library Examples</h3>
+        <div className="flex items-end gap-4 overflow-x-auto rounded-xl border border-sand-200 bg-sand-100/50 p-6 sm:gap-6 sm:p-8">
+          {[
+            { src: "/images/ausventure/featured-card.png", alt: "Featured experience card — Helicopter + Reef Combo", w: 239, h: 385 },
+            { src: "/images/ausventure/camper-inquiry.png", alt: "Camper inquiry card — Start your camper inquiry", w: 336, h: 338 },
+            { src: "/images/ausventure/hero-container.png", alt: "Hero container — Explore Australia & New Zealand", w: 358, h: 658 },
+            { src: "/images/ausventure/camper-card.png", alt: "Camper card — Sleepervan with booking options", w: 292, h: 400 },
+          ].map((comp) => (
+            <div key={comp.src} className="shrink-0">
+              <Image
+                src={comp.src}
+                alt={comp.alt}
+                width={comp.w}
+                height={comp.h}
+                className="h-auto w-[160px] rounded-lg drop-shadow-md sm:w-[200px] lg:w-[220px]"
+                sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 220px"
+              />
+            </div>
+          ))}
         </div>
       </SectionReveal>
     </div>
