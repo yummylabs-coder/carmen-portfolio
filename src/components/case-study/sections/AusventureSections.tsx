@@ -16,8 +16,10 @@ import { SectionLabel } from "@/components/case-study/SectionLabel";
 const IMAGES = {
   // Desktop screenshots
   desktop1: "/images/ausventure/desktop-1.png",
-  desktop2: "https://framerusercontent.com/images/xb8aKY2fcNf5To3Y9B9iGwooKnk.png?scale-down-to=2048",
-  desktop3: "https://framerusercontent.com/images/BFPrQfg0mmLLMVyRIbVhV3Nwfc.png?scale-down-to=2048",
+  desktop2: "/images/ausventure/desktop-2.png",
+  desktop3: "/images/ausventure/desktop-3.png",
+  desktop4: "/images/ausventure/desktop-4.png",
+  desktop5: "/images/ausventure/desktop-5.png",
   // Phone screenshots
   phone1: "https://framerusercontent.com/images/5OSCLiXSCRPxjFOtX3OttuY5rbw.png?scale-down-to=1024",
   phone2: "https://framerusercontent.com/images/MgtTzpkh0MsFK0WdEK0rROhOs.png?scale-down-to=1024",
@@ -302,8 +304,10 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
 
   const desktopSlides = [
     { src: IMAGES.desktop1, alt: "Ausventure desktop — homepage", caption: "Homepage with split-path user journey" },
-    { src: IMAGES.desktop2, alt: "Ausventure desktop — trip listing", caption: "Smart inventory filtering reduces cognitive load" },
+    { src: IMAGES.desktop2, alt: "Ausventure desktop — experiences", caption: "Curated experiences with smart filtering" },
     { src: IMAGES.desktop3, alt: "Ausventure desktop — trip detail", caption: "Rich detail pages that educate before converting" },
+    { src: IMAGES.desktop4, alt: "Ausventure desktop — booking flow", caption: "Streamlined booking with progressive disclosure" },
+    { src: IMAGES.desktop5, alt: "Ausventure desktop — discovery", caption: "Discover by cities with contextual routing" },
   ];
 
   return (
