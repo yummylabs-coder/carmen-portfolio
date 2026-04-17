@@ -15,7 +15,7 @@ import { SectionLabel } from "@/components/case-study/SectionLabel";
 /* ─── Image URLs (Framer CDN — will be replaced with local assets later) ─── */
 const IMAGES = {
   // Desktop screenshots
-  desktop1: "https://framerusercontent.com/images/7PUCQNNzpSomKepDiTpefov2c.png?scale-down-to=2048",
+  desktop1: "/images/ausventure/desktop-1.png",
   desktop2: "https://framerusercontent.com/images/xb8aKY2fcNf5To3Y9B9iGwooKnk.png?scale-down-to=2048",
   desktop3: "https://framerusercontent.com/images/BFPrQfg0mmLLMVyRIbVhV3Nwfc.png?scale-down-to=2048",
   // Phone screenshots
