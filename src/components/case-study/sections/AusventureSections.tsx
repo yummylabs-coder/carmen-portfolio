@@ -12,7 +12,7 @@ import {
 } from "@/components/case-study/interactive";
 import { SectionLabel } from "@/components/case-study/SectionLabel";
 
-/* ─── Image URLs (Framer CDN — will be replaced with local assets later) ─── */
+/* ─── Image URLs ─── */
 const IMAGES = {
   // Desktop screenshots
   desktop1: "/images/ausventure/desktop-1.png",
@@ -100,12 +100,11 @@ function AtAGlance({ accentColor }: { accentColor: string }) {
         {/* Left — narrative */}
         <div className="flex-1">
           <p className="text-16 leading-[1.8] text-neutral-600">
-            Ausventure was sitting on a goldmine of premium travel packages, but
-            their digital experience was stuck in the past. Users were getting
-            lost in static pages, and the path to purchase was confusing. I
-            partnered with them to architect a 0-to-1 redesign, turning a
-            brochure site into a high-performance booking engine that converts
-            curiosity into revenue.
+            Ausventure had premium travel inventory but a broken digital
+            product. Users were dropping off due to poor information architecture,
+            no filtering, and zero trust signals. I partnered with them to
+            design a two-sided marketplace from scratch, turning an outdated
+            experience into a product that converts curiosity into bookings.
           </p>
         </div>
 
@@ -153,7 +152,7 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
       ),
       title: "Decision Paralysis",
       description:
-        "Too many options with poor filtering left users overwhelmed and unable to choose. The existing site listed every tour with no way to narrow down by style, duration, or budget.",
+        "Too many options with poor filtering left users overwhelmed and unable to choose. The product listed every tour with no way to narrow down by style, duration, or budget.",
       before: "Flat listing with 40+ tours and no filtering",
     },
     {
@@ -188,9 +187,10 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
           Three critical blockers
         </h2>
         <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
-          Ausventure had the inventory and the reputation, but lacked the digital
-          infrastructure. Their existing site was static and difficult to navigate,
-          forcing users to work hard just to find pricing or availability.
+          Ausventure had the inventory and the reputation, but the product
+          experience wasn&apos;t keeping up. Users had to work hard just to
+          find pricing or availability, and the lack of structure was costing
+          them high-intent leads.
         </p>
       </SectionReveal>
 
@@ -240,8 +240,8 @@ function DesignLanguageSection({ accentColor }: { accentColor: string }) {
         <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           To solve the friction, I started from scratch with a modular design
           system. I moved Ausventure away from inconsistent styles to a
-          unified, tokenized UI kit &mdash; warm, adventurous, and built for
-          trust. Every component was designed to scale across Camper and
+          unified, tokenized UI kit that feels warm, adventurous, and built
+          for trust. Every component was designed to scale across Camper and
           Experience product lines.
         </p>
       </SectionReveal>
@@ -320,7 +320,7 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
         <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
           Ausventure operates a two-sided marketplace: Campers and Experiences.
           Mixing them created confusion. I architected a split-path journey
-          using progressive disclosure &mdash; users are guided through a
+          using progressive disclosure so users are guided through a
           decision tree that feels like a conversation, not a database query.
         </p>
       </SectionReveal>
@@ -336,7 +336,7 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
             <h4 className="mt-3 text-16 font-semibold text-brand-ink">Camper Journeys</h4>
             <p className="mt-2 text-14 leading-[1.6] text-neutral-600">
               Self-drive itineraries with vehicle selection, route planning, and
-              campground booking — all in one guided flow.
+              campground booking, all in one guided flow.
             </p>
           </div>
           <div
@@ -346,8 +346,8 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
             <div className="text-24">🏄</div>
             <h4 className="mt-3 text-16 font-semibold text-brand-ink">Experience Journeys</h4>
             <p className="mt-2 text-14 leading-[1.6] text-neutral-600">
-              Curated adventure packages — Great Barrier Reef dives, Blue Mountain
-              treks, wine tours — with contextual routing to inquiry forms.
+              Curated adventure packages like Great Barrier Reef dives, Blue Mountain
+              treks, and wine tours, with contextual routing to inquiry forms.
             </p>
           </div>
         </div>
@@ -407,7 +407,7 @@ function BeforeAfterSection({ accentColor }: { accentColor: string }) {
     {
       title: "Reachability",
       before: "Users unclear how to follow up after browsing",
-      after: "Clarified WhatsApp, forms, and email — 40% better reachability",
+      after: "Clarified WhatsApp, forms, and email contact points, 40% better reachability",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72" />
@@ -416,8 +416,8 @@ function BeforeAfterSection({ accentColor }: { accentColor: string }) {
     },
     {
       title: "Discovery & Exploration",
-      before: "Complex navigation limiting engagement and time on site",
-      after: "Organic discovery through contextual cues — 2x more exploration",
+      before: "Complex navigation limiting engagement and session depth",
+      after: "Organic discovery through contextual cues, 2x more exploration",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -444,8 +444,8 @@ function BeforeAfterSection({ accentColor }: { accentColor: string }) {
           Before &amp; after
         </h2>
         <p className="mt-4 mb-8 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
-          The redesign delivered measurable improvements across every key
-          metric &mdash; from form completion to brand perception. Here&apos;s
+          The new product delivered measurable improvements across every key
+          metric, from form completion to brand perception. Here&apos;s
           how each area transformed.
         </p>
       </SectionReveal>
@@ -490,7 +490,7 @@ function TestimonialSection({ accentColor }: { accentColor: string }) {
   return (
     <div className="mx-auto max-w-2xl">
       <TestimonialCard
-        quote="Your professionalism, creativity, and attention to detail throughout the entire project have been exceptional. I especially appreciated the clear communication &mdash; it made the whole process smooth and enjoyable from start to finish. It's been a real pleasure working with such a dedicated and talented team!"
+        quote="Your professionalism, creativity, and attention to detail throughout the entire project have been exceptional. I especially appreciated the clear communication. It made the whole process smooth and enjoyable from start to finish. It's been a real pleasure working with such a dedicated and talented team!"
         name="Anne Dressel"
         role="Founder, Ausventure Travel"
         avatarSrc={IMAGES.anneAvatar}
@@ -505,9 +505,9 @@ function TestimonialSection({ accentColor }: { accentColor: string }) {
    ═══════════════════════════════════ */
 const AUSVENTURE_OUTCOMES = [
   {
-    metric: "End-to-End Booking Engine",
+    metric: "End-to-End Marketplace",
     description:
-      "Designed a complete booking flow from trip discovery to payment confirmation, replacing the old static brochure site with a high-converting funnel.",
+      "Designed a complete product flow from trip discovery to payment confirmation, replacing the legacy experience with a high-converting funnel.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="m9 11 3 3L22 4" />
@@ -525,9 +525,9 @@ const AUSVENTURE_OUTCOMES = [
     ),
   },
   {
-    metric: "Mobile-First Redesign",
+    metric: "Mobile-First Product",
     description:
-      "Rebuilt every screen mobile-first, with responsive forms, touch-friendly navigation, and optimized media — closing the mobile friction gap completely.",
+      "Designed every screen mobile-first with responsive forms, touch-friendly navigation, and optimized media, closing the mobile friction gap completely.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" />
@@ -537,7 +537,7 @@ const AUSVENTURE_OUTCOMES = [
   {
     metric: "Trust-First Conversion",
     description:
-      "Integrated social proof, testimonials, and press coverage at every decision point — transforming browsing into confident booking.",
+      "Integrated social proof, testimonials, and press coverage at every decision point, transforming browsing into confident booking.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -570,8 +570,8 @@ function OutcomeSection({ accentColor }: { accentColor: string }) {
               What I delivered
             </h2>
             <p className="mt-4 max-w-[440px] text-17 leading-[1.55] text-white/75">
-              Over three months, I took Ausventure from a static brochure site to a
-              fully designed, mobile-first booking platform &mdash; complete with a
+              Over three months, I took Ausventure from a legacy experience to a
+              fully designed, mobile-first marketplace complete with a
               design system, smart filtering, and trust-driven conversion flows.
             </p>
           </SectionReveal>
@@ -623,10 +623,10 @@ function VisionSection({ accentColor }: { accentColor: string }) {
         Where it&apos;s heading
       </h2>
       <p className="mt-4 max-w-[760px] text-16 leading-[1.8] text-neutral-600">
-        The redesign was just the beginning. Ausventure&apos;s new digital
-        foundation is designed to scale &mdash; from automated pricing and
+        This was just the beginning. Ausventure&apos;s new product
+        foundation is designed to scale, from automated pricing and
         dynamic itinerary builders to AI-powered trip recommendations.
-        The platform turns a manual travel agency into a tech-enabled
+        The platform transforms a manual travel agency into a tech-enabled
         marketplace.
       </p>
 
@@ -636,11 +636,11 @@ function VisionSection({ accentColor }: { accentColor: string }) {
         style={{ backgroundColor: "#143B39" }}
       >
         <p className="font-brand text-22 font-bold text-white">
-          From brochure site to booking engine.
+          From legacy product to scalable marketplace.
         </p>
         <p className="mt-3 text-14 text-white/65">
-          Ausventure is now positioned as a premium digital-first travel operator
-          &mdash; ready for the next chapter of growth.
+          Ausventure is now positioned as a premium digital-first travel
+          marketplace, ready for the next chapter of growth.
         </p>
       </div>
 
