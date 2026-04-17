@@ -21,7 +21,7 @@ const IMAGES = {
   desktop4: "/images/ausventure/desktop-4.png",
   desktop5: "/images/ausventure/desktop-5.png",
   // Phone screenshots
-  phone1: "https://framerusercontent.com/images/5OSCLiXSCRPxjFOtX3OttuY5rbw.png?scale-down-to=1024",
+  phone1: "/images/ausventure/phone-1.png",
   phone2: "https://framerusercontent.com/images/MgtTzpkh0MsFK0WdEK0rROhOs.png?scale-down-to=1024",
   phone3: "https://framerusercontent.com/images/jAyrpM1EUnUCtPybBlfh2SJXnr4.png?scale-down-to=1024",
   phone4: "https://framerusercontent.com/images/cJ5UI1z1lbCKTi2fC9waAWM58Go.png",
