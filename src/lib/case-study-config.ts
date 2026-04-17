@@ -337,6 +337,11 @@ const configs: Record<string, CaseStudyConfig> = {
       progressBar: "#11607D",
       accentColor: "#11607D",
     },
+    heroVisual: "ausventure-compass",
+    atmosphericImage: {
+      src: "/covers/ausventure.svg",
+      alt: "Ausventure Travel — premium Australian self-drive tour experience",
+    },
   },
 
   /* ── Klasse ── Coming soon / default brand ─────────────────── */

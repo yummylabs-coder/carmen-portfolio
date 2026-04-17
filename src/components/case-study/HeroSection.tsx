@@ -7,10 +7,12 @@ import { Breadcrumb } from "./Breadcrumb";
 import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 import { NeotasteHeroVisual } from "./NeotasteHeroVisual";
 import { WaterdayHeroVisual } from "./WaterdayHeroVisual";
+import { AusventureHeroVisual } from "./AusventureHeroVisual";
 
 const heroVisualMap: Record<string, React.ComponentType> = {
   "neotaste-discovery": NeotasteHeroVisual,
   "waterday-cards": WaterdayHeroVisual,
+  "ausventure-compass": AusventureHeroVisual,
 };
 
 interface HeroSectionProps {

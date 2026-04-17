@@ -17,6 +17,7 @@ import { Outcomes } from "@/components/case-study/Outcomes";
 import { NextCaseStudy } from "@/components/case-study/NextCaseStudy";
 import { NeotasteAtmosphericOverlay } from "@/components/case-study/NeotasteAtmosphericOverlay";
 import { WaterdayAtmosphericOverlay } from "@/components/case-study/WaterdayAtmosphericOverlay";
+import { AusventureAtmosphericOverlay } from "@/components/case-study/AusventureAtmosphericOverlay";
 
 /* ─── Immersive case studies (full-screen, no sidebar) ─── */
 import { LearnImmersive } from "@/components/immersive/learn-xyz/LearnImmersive";
@@ -145,6 +146,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
           >
             {slug === "neotaste" && <NeotasteAtmosphericOverlay />}
             {slug === "water-day" && <WaterdayAtmosphericOverlay />}
+            {slug === "ausventure" && <AusventureAtmosphericOverlay />}
           </AtmosphericImage>
         )}
 
