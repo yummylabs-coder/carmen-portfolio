@@ -13,68 +13,71 @@ import { AmbientOSCover } from "./AmbientOSCover";
 /* ─── Tab type ─── */
 type TabKey = "experiments" | "toolkit";
 
-/* ─── Stats Row — consolidated across both tabs ─── */
-function StatsRow({ experiments }: { experiments: Experiment[] }) {
-  const liveCount = experiments.length;
-  const incomingCount = 5;
-  const planningCount = 2;
+/* ─── Stats Row — per-tab (toolkit and experiments are different things) ─── */
+const statSvgProps = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  className: "h-5 w-5 text-white",
+};
 
-  const stats = [
-    {
-      value: String(liveCount),
-      label: "Live",
-      icon: (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5 text-white"
-        >
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-        </svg>
-      ),
-    },
-    {
-      value: String(incomingCount),
-      label: "Incoming",
-      icon: (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5 text-white"
-        >
-          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-          <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
-        </svg>
-      ),
-    },
-    {
-      value: String(planningCount),
-      label: "In planning",
-      icon: (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5 text-white"
-        >
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-          <path d="M9 14l2 2 4-4" />
-        </svg>
-      ),
-    },
-  ];
+const liveIcon = (
+  <svg {...statSvgProps}>
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+  </svg>
+);
+const inboxIcon = (
+  <svg {...statSvgProps}>
+    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+    <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+  </svg>
+);
+const clipboardIcon = (
+  <svg {...statSvgProps}>
+    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+    <path d="M9 14l2 2 4-4" />
+  </svg>
+);
+const buildingIcon = (
+  <svg {...statSvgProps}>
+    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+    <line x1="12" y1="22.08" x2="12" y2="12" />
+  </svg>
+);
+const exploringIcon = (
+  <svg {...statSvgProps}>
+    <circle cx="12" cy="12" r="10" />
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+  </svg>
+);
+
+function StatsRow({
+  activeTab,
+  toolkitCount,
+  experimentCount,
+}: {
+  activeTab: TabKey;
+  toolkitCount: number;
+  experimentCount: number;
+}) {
+  const stats =
+    activeTab === "toolkit"
+      ? [
+          { value: String(toolkitCount), label: "Live", icon: liveIcon },
+          { value: "5", label: "Incoming", icon: inboxIcon },
+          { value: "2", label: "In planning", icon: clipboardIcon },
+        ]
+      : [
+          { value: String(experimentCount), label: "Live", icon: liveIcon },
+          { value: "2", label: "Building", icon: buildingIcon },
+          { value: "3", label: "Exploring", icon: exploringIcon },
+        ];
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -755,7 +758,11 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
         {/* Left Column */}
         <div className="flex min-w-0 flex-1 flex-col gap-6">
-          <StatsRow experiments={experiments} />
+          <StatsRow
+            activeTab={activeTab}
+            toolkitCount={toolkitItems.length}
+            experimentCount={experimentItems.length}
+          />
 
           <TabBar
             active={activeTab}
