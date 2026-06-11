@@ -15,16 +15,14 @@ type TabKey = "experiments" | "toolkit";
 
 /* ─── Stats Row — consolidated across both tabs ─── */
 function StatsRow({ experiments }: { experiments: Experiment[] }) {
-  const finishedCount = experiments.filter((e) => e.status === "live").length;
-  const progressCount = experiments.filter(
-    (e) => e.status === "progress",
-  ).length;
-  const totalCount = experiments.length;
+  const liveCount = experiments.length;
+  const incomingCount = 5;
+  const planningCount = 2;
 
   const stats = [
     {
-      value: String(finishedCount),
-      label: "Finished",
+      value: String(liveCount),
+      label: "Live",
       icon: (
         <svg
           viewBox="0 0 24 24"
@@ -35,14 +33,13 @@ function StatsRow({ experiments }: { experiments: Experiment[] }) {
           strokeLinejoin="round"
           className="h-5 w-5 text-white"
         >
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
         </svg>
       ),
     },
     {
-      value: String(progressCount),
-      label: "In Progress",
+      value: String(incomingCount),
+      label: "Incoming",
       icon: (
         <svg
           viewBox="0 0 24 24"
@@ -53,20 +50,14 @@ function StatsRow({ experiments }: { experiments: Experiment[] }) {
           strokeLinejoin="round"
           className="h-5 w-5 text-white"
         >
-          <path d="M12 2v4" />
-          <path d="M12 18v4" />
-          <path d="m4.93 4.93 2.83 2.83" />
-          <path d="m16.24 16.24 2.83 2.83" />
-          <path d="M2 12h4" />
-          <path d="M18 12h4" />
-          <path d="m4.93 19.07 2.83-2.83" />
-          <path d="m16.24 7.76 2.83-2.83" />
+          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+          <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
         </svg>
       ),
     },
     {
-      value: String(totalCount),
-      label: "Total",
+      value: String(planningCount),
+      label: "In planning",
       icon: (
         <svg
           viewBox="0 0 24 24"
@@ -77,7 +68,9 @@ function StatsRow({ experiments }: { experiments: Experiment[] }) {
           strokeLinejoin="round"
           className="h-5 w-5 text-white"
         >
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+          <path d="M9 14l2 2 4-4" />
         </svg>
       ),
     },
