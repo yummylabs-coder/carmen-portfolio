@@ -55,8 +55,8 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
         </h1>
       </div>
       <p className="text-14 leading-[1.6] text-neutral-600">
-        Design accelerator I co-founded to help designers grow through real
-        startup sprints
+        Design accelerator I co-founded — teaching designers to ship real
+        products with AI-design workflows, powered by Claude
       </p>
 
       {/* Dog mascot - hidden on mobile, sits behind the next section */}
@@ -311,11 +311,15 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
               Designers were paying thousands for courses teaching outdated methods
               on fake projects. They&apos;d graduate with polished case studies
               that hiring managers could spot as &quot;concept work&quot; from a
-              mile away.
+              mile away — and none of them taught the AI workflows teams now
+              hire for.
             </p>
             <p>
               I wanted to build something different: real products, real
-              constraints, real shipped work.
+              constraints, real shipped work. Sprinters use Claude to
+              pressure-test concepts, synthesize research, and build working
+              prototypes in hours — doing the work of a full design team on
+              their own.
             </p>
           </div>
           <a
@@ -733,18 +737,24 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       {/* Startup Partners */}
-      <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
+      <div className="flex-1 overflow-hidden rounded-3xl border border-sand-300 bg-white p-6">
         <span className="mb-4 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
           Startup partners
         </span>
-        <div className="flex flex-col gap-3 sm:flex-row">
+        {/* Horizontal scroll — a partial card stays clipped on the right to signal more */}
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {partners.map((partner) => {
-            const logoUrl = assets.partnerLogos[partner.slug];
+            const logoUrl = partner.logo ?? assets.partnerLogos[partner.slug];
             return (
               <div
                 key={partner.name}
-                className="flex-1 rounded-2xl border border-sand-300 bg-sand-100 p-4 text-center"
+                className="relative w-[140px] shrink-0 snap-start rounded-2xl border border-sand-300 bg-sand-100 p-4 text-center"
               >
+                {partner.upcoming && (
+                  <span className="absolute right-2 top-2 inline-flex items-center rounded-full bg-[#2216ff] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.04em] text-white">
+                    Upcoming
+                  </span>
+                )}
                 <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-neutral-50${partner.stealth ? " blur-[6px]" : ""}`}>
                   {logoUrl ? (
                     <Img src={logoUrl} alt={partner.name} className="h-8 w-8 object-contain" />
@@ -772,11 +782,11 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
           Tool partners
         </span>
         <h3 className="mb-4 font-brand text-[20px] font-bold leading-tight text-gray-800">
-          Free tool access for every sprinter
+          The AI-design stack every sprinter learns
         </h3>
         <div className="flex flex-col flex-wrap gap-3 sm:flex-row">
           {tools.map((tool) => {
-            const logoUrl = assets.toolLogos[tool.slug];
+            const logoUrl = tool.logo ?? assets.toolLogos[tool.slug];
             return (
               <div
                 key={tool.name}

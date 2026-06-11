@@ -16,12 +16,17 @@ export interface Partner {
   logoText: string;
   slug: string;
   stealth?: boolean;
+  upcoming?: boolean;
+  /** Local public path (e.g. /images/logos/foo.svg). Preferred over the Notion logo when set. */
+  logo?: string;
 }
 
 export interface Tool {
   name: string;
   logoText: string;
   slug: string;
+  /** Local public path (e.g. /images/logos/foo.svg). Preferred over the Notion logo when set. */
+  logo?: string;
 }
 
 export interface Stat {
@@ -36,9 +41,9 @@ export interface GalleryItem {
 }
 
 export const stats: Stat[] = [
-  { icon: "\u{1F3C3}", number: "3", label: "Sprints Run" },
-  { icon: "\u{1F469}\u200D\u{1F3A8}", number: "30+", label: "Designers Trained" },
-  { icon: "\u{1F680}", number: "3", label: "Startup Partners" },
+  { icon: "\u{1F3C3}", number: "4", label: "Sprints Run" },
+  { icon: "\u{1F469}\u200D\u{1F3A8}", number: "100+", label: "Designers Trained" },
+  { icon: "\u{1F680}", number: "5", label: "Startup Partners" },
   { icon: "\u2B50", number: "2", label: "Weeks per Sprint" },
 ];
 
@@ -52,11 +57,10 @@ export const roles = [
 
 export const partners: Partner[] = [
   {
-    name: "Stealth Startup",
-    description: "New-Gen Homebuying\nWith the Former VP Product, Tinder",
-    logoText: "?",
+    name: "Cathouse",
+    description: "New-gen homebuying\nWith the former VP Product, Tinder",
+    logoText: "C",
     slug: "partner-cathouse",
-    stealth: true,
   },
   {
     name: "Twenty.com",
@@ -66,17 +70,31 @@ export const partners: Partner[] = [
   },
   {
     name: "Superbloom",
-    description: "Game-tech startup\nWith ex-Glu Games leader",
+    description: "Mobile game studio\n4M+ downloads",
     logoText: "S",
     slug: "partner-superbloom",
+  },
+  {
+    name: "NeoTaste",
+    description: "Restaurant discovery app\n2M+ users",
+    logoText: "N",
+    slug: "partner-neotaste",
+    logo: "/images/logos/neotaste-symbol.svg",
+  },
+  {
+    name: "Knowunity",
+    description: "AI learning app for students",
+    logoText: "K",
+    slug: "partner-knowunity",
+    upcoming: true,
   },
 ];
 
 export const tools: Tool[] = [
+  { name: "Claude", logoText: "C", slug: "tool-claude" },
   { name: "Figma", logoText: "F", slug: "tool-figma" },
-  { name: "UX Pilot", logoText: "U", slug: "tool-uxpilot" },
-  { name: "Builder.io", logoText: "B", slug: "tool-builder" },
-  { name: "Subframe", logoText: "S", slug: "tool-subframe" },
+  { name: "GitHub", logoText: "G", slug: "tool-github" },
+  { name: "Vercel", logoText: "V", slug: "tool-vercel" },
 ];
 
 export interface SprintWeek {
