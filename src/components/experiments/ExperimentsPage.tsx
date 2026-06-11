@@ -750,7 +750,7 @@ export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageP
       {/* Page Header */}
       <div className="flex flex-col gap-1">
         <h1 className="font-brand text-22 font-bold text-brand-ink">
-          The Lab
+          AI Design Resources
         </h1>
         <p className="text-14 leading-[1.6] text-neutral-600">
           Side projects, tools, and resources I&apos;ve built for designers and

@@ -27,7 +27,7 @@ const primaryNav = [
 
 const otherNav = [
   { label: "My Design Accelerator", href: "/accelerator", icon: AcceleratorIcon },
-  { label: "The Lab", href: "/experiments", icon: ExperimentsIcon },
+  { label: "AI Design Resources", href: "/experiments", icon: ExperimentsIcon },
   { label: "Contact", href: "/contact", icon: ContactIcon },
 ];
 

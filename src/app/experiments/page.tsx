@@ -4,9 +4,9 @@ import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { ExperimentsPage } from "@/components/experiments/ExperimentsPage";
 
 export const metadata: Metadata = {
-  title: "The Lab",
+  title: "AI Design Resources",
   description:
-    "Experiments, side projects, and designer toolkit resources by Carmen Rincon.",
+    "AI design toolkit, resources, and experiments by Carmen Rincon.",
 };
 
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
