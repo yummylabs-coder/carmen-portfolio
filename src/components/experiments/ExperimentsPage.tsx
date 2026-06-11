@@ -108,21 +108,21 @@ function StatsRow({ experiments }: { experiments: Experiment[] }) {
 /* ─── Tab Bar ─── */
 const tabDefs: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   {
+    key: "toolkit",
+    label: "AI Design Toolkit",
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+      </svg>
+    ),
+  },
+  {
     key: "experiments",
     label: "Experiments",
     icon: (
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 2V5.5L3 12C2.7 12.6 3.1 13.5 3.8 13.5H12.2C12.9 13.5 13.3 12.6 13 12L10 5.5V2" />
         <path d="M5 2H11" />
-      </svg>
-    ),
-  },
-  {
-    key: "toolkit",
-    label: "Toolkit",
-    icon: (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
       </svg>
     ),
   },
@@ -506,7 +506,7 @@ function EmptyState({ tab }: { tab: TabKey }) {
         )}
       </div>
       <p className="font-brand text-15 font-semibold text-brand-ink">
-        {isToolkit ? "Toolkit items coming soon" : "No experiments yet"}
+        {isToolkit ? "AI Design Toolkit items coming soon" : "No experiments yet"}
       </p>
       <p className="mt-1 max-w-[280px] text-13 text-neutral-600">
         {isToolkit
@@ -714,7 +714,7 @@ interface ExperimentsPageProps {
 }
 
 export function ExperimentsPage({ experiments, previews = {} }: ExperimentsPageProps) {
-  const [activeTab, setActiveTab] = useState<TabKey>("experiments");
+  const [activeTab, setActiveTab] = useState<TabKey>("toolkit");
   const [galleryExperiment, setGalleryExperiment] = useState<Experiment | null>(null);
 
   // When opening the modal, merge preview data into the experiment so
