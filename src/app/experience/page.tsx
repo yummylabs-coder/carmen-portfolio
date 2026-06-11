@@ -6,7 +6,7 @@ import { getExperience } from "@/lib/notion";
 export const metadata: Metadata = {
   title: "Experience",
   description:
-    "9+ years of product design experience across startups and scale-ups. Roles, learnings, and highlights.",
+    "9+ years of product design across startups and scale-ups, now focused on AI-enabled design workflows for designers and teams.",
 };
 
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h

@@ -11,7 +11,7 @@ const fallbackExperiences: ExperienceEntry[] = [
   {
     id: "yummy",
     slug: "yummy",
-    company: "Yummy Design Labs",
+    company: "Yummy Design & Labs",
     logoUrl: "",
     productImageUrl: "",
     roleSummary: "Co-Founder & Product Sprint Leader",
@@ -22,7 +22,7 @@ const fallbackExperiences: ExperienceEntry[] = [
       { title: "Co-Founder, Product Lead", start: "Mar 2025", end: "Present" },
     ],
     whatILearned:
-      "Running my own design studio, working with startups through focused sprints. Also built Yummy Labs - an accelerator helping junior-mid level designers get hands-on experience with tech and AI startups.",
+      "Two sides of the same idea: AI is changing how design gets made, and designers should lead it. Yummy Design Studio is the consulting side, a senior design partnership for scale-ups across Europe and the US, helping teams build AI into their product design, UX strategy, and design systems so they can take an idea all the way to an on-brand prototype on their own. Yummy Labs is how we upskill designers: a 2.5-week sprint solving real startup product challenges while learning AI workflows in the middle of real product work.",
     order: 1,
   },
   {
@@ -55,7 +55,7 @@ const fallbackExperiences: ExperienceEntry[] = [
       { title: "Product Designer", start: "Dec 2019", end: "Jan 2022" },
     ],
     whatILearned:
-      "Worked with a large product and tech team, navigating the complexities of environmental regulations and clean energy policy. Learned to design for compliance while keeping the user experience simple.",
+      "Worked with a large product and tech team navigating environmental regulation and clean energy policy. Designed for compliance while keeping the user experience simple.",
     order: 3,
   },
   {
@@ -192,10 +192,10 @@ function CardExpanded({ entry }: { entry: ExperienceEntry }) {
           </div>
         </div>
 
-        {/* What I Learned */}
+        {/* What I do / did */}
         <div className="mb-5">
           <h4 className="mb-2 text-[12px] font-semibold uppercase tracking-wider text-neutral-600">
-            What I Learned
+            {entry.isCurrent ? "What I do" : "What I did"}
           </h4>
           <p className="text-13 leading-relaxed text-neutral-600">
             {entry.whatILearned}
@@ -295,16 +295,15 @@ function QuickSummary() {
       </h3>
       <div className="space-y-3 text-[14px] leading-[1.65] text-white/80">
         <p>
-          I&apos;ve been in the design industry for almost 10 years now.
-          Every position I took and every risk I made with my career taught
-          me something valuable. I&apos;ve been really lucky to be part of
-          building end-to-end products from scratch and working with
-          interesting startups along the way.
+          I&apos;ve spent almost 10 years in product design, lucky to build
+          end-to-end products from scratch with startups and scale-ups along
+          the way.
         </p>
         <p>
-          Today, we&apos;re facing a major shift in the industry, and every
-          day I take it upon myself to find better processes, refine my
-          workflow, push my craft, and help other designers do the same.
+          Now my focus is the shift AI is bringing to design. Through Yummy, I
+          help designers and teams turn that shift into an advantage:
+          sharpening product craft while building AI workflows into how they
+          actually work.
         </p>
       </div>
     </div>
@@ -330,7 +329,8 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
             Experience
           </h1>
           <p className="text-14 leading-[1.6] text-neutral-600">
-            Where I&apos;ve been and what I&apos;ve learned along the way
+            Where I&apos;ve been, and what I do now: product design craft and AI
+            workflow enablement for designers and teams
           </p>
         </div>
 
