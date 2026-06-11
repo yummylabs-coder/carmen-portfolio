@@ -42,7 +42,7 @@ function ExternalArrow() {
 }
 
 /* ═══════════════════════════════════
-   Section 1 — Header
+   Section 1 - Header
    ═══════════════════════════════════ */
 function Header({ assets }: { assets: YummyAssetsMap }) {
   const dogUrl = assets.branding["dog"];
@@ -55,8 +55,8 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
         </h1>
       </div>
       <p className="text-14 leading-[1.6] text-neutral-600">
-        Design accelerator I co-founded — teaching designers to ship real
-        products with AI-design workflows, powered by Claude
+        Design accelerator I co-founded. We teach product design sprints and
+        AI workflows, powered by Claude.
       </p>
 
       {/* Dog mascot - hidden on mobile, sits behind the next section */}
@@ -232,7 +232,7 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
                 </div>
               </button>
 
-              {/* Expand button — bottom-right corner */}
+              {/* Expand button - bottom-right corner */}
               <button
                 onClick={openLightbox}
                 className="absolute bottom-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 bg-black/40 text-white/70 backdrop-blur-md transition-all hover:bg-black/60 hover:text-white"
@@ -247,7 +247,7 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
               </button>
             </>
           ) : (
-            /* Placeholder — no video uploaded yet */
+            /* Placeholder - no video uploaded yet */
             <div className="relative flex h-full items-center justify-center overflow-hidden">
               {/* Animated gradient mesh */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#1a11cc]/80 via-[#2216ff]/40 to-[#7c3aed]/60" />
@@ -289,7 +289,7 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
 }
 
 /* ═══════════════════════════════════
-   Section 2 — Problem Hero (full-width blue)
+   Section 2 - Problem Hero (full-width blue)
    ═══════════════════════════════════ */
 function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
   return (
@@ -298,7 +298,7 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(124,58,237,0.25),transparent_60%)]" />
 
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
-        {/* Left — Copy */}
+        {/* Left - Copy */}
         <div className="flex-1 text-white">
           <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
             The problem I saw
@@ -311,14 +311,14 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
               Designers were paying thousands for courses teaching outdated methods
               on fake projects. They&apos;d graduate with polished case studies
               that hiring managers could spot as &quot;concept work&quot; from a
-              mile away — and none of them taught the AI workflows teams now
-              hire for.
+              mile away. None of them taught the AI workflows teams now hire
+              for.
             </p>
             <p>
               I wanted to build something different: real products, real
               constraints, real shipped work. Sprinters use Claude to
               pressure-test concepts, synthesize research, and build working
-              prototypes in hours — doing the work of a full design team on
+              prototypes in hours, doing the work of a full design team on
               their own.
             </p>
           </div>
@@ -337,7 +337,7 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
           </a>
         </div>
 
-        {/* Right — Glassmorphism Video */}
+        {/* Right - Glassmorphism Video */}
         <div className="flex-1">
           <GlassmorphismVideoFrame videoUrl="/videos/carmenvideo.mp4" />
         </div>
@@ -347,9 +347,9 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 3 — Role + Stats (side by side)
+   Section 3 - Role + Stats (side by side)
    ═══════════════════════════════════ */
-/* Stat icons — clean SVG icons replacing emojis */
+/* Stat icons - clean SVG icons replacing emojis */
 const statIcons: Record<string, React.ReactNode> = {
   "Sprints Run": (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -387,7 +387,7 @@ const statIcons: Record<string, React.ReactNode> = {
   ),
 };
 
-/* Role icons — clean SVG icons replacing emojis */
+/* Role icons - clean SVG icons replacing emojis */
 const roleIcons: Record<string, React.ReactNode> = {
   "Curriculum design": (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -428,7 +428,7 @@ function RoleAndStats() {
 
   return (
     <div ref={ref} className="flex flex-col gap-5 lg:flex-row">
-      {/* My Role card — left */}
+      {/* My Role card - left */}
       <div className="flex-1 rounded-3xl border border-sand-300 bg-white p-6">
         <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
           My role
@@ -461,7 +461,7 @@ function RoleAndStats() {
         </div>
       </div>
 
-      {/* Stats — right, 2×2 grid */}
+      {/* Stats - right, 2×2 grid */}
       <div className="grid flex-1 grid-cols-2 gap-4">
         {stats.map((stat, i) => (
           <motion.div
@@ -501,7 +501,7 @@ function RoleAndStats() {
 }
 
 /* ═══════════════════════════════════
-   Section 4 — Sprint Calendar (interactive)
+   Section 4 - Sprint Calendar (interactive)
    ═══════════════════════════════════ */
 const DAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"];
 
@@ -608,7 +608,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
             ))}
           </div>
 
-          {/* Day numbers — large tap targets */}
+          {/* Day numbers - large tap targets */}
           <div className="grid grid-cols-7">
             <AnimatePresence mode="wait">
               {currentWeek.map((day, i) => {
@@ -625,7 +625,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.2, delay: i * 0.03 }}
                     className="group flex flex-col items-center gap-1 py-2"
-                    aria-label={`${day.name} — ${day.description}`}
+                    aria-label={`${day.name} - ${day.description}`}
                   >
                     <div
                       className={`flex h-10 w-10 items-center justify-center rounded-full text-[15px] font-semibold transition-all sm:h-11 sm:w-11 ${
@@ -731,7 +731,7 @@ function SprintCalendar({ days }: { days: SprintDay[] }) {
 }
 
 /* ═══════════════════════════════════
-   Section 5 — Partners
+   Section 5 - Partners
    ═══════════════════════════════════ */
 function Partners({ assets }: { assets: YummyAssetsMap }) {
   return (
@@ -741,20 +741,15 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
         <span className="mb-4 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
           Startup partners
         </span>
-        {/* Horizontal scroll — a partial card stays clipped on the right to signal more */}
+        {/* Horizontal scroll - a partial card stays clipped on the right to signal more */}
         <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {partners.map((partner) => {
             const logoUrl = partner.logo ?? assets.partnerLogos[partner.slug];
             return (
               <div
                 key={partner.name}
-                className="relative w-[140px] shrink-0 snap-start rounded-2xl border border-sand-300 bg-sand-100 p-4 text-center"
+                className="flex w-[140px] shrink-0 snap-start flex-col rounded-2xl border border-sand-300 bg-sand-100 p-4 text-center"
               >
-                {partner.upcoming && (
-                  <span className="absolute right-2 top-2 inline-flex items-center rounded-full bg-[#2216ff] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.04em] text-white">
-                    Upcoming
-                  </span>
-                )}
                 <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-neutral-50${partner.stealth ? " blur-[6px]" : ""}`}>
                   {logoUrl ? (
                     <Img src={logoUrl} alt={partner.name} className="h-8 w-8 object-contain" />
@@ -770,6 +765,13 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
                 <div className="whitespace-pre-line text-[11px] leading-relaxed text-gray-500">
                   {partner.description}
                 </div>
+                {partner.upcoming && (
+                  <div className="mt-auto flex justify-center pt-3">
+                    <span className="inline-flex items-center rounded-full bg-sand-200 px-2 py-[3px] text-[9px] font-semibold uppercase tracking-[0.04em] text-neutral-500">
+                      Upcoming
+                    </span>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -814,7 +816,7 @@ function Partners({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 6 — Testimonials
+   Section 6 - Testimonials
    ═══════════════════════════════════ */
 function TestimonialCard({
   t,
@@ -900,7 +902,7 @@ function Testimonials({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 7 — Gallery
+   Section 7 - Gallery
    ═══════════════════════════════════ */
 const tiltClasses = [
   "-rotate-1",
@@ -912,7 +914,7 @@ const tiltClasses = [
 ];
 
 function Gallery({ assets }: { assets: YummyAssetsMap }) {
-  // Render directly from Notion — no hardcoded list needed
+  // Render directly from Notion - no hardcoded list needed
   const items = assets.gallery.filter((g) => g.imageUrl);
 
   if (items.length === 0) return null;
@@ -938,7 +940,7 @@ function Gallery({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 8 — CTA
+   Section 8 - CTA
    ═══════════════════════════════════ */
 function CtaSection() {
   return (
