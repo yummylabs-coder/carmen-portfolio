@@ -87,14 +87,15 @@ export const partners: Partner[] = [
     logoText: "K",
     slug: "partner-knowunity",
     upcoming: true,
+    logo: "/images/logos/knowunity-symbol.png",
   },
 ];
 
 export const tools: Tool[] = [
-  { name: "Claude", logoText: "C", slug: "tool-claude" },
+  { name: "Claude", logoText: "C", slug: "tool-claude", logo: "/images/logos/claude-symbol.svg" },
   { name: "Figma", logoText: "F", slug: "tool-figma" },
-  { name: "GitHub", logoText: "G", slug: "tool-github" },
-  { name: "Vercel", logoText: "V", slug: "tool-vercel" },
+  { name: "GitHub", logoText: "G", slug: "tool-github", logo: "/images/logos/github-symbol.svg" },
+  { name: "Vercel", logoText: "V", slug: "tool-vercel", logo: "/images/logos/vercel-symbol.svg" },
 ];
 
 export interface SprintWeek {
