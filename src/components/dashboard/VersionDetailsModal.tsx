@@ -7,20 +7,20 @@ import { motion, AnimatePresence } from "framer-motion";
 const CHANGES = [
   {
     hash: "a3f8d2e",
-    message: "Improving case studies",
-    date: "Mar 2026",
+    message: "Building the Pilgrimz case study",
+    date: "Jun 11, 2026",
     status: "in-progress" as const,
   },
   {
     hash: "7c1b4f0",
-    message: "Adding new case studies",
-    date: "Mar 2026",
+    message: "Adding new AI design resources",
+    date: "Jun 10, 2026",
     status: "in-progress" as const,
   },
   {
     hash: "e9d6a12",
-    message: "Improving mobile experience",
-    date: "Feb 2026",
+    message: "Optimizing loading times",
+    date: "Jun 10, 2026",
     status: "in-progress" as const,
   },
 ];

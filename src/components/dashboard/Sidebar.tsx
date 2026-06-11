@@ -90,9 +90,9 @@ function VersionBadge({ onViewDetails }: { onViewDetails: () => void }) {
         <span className="text-yellow-600">v15</span>
         <span className="text-neutral-600"> ← in progress</span>
         <br />
-        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">improving case studies</span>
+        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">building Pilgrimz case study</span>
         <br />
-        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">optimizing loading times</span>
+        <span className="ml-[2ch] rounded bg-yellow-100 px-1 text-[10px] text-yellow-700">adding AI design resources</span>
       </div>
       {/* View details link */}
       <button
