@@ -12,9 +12,9 @@
 export const pilgrimzContent = {
   title: "Pilgrimz",
   partner: "Pilgrimz",
-  headline: "A design system that became infrastructure",
+  headline: "Rebuilding Pilgrimz from the foundation up",
   summary:
-    "Pilgrimz had real traction and a high quality bar, but quiet inconsistency was eroding trust and blocking what came next. We built the missing foundation, then wired it into how the team designs and ships, including their AI tools.",
+    "Pilgrimz is a cultural travel app with GPS audio guides and early traction in France. Quiet inconsistency was eroding trust, so we built the design system and the AI infrastructure behind it, then redesigned the core flows around trust, retention, and the business.",
   overview:
     "The brief was a design system. The real problem was trust and retention.\n\nPilgrimz had traction, around 1,000 early users in France and growing, but small inconsistencies across the experience were quietly eroding confidence. People cannot always say why something feels off, or why they do not come back, and very often the answer is inconsistency. It is easy to undervalue because it stays invisible until you fix it.\n\nSo the system was never cosmetic. It was the prerequisite for everything the founders wanted next, like gamification, social sharing, and better discovery. Without a consistent base, every new feature would add more drift.",
   challenge:
