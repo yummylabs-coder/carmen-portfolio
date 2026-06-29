@@ -8,11 +8,13 @@ import { ImageWithShimmer } from "@/components/ui/ImageWithShimmer";
 import { NeotasteHeroVisual } from "./NeotasteHeroVisual";
 import { WaterdayHeroVisual } from "./WaterdayHeroVisual";
 import { AusventureHeroVisual } from "./AusventureHeroVisual";
+import { PilgrimzHeroVisual } from "./PilgrimzHeroVisual";
 
 const heroVisualMap: Record<string, React.ComponentType> = {
   "neotaste-discovery": NeotasteHeroVisual,
   "waterday-cards": WaterdayHeroVisual,
   "ausventure-compass": AusventureHeroVisual,
+  "pilgrimz-map": PilgrimzHeroVisual,
 };
 
 interface HeroSectionProps {

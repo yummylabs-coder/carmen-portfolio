@@ -344,6 +344,60 @@ const configs: Record<string, CaseStudyConfig> = {
     },
   },
 
+  /* ── Pilgrimz ── Warm espresso hero, teal accent, coral CTA ── */
+  "pilgrimz": {
+    readTime: "~5 min read",
+    heroVisual: "pilgrimz-map",
+    timelineDuration: "",
+    timelineSteps: [
+      {
+        label: "Phase 1",
+        title: "Design system foundation",
+        description:
+          "Tokens, color, type, and components built for consistency, accessibility, and a premium feel.",
+      },
+      {
+        label: "Phase 1",
+        title: "AI enablement",
+        description:
+          "Wired the system into code and into Claude, so a tiny team ships features that stay on-system.",
+      },
+      {
+        label: "Phase 2",
+        title: "Core flows redesign",
+        description:
+          "Restructured navigation, the map, and the Hub around trust, retention, and the business model.",
+      },
+      {
+        label: "Phase 3",
+        title: "Social layer",
+        description:
+          "Reframing social around destinations and inspiration. In progress, the next chapter.",
+        isHighlight: true,
+      },
+    ],
+    brand: {
+      bg: "#1C1B19",
+      headlineText: "#FAF9F7",
+      bodyText: "#C2BFB8",
+      partnerText: "#F26B62",
+      breadcrumbLink: "#A09D96",
+      breadcrumbSeparator: "#52504A",
+      breadcrumbActive: "#FAF9F7",
+      badgeBg: "#E84C44",
+      badgeText: "#FFFFFF",
+      readTimeText: "#A09D96",
+      tagBg: "rgba(15, 136, 143, 0.12)",
+      tagBorder: "#3A3733",
+      tagText: "#C2BFB8",
+      ctaBg: "#E84C44",
+      ctaText: "#FFFFFF",
+      ctaRadius: "12px",
+      progressBar: "#E84C44",
+      accentColor: "#0F888F",
+    },
+  },
+
   /* ── Klasse ── Coming soon / default brand ─────────────────── */
   "klasse": {
     readTime: "~3 min read",

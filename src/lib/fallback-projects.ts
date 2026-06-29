@@ -28,6 +28,17 @@ export function getStaticCover(slug: string): string {
  */
 export const fallbackProjects: CaseStudy[] = [
   {
+    id: "9",
+    title: "Pilgrimz",
+    summary:
+      "A design system that became infrastructure for a cultural travel app, wired into the team's code and AI tools.",
+    coverUrl: "/cover-placeholder.svg",
+    slug: "pilgrimz",
+    tags: ["Design System", "Mobile App"],
+    isFeatured: false,
+    sortOrder: 0,
+  },
+  {
     id: "1",
     title: "Water.day",
     summary:

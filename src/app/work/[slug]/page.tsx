@@ -33,6 +33,8 @@ import { AusventureSections } from "@/components/case-study/sections/AusventureS
 import { NeotasteSections } from "@/components/case-study/sections/NeotasteSections";
 import { WaterdaySections } from "@/components/case-study/sections/WaterdaySections";
 import { LearnXyzSections } from "@/components/case-study/sections/LearnXyzSections";
+import { PilgrimzSections } from "@/components/case-study/sections/PilgrimzSections";
+import { pilgrimzContent } from "@/components/case-study/sections/pilgrimzContent";
 
 const customSectionMap: Record<string, React.ComponentType<{ accentColor: string }>> = {
   pandore: PandoreSections,
@@ -40,6 +42,12 @@ const customSectionMap: Record<string, React.ComponentType<{ accentColor: string
   neotaste: NeotasteSections,
   "water-day": WaterdaySections,
   "learn-xyz": LearnXyzSections,
+  pilgrimz: PilgrimzSections,
+};
+
+/* Code-sourced shared-section content for studies not yet in Notion (preview-first). */
+const fallbackContentMap: Record<string, Partial<CaseStudyDetail>> = {
+  pilgrimz: pilgrimzContent,
 };
 
 /* When custom sections already include their own Role / Outcomes,
@@ -52,7 +60,7 @@ const skipSharedSections: Record<string, { role?: boolean; outcomes?: boolean }>
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
 
 /** Fallback slugs so pages build even when Notion API is unavailable */
-const FALLBACK_SLUGS = ["water-day", "pandore", "neotaste", "learn-xyz", "ausventure", "klasse"];
+const FALLBACK_SLUGS = ["water-day", "pandore", "neotaste", "learn-xyz", "ausventure", "klasse", "pilgrimz"];
 
 /** Pre-build all case study pages at deploy time */
 export async function generateStaticParams() {
@@ -130,6 +138,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
         outcomes: [],
         order: fb.sortOrder ?? 0,
         status: "Published",
+        ...fallbackContentMap[slug],
       } satisfies CaseStudyDetail;
     } else {
       notFound();
