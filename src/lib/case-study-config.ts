@@ -352,27 +352,21 @@ const configs: Record<string, CaseStudyConfig> = {
     timelineSteps: [
       {
         label: "Phase 1",
-        title: "Design system foundation",
+        title: "The AI-enabled foundation",
         description:
-          "Tokens, color, type, and components built for consistency, accessibility, and a premium feel.",
-      },
-      {
-        label: "Phase 1",
-        title: "AI enablement",
-        description:
-          "Wired the system into code and into Claude, so a tiny team ships features that stay on-system.",
+          "A design system built to be read by AI, plus the infrastructure inside Claude (Skills, agents, and context) so the team ships on-system.",
       },
       {
         label: "Phase 2",
-        title: "Core flows redesign",
+        title: "The design work",
         description:
-          "Restructured navigation, the map, and the Hub around trust, retention, and the business model.",
+          "Core flows and screens restructured around trust, retention, and the business, fast and consistent because the foundation existed.",
       },
       {
         label: "Phase 3",
-        title: "Social layer",
+        title: "Social discovery",
         description:
-          "Reframing social around destinations and inspiration. In progress, the next chapter.",
+          "Reframing social around destinations and inspiration. The chapter underway now.",
         isHighlight: true,
       },
     ],
