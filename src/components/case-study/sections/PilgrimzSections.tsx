@@ -276,7 +276,7 @@ function DesignSystemSection({ accentColor }: { accentColor: string }) {
 /* ════════════════════════════════════════
    2 — AI enablement (signature)
    ════════════════════════════════════════ */
-const pipelineNodes = [
+const pipelineNodes: { title: string; sub: string; icon: string; badge?: string }[] = [
   { title: "Figma tokens", sub: "Named with intent", icon: "layers" },
   { title: "Code", sub: "Maps to the theme", icon: "code" },
   { title: "Claude", sub: "System as context", icon: "spark" },

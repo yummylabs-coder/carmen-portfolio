@@ -10,7 +10,7 @@ const PAPER = "#FAF9F7";
 const PAPER_2 = "#F3F2EF";
 const LINE = "#E8E6E1";
 
-const smooth = [0.25, 0.1, 0.25, 1];
+const smooth = [0.25, 0.1, 0.25, 1] as const;
 
 /* Now-playing audio guide chip with an animated teal waveform */
 function AudioChip({ reduce }: { reduce: boolean }) {
