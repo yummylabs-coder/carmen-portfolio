@@ -57,21 +57,21 @@ function Placeholder({
     <div className={`${wrap} ${className}`}>
       <div
         className={`relative flex w-full items-center justify-center overflow-hidden ${radius} border border-dashed ${
-          dark ? "border-white/25" : "border-sand-400"
+          dark ? "border-white/25" : "border-[#E0D8C9]"
         }`}
         style={{
           aspectRatio: aspect,
           background: dark
             ? "linear-gradient(150deg, rgba(255,255,255,0.07) 0%, rgba(15,136,143,0.14) 100%)"
-            : "linear-gradient(135deg, #FAF9F7 0%, rgba(15,136,143,0.07) 55%, rgba(232,155,36,0.06) 100%)",
+            : "linear-gradient(135deg, #FFFDFB 0%, rgba(232,76,68,0.05) 50%, rgba(232,155,36,0.08) 100%)",
         }}
       >
         <div className="flex flex-col items-center gap-2 px-4 text-center">
           <span
             className="flex h-9 w-9 items-center justify-center rounded-lg"
             style={{
-              backgroundColor: dark ? "rgba(255,255,255,0.12)" : "rgba(15,136,143,0.12)",
-              color: dark ? "#9FDDE0" : TEAL,
+              backgroundColor: dark ? "rgba(255,255,255,0.12)" : "rgba(232,76,68,0.10)",
+              color: dark ? "#9FDDE0" : CORAL,
             }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -93,7 +93,7 @@ function Placeholder({
   );
 }
 
-/** Dark branded panel with a blurred radial glow — the product showcase backdrop */
+/** Dark branded panel with a blurred radial glow — reserved for the Claude Design OS showpiece */
 function ShowcasePanel({
   children,
   glow = TEAL,
@@ -113,6 +113,92 @@ function ShowcasePanel({
         style={{ backgroundColor: `${glow}30` }}
       />
       <div className="relative">{children}</div>
+    </div>
+  );
+}
+
+/** Warm paper panel — the product's own surface (Pilgrimz is warm and photo-forward, not dark) */
+function WarmPanel({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-3xl border border-[#EBE5D9] p-6 lg:p-10 ${className}`}
+      style={{ background: "linear-gradient(165deg, #FBF8F3 0%, #F5F1E9 100%)" }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ── Small real product artifacts (rebuilt UI furniture, not abstract boxes) ── */
+
+/** The app's segmented control — coral active pill */
+function SegmentedControl() {
+  const items = ["Tours", "Recs", "Favorites"];
+  return (
+    <div className="mt-5 inline-flex items-center gap-1 rounded-full border border-[#EBE5D9] bg-white p-1 shadow-sm">
+      {items.map((label, i) => (
+        <span
+          key={label}
+          className={`rounded-full px-4 py-1.5 text-[12px] font-semibold ${
+            i === 0 ? "text-white" : "text-[#807D76]"
+          }`}
+          style={i === 0 ? { backgroundColor: CORAL } : undefined}
+        >
+          {label}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** POI chips — how featured and sponsored places read in the product */
+function PoiChips() {
+  return (
+    <div className="mt-3 flex flex-wrap gap-2">
+      <span
+        className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
+        style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
+      >
+        Hidden gem
+      </span>
+      <span
+        className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
+        style={{ backgroundColor: "#FDEBCC", color: "#8A5B10", boxShadow: `0 0 0 1.5px ${AMBER}66` }}
+      >
+        ★ Featured
+      </span>
+      <span
+        className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
+        style={{ backgroundColor: "#C2E5E7", color: "#0A5C61" }}
+      >
+        Selected
+      </span>
+    </div>
+  );
+}
+
+/** A tour list item, straight from the product */
+function TourListItem() {
+  return (
+    <div className="mt-4 flex w-fit items-center gap-3 rounded-2xl border border-[#EBE5D9] bg-white p-2.5 pr-5 shadow-sm">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/pilgrimz/galerie-vivienne.jpg"
+        alt=""
+        className="h-12 w-12 rounded-xl object-cover"
+      />
+      <div>
+        <div className="text-[13px] font-bold leading-tight text-[#1C1B19]">
+          The covered passages of Paris
+        </div>
+        <div className="mt-0.5 text-[11px] text-[#807D76]">Tour · 5 stops · 40 min</div>
+      </div>
     </div>
   );
 }
@@ -138,7 +224,7 @@ function PhaseHeader({
       <div className="flex flex-wrap items-center gap-3">
         <span
           className="flex h-9 w-9 items-center justify-center rounded-full font-brand text-[14px] font-bold text-white"
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: CORAL }}
         >
           {num}
         </span>
@@ -377,31 +463,31 @@ function FoundationBlock() {
         <GoodVsBad />
       </div>
 
-      {/* The system living on real screens — showcase treatment */}
+      {/* The system living on real screens — warm product surface */}
       <div className="mt-5">
-        <ShowcasePanel glow={TEAL}>
+        <WarmPanel>
           <div className="flex flex-col items-center gap-8 lg:flex-row">
             <div className="lg:w-[300px]">
               <span
                 className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em]"
-                style={{ backgroundColor: `${TEAL}26`, color: "#7FD4D9" }}
+                style={{ backgroundColor: "rgba(232,76,68,0.10)", color: "#C93A32" }}
               >
                 The system in use
               </span>
-              <h4 className="mt-3 font-brand text-[19px] font-bold leading-tight text-white">
+              <h4 className="mt-3 font-brand text-[19px] font-bold leading-tight text-brand-ink">
                 Decisions made on real screens, not swatches
               </h4>
-              <p className="mt-2 text-[13px] leading-relaxed text-white/60">
+              <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">
                 I showed color and type living on primary screens with usage guidance, so the
                 founders could judge the system where it matters, on the product.
               </p>
             </div>
             <div className="grid flex-1 grid-cols-2 gap-4">
-              <Placeholder dark variant="phone" label="Screen — before tokens" />
-              <Placeholder dark variant="phone" label="Screen — on system" />
+              <Placeholder variant="phone" label="Screen — before tokens" />
+              <Placeholder variant="phone" label="Screen — on system" />
             </div>
           </div>
-        </ShowcasePanel>
+        </WarmPanel>
       </div>
 
       <div className="mt-5">
@@ -557,33 +643,36 @@ function Phase1({ accentColor }: { accentColor: string }) {
    Phase 2 — The design work
    ════════════════════════════════════════ */
 
-/** Map & discovery — device showcase on gradient backdrop */
+/** Map & discovery — warm product surface with real UI furniture */
 function MapShowcase({ accentColor }: { accentColor: string }) {
   return (
     <div className="mt-10">
-      <ShowcasePanel glow={accentColor}>
+      <WarmPanel>
         <div className="flex flex-col items-center gap-8 lg:flex-row">
           <div className="lg:w-[320px]">
-            <span className="text-[11px] font-bold uppercase tracking-[0.05em]" style={{ color: "#7FD4D9" }}>
+            <span className="text-[11px] font-bold uppercase tracking-[0.05em]" style={{ color: accentColor }}>
               Navigation, discovery & the map
             </span>
-            <h3 className="mt-2 font-brand text-[20px] font-bold leading-tight text-white">
+            <h3 className="mt-2 font-brand text-[20px] font-bold leading-tight text-brand-ink">
               The map as a primary surface, not a backdrop
             </h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-white/60">
+            <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">
               Users struggled to move between cities without zooming the map, reaching for a search
               they could not find. The redesign made moving between destinations obvious,
               differentiated point of interest types, and surfaced sponsored places clearly, which
               ties straight to how Pilgrimz makes money.
             </p>
+            <SegmentedControl />
+            <PoiChips />
+            <TourListItem />
           </div>
           <div className="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-3">
-            <Placeholder dark variant="phone" label="City switcher" />
-            <Placeholder dark variant="phone" label="Map & POI types" />
-            <Placeholder dark variant="phone" label="Sponsored places" className="hidden sm:block" />
+            <Placeholder variant="phone" label="City switcher" />
+            <Placeholder variant="phone" label="Map & POI types" />
+            <Placeholder variant="phone" label="Sponsored places" className="hidden sm:block" />
           </div>
         </div>
-      </ShowcasePanel>
+      </WarmPanel>
     </div>
   );
 }
@@ -626,9 +715,9 @@ function HubStickyShowcase({ accentColor }: { accentColor: string }) {
 
       {/* Mobile: panel once, then steps */}
       <div className="mt-8 lg:hidden">
-        <ShowcasePanel glow={accentColor}>
-          <Placeholder dark variant="phone" label="Hub redesign" />
-        </ShowcasePanel>
+        <WarmPanel>
+          <Placeholder variant="phone" label="Hub redesign" />
+        </WarmPanel>
         <div className="mt-6 flex flex-col gap-4">
           {steps.map((s, i) => (
             <SectionReveal key={s.title} delay={i * 0.06}>
@@ -645,9 +734,9 @@ function HubStickyShowcase({ accentColor }: { accentColor: string }) {
       <div className="mt-8 hidden gap-10 lg:grid lg:grid-cols-2">
         <div className="relative">
           <div className="sticky top-24">
-            <ShowcasePanel glow={accentColor}>
-              <Placeholder dark variant="phone" label="Hub redesign — swaps per step" />
-            </ShowcasePanel>
+            <WarmPanel>
+              <Placeholder variant="phone" label="Hub redesign — swaps per step" />
+            </WarmPanel>
           </div>
         </div>
         <div className="flex flex-col">
@@ -656,7 +745,7 @@ function HubStickyShowcase({ accentColor }: { accentColor: string }) {
               <SectionReveal delay={0.05}>
                 <span
                   className="flex h-8 w-8 items-center justify-center rounded-full font-brand text-[13px] font-bold text-white"
-                  style={{ backgroundColor: accentColor }}
+                  style={{ backgroundColor: CORAL }}
                 >
                   {i + 1}
                 </span>
@@ -689,7 +778,7 @@ function FloatingBreadth({ accentColor }: { accentColor: string }) {
         </h3>
       </SectionReveal>
       <div className="mt-6">
-        <ShowcasePanel glow={accentColor}>
+        <WarmPanel>
           <div className="grid grid-cols-3 gap-4 lg:grid-cols-6">
             {labels.map((label, i) => (
               <motion.div
@@ -702,12 +791,12 @@ function FloatingBreadth({ accentColor }: { accentColor: string }) {
                   animate={{ y: i % 2 === 0 ? [-5, 5, -5] : [5, -5, 5] }}
                   transition={{ duration: 5 + (i % 3), repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Placeholder dark variant="phone" label={label} />
+                  <Placeholder variant="phone" label={label} />
                 </motion.div>
               </motion.div>
             ))}
           </div>
-        </ShowcasePanel>
+        </WarmPanel>
       </div>
     </div>
   );
