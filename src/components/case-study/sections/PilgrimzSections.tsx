@@ -264,7 +264,7 @@ function PhotoBridge({ src, alt, text }: { src: string; alt: string; text: strin
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
         <div className="absolute inset-0 flex items-center p-8 lg:p-12">
-          <p className="max-w-[460px] font-brand text-[18px] font-bold leading-relaxed text-white lg:text-[20px]">
+          <p className="max-w-[460px] font-brand text-[18px] font-bold leading-[1.4] text-white lg:text-[20px]">
             {text}
           </p>
         </div>
@@ -1430,7 +1430,7 @@ function FoundationBlock({ accentColor }: { accentColor: string }) {
         accentColor={accentColor}
         kicker="Core components"
         title="Components connected back to tokens"
-        body="Rebuilt here in code, on the system. Press play, save a tour, switch a tab. Everything below is drawn from the tokens above."
+        body="The pieces travelers touch every day: play an audio guide, tap a map marker, browse tours, events, and hubs. Every component draws its color, type, and radius from the tokens, so the product holds together as it grows. They are live, try them."
       />
       <CoreComponents />
 
@@ -1502,7 +1502,7 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
   return (
     <div ref={ref} className="mt-8">
       <ShowcasePanel glow={accentColor}>
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-center">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           {/* Left: the story + what we built */}
           <div className="flex-1">
             <span
@@ -1751,7 +1751,7 @@ function FloatingBreadth({ accentColor }: { accentColor: string }) {
       </SectionReveal>
       <div className="mt-6">
         <WarmPanel>
-          <div className="grid grid-cols-3 gap-4 lg:grid-cols-6">
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {labels.map((label, i) => (
               <motion.div
                 key={label}
@@ -1895,9 +1895,9 @@ function OutcomesOnPhoto({ accentColor }: { accentColor: string }) {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/50 to-transparent" />
 
         <div className="relative flex flex-col gap-8 p-7 lg:flex-row lg:gap-12 lg:p-12">
-          {/* Sticky headline */}
+          {/* Headline, pinned to the top of the panel */}
           <div className="lg:w-[38%]">
-            <div className="lg:sticky lg:top-24">
+            <div>
               <span
                 className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em] text-white"
                 style={{ backgroundColor: accentColor }}
