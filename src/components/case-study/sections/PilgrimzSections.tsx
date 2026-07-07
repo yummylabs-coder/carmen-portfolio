@@ -1214,13 +1214,13 @@ function PhotoMarker({
           so framer's scale never cancels the translate centering) */}
       <AnimatePresence>
         {selected && (
-          <span className="absolute -bottom-[13px] left-1/2 -translate-x-1/2">
+          <span className="absolute -bottom-[12px] left-1/2 -translate-x-1/2">
             <motion.span
               initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 0.7, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="block h-2.5 w-8 rounded-full"
+              className="block h-2 w-7 rounded-full blur-[3px]"
               style={{ backgroundColor: ellipse }}
             />
           </span>
