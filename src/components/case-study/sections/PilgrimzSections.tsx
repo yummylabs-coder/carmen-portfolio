@@ -1103,47 +1103,28 @@ function CardsDemo() {
    shadow when selected), teardrop category pins with 16px icons, the sponsored
    amber star badge, and a cluster that splits on tap. */
 
+/* Phosphor duotone icons (castle-turret, fork-knife, bed), as used in the product */
+const DUOTONE_PATHS: Record<string, [string, string]> = {
+  cultural: [
+    "M208,48V92.69a8,8,0,0,1-2.34,5.65L192,112V224H152V168a24,24,0,0,0-48,0v56H64V112L50.34,98.34A8,8,0,0,1,48,92.69V48a8,8,0,0,1,8-8H80V72h32V40h32V72h32V40h24A8,8,0,0,1,208,48Z",
+    "M216,216H200V115.31L211.31,104A15.86,15.86,0,0,0,216,92.69V48a16,16,0,0,0-16-16H176a8,8,0,0,0-8,8V64H152V40a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8V64H88V40a8,8,0,0,0-8-8H56A16,16,0,0,0,40,48V92.69A15.86,15.86,0,0,0,44.69,104L56,115.31V216H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM69.66,106.34,56,92.69V48H72V72a8,8,0,0,0,8,8h32a8,8,0,0,0,8-8V48h16V72a8,8,0,0,0,8,8h32a8,8,0,0,0,8-8V48h16V92.69l-13.66,13.65A8,8,0,0,0,184,112V216H160V168a32,32,0,0,0-64,0v48H72V112A8,8,0,0,0,69.66,106.34ZM144,216H112V168a16,16,0,0,1,32,0Z",
+  ],
+  restaurant: [
+    "M208,40V168H152S152,64,208,40Z",
+    "M72,88V40a8,8,0,0,1,16,0V88a8,8,0,0,1-16,0ZM216,40V224a8,8,0,0,1-16,0V176H152a8,8,0,0,1-8-8,268.75,268.75,0,0,1,7.22-56.88c9.78-40.49,28.32-67.63,53.63-78.47A8,8,0,0,1,216,40ZM200,53.9c-32.17,24.57-38.47,84.42-39.7,106.1H200ZM119.89,38.69a8,8,0,1,0-15.78,2.63L112,88.63a32,32,0,0,1-64,0l7.88-47.31a8,8,0,1,0-15.78-2.63l-8,48A8.17,8.17,0,0,0,32,88a48.07,48.07,0,0,0,40,47.32V224a8,8,0,0,0,16,0V135.32A48.07,48.07,0,0,0,128,88a8.17,8.17,0,0,0-.11-1.31Z",
+  ],
+  hotel: [
+    "M248,112v56H112V80H216A32,32,0,0,1,248,112Z",
+    "M216,72H32V48a8,8,0,0,0-16,0V208a8,8,0,0,0,16,0V176H240v32a8,8,0,0,0,16,0V112A40,40,0,0,0,216,72ZM32,88h72v72H32Zm88,72V88h96a24,24,0,0,1,24,24v48Z",
+  ],
+};
+
 function MarkerIcon({ kind }: { kind: string }) {
-  const common = {
-    width: 14,
-    height: 14,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
-  if (kind === "cultural")
-    return (
-      <svg {...common}>
-        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-        <circle cx="12" cy="13" r="3" />
-      </svg>
-    );
-  if (kind === "restaurant")
-    return (
-      <svg {...common}>
-        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-        <path d="M7 2v20" />
-        <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7" />
-      </svg>
-    );
-  if (kind === "retail")
-    return (
-      <svg {...common}>
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-        <path d="M3 6h18" />
-        <path d="M16 10a4 4 0 0 1-8 0" />
-      </svg>
-    );
-  /* hotel */
+  const paths = DUOTONE_PATHS[kind] ?? DUOTONE_PATHS.cultural;
   return (
-    <svg {...common}>
-      <path d="M2 4v16" />
-      <path d="M2 8h18a2 2 0 0 1 2 2v10" />
-      <path d="M2 17h20" />
-      <path d="M6 8v9" />
+    <svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor">
+      <path d={paths[0]} opacity="0.2" />
+      <path d={paths[1]} />
     </svg>
   );
 }
@@ -1193,7 +1174,9 @@ function CategoryPin({
   );
 }
 
-/** Photo tour marker, optionally sponsored (amber star badge) */
+/* Photo tour marker, to spec: default = 44px, 2px neutral/400 ring, elevation/xl.
+   Selected = thick brand ring with an integrated teardrop tail and a soft
+   ellipse beneath. Sponsored uses the amber ring and star badge. */
 function PhotoMarker({
   img,
   sponsored,
@@ -1207,70 +1190,94 @@ function PhotoMarker({
   onClick: () => void;
   label: string;
 }) {
+  const ring = sponsored ? AMBER : TEAL;
+  const ellipse = sponsored ? "#F8E4BF" : "#BFE2E7";
   return (
     <motion.button
       onClick={onClick}
-      whileTap={{ scale: 0.88 }}
-      animate={{ scale: selected ? 1.15 : 1 }}
+      whileTap={{ scale: 0.9 }}
+      animate={{ scale: selected ? 1.12 : 1, y: selected ? -5 : 0 }}
       aria-label={label}
       className="relative"
     >
-      {selected && <GroundShadow />}
-      <span
-        className="block h-11 w-11 overflow-hidden rounded-full shadow-md transition-all"
-        style={{
-          border: selected ? `2.5px solid ${TEAL}` : "2.5px solid #FFFFFF",
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={img} alt="" className="h-full w-full object-cover" />
-      </span>
-      {sponsored && (
-        <span
-          className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full shadow-sm"
-          style={{ backgroundColor: AMBER }}
-        >
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      {/* Soft landing ellipse under the tail */}
+      <AnimatePresence>
+        {selected && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.4 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute -bottom-[15px] left-1/2 h-2.5 w-8 -translate-x-1/2 rounded-full"
+            style={{ backgroundColor: ellipse }}
+          />
+        )}
+      </AnimatePresence>
+
+      <span className="relative block">
+        {/* Teardrop tail, selected only */}
+        {selected && (
+          <svg
+            className="absolute -bottom-[9px] left-1/2 -translate-x-1/2"
+            width="18"
+            height="12"
+            viewBox="0 0 18 12"
+          >
+            <path d="M0 0 H18 C14 5.5 10.5 8.5 9 12 C7.5 8.5 4 5.5 0 0 Z" fill={ring} />
           </svg>
+        )}
+        {/* Ring: padding 2 neutral/400 default, thicker brand ring selected */}
+        <span
+          className="relative block rounded-full transition-all duration-200"
+          style={{
+            padding: selected ? 5 : 2,
+            backgroundColor: selected ? ring : "#B7B4AC",
+            boxShadow: "0 4px 10px rgba(28, 27, 25, 0.18)",
+          }}
+        >
+          <span className="block h-10 w-10 overflow-hidden rounded-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={img} alt="" className="h-full w-full object-cover" />
+          </span>
         </span>
-      )}
+        {/* Sponsored star badge */}
+        {sponsored && (
+          <span
+            className="absolute -right-2 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full shadow-sm"
+            style={{ backgroundColor: AMBER }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+          </span>
+        )}
+      </span>
     </motion.button>
   );
 }
 
 function MapMarkersDemo() {
   const [selected, setSelected] = useState("tour");
-  const [clusterOpen, setClusterOpen] = useState(false);
   const reduce = useReducedMotion() ?? false;
 
   const notes: Record<string, string> = {
-    tour: "Tour · photo marker, teal ring when selected",
-    sponsored: "Sponsored · the amber star marks paid visibility",
+    tour: "Tour · photo marker, brand ring and tail when selected",
+    sponsored: "Sponsored · amber ring and star mark paid visibility",
     cultural: "Cultural site · category pin",
     hotel: "Hotel · category pin",
-    restaurant: "Restaurant · from the cluster",
-    retail: "Shop · from the cluster",
+    restaurant: "Restaurant · category pin",
   };
 
   return (
     <div className="flex w-full flex-col items-center gap-3">
-      {/* Mini map stage */}
-      <div
-        className="relative h-[230px] w-full max-w-[440px] overflow-hidden rounded-xl border border-[#E3DED6]"
-        style={{ backgroundColor: "#F4F1EA" }}
-      >
-        {/* Abstract streets */}
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 440 230" preserveAspectRatio="none">
-          <rect x="290" y="10" width="140" height="80" rx="12" fill={`${TEAL}0D`} />
-          <path d="M-10 190 C 90 165, 200 205, 450 175 L 450 240 L -10 240 Z" fill={`${TEAL}14`} />
-          <g stroke="#E7E2D8" strokeWidth="7" strokeLinecap="round">
-            <line x1="0" y1="70" x2="440" y2="95" />
-            <line x1="0" y1="150" x2="440" y2="130" />
-            <line x1="110" y1="0" x2="130" y2="230" />
-            <line x1="300" y1="0" x2="320" y2="230" />
-          </g>
-        </svg>
+      {/* Mini map stage — the product's real map underneath */}
+      <div className="relative h-[240px] w-full max-w-[440px] overflow-hidden rounded-xl border border-[#E3DED6]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/pilgrimz/map-bg.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-[50%_32%]"
+        />
 
         {/* User location — pulsing halo */}
         <div className="absolute left-[50%] top-[40%] -translate-x-1/2 -translate-y-1/2">
@@ -1325,58 +1332,14 @@ function MapMarkersDemo() {
           />
         </div>
 
-        {/* Cluster — tap to split */}
-        <div className="absolute left-[52%] top-[78%] -translate-x-1/2 -translate-y-1/2">
-          <AnimatePresence mode="wait">
-            {!clusterOpen ? (
-              <motion.button
-                key="cluster"
-                onClick={() => setClusterOpen(true)}
-                whileTap={{ scale: 0.88 }}
-                initial={{ scale: 0.6, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.6, opacity: 0 }}
-                transition={{ duration: 0.18 }}
-                aria-label="Expand cluster of 2 places"
-                className="flex h-10 w-10 items-center justify-center rounded-full border-[2.5px] border-white bg-[#FAF9F7] text-[13px] font-bold text-[#33312D] shadow-md"
-              >
-                2
-              </motion.button>
-            ) : (
-              <motion.div
-                key="split"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex items-end gap-2"
-              >
-                {(["restaurant", "retail"] as const).map((k, i) => (
-                  <motion.div
-                    key={k}
-                    initial={{ scale: 0.4, y: 6, opacity: 0 }}
-                    animate={{ scale: 1, y: 0, opacity: 1 }}
-                    transition={{ duration: 0.25, delay: i * 0.06, type: "spring", stiffness: 300, damping: 18 }}
-                  >
-                    <CategoryPin
-                      kind={k}
-                      selected={selected === k}
-                      onClick={() => setSelected(k)}
-                      label={`${k} pin`}
-                    />
-                  </motion.div>
-                ))}
-                <motion.button
-                  onClick={() => setClusterOpen(false)}
-                  aria-label="Collapse cluster"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="mb-2 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] font-bold text-[#807D76] shadow-sm"
-                >
-                  ×
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        {/* Restaurant pin */}
+        <div className="absolute left-[52%] top-[76%] -translate-x-1/2 -translate-y-1/2">
+          <CategoryPin
+            kind="restaurant"
+            selected={selected === "restaurant"}
+            onClick={() => setSelected("restaurant")}
+            label="Restaurant pin"
+          />
         </div>
       </div>
 
@@ -1412,7 +1375,7 @@ function CoreComponents() {
       <div className="sm:col-span-2">
         <DemoCard
           title="Map markers (POI)"
-          tokens="secondary/500 · accent/500 · neutral/0 · photo markers vs category pins"
+          tokens="44px · radius/22 · pad/2 · neutral/400 ring · secondary/500 selected · accent/500 sponsored · elevation/xl"
         >
           <MapMarkersDemo />
         </DemoCard>
