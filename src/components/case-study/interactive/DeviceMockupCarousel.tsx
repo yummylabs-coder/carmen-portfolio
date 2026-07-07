@@ -20,6 +20,8 @@ interface DeviceMockupCarouselProps {
   /** Auto-advance interval in ms. 0 = disabled. Default 4000. */
   autoPlay?: number;
   className?: string;
+  /** Caption text classes — override for dark backdrops (e.g. "text-white/75") */
+  captionClassName?: string;
 }
 
 /* ─── Inline Device Frames ─── */
@@ -129,6 +131,7 @@ export function DeviceMockupCarousel({
   device = "phone",
   autoPlay = 4000,
   className,
+  captionClassName = "text-neutral-600",
 }: DeviceMockupCarouselProps) {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -234,7 +237,7 @@ export function DeviceMockupCarousel({
 
       {/* Caption */}
       {slides[current].caption && (
-        <p className="mt-3 text-center text-13 text-neutral-600">
+        <p className={`mt-3 text-center text-13 ${captionClassName}`}>
           {slides[current].caption}
         </p>
       )}

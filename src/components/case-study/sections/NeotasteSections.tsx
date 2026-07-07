@@ -172,77 +172,198 @@ function RoleSection({ accentColor }: { accentColor: string }) {
 /* ═══════════════════════════════════
    Section 2 — Uncovering Friction
    ═══════════════════════════════════ */
-/* Inline SVG visuals for friction cards */
-function DeclineTrendSVG() {
+/* Inline SVG visuals for friction cards — draw themselves in when in view */
+function DeclineTrendSVG({ inView }: { inView: boolean }) {
+  const curve = "M 36 24 C 66 26, 92 40, 120 56 C 145 70, 172 80, 196 86";
   return (
-    <svg viewBox="0 0 200 100" fill="none" className="h-full w-full">
-      {/* Y-axis labels */}
-      <text x="8" y="18" fill="white" fontSize="7" opacity="0.25" fontFamily="system-ui">High</text>
-      <text x="8" y="92" fill="white" fontSize="7" opacity="0.25" fontFamily="system-ui">Low</text>
-      {/* Subtle grid */}
-      {[0, 1, 2, 3, 4].map((i) => (
-        <line key={i} x1="30" y1={15 + i * 18} x2="190" y2={15 + i * 18} stroke="white" strokeOpacity="0.04" strokeWidth="0.5" />
-      ))}
-      {/* Area fill */}
-      <path
-        d="M 35 22 C 55 20, 70 28, 90 42 S 130 62, 155 72 S 175 82, 188 88 L 188 95 L 35 95 Z"
-        fill="url(#decline-area)"
-      />
-      {/* Main trend line */}
-      <path
-        d="M 35 22 C 55 20, 70 28, 90 42 S 130 62, 155 72 S 175 82, 188 88"
-        stroke={BRAND.accent}
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-      {/* Data points with pulse rings */}
-      <circle cx="35" cy="22" r="4" fill={BRAND.dark} stroke={BRAND.accent} strokeWidth="1.5" />
-      <circle cx="70" cy="30" r="3" fill={BRAND.dark} stroke={BRAND.accent} strokeWidth="1.5" opacity="0.8" />
-      <circle cx="115" cy="55" r="3" fill={BRAND.dark} stroke={BRAND.accent} strokeWidth="1.5" opacity="0.6" />
-      <circle cx="155" cy="72" r="3" fill={BRAND.dark} stroke={BRAND.accent} strokeWidth="1.5" opacity="0.4" />
-      <circle cx="188" cy="88" r="4" fill="#ef4444" stroke="#ef4444" strokeWidth="0" opacity="0.8" />
-      {/* Red danger zone */}
-      <rect x="165" y="75" width="28" height="20" rx="3" fill="#ef4444" fillOpacity="0.08" />
-      <text x="170" y="88" fill="#ef4444" fontSize="7" fontWeight="600" opacity="0.7" fontFamily="system-ui">-47%</text>
+    <svg viewBox="0 0 220 110" fill="none" className="h-full w-full">
       <defs>
-        <linearGradient id="decline-area" x1="100" y1="20" x2="100" y2="95">
-          <stop offset="0%" stopColor={BRAND.accent} stopOpacity="0.15" />
-          <stop offset="100%" stopColor={BRAND.accent} stopOpacity="0.01" />
+        <linearGradient id="decline-area" x1="110" y1="20" x2="110" y2="94">
+          <stop offset="0%" stopColor={BRAND.accent} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={BRAND.accent} stopOpacity="0" />
         </linearGradient>
       </defs>
+
+      {/* Axes */}
+      <line x1="28" y1="14" x2="28" y2="92" stroke="white" strokeOpacity="0.1" strokeWidth="1" />
+      <line x1="28" y1="92" x2="204" y2="92" stroke="white" strokeOpacity="0.1" strokeWidth="1" />
+      <text x="6" y="22" fill="white" fontSize="8" opacity="0.3" fontFamily="system-ui">High</text>
+      <text x="6" y="92" fill="white" fontSize="8" opacity="0.3" fontFamily="system-ui">Low</text>
+
+      {/* Area fade under the curve */}
+      <motion.path
+        d={`${curve} L 196 92 L 36 92 Z`}
+        fill="url(#decline-area)"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.6, delay: 1.1 }}
+      />
+
+      {/* Trend line draws in */}
+      <motion.path
+        d={curve}
+        stroke={BRAND.accent}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={inView ? { pathLength: 1 } : {}}
+        transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+      />
+
+      {/* Data points pop along the line */}
+      {[
+        { cx: 36, cy: 24, d: 0.8 },
+        { cx: 120, cy: 56, d: 1.0 },
+        { cx: 160, cy: 74, d: 1.15 },
+      ].map((p) => (
+        <motion.circle
+          key={p.cx}
+          cx={p.cx}
+          cy={p.cy}
+          fill={BRAND.dark}
+          stroke={BRAND.accent}
+          strokeWidth="2"
+          initial={{ r: 0 }}
+          animate={inView ? { r: 3.5 } : {}}
+          transition={{ duration: 0.3, delay: p.d, ease: "easeOut" }}
+        />
+      ))}
+
+      {/* Endpoint */}
+      <motion.circle
+        cx="196"
+        cy="86"
+        fill="#F26B62"
+        initial={{ r: 0 }}
+        animate={inView ? { r: 4.5 } : {}}
+        transition={{ duration: 0.3, delay: 1.45, ease: "easeOut" }}
+      />
+
+      {/* -47% pill */}
+      <motion.g
+        initial={{ opacity: 0, y: 5 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.4, delay: 1.6, ease: "easeOut" }}
+      >
+        <rect x="150" y="62" width="42" height="17" rx="8.5" fill="#ef4444" fillOpacity="0.16" />
+        <text
+          x="171"
+          y="74"
+          fill="#F87171"
+          fontSize="8.5"
+          fontWeight="700"
+          textAnchor="middle"
+          fontFamily="system-ui"
+        >
+          -47%
+        </text>
+      </motion.g>
     </svg>
   );
 }
 
-function BrokenLoopSVG() {
+function BrokenLoopSVG({ inView }: { inView: boolean }) {
   return (
     <svg viewBox="0 0 260 130" fill="none" className="h-full w-full">
-      {/* Left node — "User" */}
-      <circle cx="55" cy="58" r="26" fill={`${BRAND.accent}10`} stroke={BRAND.accent} strokeWidth="1.5" />
-      <text x="55" y="55" fill="white" fontSize="11" fontWeight="600" textAnchor="middle" opacity="0.8" fontFamily="system-ui">User</text>
-      <text x="55" y="69" fill="white" fontSize="9" textAnchor="middle" opacity="0.35" fontFamily="system-ui">invites</text>
-      {/* Right node — "Friend" */}
-      <circle cx="205" cy="58" r="26" fill={`${BRAND.accent}10`} stroke={BRAND.accent} strokeWidth="1.5" />
-      <text x="205" y="55" fill="white" fontSize="11" fontWeight="600" textAnchor="middle" opacity="0.8" fontFamily="system-ui">Friend</text>
-      <text x="205" y="69" fill="white" fontSize="9" textAnchor="middle" opacity="0.35" fontFamily="system-ui">joins</text>
-      {/* Top arrow — invite path (broken) */}
-      <path d="M 83 42 C 105 14, 155 14, 177 42" stroke={BRAND.accent} strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.5" />
-      <path d="M 173 37 L 178 43 L 171 45" stroke={BRAND.accent} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
-      {/* Bottom arrow — share-back path (broken) */}
-      <path d="M 177 74 C 155 102, 105 102, 83 74" stroke={BRAND.accent} strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.5" />
-      <path d="M 87 79 L 82 73 L 89 71" stroke={BRAND.accent} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
-      {/* Break X in center */}
-      <circle cx="130" cy="58" r="16" fill="#ef444415" />
-      <line x1="122" y1="50" x2="138" y2="66" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-      <line x1="138" y1="50" x2="122" y2="66" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
-      {/* Dashed break lines */}
-      <line x1="95" y1="28" x2="112" y2="42" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.35" />
-      <line x1="148" y1="42" x2="165" y2="28" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.35" />
-      <line x1="95" y1="88" x2="112" y2="74" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.35" />
-      <line x1="148" y1="74" x2="165" y2="88" stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" opacity="0.35" />
+      {/* Nodes */}
+      {[
+        { cx: 55, name: "User", sub: "invites", d: 0.45 },
+        { cx: 205, name: "Friend", sub: "joins", d: 0.6 },
+      ].map((n) => (
+        <motion.g
+          key={n.name}
+          initial={{ opacity: 0, y: 6 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.45, delay: n.d, ease: "easeOut" }}
+        >
+          <circle cx={n.cx} cy="52" r="24" fill={`${BRAND.accent}10`} stroke={BRAND.accent} strokeWidth="1.5" />
+          <text x={n.cx} y="50" fill="white" fontSize="11" fontWeight="600" textAnchor="middle" opacity="0.85" fontFamily="system-ui">
+            {n.name}
+          </text>
+          <text x={n.cx} y="63" fill="white" fontSize="8.5" textAnchor="middle" opacity="0.4" fontFamily="system-ui">
+            {n.sub}
+          </text>
+        </motion.g>
+      ))}
+
+      {/* Top arc: the invite goes out */}
+      <motion.path
+        d="M 82 38 C 104 12, 156 12, 178 38"
+        stroke={BRAND.accent}
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 0.8 } : {}}
+        transition={{ duration: 0.5, delay: 0.8, ease: "easeInOut" }}
+      />
+      <motion.path
+        d="M 172 32 L 178 38 L 170 41"
+        stroke={BRAND.accent}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 0.8 } : {}}
+        transition={{ duration: 0.25, delay: 1.3 }}
+      />
+
+      {/* Bottom arc: the share-back never lands */}
+      <motion.path
+        d="M 178 66 C 156 92, 104 92, 82 66"
+        stroke={BRAND.accent}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="5 6"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 0.45 } : {}}
+        transition={{ duration: 0.5, delay: 1.35, ease: "easeInOut" }}
+      />
+
+      {/* The break */}
+      <motion.circle
+        cx="130"
+        cy="82"
+        fill="#ef4444"
+        fillOpacity="0.14"
+        initial={{ r: 0 }}
+        animate={inView ? { r: 14 } : {}}
+        transition={{ duration: 0.3, delay: 1.85, ease: "easeOut" }}
+      />
+      {[
+        "M 123 75 L 137 89",
+        "M 137 75 L 123 89",
+      ].map((d) => (
+        <motion.path
+          key={d}
+          d={d}
+          stroke="#F26B62"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={inView ? { pathLength: 1 } : {}}
+          transition={{ duration: 0.25, delay: 2.0, ease: "easeOut" }}
+        />
+      ))}
+
       {/* Label */}
-      <text x="130" y="122" fill="#ef4444" fontSize="10" fontWeight="500" textAnchor="middle" opacity="0.5" fontFamily="system-ui">Loop broken</text>
+      <motion.text
+        x="130"
+        y="120"
+        fill="#F87171"
+        fontSize="10"
+        fontWeight="600"
+        textAnchor="middle"
+        fontFamily="system-ui"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 0.7 } : {}}
+        transition={{ duration: 0.4, delay: 2.2 }}
+      >
+        Loop broken
+      </motion.text>
     </svg>
   );
 }
@@ -303,7 +424,7 @@ function FrictionSection({ accentColor }: { accentColor: string }) {
               {/* Visual on top */}
               <div className="flex items-center justify-center px-6 pt-6 pb-2">
                 <div className="h-[130px] w-full max-w-[260px]">
-                  <p.Visual />
+                  <p.Visual inView={isInView} />
                 </div>
               </div>
 
@@ -378,7 +499,12 @@ function DiscoverySection({ accentColor }: { accentColor: string }) {
           }}
         />
         <div className="relative">
-          <DeviceMockupCarousel slides={slides} device="phone" autoPlay={4000} />
+          <DeviceMockupCarousel
+            slides={slides}
+            device="phone"
+            autoPlay={4000}
+            captionClassName="text-white/80"
+          />
         </div>
       </div>
 
