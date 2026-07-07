@@ -691,7 +691,7 @@ function DemoCard({
         className="flex min-h-[180px] flex-1 items-center justify-center p-6"
         style={{
           background:
-            "repeating-linear-gradient(0deg, transparent, transparent 23px, #F5F1E9 23px, #F5F1E9 24px), repeating-linear-gradient(90deg, transparent, transparent 23px, #F5F1E9 23px, #F5F1E9 24px)",
+            "repeating-linear-gradient(0deg, transparent, transparent 31px, #FAF7F2 31px, #FAF7F2 32px), repeating-linear-gradient(90deg, transparent, transparent 31px, #FAF7F2 31px, #FAF7F2 32px)",
         }}
       >
         {children}
@@ -1122,7 +1122,7 @@ const DUOTONE_PATHS: Record<string, [string, string]> = {
 function MarkerIcon({ kind }: { kind: string }) {
   const paths = DUOTONE_PATHS[kind] ?? DUOTONE_PATHS.cultural;
   return (
-    <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor">
+    <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
       <path d={paths[0]} opacity="0.2" />
       <path d={paths[1]} />
     </svg>
@@ -1131,7 +1131,7 @@ function MarkerIcon({ kind }: { kind: string }) {
 
 function GroundShadow() {
   return (
-    <span className="absolute -bottom-1 left-1/2 h-1.5 w-5 -translate-x-1/2 rounded-full bg-black/20 blur-[1px]" />
+    <span className="absolute -bottom-1.5 left-1/2 h-2 w-7 -translate-x-1/2 rounded-full bg-black/10 blur-[3px]" />
   );
 }
 
@@ -1156,16 +1156,26 @@ function CategoryPin({
       className="relative"
     >
       {selected && <GroundShadow />}
-      <svg width="30" height="37" viewBox="0 0 36 44" className="drop-shadow-sm">
+      <svg
+        width="36"
+        height="44"
+        viewBox="0 0 36 44"
+        style={{ filter: "drop-shadow(0 3px 6px rgba(28, 27, 25, 0.14))" }}
+      >
         <path
           d="M18 1C8.6 1 1 8.6 1 18c0 10.8 14.6 22.9 16.1 24.1a1.4 1.4 0 0 0 1.8 0C20.4 40.9 35 28.8 35 18 35 8.6 27.4 1 18 1z"
           fill={selected ? TEAL : "#FFFFFF"}
-          stroke={selected ? "#0C6E74" : "#E3DED6"}
-          strokeWidth="1.5"
+        />
+        {/* Inner circle behind the icon, per the POI marker design */}
+        <circle
+          cx="18"
+          cy="18"
+          r="14"
+          fill={selected ? "rgba(255, 255, 255, 0.16)" : "#E8E6E1"}
         />
       </svg>
       <span
-        className="absolute left-1/2 top-[8px] -translate-x-1/2"
+        className="absolute left-1/2 top-[11px] -translate-x-1/2"
         style={{ color: selected ? "#FFFFFF" : "#33312D" }}
       >
         <MarkerIcon kind={kind} />
@@ -1238,7 +1248,7 @@ function PhotoMarker({
           style={{
             padding: selected ? 4 : 2,
             backgroundColor: selected ? ring : sponsored ? AMBER : "#B7B4AC",
-            boxShadow: "0 3px 8px rgba(28, 27, 25, 0.18)",
+            boxShadow: "0 4px 12px rgba(28, 27, 25, 0.12)",
           }}
         >
           <span className="block h-9 w-9 overflow-hidden rounded-full">
