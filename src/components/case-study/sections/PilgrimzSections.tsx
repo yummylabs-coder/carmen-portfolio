@@ -473,19 +473,19 @@ function FamilySwatch({ family }: { family: (typeof colorFamilies)[0] }) {
   return (
     <button
       onClick={copy}
-      className="group overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <div
-        className="h-24 w-full transition-all duration-300 group-hover:h-[76px]"
+        className="h-24 w-full shrink-0 transition-all duration-300 group-hover:h-[76px]"
         style={{ backgroundColor: family.hex }}
       />
       {/* Ramp expands on hover */}
-      <div className="flex h-3 w-full transition-all duration-300 group-hover:h-8">
+      <div className="flex h-3 w-full shrink-0 transition-all duration-300 group-hover:h-8">
         {family.ramp.map((c) => (
           <span key={c} className="h-full flex-1" style={{ backgroundColor: c }} />
         ))}
       </div>
-      <div className="p-5">
+      <div className="flex-1 p-5">
         <div className="flex items-baseline justify-between gap-2">
           <span className="font-brand text-[16px] font-bold text-brand-ink">{family.name}</span>
           <span className="font-mono text-[11px] text-neutral-500">
