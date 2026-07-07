@@ -37,12 +37,20 @@ function Placeholder({
   dark,
 }: {
   label: string;
-  variant?: "wide" | "phone" | "square" | "pano";
+  variant?: "wide" | "phone" | "square" | "pano" | "photo";
   className?: string;
   dark?: boolean;
 }) {
   const aspect =
-    variant === "phone" ? "9 / 19.5" : variant === "square" ? "1 / 1" : variant === "pano" ? "21 / 9" : "16 / 10";
+    variant === "phone"
+      ? "9 / 19.5"
+      : variant === "square"
+        ? "1 / 1"
+        : variant === "pano"
+          ? "21 / 9"
+          : variant === "photo"
+            ? "4 / 3"
+            : "16 / 10";
   const wrap = variant === "phone" ? "mx-auto w-full max-w-[210px]" : "w-full";
   const radius = variant === "phone" ? "rounded-[30px]" : "rounded-2xl";
   return (
@@ -203,34 +211,137 @@ function StatementCard({ text }: { text: string }) {
 /* ════════════════════════════════════════
    Phase 1 — The AI-enabled foundation
    ════════════════════════════════════════ */
-function TokenMapCard() {
-  const rows = [
-    { token: "primary/500", code: "theme.colors.primary", value: "#E84C44", color: CORAL },
-    { token: "secondary/500", code: "theme.colors.secondary", value: "#0F888F", color: TEAL },
-    { token: "accent/500", code: "theme.colors.accent", value: "#E89B24", color: AMBER },
-  ];
+/* A token as Claude reads it: value, description, references, use and avoid */
+function TokenDocCard() {
   return (
     <div className="overflow-hidden rounded-2xl border border-sand-300 bg-[#1C1B19]">
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
         <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-        <span className="ml-2 font-mono text-[11px] text-white/40">tokens → theme</span>
+        <span className="ml-2 font-mono text-[11px] text-white/40">
+          color-primary.md — what Claude reads
+        </span>
       </div>
       <div className="space-y-2 p-4 font-mono text-[12px] leading-relaxed">
-        {rows.map((r) => (
-          <div key={r.token} className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span style={{ color: r.color }}>{r.token}</span>
-            <span className="text-white/30">→</span>
-            <span className="text-white/70">{r.code}</span>
-            <span className="text-white/30">→</span>
-            <span className="inline-flex items-center gap-1.5 text-white/50">
-              <span className="h-3 w-3 rounded-sm" style={{ backgroundColor: r.color }} />
-              {r.value}
-            </span>
-          </div>
-        ))}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span style={{ color: CORAL }}>color/primary/500</span>
+          <span className="inline-flex items-center gap-1.5 text-white/60">
+            <span className="h-3 w-3 rounded-sm" style={{ backgroundColor: CORAL }} />
+            #E84C44
+          </span>
+          <span className="text-white/30">→</span>
+          <span className="text-white/60">theme.colors.primary</span>
+        </div>
+        <div>
+          <span className="text-white/35">description:</span>{" "}
+          <span className="text-white/75">
+            reserved for primary actions. play, book, save. signals action, never alarm.
+          </span>
+        </div>
+        <div>
+          <span className="text-white/35">pairs-with:</span>{" "}
+          <span className="text-white/75">text/inverse (AA contrast, checked)</span>
+        </div>
+        <div>
+          <span className="text-[#53D68A]">use:</span>{" "}
+          <span className="text-white/75">play button, main CTA, active booking</span>
+        </div>
+        <div>
+          <span className="text-[#FF7B72]">avoid:</span>{" "}
+          <span className="text-white/75">backgrounds, decorative fills, error states</span>
+        </div>
+        <div className="pt-1 text-white/40">
+          # error stays #DC2626. an action never looks like a failure.
+        </div>
       </div>
+    </div>
+  );
+}
+
+/* Mini mock screens: the same layout on-system vs off-system */
+function MiniMock({ good }: { good?: boolean }) {
+  const chip = (bg: string) => (
+    <span className="h-2.5 w-8 rounded-full" style={{ backgroundColor: bg }} />
+  );
+  return (
+    <div className="flex-1 rounded-xl border border-sand-200 bg-[#FAF9F7] p-3">
+      <div className="flex flex-col gap-2">
+        {/* Header bar */}
+        <span
+          className="h-2.5 w-1/2 rounded-full"
+          style={{ backgroundColor: good ? "#33312D" : CORAL }}
+        />
+        {/* Image area */}
+        <span
+          className="h-14 w-full rounded-lg"
+          style={{
+            background: good
+              ? "linear-gradient(135deg, rgba(15,136,143,0.25), rgba(232,155,36,0.2))"
+              : "linear-gradient(135deg, rgba(232,76,68,0.4), rgba(220,38,38,0.3))",
+          }}
+        />
+        {/* Tag chips */}
+        <div className="flex gap-1.5">
+          {good ? (
+            <>
+              {chip("#C2E5E7")}
+              {chip("#FDEBCC")}
+            </>
+          ) : (
+            <>
+              {chip("#FDCFCC")}
+              {chip("#E84C44")}
+            </>
+          )}
+        </div>
+        {/* CTA */}
+        <span
+          className="h-6 w-full rounded-md"
+          style={{ backgroundColor: good ? CORAL : "#DC2626" }}
+        />
+      </div>
+      <div className="mt-2.5 flex items-center gap-1.5">
+        <span
+          className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
+          style={{ backgroundColor: good ? "#0C7075" : "#DC2626" }}
+        >
+          {good ? (
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : (
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          )}
+        </span>
+        <span className="text-[11px] font-semibold text-neutral-600">
+          {good ? "Coral only where you act" : "Red everywhere reads as alert"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function GoodVsBad() {
+  return (
+    <div className="rounded-2xl border border-sand-300 bg-white p-5">
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+        <span className="font-brand text-[16px] font-bold text-brand-ink">
+          Good vs bad, encoded
+        </span>
+        <span className="text-[12px] text-neutral-500">usage rules Claude can check</span>
+      </div>
+      <div className="flex gap-3">
+        <MiniMock good />
+        <MiniMock />
+      </div>
+      <p className="mt-3 text-[12px] leading-relaxed text-neutral-500">
+        Every token ships with do and don&rsquo;t examples, references, and the reasoning behind
+        them, so output follows intent, not vibes.
+      </p>
     </div>
   );
 }
@@ -272,8 +383,9 @@ function FoundationBlock() {
       <p className="mb-4 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
         Tokens were named with intent so they map cleanly to the codebase, toward the Gluestack theme
         and portable if the team moves off it. Color carries meaning: coral for primary actions, teal
-        for exploration, amber for featured and sponsored. Name things right now, and the design to
-        code sync becomes trivial later instead of a permanent translation tax.
+        for exploration, amber for featured and sponsored. And every token ships with more than a
+        value: a description, references, and good vs bad usage, so Claude knows when to use it, not
+        just what it is.
       </p>
       <p className="mb-6 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
         The brand red is a good example of the thinking. The founders love it and wanted to keep it,
@@ -284,8 +396,11 @@ function FoundationBlock() {
       </p>
       <ColorPalette colors={pilgrimzColors} />
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <TokenMapCard />
+        <TokenDocCard />
         <TypeNote />
+      </div>
+      <div className="mt-4">
+        <GoodVsBad />
       </div>
 
       {/* The system living on real screens — showcase treatment */}
@@ -329,18 +444,22 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
     {
       title: "AI-readable from day one",
       body: "Created so Claude can read it. Not just tokens and values, but the context and intent behind them.",
+      image: "System docs Claude reads",
     },
     {
       title: "Infrastructure inside Claude and VS Code",
       body: "Skills, agents, and files wired into the tools the team already builds in.",
+      image: "Skills & agents in the repo",
     },
     {
       title: "Trained on their craft, not generic data",
       body: "The OS carries Pilgrimz's own craft rules, so output looks like Pilgrimz, not like generic UI.",
+      image: "Craft rules in the context library",
     },
     {
       title: "Evaluation loops",
       body: "Quality checks built in, so the team can trust what ships without manual policing.",
+      image: "An eval run on real output",
     },
   ];
   const kit = [
@@ -371,20 +490,6 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
               founders: ask Claude to build and test a feature and get something on-system in about
               an hour.
             </p>
-            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {cards.map((c, i) => (
-                <motion.div
-                  key={c.title}
-                  className="rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-                  transition={{ duration: 0.45, delay: 0.15 + i * 0.1, ease: "easeOut" }}
-                >
-                  <div className="font-body text-[14px] font-bold text-white">{c.title}</div>
-                  <p className="mt-1 text-[13px] leading-relaxed text-white/55">{c.body}</p>
-                </motion.div>
-              ))}
-            </div>
           </div>
 
           {/* Right: the handoff kit, the artifact the team keeps */}
@@ -435,6 +540,23 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
               </p>
             </motion.div>
           </div>
+        </div>
+
+        {/* What we built — image cards, full panel width */}
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {cards.map((c, i) => (
+            <motion.div
+              key={c.title}
+              className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.1, ease: "easeOut" }}
+            >
+              <Placeholder dark variant="photo" label={c.image} />
+              <div className="mt-4 font-body text-[15px] font-bold text-white">{c.title}</div>
+              <p className="mt-1 text-[13px] leading-relaxed text-white/55">{c.body}</p>
+            </motion.div>
+          ))}
         </div>
       </ShowcasePanel>
     </div>
