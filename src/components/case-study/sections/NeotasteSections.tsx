@@ -172,38 +172,49 @@ function RoleSection({ accentColor }: { accentColor: string }) {
 /* ═══════════════════════════════════
    Section 2 — Uncovering Friction
    ═══════════════════════════════════ */
-/* Inline SVG visuals for friction cards — draw themselves in when in view */
+/* Inline SVG visuals for friction cards — clean analytics style, one solid red,
+   drawing themselves in when in view */
 function DeclineTrendSVG({ inView }: { inView: boolean }) {
-  const curve = "M 36 24 C 66 26, 92 40, 120 56 C 145 70, 172 80, 196 86";
+  const curve = "M 14 30 C 50 32, 80 48, 110 62 C 135 73, 158 82, 176 88";
   return (
     <svg viewBox="0 0 220 110" fill="none" className="h-full w-full">
       <defs>
-        <linearGradient id="decline-area" x1="110" y1="20" x2="110" y2="94">
-          <stop offset="0%" stopColor={BRAND.accent} stopOpacity="0.18" />
+        <linearGradient id="decline-area" x1="110" y1="26" x2="110" y2="96">
+          <stop offset="0%" stopColor={BRAND.accent} stopOpacity="0.08" />
           <stop offset="100%" stopColor={BRAND.accent} stopOpacity="0" />
         </linearGradient>
       </defs>
 
-      {/* Axes */}
-      <line x1="28" y1="14" x2="28" y2="92" stroke="white" strokeOpacity="0.1" strokeWidth="1" />
-      <line x1="28" y1="92" x2="204" y2="92" stroke="white" strokeOpacity="0.1" strokeWidth="1" />
-      <text x="6" y="22" fill="white" fontSize="8" opacity="0.3" fontFamily="system-ui">High</text>
-      <text x="6" y="92" fill="white" fontSize="8" opacity="0.3" fontFamily="system-ui">Low</text>
+      {/* Caption */}
+      <motion.text
+        x="14"
+        y="14"
+        fill="white"
+        fontSize="8"
+        fontWeight="500"
+        opacity="0.5"
+        fontFamily="system-ui"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 0.5 } : {}}
+        transition={{ duration: 0.4, delay: 0.4 }}
+      >
+        Engagement · first weeks
+      </motion.text>
 
       {/* Area fade under the curve */}
       <motion.path
-        d={`${curve} L 196 92 L 36 92 Z`}
+        d={`${curve} L 176 96 L 14 96 Z`}
         fill="url(#decline-area)"
         initial={{ opacity: 0 }}
         animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.6, delay: 1.1 }}
+        transition={{ duration: 0.6, delay: 1.2 }}
       />
 
       {/* Trend line draws in */}
       <motion.path
         d={curve}
         stroke={BRAND.accent}
-        strokeWidth="2.5"
+        strokeWidth="2"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0 }}
@@ -211,11 +222,10 @@ function DeclineTrendSVG({ inView }: { inView: boolean }) {
         transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
       />
 
-      {/* Data points pop along the line */}
+      {/* Two small hollow markers on the way down */}
       {[
-        { cx: 36, cy: 24, d: 0.8 },
-        { cx: 120, cy: 56, d: 1.0 },
-        { cx: 160, cy: 74, d: 1.15 },
+        { cx: 70, cy: 44, d: 0.9 },
+        { cx: 128, cy: 70, d: 1.05 },
       ].map((p) => (
         <motion.circle
           key={p.cx}
@@ -223,40 +233,43 @@ function DeclineTrendSVG({ inView }: { inView: boolean }) {
           cy={p.cy}
           fill={BRAND.dark}
           stroke={BRAND.accent}
-          strokeWidth="2"
+          strokeWidth="1.8"
           initial={{ r: 0 }}
-          animate={inView ? { r: 3.5 } : {}}
-          transition={{ duration: 0.3, delay: p.d, ease: "easeOut" }}
+          animate={inView ? { r: 3 } : {}}
+          transition={{ duration: 0.25, delay: p.d, ease: "easeOut" }}
         />
       ))}
 
-      {/* Endpoint */}
+      {/* Endpoint: solid red dot with a crisp white ring */}
       <motion.circle
-        cx="196"
-        cy="86"
-        fill="#F26B62"
+        cx="176"
+        cy="88"
+        fill="#EF4444"
+        stroke="#FFFFFF"
+        strokeWidth="2"
         initial={{ r: 0 }}
         animate={inView ? { r: 4.5 } : {}}
-        transition={{ duration: 0.3, delay: 1.45, ease: "easeOut" }}
+        transition={{ duration: 0.3, delay: 1.4, ease: "easeOut" }}
       />
 
-      {/* -47% pill */}
+      {/* −47% chip: solid red pill with a stem pointing at the endpoint */}
       <motion.g
-        initial={{ opacity: 0, y: 5 }}
+        initial={{ opacity: 0, y: -4 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.4, delay: 1.6, ease: "easeOut" }}
       >
-        <rect x="150" y="62" width="42" height="17" rx="8.5" fill="#ef4444" fillOpacity="0.16" />
+        <line x1="176" y1="76" x2="176" y2="81" stroke="#EF4444" strokeWidth="2" />
+        <rect x="153" y="58" width="46" height="18" rx="9" fill="#EF4444" />
         <text
-          x="171"
-          y="74"
-          fill="#F87171"
-          fontSize="8.5"
+          x="176"
+          y="70.5"
+          fill="#FFFFFF"
+          fontSize="9"
           fontWeight="700"
           textAnchor="middle"
           fontFamily="system-ui"
         >
-          -47%
+          −47%
         </text>
       </motion.g>
     </svg>
@@ -265,11 +278,11 @@ function DeclineTrendSVG({ inView }: { inView: boolean }) {
 
 function BrokenLoopSVG({ inView }: { inView: boolean }) {
   return (
-    <svg viewBox="0 0 260 130" fill="none" className="h-full w-full">
+    <svg viewBox="0 0 260 134" fill="none" className="h-full w-full">
       {/* Nodes */}
       {[
-        { cx: 55, name: "User", sub: "invites", d: 0.45 },
-        { cx: 205, name: "Friend", sub: "joins", d: 0.6 },
+        { cx: 52, name: "User", sub: "invites", d: 0.45 },
+        { cx: 208, name: "Friend", sub: "joins", d: 0.6 },
       ].map((n) => (
         <motion.g
           key={n.name}
@@ -277,93 +290,99 @@ function BrokenLoopSVG({ inView }: { inView: boolean }) {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45, delay: n.d, ease: "easeOut" }}
         >
-          <circle cx={n.cx} cy="52" r="24" fill={`${BRAND.accent}10`} stroke={BRAND.accent} strokeWidth="1.5" />
-          <text x={n.cx} y="50" fill="white" fontSize="11" fontWeight="600" textAnchor="middle" opacity="0.85" fontFamily="system-ui">
+          <circle cx={n.cx} cy="56" r="28" fill={`${BRAND.accent}10`} stroke={BRAND.accent} strokeWidth="1.5" />
+          <text x={n.cx} y="54" fill="white" fontSize="12" fontWeight="600" textAnchor="middle" opacity="0.95" fontFamily="system-ui">
             {n.name}
           </text>
-          <text x={n.cx} y="63" fill="white" fontSize="8.5" textAnchor="middle" opacity="0.4" fontFamily="system-ui">
+          <text x={n.cx} y="68" fill="white" fontSize="9" textAnchor="middle" opacity="0.5" fontFamily="system-ui">
             {n.sub}
           </text>
         </motion.g>
       ))}
 
-      {/* Top arc: the invite goes out */}
+      {/* Top arc: the invite goes out (User → Friend) */}
       <motion.path
-        d="M 82 38 C 104 12, 156 12, 178 38"
+        d="M 84 40 C 108 10, 152 10, 176 40"
         stroke={BRAND.accent}
         strokeWidth="2"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={inView ? { pathLength: 1, opacity: 0.8 } : {}}
-        transition={{ duration: 0.5, delay: 0.8, ease: "easeInOut" }}
+        animate={inView ? { pathLength: 1, opacity: 0.9 } : {}}
+        transition={{ duration: 0.45, delay: 0.8, ease: "easeInOut" }}
       />
-      <motion.path
-        d="M 172 32 L 178 38 L 170 41"
-        stroke={BRAND.accent}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
+      {/* Filled arrowhead, aligned to the arc's end tangent */}
+      <motion.polygon
+        points="177,42 167.5,37.5 173.5,30.5"
+        fill={BRAND.accent}
         initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 0.8 } : {}}
-        transition={{ duration: 0.25, delay: 1.3 }}
+        animate={inView ? { opacity: 0.9 } : {}}
+        transition={{ duration: 0.25, delay: 1.25 }}
       />
 
-      {/* Bottom arc: the share-back never lands */}
+      {/* Bottom arc: two segments reach toward the middle and never meet */}
       <motion.path
-        d="M 178 66 C 156 92, 104 92, 82 66"
+        d="M 176 72 C 166 85, 152 93, 141 96"
         stroke={BRAND.accent}
         strokeWidth="2"
         strokeLinecap="round"
-        strokeDasharray="5 6"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={inView ? { pathLength: 1, opacity: 0.45 } : {}}
-        transition={{ duration: 0.5, delay: 1.35, ease: "easeInOut" }}
+        animate={inView ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 0.4, delay: 1.35, ease: "easeOut" }}
+      />
+      <motion.path
+        d="M 84 72 C 94 85, 108 93, 119 96"
+        stroke={BRAND.accent}
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 0.7 } : {}}
+        transition={{ duration: 0.4, delay: 1.35, ease: "easeOut" }}
       />
 
-      {/* The break */}
+      {/* The break: crisp red badge with a white X, sitting in the gap */}
       <motion.circle
         cx="130"
-        cy="82"
-        fill="#ef4444"
-        fillOpacity="0.14"
+        cy="96"
+        fill="#EF4444"
         initial={{ r: 0 }}
-        animate={inView ? { r: 14 } : {}}
-        transition={{ duration: 0.3, delay: 1.85, ease: "easeOut" }}
+        animate={inView ? { r: 10 } : {}}
+        transition={{ duration: 0.3, delay: 1.8, ease: "easeOut" }}
       />
-      {[
-        "M 123 75 L 137 89",
-        "M 137 75 L 123 89",
-      ].map((d) => (
+      {["M 126 92 L 134 100", "M 134 92 L 126 100"].map((d) => (
         <motion.path
           key={d}
           d={d}
-          stroke="#F26B62"
-          strokeWidth="2.5"
+          stroke="#FFFFFF"
+          strokeWidth="2.2"
           strokeLinecap="round"
           initial={{ pathLength: 0 }}
           animate={inView ? { pathLength: 1 } : {}}
-          transition={{ duration: 0.25, delay: 2.0, ease: "easeOut" }}
+          transition={{ duration: 0.2, delay: 1.95, ease: "easeOut" }}
         />
       ))}
 
-      {/* Label */}
-      <motion.text
-        x="130"
-        y="120"
-        fill="#F87171"
-        fontSize="10"
-        fontWeight="600"
-        textAnchor="middle"
-        fontFamily="system-ui"
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 0.7 } : {}}
-        transition={{ duration: 0.4, delay: 2.2 }}
+      {/* Loop broken pill */}
+      <motion.g
+        initial={{ opacity: 0, y: 4 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.4, delay: 2.15, ease: "easeOut" }}
       >
-        Loop broken
-      </motion.text>
+        <rect x="93" y="113" width="74" height="17" rx="8.5" fill="#EF4444" />
+        <text
+          x="130"
+          y="124.5"
+          fill="#FFFFFF"
+          fontSize="8.5"
+          fontWeight="700"
+          textAnchor="middle"
+          fontFamily="system-ui"
+        >
+          Loop broken
+        </text>
+      </motion.g>
     </svg>
   );
 }
