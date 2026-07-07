@@ -1122,7 +1122,7 @@ const DUOTONE_PATHS: Record<string, [string, string]> = {
 function MarkerIcon({ kind }: { kind: string }) {
   const paths = DUOTONE_PATHS[kind] ?? DUOTONE_PATHS.cultural;
   return (
-    <svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor">
+    <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor">
       <path d={paths[0]} opacity="0.2" />
       <path d={paths[1]} />
     </svg>
@@ -1150,22 +1150,22 @@ function CategoryPin({
   return (
     <motion.button
       onClick={onClick}
-      whileTap={{ scale: 0.88 }}
-      animate={{ scale: selected ? 1.15 : 1 }}
+      whileTap={{ scale: 0.92 }}
+      animate={{ scale: selected ? 1.05 : 1 }}
       aria-label={label}
       className="relative"
     >
       {selected && <GroundShadow />}
-      <svg width="34" height="41" viewBox="0 0 36 44" className="drop-shadow-sm">
+      <svg width="30" height="37" viewBox="0 0 36 44" className="drop-shadow-sm">
         <path
-          d="M18 1C8.6 1 1 8.6 1 18c0 11.5 17 25 17 25s17-13.5 17-25C35 8.6 27.4 1 18 1z"
+          d="M18 1C8.6 1 1 8.6 1 18c0 10.8 14.6 22.9 16.1 24.1a1.4 1.4 0 0 0 1.8 0C20.4 40.9 35 28.8 35 18 35 8.6 27.4 1 18 1z"
           fill={selected ? TEAL : "#FFFFFF"}
           stroke={selected ? "#0C6E74" : "#E3DED6"}
           strokeWidth="1.5"
         />
       </svg>
       <span
-        className="absolute left-1/2 top-[9px] -translate-x-1/2"
+        className="absolute left-1/2 top-[8px] -translate-x-1/2"
         style={{ color: selected ? "#FFFFFF" : "#33312D" }}
       >
         <MarkerIcon kind={kind} />
@@ -1195,27 +1195,30 @@ function PhotoMarker({
   return (
     <motion.button
       onClick={onClick}
-      whileTap={{ scale: 0.9 }}
-      animate={{ scale: selected ? 1.12 : 1, y: selected ? -5 : 0 }}
+      whileTap={{ scale: 0.92 }}
+      animate={{ scale: selected ? 1.05 : 1, y: selected ? -2 : 0 }}
       aria-label={label}
       className="relative"
     >
-      {/* Soft landing ellipse under the tail */}
+      {/* Soft landing ellipse under the tail (positioning wrapper stays static
+          so framer's scale never cancels the translate centering) */}
       <AnimatePresence>
         {selected && (
-          <motion.span
-            initial={{ opacity: 0, scale: 0.4 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute -bottom-[15px] left-1/2 h-2.5 w-8 -translate-x-1/2 rounded-full"
-            style={{ backgroundColor: ellipse }}
-          />
+          <span className="absolute -bottom-[13px] left-1/2 -translate-x-1/2">
+            <motion.span
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="block h-2.5 w-8 rounded-full"
+              style={{ backgroundColor: ellipse }}
+            />
+          </span>
         )}
       </AnimatePresence>
 
       <span className="relative block">
-        {/* Teardrop tail, selected only */}
+        {/* Teardrop tail with a softly rounded point, selected only */}
         {selected && (
           <svg
             className="absolute -bottom-[9px] left-1/2 -translate-x-1/2"
@@ -1223,19 +1226,22 @@ function PhotoMarker({
             height="12"
             viewBox="0 0 18 12"
           >
-            <path d="M0 0 H18 C14 5.5 10.5 8.5 9 12 C7.5 8.5 4 5.5 0 0 Z" fill={ring} />
+            <path
+              d="M0 0 H18 C14.5 5 11.5 7.5 10 10.6 A1.5 1.5 0 0 1 8 10.6 C6.5 7.5 3.5 5 0 0 Z"
+              fill={ring}
+            />
           </svg>
         )}
-        {/* Ring: padding 2 neutral/400 default, thicker brand ring selected */}
+        {/* Ring: 2px default (neutral/400, amber for sponsored), thicker brand ring selected */}
         <span
           className="relative block rounded-full transition-all duration-200"
           style={{
-            padding: selected ? 5 : 2,
-            backgroundColor: selected ? ring : "#B7B4AC",
-            boxShadow: "0 4px 10px rgba(28, 27, 25, 0.18)",
+            padding: selected ? 4 : 2,
+            backgroundColor: selected ? ring : sponsored ? AMBER : "#B7B4AC",
+            boxShadow: "0 3px 8px rgba(28, 27, 25, 0.18)",
           }}
         >
-          <span className="block h-10 w-10 overflow-hidden rounded-full">
+          <span className="block h-9 w-9 overflow-hidden rounded-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={img} alt="" className="h-full w-full object-cover" />
           </span>
@@ -1243,10 +1249,10 @@ function PhotoMarker({
         {/* Sponsored star badge */}
         {sponsored && (
           <span
-            className="absolute -right-2 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full shadow-sm"
+            className="absolute -right-1.5 -top-1 flex h-5 w-5 items-center justify-center rounded-full shadow-sm"
             style={{ backgroundColor: AMBER }}
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
             </svg>
           </span>
@@ -1271,27 +1277,31 @@ function MapMarkersDemo() {
   return (
     <div className="flex w-full flex-col items-center gap-3">
       {/* Mini map stage — the product's real map underneath */}
-      <div className="relative h-[240px] w-full max-w-[440px] overflow-hidden rounded-xl border border-[#E3DED6]">
+      <div className="relative h-[190px] w-full max-w-[420px] overflow-hidden rounded-xl border border-[#E3DED6]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/pilgrimz/map-bg.png"
           alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[50%_32%]"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_20%]"
         />
 
-        {/* User location — pulsing halo */}
-        <div className="absolute left-[50%] top-[40%] -translate-x-1/2 -translate-y-1/2">
-          <div className="relative h-5 w-5">
+        {/* User location — pulsing halo (born invisible, fades while expanding, no restart pop) */}
+        <div className="absolute left-[50%] top-[42%] -translate-x-1/2 -translate-y-1/2">
+          <div className="relative h-4 w-4">
             {!reduce && (
               <motion.span
                 className="absolute inset-0 rounded-full"
                 style={{ backgroundColor: TEAL }}
-                animate={{ scale: [1, 2.4], opacity: [0.35, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
+                initial={{ scale: 1, opacity: 0 }}
+                animate={{ scale: [1, 2.4], opacity: [0, 0.35, 0] }}
+                transition={{
+                  scale: { duration: 2.4, repeat: Infinity, ease: "easeOut" },
+                  opacity: { duration: 2.4, times: [0, 0.3, 1], repeat: Infinity, ease: "easeOut" },
+                }}
               />
             )}
             <span
-              className="absolute inset-0 rounded-full border-[3px] border-white shadow-md"
+              className="absolute inset-0 rounded-full border-[2.5px] border-white shadow-md"
               style={{ backgroundColor: TEAL }}
             />
           </div>
@@ -1369,17 +1379,12 @@ function CoreComponents() {
       >
         <AudioPlayerDemo />
       </DemoCard>
-      <DemoCard title="Segmented control" tokens="primary/500 · border/subtle · radius/full">
-        <SegmentedControl id="demo" />
+      <DemoCard
+        title="Map markers (POI)"
+        tokens="neutral/400 · secondary/500 · accent/500 · elevation/xl"
+      >
+        <MapMarkersDemo />
       </DemoCard>
-      <div className="sm:col-span-2">
-        <DemoCard
-          title="Map markers (POI)"
-          tokens="44px · radius/22 · pad/2 · neutral/400 ring · secondary/500 selected · accent/500 sponsored · elevation/xl"
-        >
-          <MapMarkersDemo />
-        </DemoCard>
-      </div>
       <div className="sm:col-span-2">
         <DemoCard
           title="Cards — tour, rec, event, hub"
