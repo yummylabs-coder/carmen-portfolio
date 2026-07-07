@@ -891,7 +891,7 @@ function TourCardV() {
       className="overflow-hidden rounded-2xl bg-white"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-2xl">
         <CardImg src="/images/pilgrimz/galerie-vivienne.jpg" />
         <span
           className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-1 text-[11px] font-semibold"
@@ -944,7 +944,7 @@ function RecCardV() {
       className="overflow-hidden rounded-2xl bg-white"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-2xl">
         <CardImg src="/images/pilgrimz/atmospheric.jpg" />
         <ShareBtn />
       </div>
@@ -967,7 +967,7 @@ function EventCardV() {
       className="overflow-hidden rounded-2xl bg-white"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-2xl">
         <CardImg src="/images/pilgrimz/barcelona.jpg" />
         <span className="absolute left-2.5 top-2.5 flex items-baseline gap-1 rounded-full bg-[#33312D]/90 px-2.5 py-1 text-white">
           <span className="text-[13px] font-bold leading-none">19</span>
@@ -1007,7 +1007,7 @@ function HubCardV() {
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
       <div className="relative">
-        <CardImg src="/images/pilgrimz/istanbul.jpg" className="h-[110px] rounded-xl" />
+        <CardImg src="/images/pilgrimz/istanbul.jpg" className="h-[110px] rounded-2xl" />
         <span
           className="absolute -bottom-4 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-xl text-[8px] font-bold text-white shadow-md"
           style={{ backgroundColor: "#E8562E" }}
