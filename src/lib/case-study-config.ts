@@ -3,6 +3,8 @@ import type { TimelineStep } from "./types";
 export interface BrandColors {
   /** Hero section background */
   bg: string;
+  /** Optional full CSS background for the hero (e.g. a mesh gradient). Overrides the computed gradient from `bg`. */
+  heroBg?: string;
   /** Headline text on branded bg */
   headlineText: string;
   /** Summary / body text on branded bg */
@@ -53,6 +55,8 @@ export interface CaseStudyConfig {
   };
   /** Custom animated hero visual (replaces the static hero image) */
   heroVisual?: string;
+  /** Partner logo shown centered on the route loading screen (branded splash) */
+  loadingLogo?: string;
 }
 
 /**
@@ -375,24 +379,26 @@ const configs: Record<string, CaseStudyConfig> = {
       },
     ],
     brand: {
-      bg: "#0F888F",
+      bg: "#0A5C61",
+      heroBg:
+        "radial-gradient(at 15% 20%, rgba(36, 160, 168, 0.5) 0px, transparent 50%), radial-gradient(at 85% 10%, rgba(6, 50, 54, 0.7) 0px, transparent 55%), radial-gradient(at 80% 85%, rgba(24, 140, 148, 0.45) 0px, transparent 55%), radial-gradient(at 20% 90%, rgba(6, 47, 50, 0.7) 0px, transparent 50%), linear-gradient(170deg, #0C6B71 0%, #0A5C61 55%, #095257 100%)",
       headlineText: "#FFFFFF",
-      bodyText: "#D2EAEB",
-      partnerText: "#F0AC3E",
-      breadcrumbLink: "#B7DFE0",
-      breadcrumbSeparator: "#5FB2B7",
+      bodyText: "#D6EDEE",
+      partnerText: "#F6C46B",
+      breadcrumbLink: "#A8D8DA",
+      breadcrumbSeparator: "#3E8A8F",
       breadcrumbActive: "#FFFFFF",
-      badgeBg: "#E84C44",
+      badgeBg: "#C93A32",
       badgeText: "#FFFFFF",
-      readTimeText: "#B7DFE0",
+      readTimeText: "#BFE3E4",
       tagBg: "rgba(255, 255, 255, 0.14)",
-      tagBorder: "rgba(255, 255, 255, 0.22)",
-      tagText: "#EAF6F6",
-      ctaBg: "#E84C44",
+      tagBorder: "rgba(255, 255, 255, 0.25)",
+      tagText: "#F0F9F9",
+      ctaBg: "#C93A32",
       ctaText: "#FFFFFF",
       ctaRadius: "12px",
       progressBar: "#E84C44",
-      accentColor: "#0F888F",
+      accentColor: "#0C7075",
     },
   },
 
