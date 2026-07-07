@@ -244,37 +244,35 @@ function PhaseHeader({
   );
 }
 
-/** Branded divider — gradient hairlines flanking a glyph chip */
-function BrandedDivider({ accentColor, text }: { accentColor: string; text?: string }) {
+/** Photo bridge — a destination moment between phases, carrying the connective line */
+function PhotoBridge({ src, alt, text }: { src: string; alt: string; text: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
-    <SectionReveal>
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-4 py-2">
-        <div className="flex w-full items-center gap-4">
-          <span
-            className="h-px flex-1"
-            style={{ background: `linear-gradient(to right, transparent, ${accentColor}55)` }}
-          />
-          <span
-            className="flex h-10 w-10 items-center justify-center rounded-full"
-            style={{ backgroundColor: `${accentColor}12`, color: accentColor }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-            </svg>
-          </span>
-          <span
-            className="h-px flex-1"
-            style={{ background: `linear-gradient(to left, transparent, ${accentColor}55)` }}
-          />
-        </div>
-        {text && (
-          <p className="max-w-[560px] text-center text-[14px] font-medium leading-relaxed text-neutral-500">
+    <div ref={ref} className="mx-auto w-full max-w-5xl">
+      <motion.div
+        className="relative h-[220px] overflow-hidden rounded-3xl lg:h-[260px]"
+        initial={{ opacity: 0, y: 24 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.div
+          className="absolute inset-0"
+          initial={{ scale: 1.08 }}
+          animate={inView ? { scale: 1 } : { scale: 1.08 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt={alt} className="h-full w-full object-cover" />
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+        <div className="absolute inset-0 flex items-center p-8 lg:p-12">
+          <p className="max-w-[460px] font-brand text-[18px] font-bold leading-relaxed text-white lg:text-[20px]">
             {text}
           </p>
-        )}
-      </div>
-    </SectionReveal>
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
@@ -976,13 +974,15 @@ export function PilgrimzSections({ accentColor }: { accentColor: string }) {
   return (
     <div className="flex w-full flex-col gap-16">
       <Phase1 accentColor={accentColor} />
-      <BrandedDivider
-        accentColor={accentColor}
+      <PhotoBridge
+        src="/images/pilgrimz/barcelona.jpg"
+        alt="Barcelona rooftops in warm light"
         text="With the debt paid down and the OS in place, the work shifted from cleanup to real product strategy."
       />
       <Phase2 accentColor={accentColor} />
-      <BrandedDivider
-        accentColor={accentColor}
+      <PhotoBridge
+        src="/images/pilgrimz/istanbul.jpg"
+        alt="Istanbul skyline with mosque domes and minarets"
         text="Consistent, trusted screens are the groundwork for the part the founders most want next."
       />
       <Phase3 accentColor={accentColor} />
