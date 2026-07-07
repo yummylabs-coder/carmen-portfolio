@@ -269,11 +269,18 @@ function FoundationBlock() {
       <h3 className="mb-1 font-brand text-[18px] font-bold text-brand-ink">
         A system named for code, not just for Figma
       </h3>
-      <p className="mb-6 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
+      <p className="mb-4 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
         Tokens were named with intent so they map cleanly to the codebase, toward the Gluestack theme
         and portable if the team moves off it. Color carries meaning: coral for primary actions, teal
         for exploration, amber for featured and sponsored. Name things right now, and the design to
         code sync becomes trivial later instead of a permanent translation tax.
+      </p>
+      <p className="mb-6 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
+        The brand red is a good example of the thinking. The founders love it and wanted to keep it,
+        but it was splashed across the whole UI, and in interface terms red reads as alert and error.
+        I kept the identity intact and retuned the usage into a coral primary that signals action,
+        not alarm. Airbnb is the reference here: a brand can stay recognizable for a color without
+        coating the entire product in it.
       </p>
       <ColorPalette colors={pilgrimzColors} />
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
