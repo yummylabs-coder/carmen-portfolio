@@ -20,6 +20,7 @@ import { NextCaseStudy } from "@/components/case-study/NextCaseStudy";
 import { NeotasteAtmosphericOverlay } from "@/components/case-study/NeotasteAtmosphericOverlay";
 import { WaterdayAtmosphericOverlay } from "@/components/case-study/WaterdayAtmosphericOverlay";
 import { AusventureAtmosphericOverlay } from "@/components/case-study/AusventureAtmosphericOverlay";
+import { PilgrimzAtmosphericOverlay } from "@/components/case-study/PilgrimzAtmosphericOverlay";
 
 /* ─── Immersive case studies (full-screen, no sidebar) ─── */
 import { LearnImmersive } from "@/components/immersive/learn-xyz/LearnImmersive";
@@ -55,6 +56,7 @@ const fallbackContentMap: Record<string, Partial<CaseStudyDetail>> = {
 const skipSharedSections: Record<string, { role?: boolean; outcomes?: boolean }> = {
   "learn-xyz": { role: true, outcomes: true },
   "water-day": { outcomes: true },
+  pilgrimz: { outcomes: true },
 };
 
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
@@ -196,6 +198,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
             {slug === "neotaste" && <NeotasteAtmosphericOverlay />}
             {slug === "water-day" && <WaterdayAtmosphericOverlay />}
             {slug === "ausventure" && <AusventureAtmosphericOverlay />}
+            {slug === "pilgrimz" && <PilgrimzAtmosphericOverlay />}
           </AtmosphericImage>
         )}
 

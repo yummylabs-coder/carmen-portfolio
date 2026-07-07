@@ -348,6 +348,10 @@ const configs: Record<string, CaseStudyConfig> = {
   "pilgrimz": {
     readTime: "~5 min read",
     heroVisual: "pilgrimz-map",
+    atmosphericImage: {
+      src: "/images/pilgrimz/atmospheric-placeholder.png",
+      alt: "A historic city at dusk, placeholder for Pilgrimz destination imagery",
+    },
     timelineDuration: "",
     timelineSteps: [
       {
