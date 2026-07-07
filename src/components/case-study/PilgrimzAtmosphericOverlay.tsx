@@ -47,14 +47,14 @@ export function PilgrimzAtmosphericOverlay() {
           transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
           className="overflow-hidden rounded-3xl bg-[#FFFDFB] shadow-2xl"
         >
-          {/* Image area — swap for a real covered-passages photo later */}
-          <div
-            className="relative h-[136px]"
-            style={{
-              background:
-                "linear-gradient(140deg, rgba(15,136,143,0.5) 0%, rgba(232,155,36,0.35) 100%), linear-gradient(#807D76, #52504A)",
-            }}
-          >
+          {/* Image: Galerie Vivienne, one of the covered passages */}
+          <div className="relative h-[136px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/pilgrimz/galerie-vivienne.jpg"
+              alt="Inside Galerie Vivienne, a glass-roofed covered passage in Paris"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
             <span
               className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold"
               style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
