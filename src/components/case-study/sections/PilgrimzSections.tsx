@@ -1098,23 +1098,301 @@ function CardsDemo() {
   );
 }
 
-function ButtonsDemo() {
+/* ── Map markers (POI): interactive mini-map, rebuilt from the marker spec ──
+   User location dot with halo, 44px photo tour markers (teal ring + ground
+   shadow when selected), teardrop category pins with 16px icons, the sponsored
+   amber star badge, and a cluster that splits on tap. */
+
+function MarkerIcon({ kind }: { kind: string }) {
+  const common = {
+    width: 14,
+    height: 14,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  if (kind === "cultural")
+    return (
+      <svg {...common}>
+        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+        <circle cx="12" cy="13" r="3" />
+      </svg>
+    );
+  if (kind === "restaurant")
+    return (
+      <svg {...common}>
+        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+        <path d="M7 2v20" />
+        <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7" />
+      </svg>
+    );
+  if (kind === "retail")
+    return (
+      <svg {...common}>
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+        <path d="M3 6h18" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+    );
+  /* hotel */
   return (
-    <div className="flex flex-col items-center gap-3">
-      <button
-        className="rounded-full px-6 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-all hover:shadow-md hover:brightness-95 active:scale-[0.97]"
-        style={{ backgroundColor: CORAL }}
+    <svg {...common}>
+      <path d="M2 4v16" />
+      <path d="M2 8h18a2 2 0 0 1 2 2v10" />
+      <path d="M2 17h20" />
+      <path d="M6 8v9" />
+    </svg>
+  );
+}
+
+function GroundShadow() {
+  return (
+    <span className="absolute -bottom-1 left-1/2 h-1.5 w-5 -translate-x-1/2 rounded-full bg-black/20 blur-[1px]" />
+  );
+}
+
+/** Teardrop category pin */
+function CategoryPin({
+  kind,
+  selected,
+  onClick,
+  label,
+}: {
+  kind: string;
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <motion.button
+      onClick={onClick}
+      whileTap={{ scale: 0.88 }}
+      animate={{ scale: selected ? 1.15 : 1 }}
+      aria-label={label}
+      className="relative"
+    >
+      {selected && <GroundShadow />}
+      <svg width="34" height="41" viewBox="0 0 36 44" className="drop-shadow-sm">
+        <path
+          d="M18 1C8.6 1 1 8.6 1 18c0 11.5 17 25 17 25s17-13.5 17-25C35 8.6 27.4 1 18 1z"
+          fill={selected ? TEAL : "#FFFFFF"}
+          stroke={selected ? "#0C6E74" : "#E3DED6"}
+          strokeWidth="1.5"
+        />
+      </svg>
+      <span
+        className="absolute left-1/2 top-[9px] -translate-x-1/2"
+        style={{ color: selected ? "#FFFFFF" : "#33312D" }}
       >
-        Book this experience
-      </button>
-      <div className="flex gap-2.5">
-        <button className="rounded-full border border-[#E8E6E1] bg-white px-4 py-2 text-[12px] font-semibold text-[#33312D] transition-all hover:bg-[#FAF9F7] active:scale-[0.97]">
-          view in map
-        </button>
-        <button className="rounded-full border border-[#E8E6E1] bg-white px-4 py-2 text-[12px] font-semibold text-[#33312D] transition-all hover:bg-[#FAF9F7] active:scale-[0.97]">
-          Download ↓
-        </button>
+        <MarkerIcon kind={kind} />
+      </span>
+    </motion.button>
+  );
+}
+
+/** Photo tour marker, optionally sponsored (amber star badge) */
+function PhotoMarker({
+  img,
+  sponsored,
+  selected,
+  onClick,
+  label,
+}: {
+  img: string;
+  sponsored?: boolean;
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <motion.button
+      onClick={onClick}
+      whileTap={{ scale: 0.88 }}
+      animate={{ scale: selected ? 1.15 : 1 }}
+      aria-label={label}
+      className="relative"
+    >
+      {selected && <GroundShadow />}
+      <span
+        className="block h-11 w-11 overflow-hidden rounded-full shadow-md transition-all"
+        style={{
+          border: selected ? `2.5px solid ${TEAL}` : "2.5px solid #FFFFFF",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={img} alt="" className="h-full w-full object-cover" />
+      </span>
+      {sponsored && (
+        <span
+          className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full shadow-sm"
+          style={{ backgroundColor: AMBER }}
+        >
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        </span>
+      )}
+    </motion.button>
+  );
+}
+
+function MapMarkersDemo() {
+  const [selected, setSelected] = useState("tour");
+  const [clusterOpen, setClusterOpen] = useState(false);
+  const reduce = useReducedMotion() ?? false;
+
+  const notes: Record<string, string> = {
+    tour: "Tour · photo marker, teal ring when selected",
+    sponsored: "Sponsored · the amber star marks paid visibility",
+    cultural: "Cultural site · category pin",
+    hotel: "Hotel · category pin",
+    restaurant: "Restaurant · from the cluster",
+    retail: "Shop · from the cluster",
+  };
+
+  return (
+    <div className="flex w-full flex-col items-center gap-3">
+      {/* Mini map stage */}
+      <div
+        className="relative h-[230px] w-full max-w-[440px] overflow-hidden rounded-xl border border-[#E3DED6]"
+        style={{ backgroundColor: "#F4F1EA" }}
+      >
+        {/* Abstract streets */}
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 440 230" preserveAspectRatio="none">
+          <rect x="290" y="10" width="140" height="80" rx="12" fill={`${TEAL}0D`} />
+          <path d="M-10 190 C 90 165, 200 205, 450 175 L 450 240 L -10 240 Z" fill={`${TEAL}14`} />
+          <g stroke="#E7E2D8" strokeWidth="7" strokeLinecap="round">
+            <line x1="0" y1="70" x2="440" y2="95" />
+            <line x1="0" y1="150" x2="440" y2="130" />
+            <line x1="110" y1="0" x2="130" y2="230" />
+            <line x1="300" y1="0" x2="320" y2="230" />
+          </g>
+        </svg>
+
+        {/* User location — pulsing halo */}
+        <div className="absolute left-[50%] top-[40%] -translate-x-1/2 -translate-y-1/2">
+          <div className="relative h-5 w-5">
+            {!reduce && (
+              <motion.span
+                className="absolute inset-0 rounded-full"
+                style={{ backgroundColor: TEAL }}
+                animate={{ scale: [1, 2.4], opacity: [0.35, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
+              />
+            )}
+            <span
+              className="absolute inset-0 rounded-full border-[3px] border-white shadow-md"
+              style={{ backgroundColor: TEAL }}
+            />
+          </div>
+        </div>
+
+        {/* Markers */}
+        <div className="absolute left-[20%] top-[26%] -translate-x-1/2 -translate-y-1/2">
+          <PhotoMarker
+            img="/images/pilgrimz/galerie-vivienne.jpg"
+            selected={selected === "tour"}
+            onClick={() => setSelected("tour")}
+            label="Tour marker"
+          />
+        </div>
+        <div className="absolute left-[80%] top-[24%] -translate-x-1/2 -translate-y-1/2">
+          <PhotoMarker
+            img="/images/pilgrimz/barcelona.jpg"
+            sponsored
+            selected={selected === "sponsored"}
+            onClick={() => setSelected("sponsored")}
+            label="Sponsored marker"
+          />
+        </div>
+        <div className="absolute left-[35%] top-[64%] -translate-x-1/2 -translate-y-1/2">
+          <CategoryPin
+            kind="cultural"
+            selected={selected === "cultural"}
+            onClick={() => setSelected("cultural")}
+            label="Cultural site pin"
+          />
+        </div>
+        <div className="absolute left-[70%] top-[60%] -translate-x-1/2 -translate-y-1/2">
+          <CategoryPin
+            kind="hotel"
+            selected={selected === "hotel"}
+            onClick={() => setSelected("hotel")}
+            label="Hotel pin"
+          />
+        </div>
+
+        {/* Cluster — tap to split */}
+        <div className="absolute left-[52%] top-[78%] -translate-x-1/2 -translate-y-1/2">
+          <AnimatePresence mode="wait">
+            {!clusterOpen ? (
+              <motion.button
+                key="cluster"
+                onClick={() => setClusterOpen(true)}
+                whileTap={{ scale: 0.88 }}
+                initial={{ scale: 0.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.6, opacity: 0 }}
+                transition={{ duration: 0.18 }}
+                aria-label="Expand cluster of 2 places"
+                className="flex h-10 w-10 items-center justify-center rounded-full border-[2.5px] border-white bg-[#FAF9F7] text-[13px] font-bold text-[#33312D] shadow-md"
+              >
+                2
+              </motion.button>
+            ) : (
+              <motion.div
+                key="split"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-end gap-2"
+              >
+                {(["restaurant", "retail"] as const).map((k, i) => (
+                  <motion.div
+                    key={k}
+                    initial={{ scale: 0.4, y: 6, opacity: 0 }}
+                    animate={{ scale: 1, y: 0, opacity: 1 }}
+                    transition={{ duration: 0.25, delay: i * 0.06, type: "spring", stiffness: 300, damping: 18 }}
+                  >
+                    <CategoryPin
+                      kind={k}
+                      selected={selected === k}
+                      onClick={() => setSelected(k)}
+                      label={`${k} pin`}
+                    />
+                  </motion.div>
+                ))}
+                <motion.button
+                  onClick={() => setClusterOpen(false)}
+                  aria-label="Collapse cluster"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mb-2 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[11px] font-bold text-[#807D76] shadow-sm"
+                >
+                  ×
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
+
+      {/* Caption follows selection */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selected}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.18 }}
+          className="text-[11.5px] font-semibold text-neutral-500"
+        >
+          {notes[selected]}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
@@ -1128,12 +1406,17 @@ function CoreComponents() {
       >
         <AudioPlayerDemo />
       </DemoCard>
-      <DemoCard title="Controls" tokens="primary/500 · border/subtle · radius/full">
-        <div className="flex flex-col items-center gap-6">
-          <SegmentedControl id="demo" />
-          <ButtonsDemo />
-        </div>
+      <DemoCard title="Segmented control" tokens="primary/500 · border/subtle · radius/full">
+        <SegmentedControl id="demo" />
       </DemoCard>
+      <div className="sm:col-span-2">
+        <DemoCard
+          title="Map markers (POI)"
+          tokens="secondary/500 · accent/500 · neutral/0 · photo markers vs category pins"
+        >
+          <MapMarkersDemo />
+        </DemoCard>
+      </div>
       <div className="sm:col-span-2">
         <DemoCard
           title="Cards — tour, rec, event, hub"
