@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { SectionReveal } from "@/components/case-study/interactive";
 import { SectionLabel } from "@/components/case-study/SectionLabel";
 import { pilgrimzContent } from "./pilgrimzContent";
@@ -704,54 +704,150 @@ function DemoCard({
   );
 }
 
+/* Mini audio player, rebuilt to the component spec:
+   frosted glass container (neutral/50 @85%, blur 16, radius/lg, p-12px, gap-8px),
+   drag handle 36x4, thumbnail 52x52 radius/md, DM Sans type, karaoke transcript,
+   4px teal-gradient progress (secondary/500 to 600, never coral), 44px coral
+   play/pause with focus ring + 2s pulse while playing, 150ms icon crossfade. */
+const TRANSCRIPT_SENTENCES = [
+  "…the lovely orange trees lining the plaza…",
+  "…built over the remains of the Moorish medina…",
+  "…where locals still gather at golden hour…",
+];
+
 function AudioPlayerDemo() {
   const [playing, setPlaying] = useState(false);
-  const bars = [10, 16, 12, 20, 14];
+  const [sentence, setSentence] = useState(0);
+  const reduce = useReducedMotion() ?? false;
+  const dm = "'DM Sans', sans-serif";
+
+  /* Karaoke mode: the live sentence advances while playing */
+  useEffect(() => {
+    if (!playing) return;
+    const t = setInterval(
+      () => setSentence((s) => (s + 1) % TRANSCRIPT_SENTENCES.length),
+      3500,
+    );
+    return () => clearInterval(t);
+  }, [playing]);
+
   return (
-    <div className="flex w-full max-w-[280px] items-center gap-3 rounded-2xl border border-[#EBE5D9] bg-[#FFFDFB] p-3 shadow-sm">
-      <button
-        onClick={() => setPlaying(!playing)}
-        aria-label={playing ? "Pause audio guide" : "Play audio guide"}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white shadow-md transition-transform hover:scale-105 active:scale-95"
-        style={{ backgroundColor: CORAL }}
-      >
-        {playing ? (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-            <rect x="6" y="5" width="4" height="14" rx="1" />
-            <rect x="14" y="5" width="4" height="14" rx="1" />
-          </svg>
-        ) : (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-            <polygon points="8,5 20,12 8,19" />
-          </svg>
-        )}
-      </button>
-      <div className="min-w-0 flex-1">
-        <div className="truncate text-[12.5px] font-bold text-[#1C1B19]">Plaza de los Naranjos</div>
-        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#E8E6E1]">
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: TEAL }}
-            initial={{ width: "18%" }}
-            animate={playing ? { width: ["18%", "100%"] } : {}}
-            transition={playing ? { duration: 9, ease: "linear", repeat: Infinity } : undefined}
-          />
+    <div
+      className="w-full max-w-[300px] rounded-xl border border-[#E8E6E1] p-3 shadow-sm"
+      style={{
+        backgroundColor: "rgba(250, 249, 247, 0.85)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+      }}
+    >
+      {/* Drag handle — swipe-up affordance, 36x4 */}
+      <div className="mx-auto mb-2 h-1 w-9 rounded-full bg-[#D8D5CF]" />
+
+      <div className="flex items-center gap-2">
+        {/* Thumbnail — POI image, 52x52, radius/md */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/pilgrimz/galerie-vivienne.jpg"
+          alt=""
+          className="h-[52px] w-[52px] shrink-0 rounded-lg object-cover"
+        />
+
+        <div className="min-w-0 flex-1">
+          {/* Title — DM Sans SemiBold 14, neutral/900 */}
+          <div
+            className="truncate text-[14px] font-semibold text-[#1C1B19]"
+            style={{ fontFamily: dm }}
+          >
+            Plaza de los Naranjos
+          </div>
+          {/* Transcript preview — italic 12, neutral/500, live sentence */}
+          <div className="h-[17px] overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={playing ? sentence : "frozen"}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.25 }}
+                className="truncate text-[12px] italic text-[#807D76]"
+                style={{ fontFamily: dm }}
+              >
+                {TRANSCRIPT_SENTENCES[sentence]}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          {/* Progress — 4px, neutral/200 track, secondary/500 to 600 gradient fill */}
+          <div className="mt-1.5 flex items-center gap-2">
+            <div className="h-1 flex-1 overflow-hidden rounded-full bg-[#E8E6E1]">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: "linear-gradient(90deg, #0F888F 0%, #0C6E74 100%)" }}
+                initial={{ width: "22%" }}
+                animate={playing && !reduce ? { width: ["22%", "100%"] } : {}}
+                transition={
+                  playing && !reduce
+                    ? { duration: 10, ease: "linear", repeat: Infinity }
+                    : undefined
+                }
+              />
+            </div>
+            {/* Time remaining — DM Sans Regular 11, neutral/500 */}
+            <span className="shrink-0 text-[11px] text-[#807D76]" style={{ fontFamily: dm }}>
+              −1:08
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="flex items-end gap-[2.5px]">
-        {bars.map((h, i) => (
-          <motion.span
-            key={i}
-            className="w-[2.5px] rounded-full"
-            style={{ backgroundColor: TEAL, height: h, transformOrigin: "bottom" }}
-            animate={playing ? { scaleY: [1, 0.4, 1.1, 0.6, 1] } : { scaleY: 0.45 }}
-            transition={
-              playing
-                ? { duration: 1.2 + i * 0.12, repeat: Infinity, ease: "easeInOut" }
-                : { duration: 0.3 }
-            }
-          />
-        ))}
+
+        {/* Play / pause — 44px coral, 20px white icon, focus ring + pulse while playing */}
+        <div className="relative shrink-0">
+          {playing && (
+            <>
+              {/* Focus ring — primary/500 @15%, static */}
+              <span
+                className="absolute -inset-[5px] rounded-full"
+                style={{ backgroundColor: "rgba(232, 76, 68, 0.15)" }}
+              />
+              {/* Pulse ring — 2s ease-out loop (disabled for reduced motion) */}
+              {!reduce && (
+                <motion.span
+                  className="absolute inset-0 rounded-full"
+                  style={{ backgroundColor: "#FDCFCC" }}
+                  animate={{ scale: [1, 1.3], opacity: [0.8, 0] }}
+                  transition={{ duration: 2, ease: "easeOut", repeat: Infinity }}
+                />
+              )}
+            </>
+          )}
+          <button
+            onClick={() => setPlaying(!playing)}
+            aria-label={playing ? "Pause audio guide" : "Play audio guide"}
+            className="relative flex h-11 w-11 items-center justify-center rounded-full text-white shadow-md transition-transform hover:scale-105 active:scale-95"
+            style={{ backgroundColor: CORAL }}
+          >
+            {/* Icon crossfade, 150ms */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={playing ? "pause" : "play"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center justify-center"
+              >
+                {playing ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <rect x="6" y="5" width="4" height="14" rx="1" />
+                    <rect x="14" y="5" width="4" height="14" rx="1" />
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <polygon points="8,5 20,12 8,19" />
+                  </svg>
+                )}
+              </motion.span>
+            </AnimatePresence>
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -830,7 +926,10 @@ function ButtonsDemo() {
 function CoreComponents() {
   return (
     <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
-      <DemoCard title="Mini audio player" tokens="primary/500 · secondary/500 · radius/full">
+      <DemoCard
+        title="Mini audio player"
+        tokens="neutral/50 @85% + backdrop/md · secondary/500→600 · primary/500 · radius/lg"
+      >
         <AudioPlayerDemo />
       </DemoCard>
       <DemoCard title="Tour card" tokens="accent/100 · surface · radius/2xl">
