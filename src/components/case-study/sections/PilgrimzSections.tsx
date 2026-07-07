@@ -853,50 +853,246 @@ function AudioPlayerDemo() {
   );
 }
 
-function TourCardDemo() {
-  const [saved, setSaved] = useState(false);
+/* ── The card family, rebuilt to spec: Tour, Rec, Event, Hub ── */
+
+function ShareBtn() {
   return (
-    <div className="w-full max-w-[230px] overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
-      <div className="relative h-[96px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/pilgrimz/galerie-vivienne.jpg"
-          alt=""
-          className="h-full w-full object-cover"
-        />
+    <motion.span
+      whileTap={{ scale: 0.85 }}
+      className="absolute right-2.5 top-2.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-sm"
+    >
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#807D76" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+        <polyline points="16 6 12 2 8 6" />
+        <line x1="12" y1="2" x2="12" y2="15" />
+      </svg>
+    </motion.span>
+  );
+}
+
+function CardImg({ src, className = "h-[120px]" }: { src: string; className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt="" className={`w-full object-cover ${className}`} />
+  );
+}
+
+/* Tour (featured): hidden gem chip, meta row, description, avatars footer */
+function TourCardV() {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+      <div className="relative">
+        <CardImg src="/images/pilgrimz/galerie-vivienne.jpg" />
         <span
-          className="absolute left-2.5 top-2.5 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+          className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-1 text-[11px] font-semibold"
           style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
         >
           Hidden gem
         </span>
-        <motion.button
-          onClick={() => setSaved(!saved)}
-          whileTap={{ scale: 0.85 }}
-          aria-label={saved ? "Remove from saved" : "Save tour"}
-          className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm"
-        >
-          <motion.svg
-            animate={saved ? { scale: [1, 1.35, 1] } : {}}
-            transition={{ duration: 0.35 }}
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill={saved ? CORAL : "none"}
-            stroke={saved ? CORAL : "#807D76"}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </motion.svg>
-        </motion.button>
+        <ShareBtn />
       </div>
-      <div className="p-3.5">
-        <div className="text-[13px] font-bold leading-tight text-[#1C1B19]">
+      <div className="p-4">
+        <div className="font-brand text-[15px] font-bold leading-snug text-[#1C1B19]">
           The covered passages of Paris
         </div>
-        <div className="mt-0.5 text-[11px] text-[#807D76]">Tour · 5 stops · 40 min</div>
+        <div className="mt-0.5 text-[11.5px] font-semibold text-[#807D76]">
+          Tour · 5 stops · 40 min
+        </div>
+        <p className="mt-1.5 text-[12px] leading-relaxed text-[#52504A]">
+          Slip through the glass-roofed arcades of the 1800s, from Passage des Panoramas to Galerie
+          Vivienne.
+        </p>
+        <div className="mt-3 flex items-center gap-2.5 border-t border-[#F0EDE8] pt-3">
+          <div className="flex">
+            {[
+              { initial: "C", bg: "#C2E5E7", color: "#0A5C61" },
+              { initial: "J", bg: "#FDCFCC", color: "#9B2B25" },
+              { initial: "M", bg: "#FDEBCC", color: "#8A5B10" },
+            ].map((a, i) => (
+              <span
+                key={a.initial}
+                className={`flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold ${
+                  i > 0 ? "-ml-1.5" : ""
+                }`}
+                style={{ backgroundColor: a.bg, color: a.color }}
+              >
+                {a.initial}
+              </span>
+            ))}
+          </div>
+          <span className="text-[11px] text-[#807D76]">34 pilgrims walked this</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Rec (featured): stripped down, image + title + description */
+function RecCardV() {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+      <div className="relative">
+        <CardImg src="/images/pilgrimz/atmospheric.jpg" />
+        <ShareBtn />
+      </div>
+      <div className="p-4">
+        <div className="font-brand text-[15px] font-bold leading-snug text-[#1C1B19]">
+          Pont Alexandre III at dusk
+        </div>
+        <p className="mt-1.5 text-[12px] leading-relaxed text-[#52504A]">
+          Cross the Seine on the city&rsquo;s most ornate bridge just as the lamps come on.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* Event: date tag over the image, time pill + view details footer */
+function EventCardV() {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+      <div className="relative">
+        <CardImg src="/images/pilgrimz/barcelona.jpg" />
+        <span className="absolute left-2.5 top-2.5 flex items-baseline gap-1 rounded-full bg-[#33312D]/90 px-2.5 py-1 text-white">
+          <span className="text-[13px] font-bold leading-none">19</span>
+          <span className="text-[9px] font-semibold uppercase tracking-[0.05em]">Jun</span>
+        </span>
+        <ShareBtn />
+      </div>
+      <div className="p-4">
+        <div className="font-brand text-[15px] font-bold leading-snug text-[#1C1B19]">
+          Festa major de Gràcia
+        </div>
+        <p className="mt-1.5 text-[12px] leading-relaxed text-[#52504A]">
+          Streets dressed by their neighbors compete for the summer&rsquo;s best decorations.
+        </p>
+        <div className="mt-3 flex items-center justify-between">
+          <span className="flex items-center gap-1.5 rounded-full bg-[#F0EDE8] px-2.5 py-1 text-[11px] font-semibold text-[#33312D]">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            18:30 – 20:00
+          </span>
+          <span className="cursor-pointer text-[12px] font-semibold" style={{ color: TEAL }}>
+            View details
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Hub: overlapping logo, centered content, stat tiles, explore CTA */
+function HubCardV() {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-white p-3 shadow-md">
+      <div className="relative">
+        <CardImg src="/images/pilgrimz/istanbul.jpg" className="h-[110px] rounded-xl" />
+        <span
+          className="absolute -bottom-4 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-xl text-[8px] font-bold text-white shadow-md"
+          style={{ backgroundColor: "#E8562E" }}
+        >
+          IST
+        </span>
+      </div>
+      <div className="px-1 pb-1 pt-6 text-center">
+        <div className="font-brand text-[15px] font-bold text-[#1C1B19]">
+          Istanbul Modern
+        </div>
+        <div className="mt-0.5 flex items-center justify-center gap-1 text-[11px] text-[#807D76]">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          Karaköy, Istanbul
+        </div>
+        <p className="mt-2 text-[12px] leading-relaxed text-[#52504A]">
+          Explore the city through the eyes of its finest cultural institution.
+        </p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {[
+            { n: "5", label: "Tours" },
+            { n: "3", label: "Points of Interest" },
+            { n: "5", label: "Events" },
+          ].map((s) => (
+            <div key={s.label} className="rounded-lg bg-[#F5F3EF] px-1 py-2">
+              <div className="text-[14px] font-bold text-[#1C1B19]">{s.n}</div>
+              <div className="text-[9.5px] leading-tight text-[#807D76]">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <button
+          className="mt-3 w-full rounded-xl py-2.5 text-[13px] font-semibold text-white transition-all hover:brightness-95 active:scale-[0.98]"
+          style={{ backgroundColor: CORAL }}
+        >
+          Explore hub
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const CARD_VARIANTS = ["Tour", "Rec", "Event", "Hub"] as const;
+
+function CardsDemo() {
+  const [idx, setIdx] = useState(0);
+  const go = (d: number) => setIdx((i) => (i + d + CARD_VARIANTS.length) % CARD_VARIANTS.length);
+  const cards = [<TourCardV key="t" />, <RecCardV key="r" />, <EventCardV key="e" />, <HubCardV key="h" />];
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex w-full items-center justify-center gap-4">
+        <button
+          onClick={() => go(-1)}
+          aria-label="Previous card"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#E8E6E1] bg-white text-[#33312D] shadow-sm transition-all hover:bg-[#FAF9F7] active:scale-95"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <div className="w-[264px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              {cards[idx]}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <button
+          onClick={() => go(1)}
+          aria-label="Next card"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#E8E6E1] bg-white text-[#33312D] shadow-sm transition-all hover:bg-[#FAF9F7] active:scale-95"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="w-[34px] text-right text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-500">
+          {CARD_VARIANTS[idx]}
+        </span>
+        <div className="flex gap-1.5">
+          {CARD_VARIANTS.map((v, i) => (
+            <button
+              key={v}
+              onClick={() => setIdx(i)}
+              aria-label={`Show ${v} card`}
+              className="h-1.5 rounded-full transition-all duration-300"
+              style={{
+                width: idx === i ? 18 : 6,
+                backgroundColor: idx === i ? CORAL : "#D8D5CF",
+              }}
+            />
+          ))}
+        </div>
+        <span className="w-[34px]" />
       </div>
     </div>
   );
@@ -932,15 +1128,20 @@ function CoreComponents() {
       >
         <AudioPlayerDemo />
       </DemoCard>
-      <DemoCard title="Tour card" tokens="accent/100 · surface · radius/2xl">
-        <TourCardDemo />
+      <DemoCard title="Controls" tokens="primary/500 · border/subtle · radius/full">
+        <div className="flex flex-col items-center gap-6">
+          <SegmentedControl id="demo" />
+          <ButtonsDemo />
+        </div>
       </DemoCard>
-      <DemoCard title="Segmented control" tokens="primary/500 · border/subtle · radius/full">
-        <SegmentedControl id="demo" />
-      </DemoCard>
-      <DemoCard title="Buttons" tokens="primary/500 · border/subtle · radius/full">
-        <ButtonsDemo />
-      </DemoCard>
+      <div className="sm:col-span-2">
+        <DemoCard
+          title="Cards — tour, rec, event, hub"
+          tokens="surface · accent/100 · primary/500 · radius/2xl"
+        >
+          <CardsDemo />
+        </DemoCard>
+      </div>
     </div>
   );
 }
