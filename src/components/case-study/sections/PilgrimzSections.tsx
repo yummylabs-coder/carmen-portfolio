@@ -1582,7 +1582,10 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.1, ease: "easeOut" }}
             >
-              <div className="overflow-hidden rounded-xl" style={{ aspectRatio: "4 / 3" }}>
+              <div
+                className="overflow-hidden rounded-xl"
+                style={{ aspectRatio: "4 / 3", backgroundColor: "#10484D" }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={c.img} alt={c.title} className="h-full w-full object-cover" />
               </div>
