@@ -352,6 +352,7 @@ const configs: Record<string, CaseStudyConfig> = {
   "pilgrimz": {
     readTime: "~5 min read",
     heroVisual: "pilgrimz-map",
+    loadingLogo: "/images/pilgrimz/logo.png",
     atmosphericImage: {
       src: "/images/pilgrimz/atmospheric.jpg",
       alt: "Pont Alexandre III in Paris at dusk, lamps glowing over the Seine",

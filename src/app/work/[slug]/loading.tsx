@@ -41,7 +41,9 @@ export default function CaseStudyLoading() {
             <img
               src={loadingLogo}
               alt=""
-              className="w-[180px] max-w-[50vw] animate-pulse object-contain"
+              className={`w-[180px] max-w-[50vw] animate-pulse object-contain ${
+                isDark ? "brightness-0 invert" : ""
+              }`}
             />
           ) : (
             <>
