@@ -349,8 +349,8 @@ const configs: Record<string, CaseStudyConfig> = {
     readTime: "~5 min read",
     heroVisual: "pilgrimz-map",
     atmosphericImage: {
-      src: "/images/pilgrimz/atmospheric-placeholder.png",
-      alt: "A historic city at dusk, placeholder for Pilgrimz destination imagery",
+      src: "/images/pilgrimz/atmospheric.jpg",
+      alt: "Pont Alexandre III in Paris at dusk, lamps glowing over the Seine",
     },
     timelineDuration: "",
     timelineSteps: [

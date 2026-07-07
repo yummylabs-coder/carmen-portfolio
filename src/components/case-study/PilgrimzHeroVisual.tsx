@@ -10,9 +10,9 @@ const smooth = [0.25, 0.1, 0.25, 1] as const;
 
 /*
  * Anchors children centered on a point of the map, as percentages of the card.
- * Centering lives on this wrapper (not on the animated spans), because
- * framer-motion's scale animation replaces the transform and would otherwise
- * cancel the -translate-x/y-1/2 and drift the rings off their targets.
+ * Centering lives on this (non-animated) wrapper: framer-motion's scale
+ * animation replaces the transform on the spans it animates, so translate
+ * centering must never share an element with an animated scale.
  */
 function CenterAnchor({
   x,
@@ -37,7 +37,11 @@ function CenterAnchor({
   );
 }
 
-/* GPS location: sonar. Discrete rings expand outward and fade, like a radar locating you. */
+/*
+ * GPS location: sonar. Each ring is born small and invisible under the dot,
+ * fades in as it expands, and fades fully out before looping, so the restart
+ * never pops. Two rings offset by half a cycle.
+ */
 function GpsSonar() {
   return (
     <>
@@ -46,12 +50,11 @@ function GpsSonar() {
           key={i}
           className="absolute inset-0 rounded-full"
           style={{ border: `2px solid ${TEAL}` }}
-          animate={{ scale: [1, 2.8], opacity: [0.55, 0] }}
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: [0.7, 2.6], opacity: [0, 0.5, 0] }}
           transition={{
-            duration: 2.4,
-            delay: i * 1.2,
-            repeat: Infinity,
-            ease: "easeOut",
+            opacity: { duration: 2.8, times: [0, 0.25, 1], repeat: Infinity, delay: i * 1.4, ease: "easeOut" },
+            scale: { duration: 2.8, repeat: Infinity, delay: i * 1.4, ease: "easeOut" },
           }}
         />
       ))}
@@ -59,24 +62,19 @@ function GpsSonar() {
   );
 }
 
-/* Audio playing: a soft breathing glow hugging the button, like sound filling the room.
-   No expanding rings here, this is a different interaction from locating. */
+/*
+ * Audio playing: a soft breathing glow hugging the pause button, like sound
+ * from a speaker. No rings here (the button art already has a subtle halo),
+ * and no expansion, this is a different interaction from locating.
+ */
 function PlayingGlow() {
   return (
-    <>
-      <motion.span
-        className="absolute inset-0 rounded-full"
-        style={{ backgroundColor: CORAL, filter: "blur(10px)" }}
-        animate={{ scale: [1, 1.22, 1], opacity: [0.22, 0.4, 0.22] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.span
-        className="absolute inset-0 rounded-full"
-        style={{ border: `1.5px solid ${CORAL}` }}
-        animate={{ scale: [1, 1.12, 1], opacity: [0.35, 0.12, 0.35] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-      />
-    </>
+    <motion.span
+      className="absolute inset-0 rounded-full"
+      style={{ backgroundColor: CORAL, filter: "blur(12px)" }}
+      animate={{ scale: [1, 1.18, 1], opacity: [0.25, 0.45, 0.25] }}
+      transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+    />
   );
 }
 
@@ -108,13 +106,13 @@ export function PilgrimzHeroVisual() {
 
           {!reduce && (
             <>
-              {/* GPS user location: sonar rings */}
-              <CenterAnchor x="62.9%" y="41.2%" size={18}>
+              {/* GPS user location: sonar rings (measured center of the teal dot) */}
+              <CenterAnchor x="62.5%" y="41.4%" size={16}>
                 <GpsSonar />
               </CenterAnchor>
 
-              {/* Audio guide pause button: breathing playback glow */}
-              <CenterAnchor x="87.3%" y="69%" size={42}>
+              {/* Audio guide pause button: breathing playback glow (measured center + size) */}
+              <CenterAnchor x="87.5%" y="69.3%" size={44}>
                 <PlayingGlow />
               </CenterAnchor>
             </>
