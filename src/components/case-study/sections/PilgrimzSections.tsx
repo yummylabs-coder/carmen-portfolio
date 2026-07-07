@@ -192,22 +192,6 @@ function BrandedDivider({ accentColor, text }: { accentColor: string; text?: str
   );
 }
 
-/** Solid statement card — one bold line on a deep brand block */
-function StatementCard({ text }: { text: string }) {
-  return (
-    <SectionReveal>
-      <div
-        className="mx-auto w-full max-w-4xl rounded-3xl px-8 py-10 text-center lg:px-14"
-        style={{ background: `linear-gradient(160deg, ${DEEP} 0%, ${INK} 100%)` }}
-      >
-        <p className="font-brand text-[20px] font-bold leading-relaxed text-white lg:text-[22px]">
-          {text}
-        </p>
-      </div>
-    </SectionReveal>
-  );
-}
-
 /* ════════════════════════════════════════
    Phase 1 — The AI-enabled foundation
    ════════════════════════════════════════ */
@@ -380,19 +364,9 @@ function FoundationBlock() {
       <h3 className="mb-1 font-brand text-[18px] font-bold text-brand-ink">
         A system named for code, not just for Figma
       </h3>
-      <p className="mb-4 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
-        Tokens were named with intent so they map cleanly to the codebase, toward the Gluestack theme
-        and portable if the team moves off it. Color carries meaning: coral for primary actions, teal
-        for exploration, amber for featured and sponsored. And every token ships with more than a
-        value: a description, references, and good vs bad usage, so Claude knows when to use it, not
-        just what it is.
-      </p>
       <p className="mb-6 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
-        The brand red is a good example of the thinking. The founders love it and wanted to keep it,
-        but it was splashed across the whole UI, and in interface terms red reads as alert and error.
-        I kept the identity intact and retuned the usage into a coral primary that signals action,
-        not alarm. Airbnb is the reference here: a brand can stay recognizable for a color without
-        coating the entire product in it.
+        Tokens map cleanly to code, and every one ships with more than a value: a description,
+        references, and good vs bad usage. Claude knows when to use a token, not just what it is.
       </p>
       <ColorPalette colors={pilgrimzColors} />
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -923,7 +897,6 @@ export function PilgrimzSections({ accentColor }: { accentColor: string }) {
         text="Consistent, trusted screens are the groundwork for the part the founders most want next."
       />
       <Phase3 accentColor={accentColor} />
-      <StatementCard text="Organic contribution and inspiration beat asking early users to perform for an audience. Ownership and memory come before gamification." />
       <OutcomesOnPhoto accentColor={accentColor} />
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { getCaseStudyConfig } from "@/lib/case-study-config";
 
@@ -14,7 +14,12 @@ function Pulse({ className, light }: { className?: string; light?: boolean }) {
 
 export default function CaseStudyLoading() {
   const params = useParams();
-  const slug = typeof params?.slug === "string" ? params.slug : "";
+  const pathname = usePathname();
+  /* useParams can be empty inside loading.tsx, so fall back to the URL */
+  const slug =
+    typeof params?.slug === "string"
+      ? params.slug
+      : pathname?.split("/").filter(Boolean).pop() ?? "";
   const { brand, loadingLogo } = getCaseStudyConfig(slug);
   const bg = brand.heroBg ?? brand.bg;
 

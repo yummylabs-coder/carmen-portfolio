@@ -21,7 +21,7 @@ export function Overview({ text }: OverviewProps) {
           {paragraphs.map((paragraph, i) => (
             <p
               key={i}
-              className="max-w-[760px] text-16 leading-[1.8] text-neutral-600 md:text-[17px]"
+              className="max-w-[760px] text-16 leading-[1.8] text-neutral-600"
             >
               {paragraph}
             </p>
