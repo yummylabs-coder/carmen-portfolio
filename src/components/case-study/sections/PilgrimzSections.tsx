@@ -887,7 +887,10 @@ function CardImg({ src, className = "h-[120px]" }: { src: string; className?: st
 /* Tour (featured): hidden gem chip, meta row, description, avatars footer */
 function TourCardV() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+    <div
+      className="overflow-hidden rounded-2xl bg-white"
+      style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
+    >
       <div className="relative">
         <CardImg src="/images/pilgrimz/galerie-vivienne.jpg" />
         <span
@@ -937,7 +940,10 @@ function TourCardV() {
 /* Rec (featured): stripped down, image + title + description */
 function RecCardV() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+    <div
+      className="overflow-hidden rounded-2xl bg-white"
+      style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
+    >
       <div className="relative">
         <CardImg src="/images/pilgrimz/atmospheric.jpg" />
         <ShareBtn />
@@ -957,7 +963,10 @@ function RecCardV() {
 /* Event: date tag over the image, time pill + view details footer */
 function EventCardV() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+    <div
+      className="overflow-hidden rounded-2xl bg-white"
+      style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
+    >
       <div className="relative">
         <CardImg src="/images/pilgrimz/barcelona.jpg" />
         <span className="absolute left-2.5 top-2.5 flex items-baseline gap-1 rounded-full bg-[#33312D]/90 px-2.5 py-1 text-white">
@@ -993,7 +1002,10 @@ function EventCardV() {
 /* Hub: overlapping logo, centered content, stat tiles, explore CTA */
 function HubCardV() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white p-3 shadow-md">
+    <div
+      className="overflow-hidden rounded-2xl bg-white p-3"
+      style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
+    >
       <div className="relative">
         <CardImg src="/images/pilgrimz/istanbul.jpg" className="h-[110px] rounded-xl" />
         <span
