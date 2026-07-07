@@ -36,6 +36,7 @@ export function useCurtainTransition(slug: string) {
         textColor: config.textColor,
         slug,
         logoUrl: config.logoUrl,
+        logoInvert: config.logoInvert,
       });
     },
     [slug, startTransition],

@@ -13,6 +13,8 @@ export interface TransitionConfig {
   textColor: string;
   /** Optional logo image URL shown during the hold phase */
   logoUrl?: string;
+  /** Knock the logo out to white (for colored logos on dark curtains) */
+  logoInvert?: boolean;
 }
 
 const transitionConfigs: Record<string, TransitionConfig> = {
@@ -55,6 +57,14 @@ const transitionConfigs: Record<string, TransitionConfig> = {
   klasse: {
     color: "#2216FF",
     textColor: "#FFFFFF",
+  },
+
+  /* Pilgrimz — Deep teal, white-knocked wordmark */
+  pilgrimz: {
+    color: "#0A5C61",
+    textColor: "#FFFFFF",
+    logoUrl: "/images/pilgrimz/logo.png",
+    logoInvert: true,
   },
 };
 

@@ -31,6 +31,8 @@ export interface TransitionPayload {
   slug: string;
   /** Optional logo image URL */
   logoUrl?: string;
+  /** Knock the logo out to white (for colored logos on dark curtains) */
+  logoInvert?: boolean;
 }
 
 interface PageTransitionContextValue {

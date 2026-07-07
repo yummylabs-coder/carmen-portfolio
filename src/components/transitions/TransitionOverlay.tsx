@@ -213,7 +213,12 @@ export function TransitionOverlay() {
             <img
               src={transition.logoUrl}
               alt=""
-              style={{ height: 80, width: "auto", objectFit: "contain" }}
+              style={{
+                height: 80,
+                width: "auto",
+                objectFit: "contain",
+                filter: transition.logoInvert ? "brightness(0) invert(1)" : undefined,
+              }}
             />
           ) : (
             <div style={{ color: textColor, opacity: 0.25 }}>
