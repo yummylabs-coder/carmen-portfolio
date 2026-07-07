@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { SectionReveal, ColorPalette } from "@/components/case-study/interactive";
+import { SectionReveal } from "@/components/case-study/interactive";
 import { SectionLabel } from "@/components/case-study/SectionLabel";
 import { pilgrimzContent } from "./pilgrimzContent";
 
@@ -12,18 +12,6 @@ const AMBER = "#E89B24";
 const CORAL = "#E84C44";
 const INK = "#1C1B19";
 const DEEP = "#0E3538";
-
-/* Real tokens from the Pilgrimz Figma design system */
-const pilgrimzColors = [
-  { name: "Coral / Primary", hex: "#E84C44" },
-  { name: "Teal / Secondary", hex: "#0F888F" },
-  { name: "Amber / Accent", hex: "#E89B24" },
-  { name: "Ink", hex: "#1C1B19" },
-  { name: "Text", hex: "#33312D" },
-  { name: "Muted", hex: "#807D76" },
-  { name: "Surface", hex: "#FAF9F7" },
-  { name: "Error", hex: "#DC2626" },
-];
 
 /* ════════════════════════════════════════
    Shared helpers
@@ -137,21 +125,30 @@ function WarmPanel({
 
 /* ── Small real product artifacts (rebuilt UI furniture, not abstract boxes) ── */
 
-/** The app's segmented control — coral active pill */
-function SegmentedControl() {
+/** The app's segmented control — coral active pill, fully interactive */
+function SegmentedControl({ id = "map" }: { id?: string }) {
   const items = ["Tours", "Recs", "Favorites"];
+  const [active, setActive] = useState(0);
   return (
-    <div className="mt-5 inline-flex items-center gap-1 rounded-full border border-[#EBE5D9] bg-white p-1 shadow-sm">
+    <div className="inline-flex items-center gap-1 rounded-full border border-[#EBE5D9] bg-white p-1 shadow-sm">
       {items.map((label, i) => (
-        <span
+        <button
           key={label}
-          className={`rounded-full px-4 py-1.5 text-[12px] font-semibold ${
-            i === 0 ? "text-white" : "text-[#807D76]"
+          onClick={() => setActive(i)}
+          className={`relative rounded-full px-4 py-1.5 text-[12px] font-semibold transition-colors ${
+            active === i ? "text-white" : "text-[#807D76] hover:text-[#33312D]"
           }`}
-          style={i === 0 ? { backgroundColor: CORAL } : undefined}
         >
-          {label}
-        </span>
+          {active === i && (
+            <motion.span
+              layoutId={`${id}-segment-pill`}
+              className="absolute inset-0 rounded-full"
+              style={{ backgroundColor: CORAL }}
+              transition={{ type: "spring", stiffness: 420, damping: 34 }}
+            />
+          )}
+          <span className="relative">{label}</span>
+        </button>
       ))}
     </div>
   );
@@ -282,7 +279,10 @@ function PhotoBridge({ src, alt, text }: { src: string; alt: string; text: strin
 /* A token as Claude reads it: value, description, references, use and avoid */
 function TokenDocCard() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-sand-300 bg-[#1C1B19]">
+    <div
+      className="overflow-hidden rounded-2xl border border-[#0B4348]"
+      style={{ background: "linear-gradient(160deg, #0C5157 0%, #083A3E 100%)" }}
+    >
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
         <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
@@ -414,81 +414,492 @@ function GoodVsBad() {
   );
 }
 
-function TypeNote() {
+/* ── Sub-section header, so each block of phase 1 has room to breathe ── */
+function SubHead({
+  kicker,
+  title,
+  body,
+  accentColor,
+}: {
+  kicker: string;
+  title: string;
+  body?: string;
+  accentColor: string;
+}) {
   return (
-    <div className="rounded-2xl border border-sand-300 bg-white p-6">
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=DM+Sans:wght@400;500&display=swap"
+    <SectionReveal>
+      <div className="mt-20">
+        <span className="text-[11px] font-bold uppercase tracking-[0.05em]" style={{ color: accentColor }}>
+          {kicker}
+        </span>
+        <h3 className="mt-1.5 font-brand text-[20px] font-bold text-brand-ink">{title}</h3>
+        {body && (
+          <p className="mt-2 max-w-[620px] text-[14px] leading-relaxed text-neutral-600">{body}</p>
+        )}
+      </div>
+    </SectionReveal>
+  );
+}
+
+/* ── Interactive color palette ── */
+const colorFamilies = [
+  {
+    name: "Coral",
+    hex: "#E84C44",
+    role: "Primary actions. Play, book, save. Signals action, never alarm.",
+    ramp: ["#FDCFCC", "#F26B62", "#E84C44", "#C93A32"],
+  },
+  {
+    name: "Teal",
+    hex: "#0F888F",
+    role: "Exploration, discovery, and selected states.",
+    ramp: ["#C2E5E7", "#24A0A8", "#0F888F", "#0A5C61"],
+  },
+  {
+    name: "Amber",
+    hex: "#E89B24",
+    role: "Featured and sponsored content, achievements.",
+    ramp: ["#FDEBCC", "#F0AC3E", "#E89B24", "#B27516"],
+  },
+];
+
+function FamilySwatch({ family }: { family: (typeof colorFamilies)[0] }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard?.writeText(family.hex);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1400);
+  };
+  return (
+    <button
+      onClick={copy}
+      className="group overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+    >
+      <div
+        className="h-24 w-full transition-all duration-300 group-hover:h-[76px]"
+        style={{ backgroundColor: family.hex }}
       />
-      <div className="mb-4 flex items-baseline justify-between">
-        <span className="font-brand text-[16px] font-bold text-brand-ink">Type as a guide</span>
-        <span className="text-[12px] text-neutral-500">Plus Jakarta Sans · DM Sans</span>
+      {/* Ramp expands on hover */}
+      <div className="flex h-3 w-full transition-all duration-300 group-hover:h-8">
+        {family.ramp.map((c) => (
+          <span key={c} className="h-full flex-1" style={{ backgroundColor: c }} />
+        ))}
+      </div>
+      <div className="p-5">
+        <div className="flex items-baseline justify-between gap-2">
+          <span className="font-brand text-[16px] font-bold text-brand-ink">{family.name}</span>
+          <span className="font-mono text-[11px] text-neutral-500">
+            {copied ? "Copied!" : family.hex}
+          </span>
+        </div>
+        <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-600">{family.role}</p>
+      </div>
+    </button>
+  );
+}
+
+function PilgrimzPalette() {
+  const neutrals = [
+    { name: "Ink", hex: "#1C1B19" },
+    { name: "Text", hex: "#33312D" },
+    { name: "Muted", hex: "#807D76" },
+    { name: "Border", hex: "#E8E6E1" },
+    { name: "Surface", hex: "#FAF9F7" },
+    { name: "White", hex: "#FFFFFF" },
+  ];
+  const semantic = [
+    { name: "Success", hex: "#1E9E6A" },
+    { name: "Warning", hex: "#E89B24" },
+    { name: "Error", hex: "#DC2626" },
+    { name: "Info", hex: "#2F6FE0" },
+  ];
+  return (
+    <div className="mt-8">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        {colorFamilies.map((f) => (
+          <FamilySwatch key={f.name} family={f} />
+        ))}
+      </div>
+      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="rounded-2xl border border-[#EBE5D9] bg-white p-5">
+          <div className="mb-3 text-[12px] font-semibold uppercase tracking-[0.05em] text-neutral-500">
+            Warm neutrals, not cold grays
+          </div>
+          <div className="flex overflow-hidden rounded-xl border border-[#EBE5D9]">
+            {neutrals.map((n) => (
+              <div
+                key={n.name}
+                className="h-14 flex-1 transition-transform duration-200 hover:scale-y-110"
+                style={{ backgroundColor: n.hex }}
+                title={`${n.name} · ${n.hex}`}
+              />
+            ))}
+          </div>
+          <div className="mt-2 flex justify-between font-mono text-[10px] text-neutral-500">
+            <span>ink #1C1B19</span>
+            <span>white #FFFFFF</span>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-[#EBE5D9] bg-white p-5">
+          <div className="mb-3 text-[12px] font-semibold uppercase tracking-[0.05em] text-neutral-500">
+            Semantic, kept distinct from brand
+          </div>
+          <div className="flex gap-2.5">
+            {semantic.map((s) => (
+              <div key={s.name} className="flex-1" title={s.hex}>
+                <div
+                  className="h-14 rounded-xl transition-transform duration-200 hover:-translate-y-0.5"
+                  style={{ backgroundColor: s.hex }}
+                />
+                <div className="mt-1.5 text-center text-[11px] font-semibold text-neutral-600">
+                  {s.name}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <p className="mt-4 text-[12px] text-neutral-500">
+        The error red stays deliberately distinct from the coral primary, so an action never looks
+        like a failure. Click a family to copy its hex.
+      </p>
+    </div>
+  );
+}
+
+/* ── Detailed type system ── */
+interface TypeRow {
+  label: string;
+  size: number;
+  lh: number;
+  weight: number;
+  ls?: string;
+  sample: string;
+}
+
+const jakartaScale: TypeRow[] = [
+  { label: "Display", size: 36, lh: 44, weight: 700, ls: "-0.02em", sample: "Know the story" },
+  { label: "Heading 1", size: 28, lh: 36, weight: 700, sample: "Roman and Moorish Málaga" },
+  { label: "Heading 2", size: 22, lh: 30, weight: 600, sample: "Worth the detour" },
+  { label: "Heading 3", size: 18, lh: 26, weight: 600, sample: "Explore all 32 tours" },
+];
+
+const dmScale: TypeRow[] = [
+  {
+    label: "Body large",
+    size: 18,
+    lh: 29,
+    weight: 400,
+    sample: "GPS triggered audio guides bring the story to where you stand.",
+  },
+  {
+    label: "Body",
+    size: 16,
+    lh: 24,
+    weight: 400,
+    sample: "Pride in knowing, and the joy of passing it on.",
+  },
+  { label: "Label", size: 14, lh: 20, weight: 500, sample: "view in map · Download" },
+  { label: "Caption", size: 12, lh: 16, weight: 500, sample: "Tour · 4 stops · 45 min" },
+];
+
+function TypeScaleCard({
+  font,
+  role,
+  family,
+  scale,
+}: {
+  font: string;
+  role: string;
+  family: string;
+  scale: TypeRow[];
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white">
+      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#F0EDE8] px-6 py-4">
+        <span className="font-brand text-[17px] font-bold text-brand-ink">{font}</span>
+        <span className="text-[12px] text-neutral-500">{role}</span>
       </div>
       <div
-        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-        className="text-[30px] font-bold leading-tight text-brand-ink"
+        className="overflow-hidden whitespace-nowrap border-b border-[#F0EDE8] px-6 py-3 text-[13px] text-neutral-400"
+        style={{ fontFamily: family }}
       >
-        Know the story
+        Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz 0123456789
       </div>
-      <div
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-        className="mt-2 text-[15px] leading-relaxed text-neutral-600"
-      >
-        GPS triggered audio guides bring the story to where you stand. A voice that reads as a
-        knowledgeable guide, not a children&rsquo;s app.
+      <div className="divide-y divide-[#F0EDE8]">
+        {scale.map((row) => (
+          <div
+            key={row.label}
+            className="flex flex-col gap-2 px-6 py-5 sm:flex-row sm:items-center sm:gap-8"
+          >
+            <div className="w-[140px] shrink-0">
+              <div className="text-[12px] font-semibold text-neutral-600">{row.label}</div>
+              <div className="mt-0.5 font-mono text-[10.5px] text-neutral-400">
+                {row.size}px / {row.lh}px · {row.weight}
+              </div>
+            </div>
+            <div
+              className="min-w-0 overflow-hidden text-brand-ink"
+              style={{
+                fontFamily: family,
+                fontSize: row.size,
+                lineHeight: `${row.lh}px`,
+                fontWeight: row.weight,
+                letterSpacing: row.ls,
+              }}
+            >
+              {row.sample}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function FoundationBlock() {
+function TypeSystem() {
   return (
-    <div className="mt-10">
-      <h3 className="mb-1 font-brand text-[18px] font-bold text-brand-ink">
-        A system named for code, not just for Figma
-      </h3>
-      <p className="mb-6 max-w-[760px] text-[14px] leading-relaxed text-neutral-600">
-        Tokens map cleanly to code, and every one ships with more than a value: a description,
-        references, and good vs bad usage. Claude knows when to use a token, not just what it is.
-      </p>
-      <ColorPalette colors={pilgrimzColors} />
-      <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <TokenDocCard />
-        <TypeNote />
+    <div className="mt-8 flex flex-col gap-5">
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap"
+      />
+      <TypeScaleCard
+        font="Plus Jakarta Sans"
+        role="Headings & display"
+        family="'Plus Jakarta Sans', sans-serif"
+        scale={jakartaScale}
+      />
+      <TypeScaleCard font="DM Sans" role="Body & UI" family="'DM Sans', sans-serif" scale={dmScale} />
+    </div>
+  );
+}
+
+/* ── Core components, rebuilt in code and interactive ── */
+function DemoCard({
+  title,
+  tokens,
+  children,
+}: {
+  title: string;
+  tokens: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white">
+      <div
+        className="flex min-h-[180px] flex-1 items-center justify-center p-6"
+        style={{
+          background:
+            "repeating-linear-gradient(0deg, transparent, transparent 23px, #F5F1E9 23px, #F5F1E9 24px), repeating-linear-gradient(90deg, transparent, transparent 23px, #F5F1E9 23px, #F5F1E9 24px)",
+        }}
+      >
+        {children}
       </div>
-      <div className="mt-4">
+      <div className="border-t border-[#F0EDE8] px-5 py-3.5">
+        <div className="text-[13px] font-bold text-brand-ink">{title}</div>
+        <div className="mt-0.5 font-mono text-[10.5px] text-neutral-400">{tokens}</div>
+      </div>
+    </div>
+  );
+}
+
+function AudioPlayerDemo() {
+  const [playing, setPlaying] = useState(false);
+  const bars = [10, 16, 12, 20, 14];
+  return (
+    <div className="flex w-full max-w-[280px] items-center gap-3 rounded-2xl border border-[#EBE5D9] bg-[#FFFDFB] p-3 shadow-sm">
+      <button
+        onClick={() => setPlaying(!playing)}
+        aria-label={playing ? "Pause audio guide" : "Play audio guide"}
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white shadow-md transition-transform hover:scale-105 active:scale-95"
+        style={{ backgroundColor: CORAL }}
+      >
+        {playing ? (
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+            <rect x="6" y="5" width="4" height="14" rx="1" />
+            <rect x="14" y="5" width="4" height="14" rx="1" />
+          </svg>
+        ) : (
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+            <polygon points="8,5 20,12 8,19" />
+          </svg>
+        )}
+      </button>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[12.5px] font-bold text-[#1C1B19]">Plaza de los Naranjos</div>
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-[#E8E6E1]">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: TEAL }}
+            initial={{ width: "18%" }}
+            animate={playing ? { width: ["18%", "100%"] } : {}}
+            transition={playing ? { duration: 9, ease: "linear", repeat: Infinity } : undefined}
+          />
+        </div>
+      </div>
+      <div className="flex items-end gap-[2.5px]">
+        {bars.map((h, i) => (
+          <motion.span
+            key={i}
+            className="w-[2.5px] rounded-full"
+            style={{ backgroundColor: TEAL, height: h, transformOrigin: "bottom" }}
+            animate={playing ? { scaleY: [1, 0.4, 1.1, 0.6, 1] } : { scaleY: 0.45 }}
+            transition={
+              playing
+                ? { duration: 1.2 + i * 0.12, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.3 }
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TourCardDemo() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <div className="w-full max-w-[230px] overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
+      <div className="relative h-[96px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/pilgrimz/galerie-vivienne.jpg"
+          alt=""
+          className="h-full w-full object-cover"
+        />
+        <span
+          className="absolute left-2.5 top-2.5 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+          style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
+        >
+          Hidden gem
+        </span>
+        <motion.button
+          onClick={() => setSaved(!saved)}
+          whileTap={{ scale: 0.85 }}
+          aria-label={saved ? "Remove from saved" : "Save tour"}
+          className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm"
+        >
+          <motion.svg
+            animate={saved ? { scale: [1, 1.35, 1] } : {}}
+            transition={{ duration: 0.35 }}
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill={saved ? CORAL : "none"}
+            stroke={saved ? CORAL : "#807D76"}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </motion.svg>
+        </motion.button>
+      </div>
+      <div className="p-3.5">
+        <div className="text-[13px] font-bold leading-tight text-[#1C1B19]">
+          The covered passages of Paris
+        </div>
+        <div className="mt-0.5 text-[11px] text-[#807D76]">Tour · 5 stops · 40 min</div>
+      </div>
+    </div>
+  );
+}
+
+function ButtonsDemo() {
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <button
+        className="rounded-full px-6 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-all hover:shadow-md hover:brightness-95 active:scale-[0.97]"
+        style={{ backgroundColor: CORAL }}
+      >
+        Book this experience
+      </button>
+      <div className="flex gap-2.5">
+        <button className="rounded-full border border-[#E8E6E1] bg-white px-4 py-2 text-[12px] font-semibold text-[#33312D] transition-all hover:bg-[#FAF9F7] active:scale-[0.97]">
+          view in map
+        </button>
+        <button className="rounded-full border border-[#E8E6E1] bg-white px-4 py-2 text-[12px] font-semibold text-[#33312D] transition-all hover:bg-[#FAF9F7] active:scale-[0.97]">
+          Download ↓
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CoreComponents() {
+  return (
+    <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <DemoCard title="Mini audio player" tokens="primary/500 · secondary/500 · radius/full">
+        <AudioPlayerDemo />
+      </DemoCard>
+      <DemoCard title="Tour card" tokens="accent/100 · surface · radius/2xl">
+        <TourCardDemo />
+      </DemoCard>
+      <DemoCard title="Segmented control" tokens="primary/500 · border/subtle · radius/full">
+        <SegmentedControl id="demo" />
+      </DemoCard>
+      <DemoCard title="Buttons" tokens="primary/500 · border/subtle · radius/full">
+        <ButtonsDemo />
+      </DemoCard>
+    </div>
+  );
+}
+
+function FoundationBlock({ accentColor }: { accentColor: string }) {
+  return (
+    <div>
+      <SubHead
+        accentColor={accentColor}
+        kicker="Color"
+        title="Color with psychology and accessibility applied"
+        body="The base red was retuned into a coral primary reserved for action. Teal carries exploration, amber marks featured and sponsored, and warm neutrals replace cold grays. Contrast was a constraint throughout, not an afterthought."
+      />
+      <PilgrimzPalette />
+
+      <SubHead
+        accentColor={accentColor}
+        kicker="Typography"
+        title="A voice that reads as a knowledgeable guide"
+        body="Plus Jakarta Sans for headings and display, DM Sans for body and UI. The full scale, weights, line heights, and letter spacing are defined as tokens."
+      />
+      <TypeSystem />
+
+      <SubHead
+        accentColor={accentColor}
+        kicker="Core components"
+        title="Components connected back to tokens"
+        body="Rebuilt here in code, on the system. Press play, save a tour, switch a tab. Everything below is drawn from the tokens above."
+      />
+      <CoreComponents />
+
+      <SubHead
+        accentColor={accentColor}
+        kicker="Readable by AI"
+        title="Docs Claude can act on"
+        body="Tokens map cleanly to code, and every one ships with a description, references, and good vs bad usage. Claude knows when to use a token, not just what it is."
+      />
+      <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <TokenDocCard />
         <GoodVsBad />
       </div>
 
-      {/* The system living on real screens — warm product surface */}
-      <div className="mt-5">
+      <SubHead
+        accentColor={accentColor}
+        kicker="The system in use"
+        title="Decisions made on real screens, not swatches"
+        body="I showed color and type living on primary screens with usage guidance, so the founders could judge the system where it matters, on the product."
+      />
+      <div className="mt-8">
         <WarmPanel>
-          <div className="flex flex-col items-center gap-8 lg:flex-row">
-            <div className="lg:w-[300px]">
-              <span
-                className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em]"
-                style={{ backgroundColor: "rgba(232,76,68,0.10)", color: "#C93A32" }}
-              >
-                The system in use
-              </span>
-              <h4 className="mt-3 font-brand text-[19px] font-bold leading-tight text-brand-ink">
-                Decisions made on real screens, not swatches
-              </h4>
-              <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">
-                I showed color and type living on primary screens with usage guidance, so the
-                founders could judge the system where it matters, on the product.
-              </p>
-            </div>
-            <div className="grid flex-1 grid-cols-2 gap-4">
-              <Placeholder variant="phone" label="Screen — before tokens" />
-              <Placeholder variant="phone" label="Screen — on system" />
-            </div>
+          <div className="mx-auto grid w-full max-w-[520px] grid-cols-2 gap-6">
+            <Placeholder variant="phone" label="Screen — before tokens" />
+            <Placeholder variant="phone" label="Screen — on system" />
           </div>
         </WarmPanel>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-8">
         <Placeholder variant="pano" label="Storybook — the system's shared home" />
       </div>
     </div>
@@ -631,7 +1042,7 @@ function Phase1({ accentColor }: { accentColor: string }) {
         intro="Pilgrimz was designing straight in Claude with a few guidelines, and every screen added debt. Phase one built the missing foundation, and built it to be read by AI, so a tiny team gets great, on-system output from the first pass instead of racking up cleanup rounds."
         accentColor={accentColor}
       />
-      <FoundationBlock />
+      <FoundationBlock accentColor={accentColor} />
       <ClaudeInfraBlock accentColor={accentColor} />
     </section>
   );
@@ -660,7 +1071,9 @@ function MapShowcase({ accentColor }: { accentColor: string }) {
               differentiated point of interest types, and surfaced sponsored places clearly, which
               ties straight to how Pilgrimz makes money.
             </p>
-            <SegmentedControl />
+            <div className="mt-5">
+              <SegmentedControl />
+            </div>
             <PoiChips />
             <TourListItem />
           </div>

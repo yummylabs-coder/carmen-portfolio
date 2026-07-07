@@ -4,9 +4,11 @@ import { ScrollReveal } from "@/components/dashboard/ScrollReveal";
 
 interface ChallengeProps {
   text: string;
+  /** Optional brand background (CSS value). Defaults to the portfolio maroon. */
+  bg?: string;
 }
 
-export function Challenge({ text }: ChallengeProps) {
+export function Challenge({ text, bg }: ChallengeProps) {
   if (!text) return null;
 
   const paragraphs = text.split("\n").filter((p) => p.trim());
@@ -18,8 +20,7 @@ export function Challenge({ text }: ChallengeProps) {
       <section
         className="mx-auto max-w-5xl rounded-3xl px-6 py-8 md:px-10 md:py-12"
         style={{
-          background:
-            "linear-gradient(145deg, #300101 0%, #421414 100%)",
+          background: bg ?? "linear-gradient(145deg, #300101 0%, #421414 100%)",
         }}
       >
         {/* Pill label */}

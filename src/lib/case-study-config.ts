@@ -5,6 +5,8 @@ export interface BrandColors {
   bg: string;
   /** Optional full CSS background for the hero (e.g. a mesh gradient). Overrides the computed gradient from `bg`. */
   heroBg?: string;
+  /** Optional background for the Challenge callout card. Defaults to the portfolio maroon. */
+  challengeBg?: string;
   /** Headline text on branded bg */
   headlineText: string;
   /** Summary / body text on branded bg */
@@ -383,6 +385,7 @@ const configs: Record<string, CaseStudyConfig> = {
       bg: "#0A5C61",
       heroBg:
         "radial-gradient(at 15% 20%, rgba(36, 160, 168, 0.5) 0px, transparent 50%), radial-gradient(at 85% 10%, rgba(6, 50, 54, 0.7) 0px, transparent 55%), radial-gradient(at 80% 85%, rgba(24, 140, 148, 0.45) 0px, transparent 55%), radial-gradient(at 20% 90%, rgba(6, 47, 50, 0.7) 0px, transparent 50%), linear-gradient(170deg, #0C6B71 0%, #0A5C61 55%, #095257 100%)",
+      challengeBg: "linear-gradient(150deg, #0C6B71 0%, #084F54 100%)",
       headlineText: "#FFFFFF",
       bodyText: "#D6EDEE",
       partnerText: "#A8D8DA",

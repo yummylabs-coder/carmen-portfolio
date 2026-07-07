@@ -211,7 +211,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
         <Overview text={study.overview} />
 
         {/* The Challenge */}
-        <Challenge text={study.challenge} />
+        <Challenge text={study.challenge} bg={config.brand.challengeBg} />
 
         {/* Our Role — skip if custom sections handle it */}
         {!skipSharedSections[slug]?.role && (
