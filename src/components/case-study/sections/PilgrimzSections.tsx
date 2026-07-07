@@ -1474,22 +1474,22 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
     {
       title: "AI-readable from day one",
       body: "Created so Claude can read it. Not just tokens and values, but the context and intent behind them.",
-      image: "System docs Claude reads",
+      img: "/images/pilgrimz/os-ai-readable.png",
     },
     {
       title: "Infrastructure inside Claude and VS Code",
       body: "Skills, agents, and files wired into the tools the team already builds in.",
-      image: "Skills & agents in the repo",
+      img: "/images/pilgrimz/os-infrastructure.png",
     },
     {
       title: "Trained on their craft, not generic data",
       body: "The OS carries Pilgrimz's own craft rules, so output looks like Pilgrimz, not like generic UI.",
-      image: "Craft rules in the context library",
+      img: "/images/pilgrimz/os-craft.png",
     },
     {
       title: "Evaluation loops",
       body: "Quality checks built in, so the team can trust what ships without manual policing.",
-      image: "An eval run on real output",
+      img: "/images/pilgrimz/os-evals.png",
     },
   ];
   const kit = [
@@ -1582,7 +1582,10 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 + i * 0.1, ease: "easeOut" }}
             >
-              <Placeholder dark variant="photo" label={c.image} />
+              <div className="overflow-hidden rounded-xl" style={{ aspectRatio: "4 / 3" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.img} alt={c.title} className="h-full w-full object-cover" />
+              </div>
               <div className="mt-4 font-body text-[15px] font-bold text-white">{c.title}</div>
               <p className="mt-1 text-[13px] leading-relaxed text-white/55">{c.body}</p>
             </motion.div>
