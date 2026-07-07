@@ -687,14 +687,21 @@ function DemoCard({
 }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-[#EBE5D9] bg-white">
-      <div
-        className="flex min-h-[180px] flex-1 items-center justify-center p-6"
-        style={{
-          background:
-            "repeating-linear-gradient(0deg, transparent, transparent 31px, #FAF7F2 31px, #FAF7F2 32px), repeating-linear-gradient(90deg, transparent, transparent 31px, #FAF7F2 31px, #FAF7F2 32px)",
-        }}
-      >
-        {children}
+      <div className="relative flex min-h-[180px] flex-1 items-center justify-center p-6">
+        {/* Grid paper, fading out toward the edges */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "repeating-linear-gradient(0deg, transparent, transparent 31px, #F7F3EC 31px, #F7F3EC 32px), repeating-linear-gradient(90deg, transparent, transparent 31px, #F7F3EC 31px, #F7F3EC 32px)",
+            maskImage:
+              "radial-gradient(ellipse 70% 70% at 50% 50%, black 25%, transparent 95%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 70% at 50% 50%, black 25%, transparent 95%)",
+          }}
+        />
+        <div className="relative flex w-full items-center justify-center">{children}</div>
       </div>
       <div className="border-t border-[#F0EDE8] px-5 py-3.5">
         <div className="text-[13px] font-bold text-brand-ink">{title}</div>
