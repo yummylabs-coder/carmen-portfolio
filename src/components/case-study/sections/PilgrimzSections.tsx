@@ -320,23 +320,34 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const cards = [
     {
-      title: "Custom Skills",
-      body: "Skills that teach Claude the system, so it reaches for the right tokens, components, and patterns by default.",
+      title: "AI-readable from day one",
+      body: "Created so Claude can read it. Not just tokens and values, but the context and intent behind them.",
     },
     {
-      title: "Dedicated agents",
-      body: "Purpose-built agents for the design-to-build loop, so the team gets focused, on-system output instead of generic UI.",
+      title: "Infrastructure inside Claude and VS Code",
+      body: "Skills, agents, and files wired into the tools the team already builds in.",
     },
     {
-      title: "System as context",
-      body: "The design system travels with the work as context, so intent and accessibility come along for the ride.",
+      title: "Trained on their craft, not generic data",
+      body: "The OS carries Pilgrimz's own craft rules, so output looks like Pilgrimz, not like generic UI.",
     },
+    {
+      title: "Evaluation loops",
+      body: "Quality checks built in, so the team can trust what ships without manual policing.",
+    },
+  ];
+  const kit = [
+    { name: "Design OS playbook", note: "every workflow, documented" },
+    { name: "Context library", note: "craft rules, ready to use" },
+    { name: "Eval suite", note: "quality checks built in" },
+    { name: "Claude infrastructure", note: "skills, agents, files" },
+    { name: "Live team workshop", note: "everyone onboarded" },
   ];
   return (
     <div ref={ref} className="mt-8">
       <ShowcasePanel glow={accentColor}>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center">
-          {/* Left: the story + cards */}
+          {/* Left: the story + what we built */}
           <div className="flex-1">
             <span
               className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em]"
@@ -345,14 +356,15 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
               The differentiator
             </span>
             <h3 className="mt-3 font-brand text-[22px] font-bold leading-tight text-white">
-              The infrastructure inside Claude
+              The Claude Design OS
             </h3>
             <p className="mt-2 max-w-[520px] text-[14px] leading-relaxed text-white/65">
-              I did not stop at tokens. I set Claude up to build with the system. The concrete
-              promise to the founders: Jesús can ask Claude to build and test a feature and get
-              something on-system in about an hour.
+              I did not stop at tokens. I built Pilgrimz an operating system for designing with
+              Claude, so great output is the default, not luck. The concrete promise to the
+              founders: ask Claude to build and test a feature and get something on-system in about
+              an hour.
             </p>
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {cards.map((c, i) => (
                 <motion.div
                   key={c.title}
@@ -368,34 +380,53 @@ function ClaudeInfraBlock({ accentColor }: { accentColor: string }) {
             </div>
           </div>
 
-          {/* Right: foundation → Claude → on-system output */}
-          <div className="flex w-full flex-col items-center gap-3 lg:w-[260px]">
-            <span className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2 text-center text-[12px] font-medium text-white/70">
-              Design system + Skills + agents
-            </span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7FD4D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <polyline points="19 12 12 19 5 12" />
-            </svg>
-            <span
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-semibold text-white"
-              style={{ backgroundColor: accentColor }}
+          {/* Right: the handoff kit, the artifact the team keeps */}
+          <div className="w-full lg:w-[300px]">
+            <motion.div
+              className="rounded-2xl border border-white/15 bg-white/[0.08] p-5 backdrop-blur-md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
             >
-              Claude builds it
-            </span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7FD4D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <polyline points="19 12 12 19 5 12" />
-            </svg>
-            <div className="relative w-full">
-              <Placeholder dark variant="phone" label="On-system screen" />
-              <span
-                className="absolute -right-1 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold"
-                style={{ backgroundColor: AMBER, color: "#3A2606" }}
-              >
-                ~1 hr
-              </span>
-            </div>
+              <div className="flex items-center justify-between">
+                <span className="font-brand text-[16px] font-bold text-white">Handoff kit</span>
+                <span
+                  className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.05em]"
+                  style={{ backgroundColor: `${accentColor}33`, color: "#9FDDE0" }}
+                >
+                  Yours to run
+                </span>
+              </div>
+              <div className="mt-4 flex flex-col divide-y divide-white/10">
+                {kit.map((item, i) => (
+                  <motion.div
+                    key={item.name}
+                    className="flex items-center gap-2.5 py-2.5"
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 10 }}
+                    transition={{ duration: 0.4, delay: 0.4 + i * 0.08, ease: "easeOut" }}
+                  >
+                    <span
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                      style={{ backgroundColor: accentColor }}
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-[13px] font-semibold leading-tight text-white">
+                        {item.name}
+                      </div>
+                      <div className="text-[11px] text-white/45">{item.note}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] leading-relaxed text-white/50">
+                The whole team, not just designers, left able to run the OS themselves.
+              </p>
+            </motion.div>
           </div>
         </div>
       </ShowcasePanel>
@@ -409,8 +440,8 @@ function Phase1({ accentColor }: { accentColor: string }) {
       <PhaseHeader
         num="01"
         kicker="The AI-enabled foundation"
-        title="A foundation strong enough for AI to build on"
-        intro="Pilgrimz wanted gamification, social, and better discovery next. None of that holds without a consistent base, so phase one was a design system. The twist: I built it to be read by AI, so a tiny team could design and ship on a strong foundation, with Claude building on top of it."
+        title="From AI design debt to a foundation Claude can build on"
+        intro="Pilgrimz was designing straight in Claude with a few guidelines, and every screen added debt. Phase one built the missing foundation, and built it to be read by AI, so a tiny team gets great, on-system output from the first pass instead of racking up cleanup rounds."
         accentColor={accentColor}
       />
       <FoundationBlock />
@@ -586,7 +617,7 @@ function Phase2({ accentColor }: { accentColor: string }) {
         num="02"
         kicker="The design work"
         title="Core flows, restructured around trust and the business"
-        intro="The redesign was downstream of the system. Because the base existed, and Claude could build on it, core screens were reworked quickly and stayed consistent. Every choice served trust, retention, and the business, not taste."
+        intro="The redesign was downstream of the OS. Because the base existed, and Claude could build on it, core screens were reworked quickly and stayed consistent. Every choice served trust, retention, and the business, not taste."
         accentColor={accentColor}
       />
       <MapShowcase accentColor={accentColor} />
@@ -755,7 +786,7 @@ export function PilgrimzSections({ accentColor }: { accentColor: string }) {
       <Phase1 accentColor={accentColor} />
       <BrandedDivider
         accentColor={accentColor}
-        text="With that foundation in place, and Claude building on it, the team could move fast and stay consistent. That is what made the redesign possible."
+        text="With the debt paid down and the OS in place, the work shifted from cleanup to real product strategy."
       />
       <Phase2 accentColor={accentColor} />
       <BrandedDivider
