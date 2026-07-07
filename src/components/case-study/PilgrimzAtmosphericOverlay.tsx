@@ -2,8 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 
-const AMBER = "#E89B24";
-
 /*
  * Floating Pilgrimz components over the atmospheric image.
  * Card 1: the real mini audio player exported from the design system.
@@ -36,9 +34,9 @@ export function PilgrimzAtmosphericOverlay() {
         </motion.div>
       </motion.div>
 
-      {/* Tour card — top right, hidden on small screens */}
+      {/* Tour card — top right, hidden on small screens. Matches the real Pilgrimz tour card. */}
       <motion.div
-        className="absolute right-[4%] top-[12%] hidden w-[240px] sm:block"
+        className="absolute right-[4%] top-[10%] hidden w-[264px] sm:block"
         initial={reduce ? false : { opacity: 0, y: -30, rotate: 3 }}
         whileInView={{ opacity: 1, y: 0, rotate: 2.5 }}
         viewport={{ once: true, margin: "-80px" }}
@@ -47,32 +45,60 @@ export function PilgrimzAtmosphericOverlay() {
         <motion.div
           animate={reduce ? undefined : { y: [5, -5, 5] }}
           transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
-          className="overflow-hidden rounded-2xl bg-white/95 shadow-2xl backdrop-blur-sm"
+          className="overflow-hidden rounded-3xl bg-[#FFFDFB] shadow-2xl"
         >
-          {/* Image area — swap for a real tour photo later */}
+          {/* Image area — swap for a real covered-passages photo later */}
           <div
-            className="relative flex h-[120px] items-end justify-between p-3"
+            className="relative h-[136px]"
             style={{
               background:
                 "linear-gradient(140deg, rgba(15,136,143,0.5) 0%, rgba(232,155,36,0.35) 100%), linear-gradient(#807D76, #52504A)",
             }}
           >
             <span
-              className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.05em] text-white"
-              style={{ backgroundColor: AMBER }}
+              className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold"
+              style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
             >
-              Featured
+              Hidden gem
             </span>
-            <span className="rounded-full bg-black/35 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
-              12 stops
+            <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#807D76" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                <polyline points="16 6 12 2 8 6" />
+                <line x1="12" y1="2" x2="12" y2="15" />
+              </svg>
             </span>
           </div>
-          <div className="p-3.5">
-            <div className="font-brand text-[14px] font-bold leading-snug text-[#1C1B19]">
-              Roman and Moorish Malaga
+          <div className="p-4">
+            <div className="font-brand text-[16px] font-bold leading-snug text-[#1C1B19]">
+              The covered passages of Paris
             </div>
-            <div className="mt-1 text-[11px] leading-relaxed text-[#807D76]">
-              Walk through 2,000 years of history, from the Roman theatre to the Alcazaba.
+            <div className="mt-0.5 text-[12px] font-semibold text-[#807D76]">
+              Tour · 5 stops · 40 min
+            </div>
+            <p className="mt-2 text-[12px] leading-relaxed text-[#52504A]">
+              Slip through the glass-roofed arcades of the 1800s, from Passage des Panoramas to
+              Galerie Vivienne.
+            </p>
+            <div className="mt-3 flex items-center gap-2.5 border-t border-[#F0EDE8] pt-3">
+              <div className="flex">
+                {[
+                  { initial: "C", bg: "#C2E5E7", color: "#0A5C61" },
+                  { initial: "J", bg: "#FDCFCC", color: "#9B2B25" },
+                  { initial: "M", bg: "#FDEBCC", color: "#8A5B10" },
+                ].map((a, i) => (
+                  <span
+                    key={a.initial}
+                    className={`flex h-6 w-6 items-center justify-center rounded-full border-2 border-[#FFFDFB] text-[10px] font-bold ${
+                      i > 0 ? "-ml-1.5" : ""
+                    }`}
+                    style={{ backgroundColor: a.bg, color: a.color }}
+                  >
+                    {a.initial}
+                  </span>
+                ))}
+              </div>
+              <span className="text-[11px] text-[#807D76]">34 pilgrims walked this</span>
             </div>
           </div>
         </motion.div>
