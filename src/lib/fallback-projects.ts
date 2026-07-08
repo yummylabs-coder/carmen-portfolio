@@ -10,7 +10,7 @@ export const staticCoverMap: Record<string, string> = {
   "neotaste": "/covers/neotaste-cover.svg",
   "learn-xyz": "/covers/learn-xyz.png",
   "ausventure": "/covers/ausventure.svg",
-  "klasse": "/covers/klasse.png",
+  "klasse": "/covers/klasse.svg",
   "pilgrimz": "/covers/pilgrimz-cover.svg",
 };
 
@@ -99,7 +99,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Klasse",
     summary:
       "Building a modern design consultancy brand from the ground up — identity, site, and tooling.",
-    coverUrl: "/covers/klasse.png",
+    coverUrl: "/covers/klasse.svg",
     slug: "klasse",
     tags: ["Branding", "Web App"],
     isFeatured: false,
