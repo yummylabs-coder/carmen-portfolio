@@ -9,14 +9,11 @@ interface FeaturedWorkSectionProps {
 }
 
 export function FeaturedWorkSection({ caseStudies }: FeaturedWorkSectionProps) {
-  /* Defensive sort — Notion's sort is unstable when Order values tie,
-     so we re-sort by sortOrder with slug as tiebreaker to guarantee
-     deterministic card positions across ISR revalidations. */
-  const sorted = [...caseStudies].sort((a, b) => {
-    const orderDiff = (a.sortOrder ?? 999) - (b.sortOrder ?? 999);
-    if (orderDiff !== 0) return orderDiff;
-    return a.slug.localeCompare(b.slug);
-  });
+  /* Curated home view: exactly these three, in this order */
+  const FEATURED = ["learn-xyz", "pilgrimz", "water-day"];
+  const sorted = FEATURED.map((slug) =>
+    caseStudies.find((s) => s.slug === slug),
+  ).filter((s): s is CaseStudy => Boolean(s));
 
   return (
     <motion.section
