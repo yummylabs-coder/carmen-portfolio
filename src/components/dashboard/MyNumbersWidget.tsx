@@ -103,40 +103,37 @@ function ProductGrid({ inView }: { inView: boolean }) {
 
 /* ── Avatar cluster — overlapping circles for mentored designers ── */
 
-function AvatarCluster() {
-  const visible = 8;
-  const colors = [
-    "#7C5CFF", "#9B7FFF", "#B5A0FF", "#A68EFF",
-    "#8B6FFF", "#C4B5FF", "#6B4EFF", "#DDD5FF",
-  ];
+function AvatarCluster({ inView }: { inView: boolean }) {
+  const reduce = useReducedMotion() ?? false;
+  const mentees = Array.from({ length: 6 }, (_, i) => `/images/home/mentees/mentee-${i + 1}.jpeg`);
 
   return (
     <div className="mt-3 flex items-center">
       <div className="flex -space-x-[6px]">
-        {colors.slice(0, visible).map((color, i) => (
-          <motion.div
-            key={i}
+        {mentees.map((src, i) => (
+          <motion.img
+            key={src}
+            src={src}
+            alt="Mentored designer"
             initial={{ scale: 0, x: -10 }}
-            animate={{ scale: 1, x: 0 }}
-            transition={{ delay: 0.8 + i * 0.05, type: "spring", stiffness: 400, damping: 20 }}
-            className="relative flex h-[22px] w-[22px] items-center justify-center rounded-full border-[1.5px] border-white"
-            style={{ backgroundColor: color, zIndex: visible - i }}
-          >
-            {/* Tiny person silhouette */}
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="white" opacity="0.6">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-            </svg>
-          </motion.div>
+            animate={inView ? { scale: 1, x: 0 } : { scale: 0, x: -10 }}
+            transition={
+              reduce
+                ? { duration: 0 }
+                : { delay: 0.3 + i * 0.07, type: "spring", stiffness: 400, damping: 20 }
+            }
+            className="relative h-[22px] w-[22px] rounded-full border-[1.5px] border-white object-cover"
+            style={{ zIndex: mentees.length - i }}
+          />
         ))}
       </div>
       <motion.span
         initial={{ opacity: 0, x: -5 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.3 }}
+        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -5 }}
+        transition={reduce ? { duration: 0 } : { delay: 0.85 }}
         className="ml-2 text-12 font-medium text-neutral-600"
       >
-        +92 more
+        +94 more
       </motion.span>
     </div>
   );
@@ -276,7 +273,7 @@ export function MyNumbersWidget() {
               <p className="mt-0.5 text-12 text-neutral-600">
                 Through Yummy Labs
               </p>
-              <AvatarCluster />
+              <AvatarCluster inView={isInView} />
             </div>
           </motion.div>
         </div>
