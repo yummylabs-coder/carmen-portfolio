@@ -206,14 +206,12 @@ function PhaseHeader({
   kicker,
   title,
   intro,
-  accentColor,
   badge,
 }: {
   num: string;
   kicker: string;
   title: string;
   intro: string;
-  accentColor: string;
   badge?: string;
 }) {
   return (
@@ -1660,7 +1658,6 @@ function Phase1({ accentColor }: { accentColor: string }) {
         kicker="The AI-enabled foundation"
         title="From AI design debt to a foundation Claude can build on"
         intro="Pilgrimz was designing straight in Claude with a few guidelines, and every screen added debt. Phase one built the missing foundation, and built it to be read by AI, so a tiny team gets great, on-system output from the first pass instead of racking up cleanup rounds."
-        accentColor={accentColor}
       />
       <FoundationBlock accentColor={accentColor} />
       <ClaudeInfraBlock accentColor={accentColor} />
@@ -1841,7 +1838,6 @@ function Phase2({ accentColor }: { accentColor: string }) {
         kicker="The design work"
         title="Core flows, restructured around trust and the business"
         intro="The redesign was downstream of the OS. Because the base existed, and Claude could build on it, core screens were reworked quickly and stayed consistent. Every choice served trust, retention, and the business, not taste."
-        accentColor={accentColor}
       />
       <MapShowcase accentColor={accentColor} />
       <HubStickyShowcase accentColor={accentColor} />
@@ -1853,7 +1849,7 @@ function Phase2({ accentColor }: { accentColor: string }) {
 /* ════════════════════════════════════════
    Phase 3 — Social discovery (in progress)
    ════════════════════════════════════════ */
-function Phase3({ accentColor }: { accentColor: string }) {
+function Phase3() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const cards = [
@@ -1877,7 +1873,6 @@ function Phase3({ accentColor }: { accentColor: string }) {
         kicker="Social discovery"
         title="A social layer built around places, not strangers"
         intro="This is the chapter underway now. The old feed showed strangers' activity with no reason to care, so social is being reframed around destinations. The useful unit is many travelers found this place great for solo travelers, not this user took a Tuesday walk."
-        accentColor={accentColor}
         badge="In progress"
       />
       <div ref={ref} className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -2018,7 +2013,7 @@ export function PilgrimzSections({ accentColor }: { accentColor: string }) {
         alt="Istanbul skyline with mosque domes and minarets"
         text="Consistent, trusted screens are the groundwork for the part the founders most want next."
       />
-      <Phase3 accentColor={accentColor} />
+      <Phase3 />
       <OutcomesOnPhoto accentColor={accentColor} />
     </div>
   );
