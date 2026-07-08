@@ -1992,10 +1992,19 @@ function HubStickyShowcase({ accentColor }: { accentColor: string }) {
 }
 
 /** Breadth — floating phones in a wave on a gradient backdrop */
+const BREADTH_SCREENS = [
+  { img: "/images/pilgrimz/breadth-map.png", label: "Tour discovery" },
+  { img: "/images/pilgrimz/breadth-tour.png", label: "Tour page" },
+  { img: "/images/pilgrimz/breadth-poi.png", label: "POI page" },
+  { img: "/images/pilgrimz/breadth-audio-expanded.png", label: "Audio guide picker" },
+  { img: "/images/pilgrimz/breadth-gallery.png", label: "Player, gallery mode" },
+  { img: "/images/pilgrimz/breadth-transcript.png", label: "Player, read mode" },
+];
+
 function FloatingBreadth({ accentColor }: { accentColor: string }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
-  const labels = ["Tours", "Discovery", "Map", "Hub", "Audio guide", "Profile"];
+  const reduceMotion = useReducedMotion();
   return (
     <div ref={ref} className="mt-16">
       <SectionReveal>
@@ -2005,23 +2014,48 @@ function FloatingBreadth({ accentColor }: { accentColor: string }) {
         <h3 className="mt-1.5 font-brand text-[20px] font-bold text-brand-ink">
           Consistent from the map to the audio guide
         </h3>
+        <p className="mt-2 max-w-[560px] text-[14px] leading-relaxed text-neutral-600">
+          The same journey, screen after screen: browse tours in an area, open one, walk its stops,
+          and let each point of interest talk to you. Every screen is built from the system, so it
+          all reads as one product.
+        </p>
       </SectionReveal>
       <div className="mt-6">
         <WarmPanel>
-          <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-            {labels.map((label, i) => (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:gap-8">
+            {BREADTH_SCREENS.map((s, i) => (
               <motion.div
-                key={label}
+                key={s.label}
                 initial={{ opacity: 0, y: 24 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
                 transition={{ duration: 0.5, delay: 0.1 + i * 0.08, ease: "easeOut" }}
               >
                 <motion.div
-                  animate={{ y: i % 2 === 0 ? [-5, 5, -5] : [5, -5, 5] }}
+                  animate={
+                    reduceMotion ? undefined : { y: i % 2 === 0 ? [-5, 5, -5] : [5, -5, 5] }
+                  }
                   transition={{ duration: 5 + (i % 3), repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <Placeholder variant="phone" label={label} />
+                  <div
+                    className="overflow-hidden rounded-[20px] border bg-white"
+                    style={{
+                      borderColor: "#E3DCD0",
+                      boxShadow: "0 0 1px rgba(28,27,25,0.06), 0 10px 30px rgba(28,27,25,0.10)",
+                      aspectRatio: "393 / 820",
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={s.img}
+                      alt={`Pilgrimz ${s.label} screen`}
+                      className="h-full w-full object-cover object-top"
+                      loading="lazy"
+                    />
+                  </div>
                 </motion.div>
+                <p className="mt-3 text-center text-[12px] font-semibold uppercase tracking-[0.05em] text-neutral-500">
+                  {s.label}
+                </p>
               </motion.div>
             ))}
           </div>
