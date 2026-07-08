@@ -7,10 +7,11 @@ import type { CaseStudy } from "./types";
 export const staticCoverMap: Record<string, string> = {
   "water-day": "/covers/water-day.png",
   "pandore": "/covers/pandore.png",
-  "neotaste": "/covers/neotaste.svg",
+  "neotaste": "/covers/neotaste-cover.svg",
   "learn-xyz": "/covers/learn-xyz.png",
   "ausventure": "/covers/ausventure.svg",
   "klasse": "/covers/klasse.png",
+  "pilgrimz": "/covers/pilgrimz-cover.svg",
 };
 
 /** Get the static cover path for a slug, or a placeholder if unknown. */
