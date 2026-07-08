@@ -275,7 +275,7 @@ function PhotoBridge({ src, alt, text }: { src: string; alt: string; text: strin
 /* ════════════════════════════════════════
    Phase 1 — The AI-enabled foundation
    ════════════════════════════════════════ */
-/* A token as Claude reads it: value, description, references, use and avoid */
+/* A token as Claude reads it: the real machine-readable format */
 function TokenDocCard() {
   return (
     <div
@@ -287,86 +287,119 @@ function TokenDocCard() {
         <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2 font-mono text-[11px] text-white/40">
-          color-primary.md — what Claude reads
+          tokens.js — what Claude reads
         </span>
       </div>
-      <div className="space-y-2 p-4 font-mono text-[12px] leading-relaxed">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span style={{ color: CORAL }}>color/primary/500</span>
-          <span className="inline-flex items-center gap-1.5 text-white/60">
-            <span className="h-3 w-3 rounded-sm" style={{ backgroundColor: CORAL }} />
-            #E84C44
-          </span>
-          <span className="text-white/30">→</span>
-          <span className="text-white/60">theme.colors.primary</span>
+      <div className="overflow-x-auto whitespace-pre p-4 font-mono text-[11px] leading-[1.75] text-white/75">
+        {`"primary": {
+  "500": {`}
+        <div className="flex items-center gap-1.5">
+          {`    "$value": "#E84C44",`}
+          <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: CORAL }} />
         </div>
-        <div>
-          <span className="text-white/35">description:</span>{" "}
-          <span className="text-white/75">
-            reserved for primary actions. play, book, save. signals action, never alarm.
-          </span>
-        </div>
-        <div>
-          <span className="text-white/35">pairs-with:</span>{" "}
-          <span className="text-white/75">text/inverse (AA contrast, checked)</span>
-        </div>
-        <div>
-          <span className="text-[#53D68A]">use:</span>{" "}
-          <span className="text-white/75">play button, main CTA, active booking</span>
-        </div>
-        <div>
-          <span className="text-[#FF7B72]">avoid:</span>{" "}
-          <span className="text-white/75">backgrounds, decorative fills, error states</span>
-        </div>
-        <div className="pt-1 text-white/40">
-          # error stays #DC2626. an action never looks like a failure.
-        </div>
+        {`    "$description": "Primary action. Play, book,
+      save. Signals action, never alarm.",
+    "$extensions": {
+      "figma-console-mcp": {
+        "collectionId": "VariableCollectionId:1:12",
+        "lastSyncedAt": "2026-07-02T14:46:16Z",
+        "lastSyncedValue": {
+          "Light": { "literal": "#E84C44" },
+          "Dark": { "literal": "#F26B62" }
+        }
+      },
+      "usage": {
+        "use": ["playButton", "primaryCta"],
+        "avoid": ["backgrounds", "errorStates"],
+        "note": "error/500 stays #DC2626"
+      }
+    }
+  }
+}`}
       </div>
     </div>
   );
 }
 
-/* Mini mock screens: the same layout on-system vs off-system */
+/* Mini mock screens: the same tour screen on-system vs off-system */
 function MiniMock({ good }: { good?: boolean }) {
-  const chip = (bg: string) => (
-    <span className="h-2.5 w-8 rounded-full" style={{ backgroundColor: bg }} />
-  );
   return (
-    <div className="flex-1 rounded-xl border border-sand-200 bg-[#FAF9F7] p-3">
-      <div className="flex flex-col gap-2">
-        {/* Header bar */}
-        <span
-          className="h-2.5 w-1/2 rounded-full"
-          style={{ backgroundColor: good ? "#33312D" : CORAL }}
-        />
-        {/* Image area */}
-        <span
-          className="h-14 w-full rounded-lg"
-          style={{
-            background: good
-              ? "linear-gradient(135deg, rgba(15,136,143,0.25), rgba(232,155,36,0.2))"
-              : "linear-gradient(135deg, rgba(232,76,68,0.4), rgba(220,38,38,0.3))",
-          }}
-        />
-        {/* Tag chips */}
-        <div className="flex gap-1.5">
-          {good ? (
-            <>
-              {chip("#C2E5E7")}
-              {chip("#FDEBCC")}
-            </>
-          ) : (
-            <>
-              {chip("#FDCFCC")}
-              {chip("#E84C44")}
-            </>
-          )}
+    <div className="flex flex-1 flex-col">
+      <div className="overflow-hidden rounded-xl border border-sand-200 bg-white">
+        {/* Nav bar */}
+        <div
+          className="flex items-center gap-1 px-2.5 py-1.5"
+          style={{ backgroundColor: good ? "#FAF9F7" : CORAL }}
+        >
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={good ? "#33312D" : "#FFFFFF"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          <span
+            className="text-[8px] font-semibold"
+            style={{ color: good ? "#33312D" : "#FFFFFF" }}
+          >
+            Tours
+          </span>
         </div>
-        {/* CTA */}
-        <span
-          className="h-6 w-full rounded-md"
-          style={{ backgroundColor: good ? CORAL : "#DC2626" }}
-        />
+        <div className="p-2.5">
+          {/* Image with chip */}
+          <div className="relative h-14 overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/pilgrimz/galerie-vivienne.jpg"
+              alt=""
+              className="h-full w-full object-cover"
+            />
+            {!good && (
+              <div className="absolute inset-0" style={{ backgroundColor: "rgba(232,76,68,0.3)" }} />
+            )}
+            <span
+              className="absolute left-1.5 top-1.5 rounded-full px-1.5 py-[2px] text-[6.5px] font-semibold"
+              style={
+                good
+                  ? { backgroundColor: "#FDEBCC", color: "#8A5B10" }
+                  : { backgroundColor: "#DC2626", color: "#FFFFFF" }
+              }
+            >
+              Hidden gem
+            </span>
+          </div>
+          {/* Title + meta */}
+          <div className="mt-1.5 text-[8.5px] font-bold leading-tight text-[#1C1B19]">
+            The covered passages
+          </div>
+          <div className="text-[7px] text-[#807D76]">Tour · 5 stops · 40 min</div>
+          {/* Tag chips */}
+          <div className="mt-1.5 flex gap-1">
+            <span
+              className="rounded-full px-1.5 py-[2px] text-[6.5px] font-semibold"
+              style={
+                good
+                  ? { backgroundColor: "#C2E5E7", color: "#0A5C61" }
+                  : { backgroundColor: "#FDCFCC", color: "#9B2B25" }
+              }
+            >
+              Selected
+            </span>
+            <span
+              className="rounded-full px-1.5 py-[2px] text-[6.5px] font-semibold"
+              style={
+                good
+                  ? { backgroundColor: "#FDEBCC", color: "#8A5B10" }
+                  : { backgroundColor: "#E84C44", color: "#FFFFFF" }
+              }
+            >
+              Featured
+            </span>
+          </div>
+          {/* CTA */}
+          <div
+            className="mt-1.5 rounded-md py-1 text-center text-[7.5px] font-bold text-white"
+            style={{ backgroundColor: good ? CORAL : "#DC2626" }}
+          >
+            Book this tour
+          </div>
+        </div>
       </div>
       <div className="mt-2.5 flex items-center gap-1.5">
         <span
