@@ -325,36 +325,36 @@ function TokenDocCard() {
 function MiniMock({ good }: { good?: boolean }) {
   return (
     <div className="flex flex-1 flex-col">
-      <div className="overflow-hidden rounded-xl border border-sand-200 bg-white">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-sand-200 bg-white">
         {/* Nav bar */}
         <div
-          className="flex items-center gap-1 px-2.5 py-1.5"
+          className="flex items-center gap-1.5 px-3 py-2"
           style={{ backgroundColor: good ? "#FAF9F7" : CORAL }}
         >
-          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={good ? "#33312D" : "#FFFFFF"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke={good ? "#33312D" : "#FFFFFF"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
           <span
-            className="text-[8px] font-semibold"
+            className="text-[9.5px] font-semibold"
             style={{ color: good ? "#33312D" : "#FFFFFF" }}
           >
             Tours
           </span>
         </div>
-        <div className="p-2.5">
-          {/* Image with chip */}
-          <div className="relative h-14 overflow-hidden rounded-lg">
+        <div className="flex flex-1 flex-col p-3">
+          {/* Image with chip — grows into available height */}
+          <div className="relative min-h-[96px] flex-1 overflow-hidden rounded-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/pilgrimz/galerie-vivienne.jpg"
               alt=""
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
             {!good && (
               <div className="absolute inset-0" style={{ backgroundColor: "rgba(232,76,68,0.3)" }} />
             )}
             <span
-              className="absolute left-1.5 top-1.5 rounded-full px-1.5 py-[2px] text-[6.5px] font-semibold"
+              className="absolute left-2 top-2 rounded-full px-2 py-[3px] text-[8px] font-semibold"
               style={
                 good
                   ? { backgroundColor: "#FDEBCC", color: "#8A5B10" }
@@ -365,14 +365,14 @@ function MiniMock({ good }: { good?: boolean }) {
             </span>
           </div>
           {/* Title + meta */}
-          <div className="mt-1.5 text-[8.5px] font-bold leading-tight text-[#1C1B19]">
+          <div className="mt-2 text-[10.5px] font-bold leading-tight text-[#1C1B19]">
             The covered passages
           </div>
-          <div className="text-[7px] text-[#807D76]">Tour · 5 stops · 40 min</div>
+          <div className="mt-0.5 text-[8.5px] text-[#807D76]">Tour · 5 stops · 40 min</div>
           {/* Tag chips */}
-          <div className="mt-1.5 flex gap-1">
+          <div className="mt-2 flex gap-1.5">
             <span
-              className="rounded-full px-1.5 py-[2px] text-[6.5px] font-semibold"
+              className="rounded-full px-2 py-[3px] text-[8px] font-semibold"
               style={
                 good
                   ? { backgroundColor: "#C2E5E7", color: "#0A5C61" }
@@ -382,7 +382,7 @@ function MiniMock({ good }: { good?: boolean }) {
               Selected
             </span>
             <span
-              className="rounded-full px-1.5 py-[2px] text-[6.5px] font-semibold"
+              className="rounded-full px-2 py-[3px] text-[8px] font-semibold"
               style={
                 good
                   ? { backgroundColor: "#FDEBCC", color: "#8A5B10" }
@@ -394,7 +394,7 @@ function MiniMock({ good }: { good?: boolean }) {
           </div>
           {/* CTA */}
           <div
-            className="mt-1.5 rounded-md py-1 text-center text-[7.5px] font-bold text-white"
+            className="mt-2 rounded-lg py-1.5 text-center text-[9.5px] font-bold text-white"
             style={{ backgroundColor: good ? CORAL : "#DC2626" }}
           >
             Book this tour
@@ -427,18 +427,18 @@ function MiniMock({ good }: { good?: boolean }) {
 
 function GoodVsBad() {
   return (
-    <div className="rounded-2xl border border-sand-300 bg-white p-5">
+    <div className="flex h-full flex-col rounded-2xl border border-sand-300 bg-white p-5">
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
         <span className="font-brand text-[16px] font-bold text-brand-ink">
           Good vs bad, encoded
         </span>
         <span className="text-[12px] text-neutral-500">usage rules Claude can check</span>
       </div>
-      <div className="flex gap-3">
+      <div className="flex flex-1 gap-4">
         <MiniMock good />
         <MiniMock />
       </div>
-      <p className="mt-3 text-[12px] leading-relaxed text-neutral-500">
+      <p className="mt-4 text-[12px] leading-relaxed text-neutral-500">
         Every token ships with do and don&rsquo;t examples, references, and the reasoning behind
         them, so output follows intent, not vibes.
       </p>
@@ -1537,9 +1537,24 @@ function FoundationBlock({ accentColor }: { accentColor: string }) {
       />
       <div className="mt-8">
         <WarmPanel>
-          <div className="mx-auto grid w-full max-w-[520px] grid-cols-2 gap-6">
-            <Placeholder variant="phone" label="Screen — before tokens" />
-            <Placeholder variant="phone" label="Screen — on system" />
+          <div className="mx-auto grid w-full max-w-[560px] grid-cols-2 gap-6 lg:gap-10">
+            {[
+              { src: "/images/pilgrimz/system-before.png", label: "Before tokens" },
+              { src: "/images/pilgrimz/system-after.svg", label: "On system" },
+            ].map((s) => (
+              <figure key={s.label} className="flex flex-col items-center gap-3">
+                <div
+                  className="w-full overflow-hidden rounded-[24px] border border-[#E3DCD0] shadow-[0_12px_32px_rgba(28,27,25,0.10)]"
+                  style={{ aspectRatio: "393 / 852" }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={s.src} alt={s.label} className="h-full w-full object-cover" />
+                </div>
+                <figcaption className="text-[11px] font-semibold uppercase tracking-[0.06em] text-neutral-500">
+                  {s.label}
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </WarmPanel>
       </div>
