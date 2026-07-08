@@ -1540,7 +1540,7 @@ function FoundationBlock({ accentColor }: { accentColor: string }) {
           <div className="mx-auto grid w-full max-w-[560px] grid-cols-2 gap-6 lg:gap-10">
             {[
               { src: "/images/pilgrimz/system-before.png", label: "Before tokens" },
-              { src: "/images/pilgrimz/system-after.svg", label: "On system" },
+              { src: "/images/pilgrimz/system-after.png", label: "On system" },
             ].map((s) => (
               <figure key={s.label} className="flex flex-col items-center gap-3">
                 <div
