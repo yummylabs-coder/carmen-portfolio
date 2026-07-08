@@ -21,6 +21,7 @@ import { NeotasteAtmosphericOverlay } from "@/components/case-study/NeotasteAtmo
 import { WaterdayAtmosphericOverlay } from "@/components/case-study/WaterdayAtmosphericOverlay";
 import { AusventureAtmosphericOverlay } from "@/components/case-study/AusventureAtmosphericOverlay";
 import { PilgrimzAtmosphericOverlay } from "@/components/case-study/PilgrimzAtmosphericOverlay";
+import { PilgrimzTangledLine } from "@/components/case-study/PilgrimzTangledLine";
 
 /* ─── Immersive case studies (full-screen, no sidebar) ─── */
 import { LearnImmersive } from "@/components/immersive/learn-xyz/LearnImmersive";
@@ -234,7 +235,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
         />
 
         {/* The Challenge */}
-        <Challenge text={study.challenge} bg={config.brand.challengeBg} />
+        <Challenge
+          text={study.challenge}
+          bg={config.brand.challengeBg}
+          visual={slug === "pilgrimz" ? <PilgrimzTangledLine /> : undefined}
+        />
 
         {/* Our Role — skip if custom sections handle it */}
         {!skipSharedSections[slug]?.role && (

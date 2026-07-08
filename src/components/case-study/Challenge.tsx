@@ -6,9 +6,11 @@ interface ChallengeProps {
   text: string;
   /** Optional brand background (CSS value). Defaults to the portfolio maroon. */
   bg?: string;
+  /** Optional visual element rendered between the heading and the body */
+  visual?: React.ReactNode;
 }
 
-export function Challenge({ text, bg }: ChallengeProps) {
+export function Challenge({ text, bg, visual }: ChallengeProps) {
   if (!text) return null;
 
   const paragraphs = text.split("\n").filter((p) => p.trim());
@@ -34,6 +36,9 @@ export function Challenge({ text, bg }: ChallengeProps) {
             {heading}
           </h2>
         )}
+
+        {/* Optional visual between heading and body */}
+        {visual && <div className="mt-6">{visual}</div>}
 
         {/* Body — remaining paragraphs */}
         {body.length > 0 && (
