@@ -225,7 +225,8 @@ function PhaseHeader({
         >
           {num}
         </span>
-        <SectionLabel label={kicker} accentColor={accentColor} />
+        {/* Neutral kicker pill — the coral number already carries the color */}
+        <SectionLabel label={kicker} accentColor="#807D76" />
         {badge && (
           <span
             className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.05em]"
@@ -420,15 +421,18 @@ function SubHead({
   title,
   body,
   accentColor,
+  first,
 }: {
   kicker: string;
   title: string;
   body?: string;
   accentColor: string;
+  /** First sub-section skips the divider line */
+  first?: boolean;
 }) {
   return (
     <SectionReveal>
-      <div className="mt-20">
+      <div className={first ? "mt-20" : "mt-16 border-t border-[#EEEBE8] pt-14"}>
         <span className="text-[11px] font-bold uppercase tracking-[0.05em]" style={{ color: accentColor }}>
           {kicker}
         </span>
@@ -1430,6 +1434,7 @@ function FoundationBlock({ accentColor }: { accentColor: string }) {
   return (
     <div>
       <SubHead
+        first
         accentColor={accentColor}
         kicker="Color"
         title="Color with psychology and accessibility applied"
