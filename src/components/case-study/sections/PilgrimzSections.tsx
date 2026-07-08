@@ -271,7 +271,7 @@ function TokenDocCard() {
         <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2 font-mono text-[11px] text-white/40">
-          tokens.js — what Claude reads
+          tokens.js: what Claude reads
         </span>
       </div>
       <div className="overflow-x-auto whitespace-pre p-4 font-mono text-[11px] leading-[1.75] text-white/75">
@@ -1448,7 +1448,7 @@ function CoreComponents() {
       </DemoCard>
       <div className="sm:col-span-2">
         <DemoCard
-          title="Cards — tour, POI, event, hub"
+          title="Cards: tour, POI, event, hub"
           tokens="surface · accent/100 · primary/500 · radius/2xl"
         >
           <CardsDemo />
@@ -2162,6 +2162,7 @@ function RatingDemo() {
 
 /** Friend invite vignette — the tour card as a live plan, not a dead link */
 function TypingDots() {
+  const reduce = useReducedMotion() ?? false;
   return (
     <div
       className="flex w-fit items-center gap-1 rounded-2xl rounded-bl-md px-3 py-2.5"
@@ -2171,7 +2172,7 @@ function TypingDots() {
         <motion.span
           key={i}
           className="h-1.5 w-1.5 rounded-full bg-neutral-400"
-          animate={{ y: [0, -3, 0] }}
+          animate={reduce ? undefined : { y: [0, -3, 0] }}
           transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
         />
       ))}
@@ -2425,7 +2426,7 @@ function Phase3() {
       />
 
       {/* Desktop composition — photo center, live vignettes floating beside it */}
-      <div className="relative mt-14 hidden min-h-[600px] md:block">
+      <div className="relative mt-14 hidden min-h-[600px] lg:block">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/pilgrimz/social-photo.png"
@@ -2456,7 +2457,7 @@ function Phase3() {
       </div>
 
       {/* Mobile — stacked, icons overlaid on the photo */}
-      <div className="mt-8 flex flex-col gap-5 md:hidden">
+      <div className="mt-8 flex flex-col gap-5 lg:hidden">
         <div className="relative">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
