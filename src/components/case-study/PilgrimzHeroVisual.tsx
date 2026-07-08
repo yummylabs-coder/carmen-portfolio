@@ -78,6 +78,64 @@ function PlayingGlow() {
   );
 }
 
+/* Small floating UI satellite — white card, pops in after the phone lands */
+function Satellite({
+  className = "",
+  delay,
+  floatDur,
+  reduce,
+  children,
+}: {
+  className?: string;
+  delay: number;
+  floatDur: number;
+  reduce: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      className={`absolute z-10 ${className}`}
+      initial={reduce ? false : { opacity: 0, scale: 0.8, y: 10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.5, delay, ease: smooth }}
+    >
+      <motion.div
+        className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2"
+        style={{
+          borderColor: "#E8E6E1",
+          boxShadow: "0 0 1px rgba(28,27,25,0.08), 0 12px 32px rgba(14,53,56,0.30)",
+        }}
+        animate={reduce ? undefined : { y: [0, -5, 0] }}
+        transition={{ duration: floatDur, repeat: Infinity, ease: "easeInOut", delay }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* Tiny equalizer — three bars breathing while the guide plays */
+function EqBars({ reduce }: { reduce: boolean }) {
+  return (
+    <span className="flex h-3.5 items-end gap-[2px]">
+      {[0.9, 0.55, 0.75].map((h, i) => (
+        <motion.span
+          key={i}
+          className="w-[3px] rounded-full"
+          style={{ backgroundColor: CORAL, height: `${h * 100}%` }}
+          animate={reduce ? undefined : { scaleY: [1, 0.4, 1] }}
+          transition={{
+            duration: 0.9,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.22,
+          }}
+        />
+      ))}
+    </span>
+  );
+}
+
 export function PilgrimzHeroVisual() {
   const reduce = useReducedMotion() ?? false;
 
@@ -89,6 +147,30 @@ export function PilgrimzHeroVisual() {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.8, ease: smooth }}
     >
+      {/* Background depth: soft bloom + faint topographic contours */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 45%, transparent 70%)",
+        }}
+      />
+      <motion.svg
+        viewBox="0 0 400 400"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[190%] w-[190%] -translate-x-1/2 -translate-y-1/2"
+        fill="none"
+        animate={reduce ? undefined : { rotate: 360 }}
+        transition={{ duration: 160, repeat: Infinity, ease: "linear" }}
+      >
+        {[
+          "M200 84c66 0 118 40 122 96s-34 118-104 126S82 274 74 210 110 84 200 84Z",
+          "M200 44c92 0 156 62 162 138s-52 158-146 168S46 300 38 210 84 44 200 44Z",
+          "M200 4c118 0 194 84 200 178s-70 198-186 210S10 326 2 214 50 4 200 4Z",
+        ].map((d, i) => (
+          <path key={i} d={d} stroke="white" strokeOpacity={0.06 - i * 0.015} strokeWidth="1.5" />
+        ))}
+      </motion.svg>
+
       {/* Gentle continuous float */}
       <motion.div
         className="relative h-full w-full"
@@ -118,6 +200,48 @@ export function PilgrimzHeroVisual() {
             </>
           )}
         </div>
+
+        {/* UI satellites — small real-product moments orbiting the screen */}
+        <Satellite className="-left-8 top-[10%] sm:-left-12" delay={0.9} floatDur={5.2} reduce={reduce}>
+          <span
+            className="flex h-6 w-6 items-center justify-center rounded-full"
+            style={{ backgroundColor: "#D9F0EC" }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+          </span>
+          <span className="whitespace-nowrap text-[12px] font-semibold text-[#1C1B19]">
+            Next stop · 200 m
+          </span>
+        </Satellite>
+
+        <Satellite className="-right-6 top-[58%] sm:-right-10" delay={1.15} floatDur={6.1} reduce={reduce}>
+          <EqBars reduce={reduce} />
+          <span className="whitespace-nowrap text-[12px] font-semibold text-[#1C1B19]">
+            Historic deep dive
+          </span>
+        </Satellite>
+
+        <Satellite className="-left-5 bottom-[8%] sm:-left-9" delay={1.4} floatDur={5.6} reduce={reduce}>
+          <span className="flex items-center">
+            {["/images/pilgrimz/avatar-1.png", "/images/pilgrimz/avatar-2.png", "/images/pilgrimz/avatar-3.png"].map(
+              (src, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={src}
+                  src={src}
+                  alt="Pilgrim avatar"
+                  className={`h-6 w-6 rounded-full border-2 border-white object-cover ${i > 0 ? "-ml-2" : ""}`}
+                />
+              ),
+            )}
+          </span>
+          <span className="whitespace-nowrap text-[12px] font-semibold text-[#1C1B19]">
+            on this tour
+          </span>
+        </Satellite>
       </motion.div>
     </motion.div>
   );
