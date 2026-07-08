@@ -50,10 +50,10 @@ const fallbackTopics: RadarTopic[] = [
   },
   {
     id: "5",
-    topic: "Calm Technology",
-    oneLiner: "I'm drawn to technology that whispers",
+    topic: "AI Design",
+    oneLiner: "I design with Claude on my team",
     expandedCopy:
-      "I gravitate toward products that don't scream for your attention. Subtle cues, ambient awareness, respectful silence. The most powerful technology is the kind you barely notice, until you need it.",
+      "AI isn't a vending machine for screens, it's a teammate you have to onboard. I teach it the system, the taste, the reasons behind decisions. Done right, it multiplies a designer instead of replacing one. That shift is the most fun I've had in years.",
     interest: 3,
     color: "#6EE7B7",
     order: 5,
