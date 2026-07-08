@@ -2536,10 +2536,9 @@ function OutcomesOnPhoto({ accentColor }: { accentColor: string }) {
   return (
     <section ref={ref} className="mx-auto w-full max-w-5xl">
       <div className="relative min-h-[520px] overflow-hidden rounded-3xl">
-        {/* Photo background — swap for a real destination photo later */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/pilgrimz/outcomes-bg-placeholder.png"
+          src="/images/pilgrimz/outcomes-bg.jpg"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
