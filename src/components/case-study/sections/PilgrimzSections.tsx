@@ -881,7 +881,7 @@ function ShareBtn() {
   );
 }
 
-function CardImg({ src, className = "h-[120px]" }: { src: string; className?: string }) {
+function CardImg({ src, className = "h-[180px]" }: { src: string; className?: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt="" className={`w-full object-cover ${className}`} />
@@ -892,7 +892,7 @@ function CardImg({ src, className = "h-[120px]" }: { src: string; className?: st
 function TourCardV() {
   return (
     <div
-      className="overflow-hidden rounded-2xl bg-white"
+      className="overflow-hidden rounded-2xl border border-[#E8E6E1] bg-white"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
       <div className="relative overflow-hidden rounded-2xl">
@@ -941,11 +941,11 @@ function TourCardV() {
   );
 }
 
-/* Rec (featured): stripped down, image + title + description */
-function RecCardV() {
+/* Point of interest: rating and community micro-feedback tags */
+function PoiCardV() {
   return (
     <div
-      className="overflow-hidden rounded-2xl bg-white"
+      className="overflow-hidden rounded-2xl border border-[#E8E6E1] bg-white"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
       <div className="relative overflow-hidden rounded-2xl">
@@ -954,11 +954,26 @@ function RecCardV() {
       </div>
       <div className="p-4">
         <div className="font-brand text-[15px] font-bold leading-snug text-[#1C1B19]">
-          Pont Alexandre III at dusk
+          Pont Alexandre III
+        </div>
+        <div className="mt-0.5 text-[11.5px] font-semibold text-[#807D76]">
+          Point of interest · Paris
         </div>
         <p className="mt-1.5 text-[12px] leading-relaxed text-[#52504A]">
-          Cross the Seine on the city&rsquo;s most ornate bridge just as the lamps come on.
+          Crowned lamps and gilded statues over the Seine, best at dusk.
         </p>
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#F0EDE8] pt-3">
+          <span className="flex items-center gap-1">
+            <PhStar size={13} fill="#FDEBCC" outline="#B27516" />
+            <span className="text-[12px] font-bold text-[#1C1B19]">4.5</span>
+          </span>
+          <span
+            className="rounded-full px-2 py-0.5 text-[11px] font-semibold"
+            style={{ backgroundColor: "#C2E5E7", color: "#0A5C61" }}
+          >
+            32 tagged family-friendly
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -968,7 +983,7 @@ function RecCardV() {
 function EventCardV() {
   return (
     <div
-      className="overflow-hidden rounded-2xl bg-white"
+      className="overflow-hidden rounded-2xl border border-[#E8E6E1] bg-white"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
       <div className="relative overflow-hidden rounded-2xl">
@@ -1007,11 +1022,11 @@ function EventCardV() {
 function HubCardV() {
   return (
     <div
-      className="overflow-hidden rounded-2xl bg-white p-3"
+      className="overflow-hidden rounded-2xl border border-[#E8E6E1] bg-white p-3"
       style={{ boxShadow: "0 0 1px rgba(28,27,25,0.04), 0 4px 20px rgba(28,27,25,0.05)" }}
     >
       <div className="relative">
-        <CardImg src="/images/pilgrimz/istanbul.jpg" className="h-[110px] rounded-2xl" />
+        <CardImg src="/images/pilgrimz/istanbul.jpg" className="h-[250px] rounded-2xl" />
         <span
           className="absolute -bottom-4 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-xl text-[8px] font-bold text-white shadow-md"
           style={{ backgroundColor: "#E8562E" }}
@@ -1056,12 +1071,12 @@ function HubCardV() {
   );
 }
 
-const CARD_VARIANTS = ["Tour", "Rec", "Event", "Hub"] as const;
+const CARD_VARIANTS = ["Tour", "POI", "Event", "Hub"] as const;
 
 function CardsDemo() {
   const [idx, setIdx] = useState(0);
   const go = (d: number) => setIdx((i) => (i + d + CARD_VARIANTS.length) % CARD_VARIANTS.length);
-  const cards = [<TourCardV key="t" />, <RecCardV key="r" />, <EventCardV key="e" />, <HubCardV key="h" />];
+  const cards = [<TourCardV key="t" />, <PoiCardV key="p" />, <EventCardV key="e" />, <HubCardV key="h" />];
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <div className="flex w-full items-center justify-center gap-4">
@@ -1148,6 +1163,22 @@ function MarkerIcon({ kind }: { kind: string }) {
     <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
       <path d={paths[0]} opacity="0.2" />
       <path d={paths[1]} />
+    </svg>
+  );
+}
+
+/* Phosphor duotone star, colorable per layer */
+function PhStar({ size, fill, outline }: { size: number; fill: string; outline: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 256 256">
+      <path
+        d="M229.06,108.79l-48.7,42,14.88,62.79a8.4,8.4,0,0,1-12.52,9.17L128,189.09,73.28,222.74a8.4,8.4,0,0,1-12.52-9.17l14.88-62.79-48.7-42A8.46,8.46,0,0,1,31.73,94L95.64,88.8l24.62-59.6a8.36,8.36,0,0,1,15.48,0l24.62,59.6L224.27,94A8.46,8.46,0,0,1,229.06,108.79Z"
+        fill={fill}
+      />
+      <path
+        d="M239.18,97.26A16.38,16.38,0,0,0,224.92,86l-59-4.76L143.14,26.15a16.36,16.36,0,0,0-30.27,0L90.11,81.23,31.08,86a16.46,16.46,0,0,0-9.37,28.86l45,38.83L53,211.75a16.38,16.38,0,0,0,24.5,17.82L128,198.49l50.53,31.08A16.4,16.4,0,0,0,203,211.75l-13.76-58.07,45-38.83A16.43,16.43,0,0,0,239.18,97.26Zm-15.34,5.47-48.7,42a8,8,0,0,0-2.56,7.91l14.88,62.8a.37.37,0,0,1-.17.48c-.18.14-.23.11-.38,0l-54.72-33.65a8,8,0,0,0-8.38,0L69.09,215.94c-.15.09-.19.12-.38,0a.37.37,0,0,1-.17-.48l14.88-62.8a8,8,0,0,0-2.56-7.91l-48.7-42c-.12-.1-.23-.19-.13-.5s.18-.27.33-.29l63.92-5.16A8,8,0,0,0,103,91.86l24.62-59.61c.08-.17.11-.25.35-.25s.27.08.35.25L153,91.86a8,8,0,0,0,6.75,4.92l63.92,5.16c.15,0,.24,0,.33.29S224,102.63,223.84,102.73Z"
+        fill={outline}
+      />
     </svg>
   );
 }
@@ -1285,9 +1316,7 @@ function PhotoMarker({
             className="absolute -right-1.5 -top-1 flex h-5 w-5 items-center justify-center rounded-full shadow-sm"
             style={{ backgroundColor: AMBER }}
           >
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-            </svg>
+            <PhStar size={12} fill="#FDEBCC" outline="#523206" />
           </span>
         )}
       </span>
@@ -1420,7 +1449,7 @@ function CoreComponents() {
       </DemoCard>
       <div className="sm:col-span-2">
         <DemoCard
-          title="Cards — tour, rec, event, hub"
+          title="Cards — tour, POI, event, hub"
           tokens="surface · accent/100 · primary/500 · radius/2xl"
         >
           <CardsDemo />
