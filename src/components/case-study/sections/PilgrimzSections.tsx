@@ -2101,9 +2101,6 @@ function RatingDemo() {
         >
           Walk complete
         </span>
-        <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-400">
-          In design
-        </span>
       </div>
       <div className="mt-3 font-brand text-[15px] font-bold text-brand-ink">
         Roman and Moorish Málaga
@@ -2236,9 +2233,6 @@ function InviteDemo() {
           <div className="text-[13px] font-bold text-brand-ink">Marta</div>
           <div className="text-[11px] text-neutral-400">Planning together</div>
         </div>
-        <span className="ml-auto text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-400">
-          In design
-        </span>
       </div>
       <div className="mt-4 flex min-h-[220px] flex-col gap-2.5">
         {step >= 1 && (
@@ -2371,16 +2365,39 @@ function SocialChip({
   );
 }
 
-const chipIcon = {
-  width: 22,
-  height: 22,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.7,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-};
+/* Phosphor duotone icons (256 viewBox, fill = currentColor, 20% tint layer) */
+function PhChatDuo() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor">
+      <path
+        d="M224,128A96,96,0,0,1,79.93,211.11h0L42.54,223.58a8,8,0,0,1-10.12-10.12l12.47-37.39h0A96,96,0,1,1,224,128Z"
+        opacity="0.2"
+      />
+      <path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,214,50.48,182.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Zm12-88a12,12,0,1,1-12-12A12,12,0,0,1,140,128Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,128Zm-88,0a12,12,0,1,1-12-12A12,12,0,0,1,96,128Z" />
+    </svg>
+  );
+}
+
+function PhHeartDuo() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor">
+      <path
+        d="M232,94c0,66-104,122-104,122S24,160,24,94A54,54,0,0,1,78,40c22.59,0,41.94,12.31,50,32,8.06-19.69,27.41-32,50-32A54,54,0,0,1,232,94Z"
+        opacity="0.2"
+      />
+      <path d="M178,32c-20.65,0-38.73,8.88-50,23.89C116.73,40.88,98.65,32,78,32A62.07,62.07,0,0,0,16,94c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,220.66,240,164,240,94A62.07,62.07,0,0,0,178,32ZM128,206.8C109.74,196.16,32,147.69,32,94A46.06,46.06,0,0,1,78,48c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,147.61,146.24,196.15,128,206.8Z" />
+    </svg>
+  );
+}
+
+function PhThumbsUpDuo() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor">
+      <path d="M80,104v96H32a8,8,0,0,1-8-8V112a8,8,0,0,1,8-8Z" opacity="0.2" />
+      <path d="M234,80.12A24,24,0,0,0,216,72H160V56a40,40,0,0,0-40-40,8,8,0,0,0-7.16,4.42L75.06,96H32a16,16,0,0,0-16,16v88a16,16,0,0,0,16,16H204a24,24,0,0,0,23.82-21l12-96A24,24,0,0,0,234,80.12ZM32,112H72v88H32ZM223.94,97l-12,96a8,8,0,0,1-7.94,7H88V105.89l36.71-73.43A24,24,0,0,1,144,56V80a8,8,0,0,0,8,8h64a8,8,0,0,1,7.94,9Z" />
+    </svg>
+  );
+}
 
 function Phase3() {
   const concepts = [
@@ -2417,21 +2434,14 @@ function Phase3() {
           style={{ aspectRatio: "3 / 2" }}
           loading="lazy"
         />
-        <SocialChip className="left-[16%] top-[4%]" delay={0.4}>
-          <svg {...chipIcon}>
-            <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
-          </svg>
+        <SocialChip className="left-[17%] top-[10%]" delay={0.4}>
+          <PhChatDuo />
         </SocialChip>
-        <SocialChip className="right-[26%] top-0" delay={1.2} pulse>
-          <svg {...chipIcon}>
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z" />
-          </svg>
+        <SocialChip className="left-[36%] -top-2" delay={1.2} pulse>
+          <PhHeartDuo />
         </SocialChip>
         <SocialChip className="bottom-[8%] right-[18%]" delay={2}>
-          <svg {...chipIcon}>
-            <path d="M7 10v12" />
-            <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
-          </svg>
+          <PhThumbsUpDuo />
         </SocialChip>
         <div className="absolute left-0 top-[36%] z-10 w-[300px]">
           <SectionReveal>
@@ -2445,16 +2455,27 @@ function Phase3() {
         </div>
       </div>
 
-      {/* Mobile — stacked */}
+      {/* Mobile — stacked, icons overlaid on the photo */}
       <div className="mt-8 flex flex-col gap-5 md:hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/pilgrimz/social-photo.png"
-          alt="Three travelers resting together on a mountain viewpoint"
-          className="w-full rounded-2xl object-cover"
-          style={{ aspectRatio: "3 / 2" }}
-          loading="lazy"
-        />
+        <div className="relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/pilgrimz/social-photo.png"
+            alt="Three travelers resting together on a mountain viewpoint"
+            className="w-full rounded-2xl object-cover"
+            style={{ aspectRatio: "3 / 2" }}
+            loading="lazy"
+          />
+          <SocialChip className="-left-2 top-[14%]" delay={0.4}>
+            <PhChatDuo />
+          </SocialChip>
+          <SocialChip className="-top-4 right-[12%]" delay={1.2} pulse>
+            <PhHeartDuo />
+          </SocialChip>
+          <SocialChip className="-bottom-4 right-[6%]" delay={2}>
+            <PhThumbsUpDuo />
+          </SocialChip>
+        </div>
         <RatingDemo />
         <InviteDemo />
       </div>
