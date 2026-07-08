@@ -35,7 +35,10 @@ import { NeotasteSections } from "@/components/case-study/sections/NeotasteSecti
 import { WaterdaySections } from "@/components/case-study/sections/WaterdaySections";
 import { LearnXyzSections } from "@/components/case-study/sections/LearnXyzSections";
 import { PilgrimzSections } from "@/components/case-study/sections/PilgrimzSections";
-import { pilgrimzContent } from "@/components/case-study/sections/pilgrimzContent";
+import {
+  pilgrimzContent,
+  pilgrimzRoleBullets,
+} from "@/components/case-study/sections/pilgrimzContent";
 
 const customSectionMap: Record<string, React.ComponentType<{ accentColor: string }>> = {
   pandore: PandoreSections,
@@ -56,7 +59,7 @@ const fallbackContentMap: Record<string, Partial<CaseStudyDetail>> = {
 const skipSharedSections: Record<string, { role?: boolean; outcomes?: boolean }> = {
   "learn-xyz": { role: true, outcomes: true },
   "water-day": { outcomes: true },
-  pilgrimz: { outcomes: true },
+  pilgrimz: { outcomes: true, role: true },
 };
 
 export const revalidate = 3600; // 1 hr — Notion image URLs expire after ~1h
@@ -208,7 +211,27 @@ export default async function CaseStudyPage({ params }: PageProps) {
         )}
 
         {/* Overview */}
-        <Overview text={study.overview} />
+        <Overview
+          text={study.overview}
+          aside={
+            slug === "pilgrimz" ? (
+              <div>
+                <h3 className="font-brand text-[20px] font-bold text-brand-ink">My role</h3>
+                <ul className="mt-4 flex flex-col gap-3">
+                  {pilgrimzRoleBullets.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5">
+                      <span
+                        className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ backgroundColor: config.brand.accentColor }}
+                      />
+                      <span className="text-14 leading-relaxed text-neutral-600">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : undefined
+          }
+        />
 
         {/* The Challenge */}
         <Challenge text={study.challenge} bg={config.brand.challengeBg} />

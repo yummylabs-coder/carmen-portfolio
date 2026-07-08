@@ -49,3 +49,13 @@ export const pilgrimzContent = {
     },
   ],
 };
+
+/** Role bullets shown beside the Overview (2-col layout) */
+export const pilgrimzRoleBullets = [
+  "Led the work through Yummy Design & Labs",
+  "Product strategy and UX across the core flows",
+  "The full design system, built AI-readable",
+  "Claude Design OS: skills, agents, evals, and the team workshop",
+  "Redesign of the map, discovery, and the Hub",
+  "Early direction for the social layer",
+];
