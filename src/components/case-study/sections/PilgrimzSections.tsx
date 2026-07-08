@@ -1560,7 +1560,12 @@ function FoundationBlock({ accentColor }: { accentColor: string }) {
       </div>
 
       <div className="mt-8">
-        <Placeholder variant="pano" label="Storybook — the system's shared home" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/pilgrimz/storybook.png"
+          alt="The Pilgrimz Storybook, the system's shared home for tokens and usage"
+          className="w-full rounded-2xl border border-[#E3DCD0] shadow-[0_12px_32px_rgba(28,27,25,0.08)]"
+        />
       </div>
     </div>
   );
