@@ -1843,26 +1843,61 @@ function MapShowcase({ accentColor }: { accentColor: string }) {
   );
 }
 
-/** The Hub — sticky phone left, scrolling story steps right */
+/** The Hub — sticky phone left swaps with the active step, scrolling story right */
+const HUB_STEPS = [
+  {
+    img: "/images/pilgrimz/hub-tours.png",
+    title: "A branded home, not a listing",
+    body: "The institution leads: hero, logo, and its own story. The Malaga Cultural Center opens with the Buenavista Palace and the 285 works donated by Picasso's family, with More info and its social channels right there. Below, the Tours tab puts routes worth the detour up front and the full catalog, all 32 tours, one scroll away.",
+  },
+  {
+    img: "/images/pilgrimz/hub-agenda.png",
+    title: "An agenda that earns bookings",
+    body: "Events carry their own logic: single dates, ranges like 19 to 22 June, and recurring runs like all Saturdays, each with times and details one tap away. This is the surface institutions pay to fill, so it reads like a program, not a feed.",
+  },
+  {
+    img: "/images/pilgrimz/hub-directory.png",
+    title: "A directory that sells each partner",
+    body: "The Hubs tab pitches every institution with its numbers, five tours, three points of interest, five events, and one clear action: explore the hub.",
+  },
+  {
+    img: "/images/pilgrimz/hub-empty.png",
+    title: "No dead ends",
+    body: "Areas without hubs get a coming soon state that points travelers to the tours nearby instead of an empty screen. Even the gap sells the product.",
+  },
+];
+
+function HubPhoneFrame({ src, alt, maxW = 260 }: { src: string; alt: string; maxW?: number }) {
+  return (
+    <div
+      className="mx-auto w-full overflow-hidden rounded-[24px] border border-[#E3DCD0] shadow-[0_12px_32px_rgba(28,27,25,0.10)]"
+      style={{ aspectRatio: "393 / 845", maxWidth: maxW }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={alt} className="h-full w-full object-cover object-top" />
+    </div>
+  );
+}
+
 function HubStickyShowcase({ accentColor }: { accentColor: string }) {
-  const steps = [
-    {
-      title: "Continuous scroll replaces tabs",
-      body: "Hubs used to split content across tabs that hid what organizations were paying to show. One continuous, curated scroll gives the space an editorial, premium feel.",
-    },
-    {
-      title: "One Experiences section",
-      body: "What used to be separate tabs is consolidated into a single Experiences section, so visitors see the full offer at a glance.",
-    },
-    {
-      title: "A sticky call to action",
-      body: "Book this experience stays with you as you scroll. Clarity here directly serves the museums and tourism boards paying Pilgrimz.",
-    },
-    {
-      title: "Audio sources on demand",
-      body: "Audio guide sources collapse by default and expand when you want them, cutting clutter without hiding depth.",
-    },
-  ];
+  const [active, setActive] = useState(0);
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  /* The sticky phone follows whichever step is crossing the middle of the viewport */
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    stepRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        (entries) => entries.forEach((e) => e.isIntersecting && setActive(i)),
+        { rootMargin: "-45% 0px -45% 0px" },
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
   return (
     <div className="mt-16">
       <SectionReveal>
@@ -1873,41 +1908,69 @@ function HubStickyShowcase({ accentColor }: { accentColor: string }) {
           The B2B revenue surface, made premium
         </h3>
         <p className="mt-2 max-w-[620px] text-[14px] leading-relaxed text-neutral-600">
-          Hubs are curated experiences from museums, tourism boards, and cultural organizations, the
-          business to business product Pilgrimz sells. I moved it toward a cleaner Airbnb and Strava
-          feel.
+          Hubs are curated spaces from museums, tourism boards, and cultural organizations, the
+          business to business product Pilgrimz sells. I redesigned them as branded homes each
+          institution can be proud of, from the first impression to the empty state.
         </p>
       </SectionReveal>
 
-      {/* Mobile: panel once, then steps */}
-      <div className="mt-8 lg:hidden">
-        <WarmPanel>
-          <Placeholder variant="phone" label="Hub redesign" />
-        </WarmPanel>
-        <div className="mt-6 flex flex-col gap-4">
-          {steps.map((s, i) => (
-            <SectionReveal key={s.title} delay={i * 0.06}>
-              <div className="rounded-2xl border border-sand-300 bg-white p-5">
+      {/* Mobile: each step with its own screen */}
+      <div className="mt-8 flex flex-col gap-10 lg:hidden">
+        {HUB_STEPS.map((s, i) => (
+          <SectionReveal key={s.title} delay={0.05}>
+            <HubPhoneFrame src={s.img} alt={s.title} maxW={240} />
+            <div className="mt-4 rounded-2xl border border-sand-300 bg-white p-5">
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-brand text-[11px] font-bold text-white"
+                  style={{ backgroundColor: CORAL }}
+                >
+                  {i + 1}
+                </span>
                 <div className="font-body text-[14px] font-bold text-brand-ink">{s.title}</div>
-                <p className="mt-1 text-[13px] leading-relaxed text-neutral-600">{s.body}</p>
               </div>
-            </SectionReveal>
-          ))}
-        </div>
+              <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">{s.body}</p>
+            </div>
+          </SectionReveal>
+        ))}
       </div>
 
-      {/* Desktop: sticky showcase */}
+      {/* Desktop: sticky phone crossfades per step */}
       <div className="mt-8 hidden gap-10 lg:grid lg:grid-cols-2">
         <div className="relative">
           <div className="sticky top-24">
             <WarmPanel>
-              <Placeholder variant="phone" label="Hub redesign — swaps per step" />
+              <div className="relative mx-auto w-full max-w-[260px]">
+                <div
+                  className="overflow-hidden rounded-[24px] border border-[#E3DCD0] shadow-[0_12px_32px_rgba(28,27,25,0.10)]"
+                  style={{ aspectRatio: "393 / 845" }}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={active}
+                      src={HUB_STEPS[active].img}
+                      alt={HUB_STEPS[active].title}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.22 }}
+                      className="h-full w-full object-cover object-top"
+                    />
+                  </AnimatePresence>
+                </div>
+              </div>
             </WarmPanel>
           </div>
         </div>
         <div className="flex flex-col">
-          {steps.map((s, i) => (
-            <div key={s.title} className="flex min-h-[45vh] items-center">
+          {HUB_STEPS.map((s, i) => (
+            <div
+              key={s.title}
+              ref={(el) => {
+                stepRefs.current[i] = el;
+              }}
+              className="flex min-h-[45vh] items-center"
+            >
               <SectionReveal delay={0.05}>
                 <span
                   className="flex h-8 w-8 items-center justify-center rounded-full font-brand text-[13px] font-bold text-white"
