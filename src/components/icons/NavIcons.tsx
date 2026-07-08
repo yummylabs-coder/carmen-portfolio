@@ -68,9 +68,14 @@ export function ExperimentsIcon({ size = defaultProps.size, className }: IconPro
 
 export function AcceleratorIcon({ size = defaultProps.size, className }: IconProps) {
   return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className={className}>
-      <path d="M9 1.5L3.5 9H8L7 14.5L12.5 7H8L9 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/images/logos/yummy-design.png"
+      alt=""
+      width={size}
+      height={size}
+      className={`shrink-0 object-contain ${className ?? ""}`}
+    />
   );
 }
 
