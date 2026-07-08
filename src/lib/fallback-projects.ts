@@ -66,7 +66,7 @@ export const fallbackProjects: CaseStudy[] = [
     title: "Neotaste",
     summary:
       "A 2-week design sprint to reimagine restaurant discovery and help foodies find hidden gems.",
-    coverUrl: "/covers/neotaste.svg",
+    coverUrl: "/covers/neotaste-cover.svg",
     slug: "neotaste",
     tags: ["Mobile App", "Food Tech"],
     isFeatured: false,
