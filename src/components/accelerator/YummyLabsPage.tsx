@@ -54,9 +54,10 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
           Yummy Labs &amp; Design
         </h1>
       </div>
-      <p className="text-14 leading-[1.6] text-neutral-600">
-        Design accelerator I co-founded. We teach product design sprints and
-        AI workflows, powered by Claude.
+      <p className="max-w-[560px] text-14 leading-[1.6] text-neutral-600">
+        One brand, two arms. A studio that designs products with teams, and an
+        accelerator that teaches designers the same AI workflows we use on real
+        work. Powered by Claude.
       </p>
 
       {/* Dog mascot - hidden on mobile, sits behind the next section */}
@@ -66,6 +67,145 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
         </div>
       )}
     </header>
+  );
+}
+
+/* ═══════════════════════════════════
+   Section 1b - Two arms overview
+   ═══════════════════════════════════ */
+function ArmsOverview() {
+  const arms = [
+    {
+      href: "#studio",
+      kicker: "The studio",
+      title: "We build with teams",
+      body: "Full stack product design plus AI enablement for startups that need speed without design debt.",
+      bg: "bg-brand-ink",
+    },
+    {
+      href: "#accelerator",
+      kicker: "The accelerator",
+      title: "We teach what we practice",
+      body: "Two week sprints where designers ship real work with the exact AI workflows from our client projects.",
+      bg: "bg-[#2216ff]",
+    },
+  ];
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {arms.map((arm) => (
+        <a
+          key={arm.href}
+          href={arm.href}
+          className={`group relative overflow-hidden rounded-3xl p-6 transition-transform hover:scale-[1.01] ${arm.bg}`}
+        >
+          <span className="inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-800">
+            {arm.kicker}
+          </span>
+          <h3 className="mb-1.5 mt-3 font-brand text-[19px] font-extrabold leading-tight text-white">
+            {arm.title}
+          </h3>
+          <p className="text-[13px] leading-relaxed text-white/75">{arm.body}</p>
+          <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-white/90 transition-transform group-hover:translate-x-0.5">
+            See how
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <polyline points="19 12 12 19 5 12" />
+            </svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════
+   Section 1c - The studio
+   ═══════════════════════════════════ */
+const STUDIO_SERVICES = [
+  "Product design sprints",
+  "Design systems",
+  "AI enablement",
+  "Claude Design OS",
+];
+
+const STUDIO_CLIENTS = [
+  { name: "Pilgrimz", logo: "/images/pilgrimz/logo.png" },
+  { name: "NeoTaste", logo: "/images/logos/neotaste-symbol.svg" },
+];
+
+function StudioSection() {
+  return (
+    <div id="studio" className="scroll-mt-24 rounded-3xl border border-sand-300 bg-white p-6 lg:p-8">
+      <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        The studio
+      </span>
+      <div className="flex flex-col gap-8 lg:flex-row">
+        <div className="flex-1">
+          <h3 className="mb-3 font-brand text-[20px] font-bold leading-tight text-gray-800">
+            Full stack product design, with AI built in
+          </h3>
+          <div className="space-y-4 text-[14px] leading-relaxed text-neutral-600">
+            <p>
+              We join teams as their design partner: strategy, UX, and UI across
+              the flows that matter. The difference is what we leave behind.
+              Every engagement builds the system and the AI infrastructure so
+              the team keeps shipping at our pace after we step back.
+            </p>
+            <p>
+              That is the Claude Design OS work: design systems structured so AI
+              can read them, plus the skills, agents, and evals that make speed
+              safe instead of a source of design debt.
+            </p>
+          </div>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {STUDIO_SERVICES.map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-sand-300 bg-sand-100 px-[14px] py-[9px] font-body text-[13px] font-semibold text-gray-800"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+          <a
+            href="mailto:hello@yummydesign.xyz"
+            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-brand-ink px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-opacity hover:opacity-90"
+          >
+            Start a project
+            <ExternalArrow />
+          </a>
+        </div>
+        <div className="lg:w-[280px]">
+          <div className="rounded-2xl border border-sand-200 bg-sand-50 p-5">
+            <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-500">
+              Teams we build with
+            </div>
+            <div className="flex flex-col gap-3">
+              {STUDIO_CLIENTS.map((c) => (
+                <div
+                  key={c.name}
+                  className="flex items-center gap-3 rounded-xl border border-sand-300 bg-white px-4 py-3"
+                >
+                  <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-sand-100">
+                    <Img src={c.logo} alt={`${c.name} logo`} className="h-5 w-5 object-contain" />
+                  </span>
+                  <span className="font-body text-[14px] font-bold text-[#300101]">{c.name}</span>
+                </div>
+              ))}
+              <div className="flex items-center gap-3 rounded-xl border border-dashed border-sand-300 px-4 py-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-sand-100 text-neutral-400">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </span>
+                <span className="font-body text-[13px] font-medium text-neutral-500">Your team next</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -965,6 +1105,13 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
   return (
     <PageEntrance>
       <Header assets={assets} />
+      <ArmsOverview />
+      <StudioSection />
+      <div id="accelerator" className="scroll-mt-24">
+        <span className="inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          The accelerator
+        </span>
+      </div>
       <ProblemHero assets={assets} />
       <RoleAndStats />
       <SprintCalendar days={sprintDays ?? []} />
