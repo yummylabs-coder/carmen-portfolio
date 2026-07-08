@@ -123,6 +123,21 @@ function WarmPanel({
   );
 }
 
+/** Round carousel arrow */
+function ArrowBtn({ dir, onClick }: { dir: "l" | "r"; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={dir === "l" ? "Previous" : "Next"}
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#E8E6E1] bg-white text-[#33312D] shadow-sm transition-all hover:bg-[#FAF9F7] active:scale-95"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {dir === "l" ? <polyline points="15 18 9 12 15 6" /> : <polyline points="9 18 15 12 9 6" />}
+      </svg>
+    </button>
+  );
+}
+
 /* ── Small real product artifacts (rebuilt UI furniture, not abstract boxes) ── */
 
 /** The app's segmented control — coral active pill, fully interactive */
@@ -154,36 +169,48 @@ function SegmentedControl({ id = "map" }: { id?: string }) {
   );
 }
 
-/** POI chips — how featured and sponsored places read in the product */
+/** POI chips — tap to switch the active state, like the product's filters */
 function PoiChips() {
+  const chips = [
+    {
+      label: "Hidden gem",
+      idle: { backgroundColor: "#FDEBCC", color: "#8A5B10" },
+      active: { backgroundColor: AMBER, color: "#FFFFFF" },
+    },
+    {
+      label: "★ Featured",
+      idle: { backgroundColor: "#FDEBCC", color: "#8A5B10" },
+      active: { backgroundColor: AMBER, color: "#FFFFFF" },
+    },
+    {
+      label: "Selected",
+      idle: { backgroundColor: "#C2E5E7", color: "#0A5C61" },
+      active: { backgroundColor: TEAL, color: "#FFFFFF" },
+    },
+  ];
+  const [active, setActive] = useState(2);
   return (
     <div className="mt-3 flex flex-wrap gap-2">
-      <span
-        className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
-        style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
-      >
-        Hidden gem
-      </span>
-      <span
-        className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
-        style={{ backgroundColor: "#FDEBCC", color: "#8A5B10", boxShadow: `0 0 0 1.5px ${AMBER}66` }}
-      >
-        ★ Featured
-      </span>
-      <span
-        className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
-        style={{ backgroundColor: "#C2E5E7", color: "#0A5C61" }}
-      >
-        Selected
-      </span>
+      {chips.map((chip, i) => (
+        <motion.button
+          key={chip.label}
+          onClick={() => setActive(i)}
+          whileTap={{ scale: 0.93 }}
+          className="rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors duration-200"
+          style={active === i ? chip.active : chip.idle}
+        >
+          {chip.label}
+        </motion.button>
+      ))}
     </div>
   );
 }
 
-/** A tour list item, straight from the product */
+/** A tour list item, straight from the product — hover lift, save toggle */
 function TourListItem() {
+  const [saved, setSaved] = useState(false);
   return (
-    <div className="mt-4 flex w-fit items-center gap-3 rounded-2xl border border-[#EBE5D9] bg-white p-2.5 pr-5 shadow-sm">
+    <div className="mt-4 flex w-fit cursor-pointer items-center gap-3 rounded-2xl border border-[#EBE5D9] bg-white p-2.5 pr-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/images/pilgrimz/galerie-vivienne.jpg"
@@ -196,6 +223,27 @@ function TourListItem() {
         </div>
         <div className="mt-0.5 text-[11px] text-[#807D76]">Tour · 5 stops · 40 min</div>
       </div>
+      <motion.button
+        onClick={() => setSaved(!saved)}
+        whileTap={{ scale: 0.85 }}
+        aria-label={saved ? "Remove from saved" : "Save tour"}
+        className="ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FAF9F7]"
+      >
+        <motion.svg
+          animate={saved ? { scale: [1, 1.35, 1] } : {}}
+          transition={{ duration: 0.35 }}
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill={saved ? CORAL : "none"}
+          stroke={saved ? CORAL : "#807D76"}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </motion.svg>
+      </motion.button>
     </div>
   );
 }
@@ -1111,15 +1159,7 @@ function CardsDemo() {
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <div className="flex w-full items-center justify-center gap-4">
-        <button
-          onClick={() => go(-1)}
-          aria-label="Previous card"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#E8E6E1] bg-white text-[#33312D] shadow-sm transition-all hover:bg-[#FAF9F7] active:scale-95"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
+        <ArrowBtn dir="l" onClick={() => go(-1)} />
         <div className="w-[264px]">
           <AnimatePresence mode="wait">
             <motion.div
@@ -1133,15 +1173,7 @@ function CardsDemo() {
             </motion.div>
           </AnimatePresence>
         </div>
-        <button
-          onClick={() => go(1)}
-          aria-label="Next card"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#E8E6E1] bg-white text-[#33312D] shadow-sm transition-all hover:bg-[#FAF9F7] active:scale-95"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
+        <ArrowBtn dir="r" onClick={() => go(1)} />
       </div>
       <div className="flex items-center gap-3">
         <span className="w-[34px] text-right text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-500">
@@ -1722,20 +1754,24 @@ function Phase1({ accentColor }: { accentColor: string }) {
    Phase 2 — The design work
    ════════════════════════════════════════ */
 
-/** Map & discovery — warm product surface with real UI furniture */
+/** Map & discovery — copy + interactive furniture left, one big screen at a time right */
+const MAP_SCREENS = ["City switcher", "Map & POI types", "Sponsored places"];
+
 function MapShowcase({ accentColor }: { accentColor: string }) {
+  const [idx, setIdx] = useState(0);
+  const go = (d: number) => setIdx((i) => (i + d + MAP_SCREENS.length) % MAP_SCREENS.length);
   return (
     <div className="mt-10">
       <WarmPanel>
-        <div className="flex flex-col items-center gap-8 lg:flex-row">
-          <div className="lg:w-[320px]">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12">
+          <div className="min-w-0 flex-1">
             <span className="text-[11px] font-bold uppercase tracking-[0.05em]" style={{ color: accentColor }}>
               Navigation, discovery & the map
             </span>
             <h3 className="mt-2 font-brand text-[20px] font-bold leading-tight text-brand-ink">
               The map as a primary surface, not a backdrop
             </h3>
-            <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">
+            <p className="mt-2 max-w-[440px] text-[13px] leading-relaxed text-neutral-600">
               Users struggled to move between cities without zooming the map, reaching for a search
               they could not find. The redesign made moving between destinations obvious,
               differentiated point of interest types, and surfaced sponsored places clearly, which
@@ -1747,10 +1783,40 @@ function MapShowcase({ accentColor }: { accentColor: string }) {
             <PoiChips />
             <TourListItem />
           </div>
-          <div className="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-3">
-            <Placeholder variant="phone" label="City switcher" />
-            <Placeholder variant="phone" label="Map & POI types" />
-            <Placeholder variant="phone" label="Sponsored places" className="hidden sm:block" />
+
+          {/* One screen at a time */}
+          <div className="flex w-full flex-col items-center gap-4 lg:w-[380px]">
+            <div className="flex w-full items-center justify-center gap-3 sm:gap-5">
+              <ArrowBtn dir="l" onClick={() => go(-1)} />
+              <div className="w-full max-w-[260px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.28, ease: "easeOut" }}
+                  >
+                    <Placeholder variant="phone" label={MAP_SCREENS[idx]} className="!max-w-none" />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <ArrowBtn dir="r" onClick={() => go(1)} />
+            </div>
+            <div className="flex items-center gap-1.5">
+              {MAP_SCREENS.map((s, i) => (
+                <button
+                  key={s}
+                  onClick={() => setIdx(i)}
+                  aria-label={`Show ${s}`}
+                  className="h-1.5 rounded-full transition-all duration-300"
+                  style={{
+                    width: idx === i ? 18 : 6,
+                    backgroundColor: idx === i ? CORAL : "#D8D5CF",
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </WarmPanel>
@@ -1890,7 +1956,7 @@ function Phase2({ accentColor }: { accentColor: string }) {
         num="02"
         kicker="The design work"
         title="Core flows, restructured around trust and the business"
-        intro="The redesign was downstream of the OS. Because the base existed, and Claude could build on it, core screens were reworked quickly and stayed consistent. Every choice served trust, retention, and the business, not taste."
+        intro="The redesign was downstream of the OS. I designed these flows myself, with Claude working alongside as another member of the team, so core screens were reworked quickly and stayed consistent. Every choice served trust, retention, and the business."
       />
       <MapShowcase accentColor={accentColor} />
       <HubStickyShowcase accentColor={accentColor} />
