@@ -1,70 +1,101 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRightIcon } from "@/components/icons/NavIcons";
 import { AnimatedCounter } from "./AnimatedCounter";
 import Link from "next/link";
 
 /* ── Year timeline — horizontal dots from 2017 → Now ── */
 
-function YearTimeline() {
-  const years = Array.from({ length: 9 }, (_, i) => 2017 + i);
+function YearTimeline({ inView }: { inView: boolean }) {
+  const dots = 9;
+  const reduce = useReducedMotion() ?? false;
+  /* The line draws through the dots; each dot pops as the line reaches it */
+  const lineDur = 0.9;
+  const lineDelay = 0.3;
 
   return (
-    <div className="mt-3 flex items-end gap-[6px]">
-      {years.map((year, i) => (
-        <div key={year} className="flex flex-col items-center gap-1">
+    <div className="mt-3">
+      <div className="relative flex items-center justify-between">
+        {/* Track + drawing line behind the dots */}
+        <div className="absolute inset-x-[4px] top-1/2 h-[2px] -translate-y-1/2 rounded-full bg-[#2216FF]/10" />
+        <motion.div
+          className="absolute inset-x-[4px] top-1/2 h-[2px] origin-left -translate-y-1/2 rounded-full"
+          style={{ background: "linear-gradient(90deg, #B5A0FF, #2216FF)" }}
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+          transition={reduce ? { duration: 0 } : { duration: lineDur, delay: lineDelay, ease: "easeInOut" }}
+        />
+        {Array.from({ length: dots }).map((_, i) => (
           <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.8 + i * 0.06, type: "spring", stiffness: 400, damping: 20 }}
+            key={i}
             className="relative"
+            initial={{ scale: 0 }}
+            animate={inView ? { scale: 1 } : { scale: 0 }}
+            transition={
+              reduce
+                ? { duration: 0 }
+                : {
+                    delay: lineDelay + (i / (dots - 1)) * lineDur,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 20,
+                  }
+            }
           >
             <div
               className="h-[8px] w-[8px] rounded-full"
               style={{
-                background: `linear-gradient(135deg, #2216FF, #5B4CFF)`,
-                opacity: 0.35 + (i / 8) * 0.65,
+                background: "linear-gradient(135deg, #2216FF, #5B4CFF)",
+                opacity: 0.35 + (i / (dots - 1)) * 0.65,
               }}
             />
-            {/* Last dot pulses */}
-            {i === years.length - 1 && (
+            {i === dots - 1 && !reduce && (
               <div className="absolute inset-0 animate-ping rounded-full bg-[#2216FF] opacity-30" />
             )}
           </motion.div>
-          {/* Show first and last year labels */}
-          {(i === 0 || i === years.length - 1) && (
-            <span className="text-[10px] tabular-nums text-neutral-600">
-              {i === years.length - 1 ? "Now" : year}
-            </span>
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
+      <div className="mt-1 flex justify-between text-[10px] tabular-nums text-neutral-600">
+        <span>2017</span>
+        <span>Now</span>
+      </div>
     </div>
   );
 }
 
 /* ── Product grid — mini squares representing shipped products ── */
 
-function ProductGrid() {
-  const total = 30;
-  const cols = 10;
+function ProductGrid({ inView }: { inView: boolean }) {
+  const reduce = useReducedMotion() ?? false;
+  /* 5 industry clusters of 6 products each — the caption made visible */
+  const groups = ["#2216FF", "#4B3AFF", "#7C5CFF", "#9B7FFF", "#C4B5FF"];
 
   return (
-    <div className="mt-3 flex flex-wrap gap-[3px]" style={{ maxWidth: cols * 9 }}>
-      {Array.from({ length: total }).map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.8 + i * 0.02, type: "spring", stiffness: 500, damping: 25 }}
-          className="h-[6px] w-[6px] rounded-[1.5px]"
-          style={{
-            background: `linear-gradient(135deg, #4B3AFF, #7C5CFF)`,
-            opacity: 0.3 + Math.random() * 0.7,
-          }}
-        />
+    <div className="mt-3 flex gap-[6px]">
+      {groups.map((color, g) => (
+        <div key={color} className="grid grid-cols-2 gap-[3px]">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+              transition={
+                reduce
+                  ? { duration: 0 }
+                  : {
+                      delay: 0.3 + g * 0.16 + i * 0.035,
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 25,
+                    }
+              }
+              className="h-[6px] w-[6px] rounded-[1.5px]"
+              style={{ backgroundColor: color }}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );
@@ -191,7 +222,7 @@ export function MyNumbersWidget() {
               <p className="mt-1 text-12 font-medium text-neutral-600">
                 years in product
               </p>
-              <YearTimeline />
+              <YearTimeline inView={isInView} />
             </div>
           </motion.div>
 
@@ -217,7 +248,7 @@ export function MyNumbersWidget() {
               <p className="mt-0.5 text-12 text-neutral-600">
                 Across 5 industries
               </p>
-              <ProductGrid />
+              <ProductGrid inView={isInView} />
             </div>
           </motion.div>
 
