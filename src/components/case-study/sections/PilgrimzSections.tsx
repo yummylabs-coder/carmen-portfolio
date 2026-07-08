@@ -2023,10 +2023,12 @@ function Phase2({ accentColor }: { accentColor: string }) {
 
 /** Post-walk rating vignette — rating in, social proof out */
 const RATING_AVATARS = [
-  { init: "A", bg: "#D9F0EC", color: "#0F888F" },
-  { init: "J", bg: "#FBDCDA", color: "#E84C44" },
-  { init: "M", bg: "#FDEBCC", color: "#B96F10" },
+  "/images/pilgrimz/avatar-1.png",
+  "/images/pilgrimz/avatar-2.png",
+  "/images/pilgrimz/avatar-3.png",
 ];
+const YOU_AVATAR = "/images/pilgrimz/avatar-4.png";
+const MARTA_AVATAR = "/images/pilgrimz/avatar-5.png";
 
 function DemoStar({ filled, onPick, label }: { filled: boolean; onPick: () => void; label: string }) {
   return (
@@ -2113,29 +2115,27 @@ function RatingDemo() {
       </div>
       <div className="mt-4 flex items-center gap-3 border-t pt-4" style={{ borderColor: "#EEEBE8" }}>
         <div className="flex items-center">
-          {RATING_AVATARS.map((a, i) => (
-            <span
-              key={a.init}
-              className={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-[11px] font-bold ${
-                i > 0 ? "-ml-2" : ""
-              }`}
-              style={{ backgroundColor: a.bg, color: a.color }}
-            >
-              {a.init}
-            </span>
+          {RATING_AVATARS.map((src, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={src}
+              src={src}
+              alt="Pilgrim avatar"
+              className={`h-7 w-7 rounded-full border-2 border-white object-cover ${i > 0 ? "-ml-2" : ""}`}
+            />
           ))}
           <AnimatePresence>
             {joined && (
-              <motion.span
+              <motion.img
+                src={YOU_AVATAR}
+                alt="Your avatar joining the stack"
                 initial={{ scale: 0, x: -8, opacity: 0 }}
                 animate={{ scale: 1, x: 0, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 380, damping: 22 }}
-                className="-ml-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-[11px] font-bold text-white"
-                style={{ backgroundColor: CORAL }}
-              >
-                Y
-              </motion.span>
+                className="-ml-2 h-7 w-7 rounded-full border-2 object-cover"
+                style={{ borderColor: CORAL }}
+              />
             )}
           </AnimatePresence>
         </div>
@@ -2223,12 +2223,12 @@ function InviteDemo() {
       }}
     >
       <div className="flex items-center gap-2.5 border-b pb-3" style={{ borderColor: "#EEEBE8" }}>
-        <span
-          className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-bold"
-          style={{ backgroundColor: "#FDEBCC", color: "#B96F10" }}
-        >
-          M
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={MARTA_AVATAR}
+          alt="Marta's avatar"
+          className="h-8 w-8 rounded-full object-cover"
+        />
         <div>
           <div className="text-[13px] font-bold text-brand-ink">Marta</div>
           <div className="text-[11px] text-neutral-400">Planning together</div>
@@ -2275,18 +2275,18 @@ function InviteDemo() {
                   style={{ backgroundColor: "#D9F0EC" }}
                 >
                   <span className="flex items-center">
-                    <span
-                      className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white"
-                      style={{ backgroundColor: CORAL }}
-                    >
-                      Y
-                    </span>
-                    <span
-                      className="-ml-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold"
-                      style={{ backgroundColor: "#FDEBCC", color: "#B96F10" }}
-                    >
-                      M
-                    </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={YOU_AVATAR}
+                      alt="Your avatar"
+                      className="h-6 w-6 rounded-full border-2 border-white object-cover"
+                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={MARTA_AVATAR}
+                      alt="Marta's avatar"
+                      className="-ml-1.5 h-6 w-6 rounded-full border-2 border-white object-cover"
+                    />
                   </span>
                   <span className="text-[12px] font-semibold" style={{ color: DEEP }}>
                     You&apos;re both going · Saturday
