@@ -1755,7 +1755,11 @@ function Phase1({ accentColor }: { accentColor: string }) {
    ════════════════════════════════════════ */
 
 /** Map & discovery — copy + interactive furniture left, one big screen at a time right */
-const MAP_SCREENS = ["City switcher", "Map & POI types", "Sponsored places"];
+const MAP_SCREENS = [
+  { src: "/images/pilgrimz/flow-city-switcher.png", label: "City picker" },
+  { src: "/images/pilgrimz/flow-map.png", label: "The map" },
+  { src: "/images/pilgrimz/flow-city-page.png", label: "City page" },
+];
 
 function MapShowcase({ accentColor }: { accentColor: string }) {
   const [idx, setIdx] = useState(0);
@@ -1763,7 +1767,7 @@ function MapShowcase({ accentColor }: { accentColor: string }) {
   return (
     <div className="mt-10">
       <WarmPanel>
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-12">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12">
           <div className="min-w-0 flex-1">
             <span className="text-[11px] font-bold uppercase tracking-[0.05em]" style={{ color: accentColor }}>
               Navigation, discovery & the map
@@ -1797,25 +1801,40 @@ function MapShowcase({ accentColor }: { accentColor: string }) {
                     exit={{ opacity: 0, x: -40 }}
                     transition={{ duration: 0.28, ease: "easeOut" }}
                   >
-                    <Placeholder variant="phone" label={MAP_SCREENS[idx]} className="!max-w-none" />
+                    <div
+                      className="w-full overflow-hidden rounded-[24px] border border-[#E3DCD0] shadow-[0_12px_32px_rgba(28,27,25,0.10)]"
+                      style={{ aspectRatio: "393 / 845" }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={MAP_SCREENS[idx].src}
+                        alt={MAP_SCREENS[idx].label}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
                   </motion.div>
                 </AnimatePresence>
               </div>
               <ArrowBtn dir="r" onClick={() => go(1)} />
             </div>
-            <div className="flex items-center gap-1.5">
-              {MAP_SCREENS.map((s, i) => (
-                <button
-                  key={s}
-                  onClick={() => setIdx(i)}
-                  aria-label={`Show ${s}`}
-                  className="h-1.5 rounded-full transition-all duration-300"
-                  style={{
-                    width: idx === i ? 18 : 6,
-                    backgroundColor: idx === i ? CORAL : "#D8D5CF",
-                  }}
-                />
-              ))}
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-neutral-500">
+                {MAP_SCREENS[idx].label}
+              </span>
+              <div className="flex items-center gap-1.5">
+                {MAP_SCREENS.map((s, i) => (
+                  <button
+                    key={s.label}
+                    onClick={() => setIdx(i)}
+                    aria-label={`Show ${s.label}`}
+                    className="h-1.5 rounded-full transition-all duration-300"
+                    style={{
+                      width: idx === i ? 18 : 6,
+                      backgroundColor: idx === i ? CORAL : "#D8D5CF",
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
