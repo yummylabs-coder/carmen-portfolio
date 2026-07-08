@@ -97,7 +97,7 @@ export function DiscordCommunityCard() {
         <DiscordIcon size={22} className="text-[#FFFEFC]" />
         <div className="flex flex-col">
           <span className="font-brand text-14 font-bold text-[#FFFEFC]">
-            Design Community
+            My Yummy Labs Design Community
           </span>
           <span className="text-11 text-white/50">
             Join the conversation on Discord
