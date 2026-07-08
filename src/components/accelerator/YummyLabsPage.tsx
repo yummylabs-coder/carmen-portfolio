@@ -51,7 +51,7 @@ function Header({ assets }: { assets: YummyAssetsMap }) {
     <header className="relative">
       <div className="mb-1">
         <h1 className="font-brand text-22 font-bold text-brand-ink">
-          Yummy Labs
+          Yummy Labs &amp; Design
         </h1>
       </div>
       <p className="text-14 leading-[1.6] text-neutral-600">

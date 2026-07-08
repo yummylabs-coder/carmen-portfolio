@@ -4,7 +4,7 @@ import { YummyLabsPage } from "@/components/accelerator/YummyLabsPage";
 import { getYummyAssets, getSprintCalendar } from "@/lib/notion";
 
 export const metadata: Metadata = {
-  title: "Accelerator",
+  title: "Yummy Labs & Design",
   description:
     "Yummy Labs design accelerator. Mentoring the next generation of product designers through real-world sprints.",
 };

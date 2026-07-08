@@ -22,7 +22,7 @@ const allNav = [
   { label: "My Process", href: "/process", icon: ProcessIcon },
   { label: "About Me", href: "/about", icon: AboutIcon },
   { label: "Experience", href: "/experience", icon: ExperienceIcon },
-  { label: "My Design Accelerator", href: "/accelerator", icon: AcceleratorIcon },
+  { label: "Yummy Labs & Design", href: "/accelerator", icon: AcceleratorIcon },
   { label: "AI Design Resources", href: "/experiments", icon: ExperimentsIcon },
   { label: "Contact", href: "/contact", icon: ContactIcon },
 ];
