@@ -384,7 +384,7 @@ const configs: Record<string, CaseStudyConfig> = {
     brand: {
       bg: "#0A5C61",
       heroBg:
-        "radial-gradient(at 15% 20%, rgba(36, 160, 168, 0.5) 0px, transparent 50%), radial-gradient(at 85% 10%, rgba(6, 50, 54, 0.7) 0px, transparent 55%), radial-gradient(at 80% 85%, rgba(24, 140, 148, 0.45) 0px, transparent 55%), radial-gradient(at 20% 90%, rgba(6, 47, 50, 0.7) 0px, transparent 50%), linear-gradient(170deg, #0C6B71 0%, #0A5C61 55%, #095257 100%)",
+        "radial-gradient(55% 65% at 76% 45%, rgba(36, 160, 168, 0.4) 0%, rgba(36, 160, 168, 0) 70%), radial-gradient(50% 60% at 12% 12%, rgba(20, 126, 133, 0.45) 0%, rgba(20, 126, 133, 0) 70%), radial-gradient(70% 55% at 50% 108%, rgba(8, 66, 70, 0.4) 0%, rgba(8, 66, 70, 0) 72%), #0A5C61",
       challengeBg: "linear-gradient(150deg, #0C6B71 0%, #084F54 100%)",
       headlineText: "#FFFFFF",
       bodyText: "#D6EDEE",
