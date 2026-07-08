@@ -17,70 +17,6 @@ const DEEP = "#0E3538";
    Shared helpers
    ════════════════════════════════════════ */
 
-/** Visual placeholder — swap for real screens / prototypes later */
-function Placeholder({
-  label,
-  variant = "wide",
-  className = "",
-  dark,
-}: {
-  label: string;
-  variant?: "wide" | "phone" | "square" | "pano" | "photo";
-  className?: string;
-  dark?: boolean;
-}) {
-  const aspect =
-    variant === "phone"
-      ? "9 / 19.5"
-      : variant === "square"
-        ? "1 / 1"
-        : variant === "pano"
-          ? "21 / 9"
-          : variant === "photo"
-            ? "4 / 3"
-            : "16 / 10";
-  const wrap = variant === "phone" ? "mx-auto w-full max-w-[210px]" : "w-full";
-  const radius = variant === "phone" ? "rounded-[30px]" : "rounded-2xl";
-  return (
-    <div className={`${wrap} ${className}`}>
-      <div
-        className={`relative flex w-full items-center justify-center overflow-hidden ${radius} border border-dashed ${
-          dark ? "border-white/25" : "border-[#E0D8C9]"
-        }`}
-        style={{
-          aspectRatio: aspect,
-          background: dark
-            ? "linear-gradient(150deg, rgba(255,255,255,0.07) 0%, rgba(15,136,143,0.14) 100%)"
-            : "linear-gradient(135deg, #FFFDFB 0%, rgba(232,76,68,0.05) 50%, rgba(232,155,36,0.08) 100%)",
-        }}
-      >
-        <div className="flex flex-col items-center gap-2 px-4 text-center">
-          <span
-            className="flex h-9 w-9 items-center justify-center rounded-lg"
-            style={{
-              backgroundColor: dark ? "rgba(255,255,255,0.12)" : "rgba(232,76,68,0.10)",
-              color: dark ? "#9FDDE0" : CORAL,
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <circle cx="8.5" cy="8.5" r="1.8" />
-              <path d="m21 15-4.586-4.586a2 2 0 0 0-2.828 0L5 19" />
-            </svg>
-          </span>
-          <span
-            className={`text-[11px] font-semibold uppercase tracking-[0.06em] ${
-              dark ? "text-white/50" : "text-neutral-500"
-            }`}
-          >
-            {label}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /** Dark branded panel with a blurred radial glow — reserved for the Claude Design OS showpiece */
 function ShowcasePanel({
   children,
@@ -2084,10 +2020,370 @@ function Phase2({ accentColor }: { accentColor: string }) {
 /* ════════════════════════════════════════
    Phase 3 — Social discovery (in progress)
    ════════════════════════════════════════ */
-function Phase3() {
+
+/** Post-walk rating vignette — rating in, social proof out */
+const RATING_AVATARS = [
+  { init: "A", bg: "#D9F0EC", color: "#0F888F" },
+  { init: "J", bg: "#FBDCDA", color: "#E84C44" },
+  { init: "M", bg: "#FDEBCC", color: "#B96F10" },
+];
+
+function DemoStar({ filled, onPick, label }: { filled: boolean; onPick: () => void; label: string }) {
+  return (
+    <motion.button
+      type="button"
+      aria-label={label}
+      onClick={onPick}
+      className="cursor-pointer"
+      animate={{ scale: filled ? [1, 1.3, 1] : 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill={filled ? AMBER : "none"}
+        stroke={filled ? AMBER : "#D8D4CC"}
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      >
+        <polygon points="12 2.5 15 8.8 22 9.6 17 14.4 18.2 21.3 12 18 5.8 21.3 7 14.4 2 9.6 9 8.8" />
+      </svg>
+    </motion.button>
+  );
+}
+
+function RatingDemo() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const cards = [
+  const inView = useInView(ref, { margin: "-40px" });
+  const reduce = useReducedMotion() ?? false;
+  const [stars, setStars] = useState(0);
+  const [joined, setJoined] = useState(false);
+  const [locked, setLocked] = useState(false);
+  const [run, setRun] = useState(0);
+
+  useEffect(() => {
+    if (!inView || locked) return;
+    if (reduce) {
+      setStars(5);
+      setJoined(true);
+      return;
+    }
+    const t: ReturnType<typeof setTimeout>[] = [];
+    setStars(0);
+    setJoined(false);
+    for (let s = 1; s <= 5; s++) t.push(setTimeout(() => setStars(s), 700 + s * 240));
+    t.push(setTimeout(() => setJoined(true), 2700));
+    t.push(setTimeout(() => setRun((r) => r + 1), 8200));
+    return () => t.forEach(clearTimeout);
+  }, [inView, reduce, locked, run]);
+
+  const pick = (n: number) => {
+    setLocked(true);
+    setJoined(false);
+    setStars(n);
+    window.setTimeout(() => setJoined(true), 450);
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="rounded-2xl border bg-white p-5"
+      style={{
+        borderColor: "#E8E6E1",
+        boxShadow: "0 0 1px rgba(28,27,25,0.06), 0 14px 40px rgba(28,27,25,0.12)",
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className="flex h-5 items-center rounded-full px-2 text-[10px] font-bold uppercase tracking-[0.05em]"
+          style={{ backgroundColor: "#D9F0EC", color: DEEP }}
+        >
+          Walk complete
+        </span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-400">
+          In design
+        </span>
+      </div>
+      <div className="mt-3 font-brand text-[15px] font-bold text-brand-ink">
+        Roman and Moorish Málaga
+      </div>
+      <div className="mt-0.5 text-[12px] text-neutral-500">Tour · 4 stops · 45 min</div>
+      <div className="mt-3 flex gap-1">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <DemoStar key={n} filled={stars >= n} onPick={() => pick(n)} label={`Rate ${n} stars`} />
+        ))}
+      </div>
+      <div className="mt-4 flex items-center gap-3 border-t pt-4" style={{ borderColor: "#EEEBE8" }}>
+        <div className="flex items-center">
+          {RATING_AVATARS.map((a, i) => (
+            <span
+              key={a.init}
+              className={`flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-[11px] font-bold ${
+                i > 0 ? "-ml-2" : ""
+              }`}
+              style={{ backgroundColor: a.bg, color: a.color }}
+            >
+              {a.init}
+            </span>
+          ))}
+          <AnimatePresence>
+            {joined && (
+              <motion.span
+                initial={{ scale: 0, x: -8, opacity: 0 }}
+                animate={{ scale: 1, x: 0, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 380, damping: 22 }}
+                className="-ml-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white text-[11px] font-bold text-white"
+                style={{ backgroundColor: CORAL }}
+              >
+                Y
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </div>
+        <div className="text-[12px] leading-tight text-neutral-600">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={joined ? "after" : "before"}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+            >
+              <span className="font-semibold text-brand-ink">
+                {joined ? "48" : "47"} pilgrims walked this
+              </span>
+              {joined && <div className="text-neutral-500">including you</div>}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Friend invite vignette — the tour card as a live plan, not a dead link */
+function TypingDots() {
+  return (
+    <div
+      className="flex w-fit items-center gap-1 rounded-2xl rounded-bl-md px-3 py-2.5"
+      style={{ backgroundColor: "#F5F1E9" }}
+    >
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="h-1.5 w-1.5 rounded-full bg-neutral-400"
+          animate={{ y: [0, -3, 0] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function InviteDemo() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: "-40px" });
+  const reduce = useReducedMotion() ?? false;
+  const [step, setStep] = useState(0);
+  const [locked, setLocked] = useState(false);
+  const [run, setRun] = useState(0);
+
+  useEffect(() => {
+    if (!inView || locked) return;
+    if (reduce) {
+      setStep(5);
+      return;
+    }
+    const t: ReturnType<typeof setTimeout>[] = [];
+    setStep(0);
+    const beats: Array<[number, number]> = [
+      [1, 500],
+      [2, 1300],
+      [3, 2300],
+      [4, 3500],
+      [5, 4400],
+    ];
+    beats.forEach(([s, ms]) => t.push(setTimeout(() => setStep(s), ms)));
+    t.push(setTimeout(() => setRun((r) => r + 1), 9800));
+    return () => t.forEach(clearTimeout);
+  }, [inView, reduce, locked, run]);
+
+  const appear = {
+    initial: { opacity: 0, y: 10, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: { duration: 0.3, ease: "easeOut" as const },
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="rounded-2xl border bg-white p-5"
+      style={{
+        borderColor: "#E8E6E1",
+        boxShadow: "0 0 1px rgba(28,27,25,0.06), 0 14px 40px rgba(28,27,25,0.12)",
+      }}
+    >
+      <div className="flex items-center gap-2.5 border-b pb-3" style={{ borderColor: "#EEEBE8" }}>
+        <span
+          className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-bold"
+          style={{ backgroundColor: "#FDEBCC", color: "#B96F10" }}
+        >
+          M
+        </span>
+        <div>
+          <div className="text-[13px] font-bold text-brand-ink">Marta</div>
+          <div className="text-[11px] text-neutral-400">Planning together</div>
+        </div>
+        <span className="ml-auto text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-400">
+          In design
+        </span>
+      </div>
+      <div className="mt-4 flex min-h-[220px] flex-col gap-2.5">
+        {step >= 1 && (
+          <motion.div
+            {...appear}
+            className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md px-3.5 py-2.5 text-[13px] text-white"
+            style={{ backgroundColor: DEEP }}
+          >
+            saturday morning walk?
+          </motion.div>
+        )}
+        {step >= 2 && (
+          <motion.div
+            {...appear}
+            className="ml-auto w-[85%] overflow-hidden rounded-2xl rounded-br-md border"
+            style={{ borderColor: "#E8E6E1" }}
+          >
+            <div className="flex items-center gap-3 p-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/pilgrimz/barcelona.jpg"
+                alt="Gothic quarter tour thumbnail"
+                className="h-11 w-11 rounded-xl object-cover"
+              />
+              <div className="min-w-0">
+                <div className="truncate text-[13px] font-bold text-brand-ink">
+                  Gothic quarter at dusk
+                </div>
+                <div className="text-[11px] text-neutral-500">Tour · 4 stops · 1.5 hrs</div>
+              </div>
+            </div>
+            <AnimatePresence mode="wait" initial={false}>
+              {step >= 5 ? (
+                <motion.div
+                  key="going"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex items-center gap-2 px-3 py-2.5"
+                  style={{ backgroundColor: "#D9F0EC" }}
+                >
+                  <span className="flex items-center">
+                    <span
+                      className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white"
+                      style={{ backgroundColor: CORAL }}
+                    >
+                      Y
+                    </span>
+                    <span
+                      className="-ml-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold"
+                      style={{ backgroundColor: "#FDEBCC", color: "#B96F10" }}
+                    >
+                      M
+                    </span>
+                  </span>
+                  <span className="text-[12px] font-semibold" style={{ color: DEEP }}>
+                    You&apos;re both going · Saturday
+                  </span>
+                </motion.div>
+              ) : (
+                <motion.button
+                  key="join"
+                  type="button"
+                  onClick={() => {
+                    setLocked(true);
+                    setStep(5);
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="block w-full cursor-pointer py-2.5 text-center text-[13px] font-bold text-white"
+                  style={{ backgroundColor: CORAL }}
+                >
+                  Join
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+        {step === 3 && (
+          <motion.div {...appear}>
+            <TypingDots />
+          </motion.div>
+        )}
+        {step >= 4 && (
+          <motion.div
+            {...appear}
+            className="w-fit max-w-[85%] rounded-2xl rounded-bl-md px-3.5 py-2.5 text-[13px] text-brand-ink"
+            style={{ backgroundColor: "#F5F1E9" }}
+          >
+            I&apos;m in 🙌
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** Ambient floating icon chip */
+function SocialChip({
+  className = "",
+  delay = 0,
+  pulse,
+  children,
+}: {
+  className?: string;
+  delay?: number;
+  pulse?: boolean;
+  children: React.ReactNode;
+}) {
+  const reduce = useReducedMotion() ?? false;
+  return (
+    <motion.span
+      className={`absolute z-10 flex h-14 w-14 items-center justify-center rounded-full ${className}`}
+      style={{
+        backgroundColor: "#DCEBE9",
+        color: DEEP,
+        boxShadow: "0 0 1px rgba(28,27,25,0.06), 0 8px 24px rgba(28,27,25,0.10)",
+      }}
+      animate={
+        reduce
+          ? undefined
+          : { y: [-6, 6, -6], scale: pulse ? [1, 1.08, 1] : 1 }
+      }
+      transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
+const chipIcon = {
+  width: 22,
+  height: 22,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+
+function Phase3() {
+  const concepts = [
     {
       title: "A feed built around places",
       body: "Discovery rethought around places, inspiration, and saving destinations for later, not a social network of strangers.",
@@ -2107,24 +2403,70 @@ function Phase3() {
         num="03"
         kicker="Social discovery"
         title="A social layer built around places, not strangers"
-        intro="This is the chapter underway now. The old feed showed strangers' activity with no reason to care, so social is being reframed around destinations. The useful unit is many travelers found this place great for solo travelers, not this user took a Tuesday walk."
+        intro="This is the chapter underway now. The old feed showed strangers' activity with no reason to care, so social is being reframed around destinations. The useful unit is many travelers found this place great for solo travelers, not this user took a Tuesday walk. Two of the interactions in design right now: rating as the door into a tour's community, and invites that carry the plan instead of a dead link."
         badge="In progress"
       />
-      <div ref={ref} className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {cards.map((c, i) => (
-          <motion.div
-            key={c.title}
-            className="flex flex-col gap-4"
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.5, delay: 0.1 + i * 0.1, ease: "easeOut" }}
-          >
-            <Placeholder variant="phone" label={`Concept ${i + 1}`} />
-            <div>
-              <div className="font-body text-[14px] font-bold text-brand-ink">{c.title}</div>
-              <p className="mt-1 text-[13px] leading-relaxed text-neutral-600">{c.body}</p>
-            </div>
-          </motion.div>
+
+      {/* Desktop composition — photo center, live vignettes floating beside it */}
+      <div className="relative mt-14 hidden min-h-[600px] md:block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/pilgrimz/social-photo.png"
+          alt="Three travelers resting together on a mountain viewpoint"
+          className="absolute left-1/2 top-1/2 w-[56%] -translate-x-1/2 -translate-y-1/2 rounded-3xl object-cover"
+          style={{ aspectRatio: "3 / 2" }}
+          loading="lazy"
+        />
+        <SocialChip className="left-[16%] top-[4%]" delay={0.4}>
+          <svg {...chipIcon}>
+            <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
+          </svg>
+        </SocialChip>
+        <SocialChip className="right-[26%] top-0" delay={1.2} pulse>
+          <svg {...chipIcon}>
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z" />
+          </svg>
+        </SocialChip>
+        <SocialChip className="bottom-[8%] right-[18%]" delay={2}>
+          <svg {...chipIcon}>
+            <path d="M7 10v12" />
+            <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
+          </svg>
+        </SocialChip>
+        <div className="absolute left-0 top-[36%] z-10 w-[300px]">
+          <SectionReveal>
+            <RatingDemo />
+          </SectionReveal>
+        </div>
+        <div className="absolute right-0 top-[6%] z-10 w-[320px]">
+          <SectionReveal delay={0.15}>
+            <InviteDemo />
+          </SectionReveal>
+        </div>
+      </div>
+
+      {/* Mobile — stacked */}
+      <div className="mt-8 flex flex-col gap-5 md:hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/pilgrimz/social-photo.png"
+          alt="Three travelers resting together on a mountain viewpoint"
+          className="w-full rounded-2xl object-cover"
+          style={{ aspectRatio: "3 / 2" }}
+          loading="lazy"
+        />
+        <RatingDemo />
+        <InviteDemo />
+      </div>
+
+      {/* Where the social layer goes next */}
+      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {concepts.map((c) => (
+          <SectionReveal key={c.title}>
+            <span className="block h-1.5 w-8 rounded-full" style={{ backgroundColor: TEAL }} />
+            <div className="mt-3 font-body text-[14px] font-bold text-brand-ink">{c.title}</div>
+            <p className="mt-1 text-[13px] leading-relaxed text-neutral-600">{c.body}</p>
+          </SectionReveal>
         ))}
       </div>
     </section>
