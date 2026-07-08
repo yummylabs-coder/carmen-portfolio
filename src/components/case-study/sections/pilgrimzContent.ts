@@ -38,6 +38,16 @@ export const pilgrimzContent = {
         "The team ships more, inside a system designers built, so quality never dilutes as they move faster.",
     },
     {
+      metric: "Core flows rebuilt around trust",
+      description:
+        "The map, tour pages, and discovery were restructured so travelers always know where they are, what a tour offers, and why it's worth paying for.",
+    },
+    {
+      metric: "Hubs partners are proud of",
+      description:
+        "Museums and tourism boards get a branded home instead of a listing, from the first impression to the empty state. A stronger pitch for the business side of Pilgrimz.",
+    },
+    {
       metric: "They run it without us",
       description:
         "One workshop later, the whole team designs through the OS. Not just the designers.",

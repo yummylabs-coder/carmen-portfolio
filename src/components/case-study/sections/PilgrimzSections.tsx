@@ -933,20 +933,16 @@ function TourCardV() {
         </p>
         <div className="mt-3 flex items-center gap-2.5 border-t border-[#F0EDE8] pt-3">
           <div className="flex">
-            {[
-              { initial: "C", bg: "#C2E5E7", color: "#0A5C61" },
-              { initial: "J", bg: "#FDCFCC", color: "#9B2B25" },
-              { initial: "M", bg: "#FDEBCC", color: "#8A5B10" },
-            ].map((a, i) => (
-              <span
-                key={a.initial}
-                className={`flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold ${
+            {RATING_AVATARS.map((src, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={src}
+                src={src}
+                alt="Pilgrim avatar"
+                className={`h-6 w-6 rounded-full border-2 border-white object-cover ${
                   i > 0 ? "-ml-1.5" : ""
                 }`}
-                style={{ backgroundColor: a.bg, color: a.color }}
-              >
-                {a.initial}
-              </span>
+              />
             ))}
           </div>
           <span className="text-[11px] text-[#807D76]">34 pilgrims walked this</span>
