@@ -70,7 +70,7 @@ const BRANDS: Record<
   },
   labs: {
     name: "Yummy Labs",
-    desc: "The accelerator for AI-native designers",
+    desc: "An AI design accelerator I co-founded, where designers upskill on real product work, not concept projects",
     logo: "/images/logos/yummy-labs.png",
     site: YUMMY_URL,
     siteLabel: "Visit website",
@@ -966,7 +966,7 @@ function ProblemHero() {
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
         {/* Left - Copy */}
         <div className="flex-1 text-white">
-          <span className="mb-[13px] inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-[#7c3aed]">
+          <span className="mb-[13px] inline-flex items-center rounded-md bg-[#1a0ed4] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-white">
             The problem I saw
           </span>
           <h3 className="mb-3 font-brand text-[20px] font-extrabold leading-tight">
