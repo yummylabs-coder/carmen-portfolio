@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { YummyAssetsMap, SprintDay } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
@@ -159,6 +159,84 @@ function RailInner({ side, onEnter }: { side: Side; onEnter: () => void }) {
       </span>
       <Img src={b.logo} alt="" className="relative h-[27px] w-[27px] object-contain" />
     </button>
+  );
+}
+
+/* The dog doorman: patrols between the doors, delivers a line per door on hover */
+const DOG_LINES: Record<Side, string> = {
+  studio: "We'd love to collaborate, and make a difference",
+  labs: "If you want to use AI for design, start here kay?",
+};
+
+function DogDoorman({
+  dogUrl,
+  hovered,
+}: {
+  dogUrl: string;
+  hovered: Side | null;
+}) {
+  const reduce = useReducedMotion() ?? false;
+  const [patrol, setPatrol] = useState(0);
+  const lastX = useRef(10);
+
+  const targetX = reduce
+    ? 44
+    : hovered === "studio"
+      ? 17
+      : hovered === "labs"
+        ? 64
+        : patrol
+          ? 68
+          : 10;
+  const facingRight = targetX > lastX.current;
+  useEffect(() => {
+    lastX.current = targetX;
+  }, [targetX]);
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute -bottom-1 z-20 hidden w-[150px] lg:block"
+      initial={false}
+      animate={{ left: `${targetX}%` }}
+      transition={
+        hovered || reduce
+          ? { duration: 0.9, ease: "easeOut" }
+          : { duration: 10, ease: "linear" }
+      }
+      onAnimationComplete={() => {
+        if (!hovered && !reduce) setPatrol((p) => 1 - p);
+      }}
+    >
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            key={hovered}
+            initial={{ opacity: 0, y: 10, x: "-50%", scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, x: "-50%", scale: 1 }}
+            exit={{ opacity: 0, y: 6, x: "-50%", scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            className="absolute -top-[76px] left-1/2 w-max max-w-[250px] rounded-2xl rounded-bl-md border bg-[#FFFEFC] px-4 py-3 text-[13px] font-semibold leading-snug text-brand-ink"
+            style={{
+              borderColor: "#EADED7",
+              boxShadow: "0 1px 1px rgba(48,1,1,0.04), 0 12px 32px rgba(48,1,1,0.10)",
+            }}
+          >
+            {DOG_LINES[hovered]}
+            <span
+              className="absolute -bottom-[7px] left-6 h-3.5 w-3.5 rotate-45 border-b border-r bg-[#FFFEFC]"
+              style={{ borderColor: "#EADED7" }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={dogUrl}
+        alt="Yummy dog mascot on a skateboard"
+        className="w-full transition-transform duration-300"
+        style={{ transform: facingRight ? "scaleX(-1)" : "none" }}
+      />
+    </motion.div>
   );
 }
 
@@ -1160,7 +1238,9 @@ function LabsContent({ assets, sprintDays }: YummyLabsPageProps) {
 export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
   const [side, setSide] = useState<Side | null>(null);
   const [veil, setVeil] = useState(false);
+  const [hovered, setHovered] = useState<Side | null>(null);
   const other: Side | null = side === "studio" ? "labs" : side === "labs" ? "studio" : null;
+  const dogUrl = assets.branding["dog"];
 
   /* Switching between expanded sides: hide ALL panel content first, slide the
      empty containers, then reveal - so nothing reflows visibly mid-slide. */
@@ -1177,9 +1257,15 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
     }, 200);
   };
 
+  const enter = (s: Side) => {
+    setHovered(null);
+    switchTo(s);
+  };
+
   return (
     <PageEntrance>
-      <div className="flex flex-col gap-4 lg:min-h-[calc(100vh-140px)] lg:flex-row lg:items-stretch">
+      <div className="relative flex flex-col gap-4 lg:min-h-[calc(100vh-140px)] lg:flex-row lg:items-stretch">
+        {side === null && dogUrl && <DogDoorman dogUrl={dogUrl} hovered={hovered} />}
         {(["studio", "labs"] as const).map((s) => {
           const b = BRANDS[s];
           const state = side === null ? "door" : side === s ? "open" : "rail";
@@ -1187,6 +1273,8 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
           return (
             <div
               key={s}
+              onMouseEnter={() => state === "door" && setHovered(s)}
+              onMouseLeave={() => state === "door" && setHovered(null)}
               className={`relative min-w-0 transition-all duration-500 ease-in-out ${
                 state === "rail"
                   ? "hidden lg:block"
@@ -1214,7 +1302,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                       transition={{ duration: 0.2, delay: 0.3 }}
                       className="h-full"
                     >
-                      <RailInner side={s} onEnter={() => switchTo(s)} />
+                      <RailInner side={s} onEnter={() => enter(s)} />
                     </motion.div>
                   ) : state === "door" ? (
                     <motion.div
@@ -1231,7 +1319,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                         <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
                         <p className="mx-auto mt-2 max-w-[420px] text-[16px] text-neutral-600">{b.desc}</p>
                       </div>
-                      <TapCircle side={s} onEnter={() => switchTo(s)} />
+                      <TapCircle side={s} onEnter={() => enter(s)} />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -1264,7 +1352,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
           <div className="pointer-events-none fixed inset-x-0 bottom-5 z-40 flex justify-center lg:hidden">
             <motion.button
               type="button"
-              onClick={() => switchTo(other)}
+              onClick={() => enter(other)}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 16 }}
