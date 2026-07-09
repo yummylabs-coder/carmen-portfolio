@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import type { YummyAssetsMap, SprintDay } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
@@ -106,7 +106,6 @@ function VisitPill({ href, label }: { href: string; label: string }) {
 /** The clickable seal - soft halo begs for the tap, ring text slowly rotates */
 function TapCircle({ side, onEnter }: { side: Side; onEnter: () => void }) {
   const b = BRANDS[side];
-  const reduce = useReducedMotion() ?? false;
   return (
     <motion.button
       type="button"
@@ -121,11 +120,7 @@ function TapCircle({ side, onEnter }: { side: Side; onEnter: () => void }) {
       whileTap={{ scale: 0.96 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        animate={reduce ? undefined : { rotate: 360 }}
-        transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
-      >
+      <div className="pointer-events-none absolute inset-0 animate-[spin_18s_linear_infinite] motion-reduce:animate-none">
         <svg viewBox="0 0 216 212" className="h-full w-full">
           <defs>
             <path id={`tap-arc-${side}`} d="M 26 106 A 82 82 0 0 1 190 106" fill="none" />
@@ -139,7 +134,7 @@ function TapCircle({ side, onEnter }: { side: Side; onEnter: () => void }) {
             </textPath>
           </text>
         </svg>
-      </motion.div>
+      </div>
       <Img src={b.logo} alt={`${b.name} logo`} className="h-[130px] w-[130px] object-contain" />
     </motion.button>
   );
@@ -153,7 +148,8 @@ function RailInner({ side, onEnter }: { side: Side; onEnter: () => void }) {
       type="button"
       onClick={onEnter}
       aria-label={`Switch to ${b.name}`}
-      className="sticky top-6 flex h-[calc(100vh-48px)] w-full cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden transition-colors hover:bg-[#F4EEE8]"
+      className="sticky top-6 flex h-[calc(100vh-48px)] w-full cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] border bg-[#FAF7F5] transition-colors hover:bg-[#F4EEE8]"
+      style={{ borderColor: "#F1E9E4" }}
     >
       <DoorGlow />
       <span className="relative rotate-180 whitespace-nowrap font-brand text-[15px] font-bold text-brand-ink [writing-mode:vertical-rl]">
@@ -1171,14 +1167,19 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
           const state = side === null ? "door" : side === s ? "open" : "rail";
 
           return (
-            <motion.div
+            <div
               key={s}
-              layout
-              transition={{ type: "spring", stiffness: 160, damping: 26, mass: 0.9 }}
-              className={`relative overflow-hidden rounded-[20px] border bg-[#FAF7F5] ${
-                state === "rail" ? "hidden lg:block lg:w-[51px] lg:shrink-0" : "flex-1"
+              className={`relative min-w-0 transition-all duration-500 ease-in-out ${
+                state === "rail"
+                  ? "hidden lg:block"
+                  : "overflow-hidden rounded-[20px] border bg-[#FAF7F5]"
               }`}
-              style={{ borderColor: "#F1E9E4" }}
+              style={{
+                flexGrow: state === "rail" ? 0 : 1,
+                flexBasis: state === "rail" ? "51px" : "0%",
+                flexShrink: 0,
+                ...(state === "rail" ? {} : { borderColor: "#F1E9E4" }),
+              }}
             >
               <AnimatePresence mode="wait" initial={false}>
                 {state === "rail" ? (
@@ -1187,7 +1188,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.22, delay: 0.18 }}
+                    transition={{ duration: 0.2, delay: 0.3 }}
                     className="h-full"
                   >
                     <RailInner side={s} onEnter={() => setSide(s)} />
@@ -1212,13 +1213,12 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                 ) : (
                   <motion.div
                     key="open"
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, delay: 0.15, ease: "easeOut" }}
+                    transition={{ duration: 0.3, delay: 0.25, ease: "easeOut" }}
                     className="relative flex flex-col gap-8 px-5 py-7 sm:px-8 lg:px-10 lg:py-9"
                   >
-                    <DoorGlow />
                     <VisitPill href={b.site} label={b.siteLabel} />
                     <OpenHeader side={s} />
                     {s === "studio" ? (
@@ -1229,7 +1229,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </div>
           );
         })}
       </div>
