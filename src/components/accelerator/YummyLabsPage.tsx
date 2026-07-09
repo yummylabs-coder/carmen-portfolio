@@ -168,13 +168,9 @@ const DOG_LINES: Record<Side, string> = {
   labs: "If you want to use AI for design, start here kay?",
 };
 
-function DogDoorman({
-  dogUrl,
-  hovered,
-}: {
-  dogUrl: string;
-  hovered: Side | null;
-}) {
+const DOG_SRC = "/images/labs-studio/dog-avatar.svg";
+
+function DogDoorman({ hovered }: { hovered: Side | null }) {
   const reduce = useReducedMotion() ?? false;
   const [patrol, setPatrol] = useState(0);
   const lastX = useRef(10);
@@ -231,7 +227,7 @@ function DogDoorman({
       </AnimatePresence>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={dogUrl}
+        src={DOG_SRC}
         alt="Yummy dog mascot on a skateboard"
         className="w-full transition-transform duration-300"
         style={{ transform: facingRight ? "scaleX(-1)" : "none" }}
@@ -1240,7 +1236,6 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
   const [veil, setVeil] = useState(false);
   const [hovered, setHovered] = useState<Side | null>(null);
   const other: Side | null = side === "studio" ? "labs" : side === "labs" ? "studio" : null;
-  const dogUrl = assets.branding["dog"];
 
   /* Switching between expanded sides: hide ALL panel content first, slide the
      empty containers, then reveal - so nothing reflows visibly mid-slide. */
@@ -1265,7 +1260,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
   return (
     <PageEntrance>
       <div className="relative flex flex-col gap-4 lg:min-h-[calc(100vh-140px)] lg:flex-row lg:items-stretch">
-        {side === null && dogUrl && <DogDoorman dogUrl={dogUrl} hovered={hovered} />}
+        {side === null && <DogDoorman hovered={hovered} />}
         {(["studio", "labs"] as const).map((s) => {
           const b = BRANDS[s];
           const state = side === null ? "door" : side === s ? "open" : "rail";
