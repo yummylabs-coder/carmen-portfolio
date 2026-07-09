@@ -328,16 +328,6 @@ const OS_SERVICES = [
 
 const STAGE_CLIENTS = [
   {
-    slug: "learn-xyz",
-    name: "Learn.xyz",
-    logo: "/images/logos/learn-xyz-symbol.svg",
-    shots: [
-      "/images/learn/bet-feed-full.png",
-      "/images/learn/component-activity.png",
-      "/images/learn/ds-editor-preview.png",
-    ],
-  },
-  {
     slug: "neotaste",
     name: "NeoTaste",
     logo: "/images/logos/neotaste-symbol.svg",
