@@ -406,6 +406,113 @@ const STAGE_CLIENTS = [
 
 const STUDIO_URL = "https://www.yummy-labs.com/studio";
 
+/* Scrubbable sprint: drag through the two weeks, see what exists when */
+const SPRINT_STOPS = [
+  {
+    from: 1,
+    to: 2,
+    label: "Days 1 to 2",
+    title: "Understand",
+    body: "We start where good design always starts: your goals, your users, your constraints. Then we load all of it into an AI workspace, so the tooling knows your product as well as we do.",
+    exists: "What exists already: an AI workspace that knows your product.",
+  },
+  {
+    from: 3,
+    to: 7,
+    label: "Week 1",
+    title: "Strategy you can click",
+    body: "Judgment calls come from experience. AI just lets us show you proof faster: working prototypes to react to while the strategy is still forming, not slideware.",
+    exists: "What exists already: a working prototype you can react to.",
+  },
+  {
+    from: 8,
+    to: 13,
+    label: "Week 2",
+    title: "High fidelity, system-backed",
+    body: "We design the screens; the system keeps them consistent. Tokens AI can read mean iteration is cheap and drift is impossible.",
+    exists: "What exists already: hi-fi screens built from tokens AI can read.",
+  },
+  {
+    from: 14,
+    to: 14,
+    label: "Day 14",
+    title: "Handoff that compounds",
+    body: "The system, the skills, and the workflow stay with your team. That's the enablement part: you keep our speed without keeping us on retainer.",
+    exists: "What exists already: your team, running the whole workflow without us.",
+  },
+];
+
+function SprintScrubber() {
+  const [day, setDay] = useState(1);
+  const stopIdx = SPRINT_STOPS.findIndex((s) => day >= s.from && day <= s.to);
+  const stop = SPRINT_STOPS[stopIdx];
+  const pct = ((day - 1) / 13) * 100;
+
+  return (
+    <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
+      <span className="mb-1 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        How we work
+      </span>
+      <p className="mb-5 text-[13px] leading-relaxed text-neutral-600">
+        Drag through a sprint. Day by day, there is always something real to react to.
+      </p>
+
+      {/* Stage */}
+      <div className="min-h-[172px] rounded-xl bg-[#FAF7F5] p-5 sm:min-h-[150px]">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={stopIdx}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18 }}
+          >
+            <span className="inline-flex items-center rounded-full bg-brand-ink px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.05em] text-sand-100">
+              {stop.label}
+            </span>
+            <div className="mt-2.5 font-brand text-[17px] font-bold text-brand-ink">
+              {stop.title}
+            </div>
+            <p className="mt-1.5 max-w-[640px] text-[13px] leading-relaxed text-neutral-600">
+              {stop.body}
+            </p>
+            <p className="mt-2 text-[13px] font-semibold text-brand-ink">{stop.exists}</p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Scrubber */}
+      <div className="mt-5">
+        <div className="mb-2 flex items-baseline justify-between">
+          <span className="font-brand text-[14px] font-bold text-brand-ink">Day {day}</span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-neutral-400">
+            of 14
+          </span>
+        </div>
+        <input
+          type="range"
+          min={1}
+          max={14}
+          step={1}
+          value={day}
+          onChange={(e) => setDay(Number(e.target.value))}
+          aria-label="Sprint day"
+          className="h-[6px] w-full cursor-pointer appearance-none rounded-full [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-brand-ink [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-brand-ink [&::-webkit-slider-thumb]:shadow-[0_2px_8px_rgba(48,1,1,0.3)]"
+          style={{
+            background: `linear-gradient(to right, #300101 ${pct}%, #F1E9E4 ${pct}%)`,
+          }}
+        />
+        <div className="mt-2 flex justify-between text-[11px] font-semibold text-neutral-400">
+          <span>Day 1</span>
+          <span>Week 1</span>
+          <span>Week 2</span>
+          <span>Handoff</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TastingButton({ onBlue }: { onBlue?: boolean }) {
   return (
     <a
@@ -546,6 +653,9 @@ function StudioContent() {
           ))}
         </div>
       </div>
+
+      {/* Option B, same story as a scrubbable sprint - pick one, delete the other */}
+      <SprintScrubber />
 
       {/* What we fix */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
