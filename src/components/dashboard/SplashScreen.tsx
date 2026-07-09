@@ -270,7 +270,7 @@ export function SplashScreen({ onComplete, onSkipped }: SplashScreenProps) {
 
             {/* ── Role ── */}
             <motion.p
-              className="mt-2 font-body text-[12px] font-medium uppercase tracking-[0.22em] text-white/30 sm:mt-2.5 sm:text-[14px]"
+              className="mt-2 font-body text-[13px] font-semibold uppercase tracking-[0.22em] text-white/75 sm:mt-2.5 sm:text-[15px]"
               initial={{ opacity: 0, y: 10 }}
               animate={{
                 opacity: isBloom ? 0 : 1,
@@ -285,6 +285,46 @@ export function SplashScreen({ onComplete, onSkipped }: SplashScreenProps) {
               Product Designer
             </motion.p>
           </div>
+
+          {/* ── The dog — peeks over the bottom edge, rides out on the bloom ── */}
+          <motion.div
+            className="pointer-events-none absolute z-10 w-[240px] sm:w-[300px]"
+            style={{ left: "50%", bottom: -70 }}
+            initial={{ opacity: 0, y: 120, x: "-58%" }}
+            animate={{ opacity: 1, y: isBloom ? 460 : 0, x: "-58%" }}
+            transition={
+              isBloom
+                ? { duration: 0.7, ease: [0.5, 0, 0.75, 1] }
+                : { delay: 0.9, duration: 0.7, ease: [0.25, 0.4, 0.25, 1] }
+            }
+          >
+            <div className="relative">
+              <motion.div
+                className="absolute -top-5 left-[72%] w-max rounded-2xl rounded-bl-md bg-[#FFFEFC] px-4 py-2.5 text-[13px] font-semibold text-brand-ink shadow-[0_1px_1px_rgba(0,0,0,0.05),0_12px_32px_rgba(0,0,0,0.18)]"
+                initial={{ opacity: 0, y: 8, scale: 0.92 }}
+                animate={{
+                  opacity: isBloom ? 0 : 1,
+                  y: isBloom ? 4 : 0,
+                  scale: 1,
+                }}
+                transition={
+                  isBloom
+                    ? { duration: 0.2 }
+                    : { delay: 1.7, type: "spring", stiffness: 320, damping: 22 }
+                }
+              >
+                Beep boop, fake loading...
+                <span className="absolute -bottom-[6px] left-5 h-3 w-3 rotate-45 bg-[#FFFEFC]" />
+              </motion.div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/labs-studio/dog-avatar.svg"
+                alt=""
+                aria-hidden="true"
+                className="w-full"
+              />
+            </div>
+          </motion.div>
 
           {/* ── The Portal — yellow dot blooms into the world ──
            *
