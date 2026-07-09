@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { YummyAssetsMap, SprintDay } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
 import {
@@ -103,15 +103,16 @@ function VisitPill({ href, label }: { href: string; label: string }) {
   );
 }
 
-/** The clickable seal - soft halo begs for the tap */
+/** The clickable seal - soft halo begs for the tap, ring text slowly rotates */
 function TapCircle({ side, onEnter }: { side: Side; onEnter: () => void }) {
   const b = BRANDS[side];
+  const reduce = useReducedMotion() ?? false;
   return (
     <motion.button
       type="button"
       onClick={onEnter}
       aria-label={`Enter ${b.name}`}
-      className="relative flex h-[258px] w-[264px] cursor-pointer items-center justify-center rounded-full border bg-[#FAF7F5]"
+      className="relative flex h-[212px] w-[216px] cursor-pointer items-center justify-center rounded-full border bg-[#FAF7F5]"
       style={{
         borderColor: "#EADED7",
         boxShadow: "0 -1px 44px 21px rgba(238,234,232,0.74)",
@@ -120,44 +121,46 @@ function TapCircle({ side, onEnter }: { side: Side; onEnter: () => void }) {
       whileTap={{ scale: 0.96 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <svg viewBox="0 0 264 258" className="pointer-events-none absolute inset-0 h-full w-full">
-        <defs>
-          <path id={`tap-arc-${side}`} d="M 36 129 A 96 96 0 0 1 228 129" fill="none" />
-        </defs>
-        <text
-          style={{ fontSize: 12, letterSpacing: "0.2em", fontWeight: 600 }}
-          className="fill-neutral-400 uppercase"
-        >
-          <textPath href={`#tap-arc-${side}`} startOffset="50%" textAnchor="middle">
-            Tap to enter
-          </textPath>
-        </text>
-      </svg>
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        animate={reduce ? undefined : { rotate: 360 }}
+        transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
+      >
+        <svg viewBox="0 0 216 212" className="h-full w-full">
+          <defs>
+            <path id={`tap-arc-${side}`} d="M 26 106 A 82 82 0 0 1 190 106" fill="none" />
+          </defs>
+          <text
+            style={{ fontSize: 12, letterSpacing: "0.2em", fontWeight: 600 }}
+            className="fill-neutral-400 uppercase"
+          >
+            <textPath href={`#tap-arc-${side}`} startOffset="50%" textAnchor="middle">
+              Tap to enter
+            </textPath>
+          </text>
+        </svg>
+      </motion.div>
       <Img src={b.logo} alt={`${b.name} logo`} className="h-[130px] w-[130px] object-contain" />
     </motion.button>
   );
 }
 
-/** Collapsed edge rail for the non-active brand (desktop) */
-function BrandRail({ side, onEnter }: { side: Side; onEnter: () => void }) {
+/** Collapsed edge rail content - sticky so name and logo stay in view */
+function RailInner({ side, onEnter }: { side: Side; onEnter: () => void }) {
   const b = BRANDS[side];
   return (
-    <motion.button
+    <button
       type="button"
       onClick={onEnter}
       aria-label={`Switch to ${b.name}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, delay: 0.15 }}
-      className="relative hidden w-[51px] shrink-0 cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] border bg-[#FAF7F5] transition-colors hover:bg-[#F4EEE8] lg:flex"
-      style={{ borderColor: "#F1E9E4" }}
+      className="sticky top-6 flex h-[calc(100vh-48px)] w-full cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden transition-colors hover:bg-[#F4EEE8]"
     >
       <DoorGlow />
       <span className="relative rotate-180 whitespace-nowrap font-brand text-[15px] font-bold text-brand-ink [writing-mode:vertical-rl]">
         {b.name}
       </span>
       <Img src={b.logo} alt="" className="relative h-[27px] w-[27px] object-contain" />
-    </motion.button>
+    </button>
   );
 }
 
@@ -485,7 +488,7 @@ function GlassmorphismVideoFrame({ videoUrl }: { videoUrl?: string }) {
 /* ═══════════════════════════════════
    Section 2 - Problem Hero (full-width blue)
    ═══════════════════════════════════ */
-function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
+function ProblemHero() {
   return (
     <div className="relative z-10 overflow-hidden rounded-3xl bg-[#2216ff] p-6 lg:p-8">
       {/* Subtle radial gradient for depth */}
@@ -516,19 +519,6 @@ function ProblemHero({ assets }: { assets: YummyAssetsMap }) {
               their own.
             </p>
           </div>
-          <a
-            href={YUMMY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#1a0ed4] px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-colors hover:bg-[#150bba]"
-          >
-            {assets.branding["logo"] && (
-              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-md bg-white/90">
-                <Img src={assets.branding["logo"]} alt="" className="h-full w-full object-contain" />
-              </span>
-            )}
-            Visit yummy-labs.com
-          </a>
         </div>
 
         {/* Right - Glassmorphism Video */}
@@ -1158,7 +1148,7 @@ function CtaSection() {
 function LabsContent({ assets, sprintDays }: YummyLabsPageProps) {
   return (
     <div className="flex flex-col gap-6">
-      <ProblemHero assets={assets} />
+      <ProblemHero />
       <RoleAndStats />
       <SprintCalendar days={sprintDays ?? []} />
       <Partners assets={assets} />
@@ -1180,22 +1170,29 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
           const b = BRANDS[s];
           const state = side === null ? "door" : side === s ? "open" : "rail";
 
-          if (state === "rail") {
-            return <BrandRail key={s} side={s} onEnter={() => setSide(s)} />;
-          }
-
           return (
             <motion.div
               key={s}
               layout
-              transition={{ type: "spring", stiffness: 200, damping: 28 }}
-              className="relative flex-1 overflow-hidden rounded-[20px] border bg-[#FAF7F5]"
+              transition={{ type: "spring", stiffness: 160, damping: 26, mass: 0.9 }}
+              className={`relative overflow-hidden rounded-[20px] border bg-[#FAF7F5] ${
+                state === "rail" ? "hidden lg:block lg:w-[51px] lg:shrink-0" : "flex-1"
+              }`}
               style={{ borderColor: "#F1E9E4" }}
             >
-              <DoorGlow />
-              <VisitPill href={b.site} label={b.siteLabel} />
               <AnimatePresence mode="wait" initial={false}>
-                {state === "door" ? (
+                {state === "rail" ? (
+                  <motion.div
+                    key="rail"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.22, delay: 0.18 }}
+                    className="h-full"
+                  >
+                    <RailInner side={s} onEnter={() => setSide(s)} />
+                  </motion.div>
+                ) : state === "door" ? (
                   <motion.div
                     key="door"
                     initial={{ opacity: 0 }}
@@ -1204,7 +1201,9 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                     transition={{ duration: 0.2 }}
                     className="relative flex min-h-[68vh] flex-col items-center justify-center gap-12 px-8 py-11 lg:min-h-full"
                   >
-                    <div className="text-center">
+                    <DoorGlow />
+                    <VisitPill href={b.site} label={b.siteLabel} />
+                    <div className="relative text-center">
                       <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
                       <p className="mt-2 text-[16px] text-neutral-600">{b.desc}</p>
                     </div>
@@ -1216,9 +1215,11 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" }}
+                    transition={{ duration: 0.35, delay: 0.15, ease: "easeOut" }}
                     className="relative flex flex-col gap-8 px-5 py-7 sm:px-8 lg:px-10 lg:py-9"
                   >
+                    <DoorGlow />
+                    <VisitPill href={b.site} label={b.siteLabel} />
                     <OpenHeader side={s} />
                     {s === "studio" ? (
                       <StudioContent />
