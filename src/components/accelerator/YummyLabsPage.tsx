@@ -55,7 +55,7 @@ const BRANDS: Record<
 > = {
   studio: {
     name: "Yummy Design Studio",
-    desc: "Product design, systems, and AI enablement",
+    desc: "A product design and AI enablement studio I co-founded, where we focus on speed without design debt",
     logo: "/images/logos/yummy-design.png",
     site: "mailto:hello@yummydesign.xyz",
     siteLabel: "Get in touch",
@@ -88,14 +88,16 @@ function GlobeIcon() {
   );
 }
 
-function VisitPill({ href, label }: { href: string; label: string }) {
+function VisitPill({ href, label, stacked }: { href: string; label: string; stacked?: boolean }) {
   const external = href.startsWith("http");
   return (
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       onClick={(e) => e.stopPropagation()}
-      className="absolute right-6 top-6 z-20 flex h-[50px] items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)] transition-transform hover:scale-[1.03]"
+      className={`z-20 flex h-[50px] w-fit items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)] transition-transform hover:scale-[1.03] ${
+        stacked ? "relative lg:absolute lg:right-6 lg:top-6" : "absolute right-6 top-6"
+      }`}
     >
       {label}
       <GlobeIcon />
@@ -148,7 +150,7 @@ function RailInner({ side, onEnter }: { side: Side; onEnter: () => void }) {
       type="button"
       onClick={onEnter}
       aria-label={`Switch to ${b.name}`}
-      className="sticky top-6 flex h-[calc(100vh-48px)] w-full cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] border bg-[#FAF7F5] transition-colors hover:bg-[#F4EEE8]"
+      className="sticky top-6 flex h-[calc(100vh-96px)] w-full cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] border bg-[#FAF7F5] transition-colors hover:bg-[#F4EEE8]"
       style={{ borderColor: "#F1E9E4" }}
     >
       <DoorGlow />
@@ -1157,7 +1159,23 @@ function LabsContent({ assets, sprintDays }: YummyLabsPageProps) {
 
 export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
   const [side, setSide] = useState<Side | null>(null);
+  const [veil, setVeil] = useState(false);
   const other: Side | null = side === "studio" ? "labs" : side === "labs" ? "studio" : null;
+
+  /* Switching between expanded sides: hide ALL panel content first, slide the
+     empty containers, then reveal - so nothing reflows visibly mid-slide. */
+  const switchTo = (s: Side) => {
+    if (side === s) return;
+    if (side === null) {
+      setSide(s);
+      return;
+    }
+    setVeil(true);
+    window.setTimeout(() => {
+      setSide(s);
+      window.setTimeout(() => setVeil(false), 560);
+    }, 200);
+  };
 
   return (
     <PageEntrance>
@@ -1181,54 +1199,60 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                 ...(state === "rail" ? {} : { borderColor: "#F1E9E4" }),
               }}
             >
-              <AnimatePresence mode="wait" initial={false}>
-                {state === "rail" ? (
-                  <motion.div
-                    key="rail"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, delay: 0.3 }}
-                    className="h-full"
-                  >
-                    <RailInner side={s} onEnter={() => setSide(s)} />
-                  </motion.div>
-                ) : state === "door" ? (
-                  <motion.div
-                    key="door"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="relative flex min-h-[68vh] flex-col items-center justify-center gap-12 px-8 py-11 lg:min-h-full"
-                  >
-                    <DoorGlow />
-                    <VisitPill href={b.site} label={b.siteLabel} />
-                    <div className="relative text-center">
-                      <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
-                      <p className="mt-2 text-[16px] text-neutral-600">{b.desc}</p>
-                    </div>
-                    <TapCircle side={s} onEnter={() => setSide(s)} />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="open"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3, delay: 0.25, ease: "easeOut" }}
-                    className="relative flex flex-col gap-8 px-5 py-7 sm:px-8 lg:px-10 lg:py-9"
-                  >
-                    <VisitPill href={b.site} label={b.siteLabel} />
-                    <OpenHeader side={s} />
-                    {s === "studio" ? (
-                      <StudioContent />
-                    ) : (
-                      <LabsContent assets={assets} sprintDays={sprintDays} />
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div
+                className={`h-full transition-opacity duration-200 ${
+                  veil ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {state === "rail" ? (
+                    <motion.div
+                      key="rail"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2, delay: 0.3 }}
+                      className="h-full"
+                    >
+                      <RailInner side={s} onEnter={() => switchTo(s)} />
+                    </motion.div>
+                  ) : state === "door" ? (
+                    <motion.div
+                      key="door"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="relative flex min-h-[68vh] flex-col items-center justify-center gap-12 px-8 py-11 lg:min-h-full"
+                    >
+                      <DoorGlow />
+                      <VisitPill href={b.site} label={b.siteLabel} />
+                      <div className="relative text-center">
+                        <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
+                        <p className="mx-auto mt-2 max-w-[420px] text-[16px] text-neutral-600">{b.desc}</p>
+                      </div>
+                      <TapCircle side={s} onEnter={() => switchTo(s)} />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="open"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3, delay: 0.25, ease: "easeOut" }}
+                      className="relative flex flex-col gap-6 px-5 py-7 sm:px-8 lg:gap-8 lg:px-10 lg:py-9"
+                    >
+                      <OpenHeader side={s} />
+                      <VisitPill href={b.site} label={b.siteLabel} stacked />
+                      {s === "studio" ? (
+                        <StudioContent />
+                      ) : (
+                        <LabsContent assets={assets} sprintDays={sprintDays} />
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           );
         })}
@@ -1240,7 +1264,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
           <div className="pointer-events-none fixed inset-x-0 bottom-5 z-40 flex justify-center lg:hidden">
             <motion.button
               type="button"
-              onClick={() => setSide(other)}
+              onClick={() => switchTo(other)}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 16 }}
