@@ -259,13 +259,17 @@ function DogDoorman({ hovered }: { hovered: Side | null }) {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={DOG_SRC}
-        alt="Yummy dog mascot on a skateboard"
-        className="w-full transition-transform duration-300"
-        style={{ transform: facingRight ? "scaleX(-1)" : "none" }}
-      />
+      {/* Direction change = a real 3D turn around his vertical axis */}
+      <div style={{ perspective: 700 }}>
+        <motion.img
+          src={DOG_SRC}
+          alt="Yummy dog mascot on a skateboard"
+          className="w-full"
+          animate={{ rotateY: facingRight ? 180 : 0 }}
+          transition={{ duration: 0.7, ease: [0.34, 1.4, 0.64, 1] }}
+          style={{ transformStyle: "preserve-3d", backfaceVisibility: "visible" }}
+        />
+      </div>
     </motion.div>
   );
 }
