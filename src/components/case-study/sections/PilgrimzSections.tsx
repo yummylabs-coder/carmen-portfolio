@@ -1973,14 +1973,14 @@ function FloatingBreadth({ accentColor }: { accentColor: string }) {
                     style={{
                       borderColor: "#E3DCD0",
                       boxShadow: "0 0 1px rgba(28,27,25,0.06), 0 10px 30px rgba(28,27,25,0.10)",
-                      aspectRatio: "393 / 820",
+                      aspectRatio: "393 / 858",
                     }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={s.img}
                       alt={`Pilgrimz ${s.label} screen`}
-                      className="h-full w-full object-cover object-top"
+                      className="h-full w-full object-contain object-top"
                       loading="lazy"
                     />
                   </div>
