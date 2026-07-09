@@ -64,7 +64,7 @@ const BRANDS: Record<
     name: "Yummy Design Studio",
     desc: "A product design and AI enablement studio I co-founded, where we focus on speed without design debt",
     logo: "/images/logos/yummy-design.png",
-    site: "https://cal.com/yummy-labs-ps5kau/secret?month=2026-07&overlayCalendar=true",
+    site: "https://cal.com/yummy-labs-ps5kau/secret",
     siteLabel: "Book a chat",
     siteIcon: "calendar",
   },
@@ -406,14 +406,14 @@ const STAGE_CLIENTS = [
 
 const STUDIO_URL = "https://www.yummy-labs.com/studio";
 
-function TastingButton({ dark }: { dark?: boolean }) {
+function TastingButton({ onBlue }: { onBlue?: boolean }) {
   return (
     <a
       href={STUDIO_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 font-body text-[14px] font-semibold transition-opacity hover:opacity-90 ${
-        dark ? "bg-sand-100 text-brand-ink" : "bg-brand-ink text-sand-100"
+      className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-colors ${
+        onBlue ? "bg-[#1a0ed4] hover:bg-[#150bba]" : "bg-brand-ink hover:opacity-90"
       }`}
     >
       Book a free tasting
@@ -498,29 +498,33 @@ function ClientStage() {
 function StudioContent() {
   return (
     <div className="flex flex-col gap-6">
-      {/* Statement */}
-      <div className="flex flex-col items-start gap-6 rounded-2xl border border-[#F1E9E4] bg-white p-6 sm:flex-row sm:items-center lg:p-8">
-        <div className="flex-1">
-          <h3 className="max-w-[560px] font-brand text-[24px] font-extrabold leading-tight text-brand-ink">
-            Ship products users actually crave. Fast.
-          </h3>
-          <p className="mt-3 max-w-[620px] text-[14px] leading-relaxed text-neutral-600">
-            We bring the craft: a decade of strategy, UX, and shipped products.
-            AI brings the speed. You get work that&apos;s proven quicker, tested
-            quicker, and a team enabled to keep moving without us.
-          </p>
-          <div className="mt-5">
-            <TastingButton />
+      {/* Statement - brand blue, like the Labs hero */}
+      <div className="relative overflow-hidden rounded-2xl bg-[#2216ff] p-6 lg:p-8">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(124,58,237,0.25),transparent_60%)]" />
+        <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+          <div className="flex-1">
+            <h3 className="max-w-[560px] font-brand text-[24px] font-extrabold leading-tight text-white">
+              Ship products users actually crave. Fast.
+            </h3>
+            <p className="mt-3 max-w-[620px] text-[14px] leading-relaxed text-white/85">
+              We bring the craft: a decade of strategy, UX, and shipped
+              products. AI brings the speed. You get work that&apos;s proven
+              quicker, tested quicker, and a team enabled to keep moving
+              without us.
+            </p>
+            <div className="mt-5">
+              <TastingButton onBlue />
+            </div>
           </div>
+          <motion.img
+            src="/images/labs-studio/hero-studio-blackbox.svg"
+            alt=""
+            aria-hidden="true"
+            className="mx-auto w-[150px] shrink-0 motion-reduce:!transform-none sm:mx-0 sm:w-[180px]"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 46, repeat: Infinity, ease: "linear" }}
+          />
         </div>
-        <motion.img
-          src="/images/labs-studio/hero-studio-blackbox.svg"
-          alt=""
-          aria-hidden="true"
-          className="mx-auto w-[150px] shrink-0 motion-reduce:!transform-none sm:mx-0 sm:w-[180px]"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 46, repeat: Infinity, ease: "linear" }}
-        />
       </div>
 
       {/* How we work */}
@@ -576,11 +580,11 @@ function StudioContent() {
         <h3 className="max-w-[520px] font-brand text-[20px] font-bold leading-tight text-sand-100">
           The machinery behind the speed
         </h3>
-        <p className="mt-2 max-w-[560px] text-[15px] font-semibold leading-snug text-sand-100/90">
+        <p className="mt-2 max-w-[560px] text-[15px] font-semibold leading-snug text-[#FFFEFC]">
           Your team has ideas. They just can&apos;t build them like your
           product yet. The OS fixes that.
         </p>
-        <p className="mt-2 max-w-[620px] text-[14px] leading-relaxed text-sand-100/75">
+        <p className="mt-2 max-w-[620px] text-[14px] leading-relaxed" style={{ color: "rgba(255,254,252,0.72)" }}>
           Design systems structured so AI can read them, plus the skills,
           agents, and evals that make speed safe instead of a source of design
           debt. Teams run it themselves after one workshop.
