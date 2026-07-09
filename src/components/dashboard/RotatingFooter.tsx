@@ -32,14 +32,26 @@ export function RotatingFooter() {
 
   return (
     <footer className="w-full border-t border-sand-300 bg-sand-50">
-      <div className="overflow-hidden py-3">
-        <div
-          className="flex w-max animate-marquee items-center gap-3 whitespace-nowrap font-body text-12 font-medium"
-          style={{ color: "rgba(48, 1, 1, 0.45)" }}
-        >
-          {strip}
-          {/* Duplicate for seamless loop */}
-          {strip}
+      {/* Perspective tilt + edge fade make the strip read as a rotating belt */}
+      <div
+        className="overflow-hidden py-3"
+        style={{
+          perspective: "520px",
+          maskImage:
+            "linear-gradient(90deg, transparent 0%, black 14%, black 86%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent 0%, black 14%, black 86%, transparent 100%)",
+        }}
+      >
+        <div style={{ transform: "rotateX(26deg)", transformOrigin: "center bottom" }}>
+          <div
+            className="flex w-max animate-marquee items-center gap-3 whitespace-nowrap font-body text-12 font-medium"
+            style={{ color: "rgba(48, 1, 1, 0.45)" }}
+          >
+            {strip}
+            {/* Duplicate for seamless loop */}
+            {strip}
+          </div>
         </div>
       </div>
     </footer>

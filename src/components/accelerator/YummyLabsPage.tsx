@@ -173,17 +173,51 @@ const DOG_SRC = "/images/labs-studio/dog-avatar.svg";
 function DogDoorman({ hovered }: { hovered: Side | null }) {
   const reduce = useReducedMotion() ?? false;
   const [patrol, setPatrol] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(true);
+  const [cycled, setCycled] = useState<Side | null>(null);
   const lastX = useRef(10);
 
-  const targetX = reduce
-    ? 44
-    : hovered === "studio"
-      ? 17
-      : hovered === "labs"
-        ? 64
-        : patrol
-          ? 68
-          : 10;
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  /* Mobile has no hover, so the dog delivers his lines on his own */
+  useEffect(() => {
+    if (isDesktop) {
+      setCycled(null);
+      return;
+    }
+    let flip = 0;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    const speak = () => {
+      setCycled(flip % 2 === 0 ? "studio" : "labs");
+      flip += 1;
+      timeouts.push(setTimeout(() => setCycled(null), 4200));
+    };
+    timeouts.push(setTimeout(speak, 1500));
+    const loop = setInterval(speak, 8000);
+    return () => {
+      clearInterval(loop);
+      timeouts.forEach(clearTimeout);
+    };
+  }, [isDesktop]);
+
+  const bubble = isDesktop ? hovered : cycled;
+  const targetX = !isDesktop
+    ? 6
+    : reduce
+      ? 44
+      : hovered === "studio"
+        ? 17
+        : hovered === "labs"
+          ? 64
+          : patrol
+            ? 68
+            : 10;
   const facingRight = targetX > lastX.current;
   useEffect(() => {
     lastX.current = targetX;
@@ -191,22 +225,22 @@ function DogDoorman({ hovered }: { hovered: Side | null }) {
 
   return (
     <motion.div
-      className="pointer-events-none absolute -bottom-1 z-20 hidden w-[150px] lg:block"
+      className="pointer-events-none absolute -bottom-[72px] z-20 w-[140px] lg:-bottom-[88px] lg:w-[190px]"
       initial={false}
       animate={{ left: `${targetX}%` }}
       transition={
-        hovered || reduce
+        hovered || reduce || !isDesktop
           ? { duration: 0.9, ease: "easeOut" }
           : { duration: 10, ease: "linear" }
       }
       onAnimationComplete={() => {
-        if (!hovered && !reduce) setPatrol((p) => 1 - p);
+        if (isDesktop && !hovered && !reduce) setPatrol((p) => 1 - p);
       }}
     >
       <AnimatePresence>
-        {hovered && (
+        {bubble && (
           <motion.div
-            key={hovered}
+            key={bubble}
             initial={{ opacity: 0, y: 10, x: "-50%", scale: 0.92 }}
             animate={{ opacity: 1, y: 0, x: "-50%", scale: 1 }}
             exit={{ opacity: 0, y: 6, x: "-50%", scale: 0.95 }}
@@ -217,7 +251,7 @@ function DogDoorman({ hovered }: { hovered: Side | null }) {
               boxShadow: "0 1px 1px rgba(48,1,1,0.04), 0 12px 32px rgba(48,1,1,0.10)",
             }}
           >
-            {DOG_LINES[hovered]}
+            {DOG_LINES[bubble]}
             <span
               className="absolute -bottom-[7px] left-6 h-3.5 w-3.5 rotate-45 border-b border-r bg-[#FFFEFC]"
               style={{ borderColor: "#EADED7" }}
