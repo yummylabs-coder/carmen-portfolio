@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { YummyAssetsMap, SprintDay } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
@@ -291,85 +292,286 @@ function OpenHeader({ side }: { side: Side }) {
 /* ═══════════════════════════════════
    The studio - opened door content (bento)
    ═══════════════════════════════════ */
-const STUDIO_SERVICES = [
-  "Product design sprints",
-  "Design systems",
-  "AI enablement",
-  "Claude Design OS",
+const HOW_WE_WORK = [
+  {
+    title: "Understand",
+    body: "We start where good design always starts: your goals, your users, your constraints. Then we load all of it into an AI workspace, so the tooling knows your product as well as we do.",
+  },
+  {
+    title: "Week 1: strategy you can click",
+    body: "Judgment calls come from experience. AI just lets us show you proof faster: working prototypes to react to while the strategy is still forming, not slideware.",
+  },
+  {
+    title: "Week 2: high fidelity, system-backed",
+    body: "We design the screens; the system keeps them consistent. Tokens AI can read mean iteration is cheap and drift is impossible.",
+  },
+  {
+    title: "Handoff that compounds",
+    body: "The system, the skills, and the workflow stay with your team. That's the enablement part: you keep our speed without keeping us on retainer.",
+  },
 ];
 
-const STUDIO_CLIENTS = [
-  { name: "Pilgrimz", logo: "/images/pilgrimz/logo.png" },
-  { name: "NeoTaste", logo: "/images/logos/neotaste-symbol.svg" },
+const WHAT_WE_FIX = [
+  "Users land on your product and get it in seconds",
+  "Shipping every sprint and the UX getting sharper. AI speed without the design debt",
+  "Senior design thinking in your first week, not your first quarter",
+  "Senior thinking at startup speed, at a fraction of the cost",
 ];
+
+const OS_SERVICES = [
+  "Workshops",
+  "Iterative sprints",
+  "Design system setup",
+  "MCP integration",
+  "AI audits",
+];
+
+const STAGE_CLIENTS = [
+  {
+    slug: "learn-xyz",
+    name: "Learn.xyz",
+    logo: "/images/logos/learn-xyz-symbol.svg",
+    shots: [
+      "/images/learn/bet-feed-full.png",
+      "/images/learn/component-activity.png",
+      "/images/learn/ds-editor-preview.png",
+    ],
+  },
+  {
+    slug: "neotaste",
+    name: "NeoTaste",
+    logo: "/images/logos/neotaste-symbol.svg",
+    shots: [
+      "/images/neotaste/discovery-1.png",
+      "/images/neotaste/discovery-2.png",
+      "/images/neotaste/discovery-3.png",
+    ],
+  },
+  {
+    slug: "water-day",
+    name: "Water.day",
+    logo: "/images/logos/water-day-symbol.svg",
+    shots: [
+      "/images/water-day/habits-1.png",
+      "/images/water-day/habits-2.png",
+      "/images/water-day/habits-3.png",
+    ],
+  },
+  {
+    slug: "ausventure",
+    name: "Ausventure",
+    logo: "/images/logos/ausventure-symbol.svg",
+    shots: [
+      "/images/ausventure/booking-phone-1.png",
+      "/images/ausventure/booking-phone-2.png",
+      "/images/ausventure/booking-phone-3.png",
+    ],
+  },
+  {
+    slug: "pandore",
+    name: "Pandore",
+    logo: "/images/logos/pandore-symbol.svg",
+    shots: ["/covers/pandore.png"],
+  },
+  {
+    slug: "pilgrimz",
+    name: "Pilgrimz",
+    logo: "/images/pilgrimz/logo.png",
+    shots: [
+      "/images/pilgrimz/breadth-map.png",
+      "/images/pilgrimz/breadth-tour.png",
+      "/images/pilgrimz/breadth-gallery.png",
+    ],
+  },
+];
+
+const STUDIO_URL = "https://www.yummy-labs.com/studio";
+
+function TastingButton({ dark }: { dark?: boolean }) {
+  return (
+    <a
+      href={STUDIO_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center gap-2 rounded-lg px-5 py-2.5 font-body text-[14px] font-semibold transition-opacity hover:opacity-90 ${
+        dark ? "bg-sand-100 text-brand-ink" : "bg-brand-ink text-sand-100"
+      }`}
+    >
+      Book a free tasting
+      <ExternalArrow />
+    </a>
+  );
+}
+
+/** Interactive client stage - pick a logo, the real work fans out */
+function ClientStage() {
+  const [active, setActive] = useState(0);
+  const c = STAGE_CLIENTS[active];
+  return (
+    <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
+      <span className="mb-3 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        The proof lives on this site
+      </span>
+      <h3 className="mb-1 font-brand text-[20px] font-bold leading-tight text-gray-800">
+        Every client has a full case study here
+      </h3>
+      <p className="mb-5 text-[13px] leading-relaxed text-neutral-600">
+        Pick a team, peek at the work, click through to the whole story.
+      </p>
+      <div className="mb-5 flex flex-wrap gap-2">
+        {STAGE_CLIENTS.map((client, i) => (
+          <button
+            key={client.slug}
+            type="button"
+            onClick={() => setActive(i)}
+            onMouseEnter={() => setActive(i)}
+            className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-2 font-body text-[13px] font-semibold transition-colors ${
+              i === active
+                ? "border-brand-ink bg-brand-ink text-sand-100"
+                : "border-[#F1E9E4] bg-[#FAF7F5] text-gray-800 hover:bg-[#F4EEE8]"
+            }`}
+          >
+            <span className="flex h-5 w-5 items-center justify-center overflow-hidden rounded-full bg-white">
+              <Img src={client.logo} alt="" className="h-3.5 w-3.5 object-contain" />
+            </span>
+            {client.name}
+          </button>
+        ))}
+      </div>
+      <Link
+        href={`/work/${c.slug}`}
+        className="group relative block h-[280px] overflow-hidden rounded-xl border border-[#F1E9E4] bg-[#FAF7F5] sm:h-[320px]"
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            key={c.slug}
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            {c.shots.map((src, i) => {
+              const mid = (c.shots.length - 1) / 2;
+              return (
+                <motion.img
+                  key={src}
+                  src={src}
+                  alt={`${c.name} design work`}
+                  initial={{ opacity: 0, y: 60, rotate: 0, x: (i - mid) * 40, scale: 0.85 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    x: (i - mid) * 120,
+                    rotate: (i - mid) * 7,
+                    scale: 1,
+                  }}
+                  transition={{ type: "spring", stiffness: 240, damping: 22, delay: i * 0.07 }}
+                  className="absolute h-[72%] w-auto max-w-[46%] rounded-xl border border-[#EADED7] bg-white object-cover shadow-[0_1px_1px_rgba(48,1,1,0.04),0_16px_40px_rgba(48,1,1,0.12)]"
+                  style={{ zIndex: i === Math.round(mid) ? 2 : 1 }}
+                />
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+        <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 py-2 text-[13px] font-bold text-brand-ink shadow-[0_1px_4px_rgba(48,1,1,0.08)] transition-transform group-hover:translate-x-0.5">
+          View {c.name} case study
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </span>
+      </Link>
+    </div>
+  );
+}
 
 function StudioContent() {
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      {/* Left - the offer */}
-      <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
-        <h3 className="mb-3 font-brand text-[20px] font-bold leading-tight text-gray-800">
-          Full stack product design, with AI built in
+    <div className="flex flex-col gap-6">
+      {/* Statement */}
+      <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-8">
+        <h3 className="max-w-[560px] font-brand text-[24px] font-extrabold leading-tight text-brand-ink">
+          Ship products users actually crave. Fast.
         </h3>
-        <div className="space-y-4 text-[14px] leading-relaxed text-neutral-600">
-          <p>
-            We join teams as their design partner: strategy, UX, and UI across
-            the flows that matter. The difference is what we leave behind.
-            Every engagement builds the system and the AI infrastructure so the
-            team keeps shipping at our pace after we step back.
-          </p>
+        <p className="mt-3 max-w-[620px] text-[14px] leading-relaxed text-neutral-600">
+          We bring the craft: a decade of strategy, UX, and shipped products.
+          AI brings the speed. You get work that&apos;s proven quicker, tested
+          quicker, and a team enabled to keep moving without us.
+        </p>
+        <div className="mt-5">
+          <TastingButton />
         </div>
+      </div>
+
+      {/* How we work */}
+      <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
+        <span className="mb-4 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          How we work
+        </span>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {HOW_WE_WORK.map((step, i) => (
+            <div key={step.title} className="rounded-xl bg-[#FAF7F5] p-4">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-ink font-brand text-[12px] font-bold text-sand-100">
+                {i + 1}
+              </span>
+              <div className="mt-3 font-body text-[14px] font-bold leading-snug text-brand-ink">
+                {step.title}
+              </div>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-neutral-600">{step.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* What we fix */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {WHAT_WE_FIX.map((line) => (
+          <div
+            key={line}
+            className="rounded-2xl border border-[#F1E9E4] bg-white p-5 lg:p-6"
+          >
+            <p className="font-brand text-[16px] font-bold leading-snug text-brand-ink">
+              {line}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Claude Design OS - the machinery, the one dark card */}
+      <div className="rounded-2xl bg-brand-ink p-6 lg:p-8">
+        <span className="mb-3 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          Claude Design OS
+        </span>
+        <h3 className="max-w-[520px] font-brand text-[20px] font-bold leading-tight text-sand-100">
+          The machinery behind the speed
+        </h3>
+        <p className="mt-2 max-w-[620px] text-[14px] leading-relaxed text-sand-100/75">
+          Design systems structured so AI can read them, plus the skills,
+          agents, and evals that make speed safe instead of a source of design
+          debt. Teams run it themselves after one workshop.
+        </p>
         <div className="mt-5 flex flex-wrap gap-2">
-          {STUDIO_SERVICES.map((s) => (
+          {OS_SERVICES.map((s) => (
             <span
               key={s}
-              className="rounded-full border border-[#F1E9E4] bg-[#FAF7F5] px-[14px] py-[9px] font-body text-[13px] font-semibold text-gray-800"
+              className="rounded-full border border-white/15 bg-white/[0.08] px-[14px] py-[9px] font-body text-[13px] font-semibold text-sand-100"
             >
               {s}
             </span>
           ))}
         </div>
-        <a
-          href="mailto:hello@yummydesign.xyz"
-          className="mt-6 inline-flex items-center gap-2 rounded-lg bg-brand-ink px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-opacity hover:opacity-90"
-        >
-          Start a project
-          <ExternalArrow />
-        </a>
       </div>
 
-      {/* Right - two stacked cards */}
-      <div className="flex flex-col gap-6">
-        <div className="flex-1 rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
-          <span className="mb-3 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
-            Claude Design OS
-          </span>
-          <p className="text-[14px] leading-relaxed text-neutral-600">
-            Design systems structured so AI can read them, plus the skills,
-            agents, and evals that make speed safe instead of a source of
-            design debt. Teams run it themselves after one workshop.
-          </p>
-        </div>
-        <div className="flex-1 rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
-          <span className="mb-4 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
-            Teams we build with
-          </span>
-          <div className="flex flex-wrap gap-3">
-            {STUDIO_CLIENTS.map((c) => (
-              <div
-                key={c.name}
-                className="flex items-center gap-3 rounded-xl border border-[#F1E9E4] bg-[#FAF7F5] px-4 py-3"
-              >
-                <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-white">
-                  <Img src={c.logo} alt={`${c.name} logo`} className="h-5 w-5 object-contain" />
-                </span>
-                <span className="font-body text-[14px] font-bold text-[#300101]">{c.name}</span>
-              </div>
-            ))}
-            <div className="flex items-center gap-3 rounded-xl border border-dashed border-[#EADED7] px-4 py-3">
-              <span className="font-body text-[13px] font-medium text-neutral-500">Your team next</span>
-            </div>
-          </div>
+      <ClientStage />
+
+      {/* Closer */}
+      <div className="py-6 text-center">
+        <p className="mx-auto max-w-[480px] font-brand text-[20px] font-bold leading-snug text-brand-ink">
+          Great UX isn&apos;t just a detail. It&apos;s a business strategy.
+        </p>
+        <div className="mt-5 flex justify-center">
+          <TastingButton />
         </div>
       </div>
     </div>
