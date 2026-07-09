@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import { motion, useInView, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { YummyAssetsMap, SprintDay } from "@/lib/types";
 import { PageEntrance } from "@/components/ui/PageEntrance";
@@ -428,10 +427,7 @@ function ClientStage() {
           </button>
         ))}
       </div>
-      <Link
-        href={`/work/${c.slug}`}
-        className="group relative block h-[280px] overflow-hidden rounded-xl border border-[#F1E9E4] bg-[#FAF7F5] sm:h-[320px]"
-      >
+      <div className="relative block h-[280px] overflow-hidden rounded-xl border border-[#F1E9E4] bg-[#FAF7F5] sm:h-[320px]">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={c.slug}
@@ -464,14 +460,7 @@ function ClientStage() {
             })}
           </motion.div>
         </AnimatePresence>
-        <span className="absolute bottom-4 right-4 z-10 flex items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 py-2 text-[13px] font-bold text-brand-ink shadow-[0_1px_4px_rgba(48,1,1,0.08)] transition-transform group-hover:translate-x-0.5">
-          View {c.name} case study
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
-        </span>
-      </Link>
+      </div>
     </div>
   );
 }
@@ -480,18 +469,28 @@ function StudioContent() {
   return (
     <div className="flex flex-col gap-6">
       {/* Statement */}
-      <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-8">
-        <h3 className="max-w-[560px] font-brand text-[24px] font-extrabold leading-tight text-brand-ink">
-          Ship products users actually crave. Fast.
-        </h3>
-        <p className="mt-3 max-w-[620px] text-[14px] leading-relaxed text-neutral-600">
-          We bring the craft: a decade of strategy, UX, and shipped products.
-          AI brings the speed. You get work that&apos;s proven quicker, tested
-          quicker, and a team enabled to keep moving without us.
-        </p>
-        <div className="mt-5">
-          <TastingButton />
+      <div className="flex flex-col items-start gap-6 rounded-2xl border border-[#F1E9E4] bg-white p-6 sm:flex-row sm:items-center lg:p-8">
+        <div className="flex-1">
+          <h3 className="max-w-[560px] font-brand text-[24px] font-extrabold leading-tight text-brand-ink">
+            Ship products users actually crave. Fast.
+          </h3>
+          <p className="mt-3 max-w-[620px] text-[14px] leading-relaxed text-neutral-600">
+            We bring the craft: a decade of strategy, UX, and shipped products.
+            AI brings the speed. You get work that&apos;s proven quicker, tested
+            quicker, and a team enabled to keep moving without us.
+          </p>
+          <div className="mt-5">
+            <TastingButton />
+          </div>
         </div>
+        <motion.img
+          src="/images/labs-studio/hero-studio-blackbox.svg"
+          alt=""
+          aria-hidden="true"
+          className="mx-auto w-[150px] shrink-0 motion-reduce:!transform-none sm:mx-0 sm:w-[180px]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 46, repeat: Infinity, ease: "linear" }}
+        />
       </div>
 
       {/* How we work */}
@@ -529,7 +528,15 @@ function StudioContent() {
       </div>
 
       {/* Claude Design OS - the machinery, the one dark card */}
-      <div className="rounded-2xl bg-brand-ink p-6 lg:p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-brand-ink p-6 lg:p-8">
+        <motion.img
+          src="/images/labs-studio/designos-claudeavatar.svg"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-1 right-8 hidden w-[96px] motion-reduce:!transform-none sm:block"
+          animate={{ x: [-10, 10, -10] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        />
         <span className="mb-3 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
           Claude Design OS
         </span>
@@ -551,6 +558,15 @@ function StudioContent() {
             </span>
           ))}
         </div>
+        <a
+          href="https://www.yummy-labs.com/workshops"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative mt-6 inline-flex items-center gap-2 rounded-lg bg-sand-100 px-5 py-2.5 font-body text-[14px] font-semibold text-brand-ink transition-opacity hover:opacity-90"
+        >
+          Explore the workshops
+          <ExternalArrow />
+        </a>
       </div>
 
       <ClientStage />
