@@ -42,84 +42,141 @@ function ExternalArrow() {
 }
 
 /* ═══════════════════════════════════
-   Section 1 - Header
+   The two doors - Yummy Design Studio / Yummy Labs
+   Design specs from Figma: door cards #FAF7F5, border #F1E9E4, radius 20;
+   glow = 722px blurred radial #FFF9F4->#FAF7F5; tap circle 264px #FAF7F5
+   with #EADED7 stroke and a soft spread halo.
    ═══════════════════════════════════ */
-function Header({ assets }: { assets: YummyAssetsMap }) {
-  const dogUrl = assets.branding["dog"];
+type Side = "studio" | "labs";
 
+const BRANDS: Record<
+  Side,
+  { name: string; desc: string; logo: string; site: string; siteLabel: string }
+> = {
+  studio: {
+    name: "Yummy Design Studio",
+    desc: "Product design, systems, and AI enablement",
+    logo: "/images/logos/yummy-design.png",
+    site: "mailto:hello@yummydesign.xyz",
+    siteLabel: "Get in touch",
+  },
+  labs: {
+    name: "Yummy Labs",
+    desc: "The accelerator for AI-native designers",
+    logo: "/images/logos/yummy-labs.png",
+    site: YUMMY_URL,
+    siteLabel: "Visit website",
+  },
+};
+
+function DoorGlow() {
   return (
-    <header className="relative">
-      <div className="mb-1">
-        <h1 className="font-brand text-22 font-bold text-brand-ink">
-          Yummy Labs &amp; Design
-        </h1>
-      </div>
-      <p className="max-w-[560px] text-14 leading-[1.6] text-neutral-600">
-        One brand, two arms. A studio that designs products with teams, and an
-        accelerator that teaches designers the same AI workflows we use on real
-        work. Powered by Claude.
-      </p>
-
-      {/* Dog mascot - hidden on mobile, sits behind the next section */}
-      {dogUrl && (
-        <div className="pointer-events-none absolute bottom-0 right-0 z-0 hidden w-[112px] translate-y-[50%] lg:block">
-          <Img src={dogUrl} alt="Yummy Labs Dog" className="block w-full" />
-        </div>
-      )}
-    </header>
+    <div
+      className="pointer-events-none absolute -left-[260px] top-[349px] h-[722px] w-[722px] rounded-full blur-[50px]"
+      style={{ background: "radial-gradient(circle, #FFF9F4 0%, #FAF7F5 100%)" }}
+    />
   );
 }
 
-/* ═══════════════════════════════════
-   Section 1b - Two arms overview
-   ═══════════════════════════════════ */
-function ArmsOverview() {
-  const arms = [
-    {
-      href: "#studio",
-      kicker: "The studio",
-      title: "We build with teams",
-      body: "Full stack product design plus AI enablement for startups that need speed without design debt.",
-      bg: "bg-brand-ink",
-    },
-    {
-      href: "#accelerator",
-      kicker: "The accelerator",
-      title: "We teach what we practice",
-      body: "Two week sprints where designers ship real work with the exact AI workflows from our client projects.",
-      bg: "bg-[#2216ff]",
-    },
-  ];
+function GlobeIcon() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {arms.map((arm) => (
-        <a
-          key={arm.href}
-          href={arm.href}
-          className={`group relative overflow-hidden rounded-3xl p-6 transition-transform hover:scale-[1.01] ${arm.bg}`}
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
+
+function VisitPill({ href, label }: { href: string; label: string }) {
+  const external = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      onClick={(e) => e.stopPropagation()}
+      className="absolute right-6 top-6 z-20 flex h-[50px] items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)] transition-transform hover:scale-[1.03]"
+    >
+      {label}
+      <GlobeIcon />
+    </a>
+  );
+}
+
+/** The clickable seal - soft halo begs for the tap */
+function TapCircle({ side, onEnter }: { side: Side; onEnter: () => void }) {
+  const b = BRANDS[side];
+  return (
+    <motion.button
+      type="button"
+      onClick={onEnter}
+      aria-label={`Enter ${b.name}`}
+      className="relative flex h-[258px] w-[264px] cursor-pointer items-center justify-center rounded-full border bg-[#FAF7F5]"
+      style={{
+        borderColor: "#EADED7",
+        boxShadow: "0 -1px 44px 21px rgba(238,234,232,0.74)",
+      }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      <svg viewBox="0 0 264 258" className="pointer-events-none absolute inset-0 h-full w-full">
+        <defs>
+          <path id={`tap-arc-${side}`} d="M 36 129 A 96 96 0 0 1 228 129" fill="none" />
+        </defs>
+        <text
+          style={{ fontSize: 12, letterSpacing: "0.2em", fontWeight: 600 }}
+          className="fill-neutral-400 uppercase"
         >
-          <span className="inline-flex items-center rounded-md bg-white/90 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-800">
-            {arm.kicker}
-          </span>
-          <h3 className="mb-1.5 mt-3 font-brand text-[19px] font-extrabold leading-tight text-white">
-            {arm.title}
-          </h3>
-          <p className="text-[13px] leading-relaxed text-white/75">{arm.body}</p>
-          <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-white/90 transition-transform group-hover:translate-x-0.5">
-            See how
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <polyline points="19 12 12 19 5 12" />
-            </svg>
-          </span>
-        </a>
-      ))}
+          <textPath href={`#tap-arc-${side}`} startOffset="50%" textAnchor="middle">
+            Tap to enter
+          </textPath>
+        </text>
+      </svg>
+      <Img src={b.logo} alt={`${b.name} logo`} className="h-[130px] w-[130px] object-contain" />
+    </motion.button>
+  );
+}
+
+/** Collapsed edge rail for the non-active brand (desktop) */
+function BrandRail({ side, onEnter }: { side: Side; onEnter: () => void }) {
+  const b = BRANDS[side];
+  return (
+    <motion.button
+      type="button"
+      onClick={onEnter}
+      aria-label={`Switch to ${b.name}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, delay: 0.15 }}
+      className="relative hidden w-[51px] shrink-0 cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] border bg-[#FAF7F5] transition-colors hover:bg-[#F4EEE8] lg:flex"
+      style={{ borderColor: "#F1E9E4" }}
+    >
+      <DoorGlow />
+      <span className="relative rotate-180 whitespace-nowrap font-brand text-[15px] font-bold text-brand-ink [writing-mode:vertical-rl]">
+        {b.name}
+      </span>
+      <Img src={b.logo} alt="" className="relative h-[27px] w-[27px] object-contain" />
+    </motion.button>
+  );
+}
+
+/** Header inside an opened door */
+function OpenHeader({ side }: { side: Side }) {
+  const b = BRANDS[side];
+  return (
+    <div className="flex items-center gap-4">
+      <Img src={b.logo} alt={`${b.name} logo`} className="h-[82px] w-[82px] rounded-2xl object-contain" />
+      <div>
+        <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
+        <p className="mt-1 text-14 text-neutral-600">{b.desc}</p>
+      </div>
     </div>
   );
 }
 
 /* ═══════════════════════════════════
-   Section 1c - The studio
+   The studio - opened door content (bento)
    ═══════════════════════════════════ */
 const STUDIO_SERVICES = [
   "Product design sprints",
@@ -133,74 +190,71 @@ const STUDIO_CLIENTS = [
   { name: "NeoTaste", logo: "/images/logos/neotaste-symbol.svg" },
 ];
 
-function StudioSection() {
+function StudioContent() {
   return (
-    <div id="studio" className="scroll-mt-24 rounded-3xl border border-sand-300 bg-white p-6 lg:p-8">
-      <span className="mb-[13px] inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
-        The studio
-      </span>
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex-1">
-          <h3 className="mb-3 font-brand text-[20px] font-bold leading-tight text-gray-800">
-            Full stack product design, with AI built in
-          </h3>
-          <div className="space-y-4 text-[14px] leading-relaxed text-neutral-600">
-            <p>
-              We join teams as their design partner: strategy, UX, and UI across
-              the flows that matter. The difference is what we leave behind.
-              Every engagement builds the system and the AI infrastructure so
-              the team keeps shipping at our pace after we step back.
-            </p>
-            <p>
-              That is the Claude Design OS work: design systems structured so AI
-              can read them, plus the skills, agents, and evals that make speed
-              safe instead of a source of design debt.
-            </p>
-          </div>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {STUDIO_SERVICES.map((s) => (
-              <span
-                key={s}
-                className="rounded-full border border-sand-300 bg-sand-100 px-[14px] py-[9px] font-body text-[13px] font-semibold text-gray-800"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-          <a
-            href="mailto:hello@yummydesign.xyz"
-            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-brand-ink px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-opacity hover:opacity-90"
-          >
-            Start a project
-            <ExternalArrow />
-          </a>
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {/* Left - the offer */}
+      <div className="rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
+        <h3 className="mb-3 font-brand text-[20px] font-bold leading-tight text-gray-800">
+          Full stack product design, with AI built in
+        </h3>
+        <div className="space-y-4 text-[14px] leading-relaxed text-neutral-600">
+          <p>
+            We join teams as their design partner: strategy, UX, and UI across
+            the flows that matter. The difference is what we leave behind.
+            Every engagement builds the system and the AI infrastructure so the
+            team keeps shipping at our pace after we step back.
+          </p>
         </div>
-        <div className="lg:w-[280px]">
-          <div className="rounded-2xl border border-sand-200 bg-sand-50 p-5">
-            <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.05em] text-neutral-500">
-              Teams we build with
-            </div>
-            <div className="flex flex-col gap-3">
-              {STUDIO_CLIENTS.map((c) => (
-                <div
-                  key={c.name}
-                  className="flex items-center gap-3 rounded-xl border border-sand-300 bg-white px-4 py-3"
-                >
-                  <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-sand-100">
-                    <Img src={c.logo} alt={`${c.name} logo`} className="h-5 w-5 object-contain" />
-                  </span>
-                  <span className="font-body text-[14px] font-bold text-[#300101]">{c.name}</span>
-                </div>
-              ))}
-              <div className="flex items-center gap-3 rounded-xl border border-dashed border-sand-300 px-4 py-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-sand-100 text-neutral-400">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {STUDIO_SERVICES.map((s) => (
+            <span
+              key={s}
+              className="rounded-full border border-[#F1E9E4] bg-[#FAF7F5] px-[14px] py-[9px] font-body text-[13px] font-semibold text-gray-800"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+        <a
+          href="mailto:hello@yummydesign.xyz"
+          className="mt-6 inline-flex items-center gap-2 rounded-lg bg-brand-ink px-5 py-2.5 font-body text-[14px] font-semibold text-sand-100 transition-opacity hover:opacity-90"
+        >
+          Start a project
+          <ExternalArrow />
+        </a>
+      </div>
+
+      {/* Right - two stacked cards */}
+      <div className="flex flex-col gap-6">
+        <div className="flex-1 rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
+          <span className="mb-3 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+            Claude Design OS
+          </span>
+          <p className="text-[14px] leading-relaxed text-neutral-600">
+            Design systems structured so AI can read them, plus the skills,
+            agents, and evals that make speed safe instead of a source of
+            design debt. Teams run it themselves after one workshop.
+          </p>
+        </div>
+        <div className="flex-1 rounded-2xl border border-[#F1E9E4] bg-white p-6 lg:p-7">
+          <span className="mb-4 inline-flex items-center rounded-md bg-[#FAF7F5] px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+            Teams we build with
+          </span>
+          <div className="flex flex-wrap gap-3">
+            {STUDIO_CLIENTS.map((c) => (
+              <div
+                key={c.name}
+                className="flex items-center gap-3 rounded-xl border border-[#F1E9E4] bg-[#FAF7F5] px-4 py-3"
+              >
+                <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-white">
+                  <Img src={c.logo} alt={`${c.name} logo`} className="h-5 w-5 object-contain" />
                 </span>
-                <span className="font-body text-[13px] font-medium text-neutral-500">Your team next</span>
+                <span className="font-body text-[14px] font-bold text-[#300101]">{c.name}</span>
               </div>
+            ))}
+            <div className="flex items-center gap-3 rounded-xl border border-dashed border-[#EADED7] px-4 py-3">
+              <span className="font-body text-[13px] font-medium text-neutral-500">Your team next</span>
             </div>
           </div>
         </div>
@@ -1101,17 +1155,9 @@ function CtaSection() {
 /* ═══════════════════════════════════
    Main Page
    ═══════════════════════════════════ */
-export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
+function LabsContent({ assets, sprintDays }: YummyLabsPageProps) {
   return (
-    <PageEntrance>
-      <Header assets={assets} />
-      <ArmsOverview />
-      <StudioSection />
-      <div id="accelerator" className="scroll-mt-24">
-        <span className="inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
-          The accelerator
-        </span>
-      </div>
+    <div className="flex flex-col gap-6">
       <ProblemHero assets={assets} />
       <RoleAndStats />
       <SprintCalendar days={sprintDays ?? []} />
@@ -1119,6 +1165,97 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
       <Testimonials assets={assets} />
       <Gallery assets={assets} />
       <CtaSection />
+    </div>
+  );
+}
+
+export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
+  const [side, setSide] = useState<Side | null>(null);
+  const other: Side | null = side === "studio" ? "labs" : side === "labs" ? "studio" : null;
+
+  return (
+    <PageEntrance>
+      <div className="flex flex-col gap-4 lg:min-h-[calc(100vh-140px)] lg:flex-row lg:items-stretch">
+        {(["studio", "labs"] as const).map((s) => {
+          const b = BRANDS[s];
+          const state = side === null ? "door" : side === s ? "open" : "rail";
+
+          if (state === "rail") {
+            return <BrandRail key={s} side={s} onEnter={() => setSide(s)} />;
+          }
+
+          return (
+            <motion.div
+              key={s}
+              layout
+              transition={{ type: "spring", stiffness: 200, damping: 28 }}
+              className="relative flex-1 overflow-hidden rounded-[20px] border bg-[#FAF7F5]"
+              style={{ borderColor: "#F1E9E4" }}
+            >
+              <DoorGlow />
+              <VisitPill href={b.site} label={b.siteLabel} />
+              <AnimatePresence mode="wait" initial={false}>
+                {state === "door" ? (
+                  <motion.div
+                    key="door"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative flex min-h-[68vh] flex-col items-center justify-center gap-12 px-8 py-11 lg:min-h-full"
+                  >
+                    <div className="text-center">
+                      <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
+                      <p className="mt-2 text-[16px] text-neutral-600">{b.desc}</p>
+                    </div>
+                    <TapCircle side={s} onEnter={() => setSide(s)} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="open"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" }}
+                    className="relative flex flex-col gap-8 px-5 py-7 sm:px-8 lg:px-10 lg:py-9"
+                  >
+                    <OpenHeader side={s} />
+                    {s === "studio" ? (
+                      <StudioContent />
+                    ) : (
+                      <LabsContent assets={assets} sprintDays={sprintDays} />
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Mobile - the other brand becomes a sticky bottom chip */}
+      <AnimatePresence>
+        {side && other && (
+          <div className="pointer-events-none fixed inset-x-0 bottom-5 z-40 flex justify-center lg:hidden">
+            <motion.button
+              type="button"
+              onClick={() => setSide(other)}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 16 }}
+              transition={{ duration: 0.25 }}
+              className="pointer-events-auto flex items-center gap-2.5 rounded-full border border-[#EADED7] bg-[#FFFEFC] py-2.5 pl-3 pr-5 text-[13px] font-bold text-brand-ink shadow-[0_8px_28px_rgba(48,1,1,0.16)]"
+            >
+              <Img
+                src={BRANDS[other].logo}
+                alt=""
+                className="h-6 w-6 rounded-full object-contain"
+              />
+              Switch to {BRANDS[other].name}
+            </motion.button>
+          </div>
+        )}
+      </AnimatePresence>
     </PageEntrance>
   );
 }
