@@ -51,14 +51,22 @@ type Side = "studio" | "labs";
 
 const BRANDS: Record<
   Side,
-  { name: string; desc: string; logo: string; site: string; siteLabel: string }
+  {
+    name: string;
+    desc: string;
+    logo: string;
+    site: string;
+    siteLabel: string;
+    siteIcon: "globe" | "calendar";
+  }
 > = {
   studio: {
     name: "Yummy Design Studio",
     desc: "A product design and AI enablement studio I co-founded, where we focus on speed without design debt",
     logo: "/images/logos/yummy-design.png",
-    site: "mailto:hello@yummydesign.xyz",
-    siteLabel: "Get in touch",
+    site: "https://cal.com/yummy-labs-ps5kau/secret?month=2026-07&overlayCalendar=true",
+    siteLabel: "Book a chat",
+    siteIcon: "calendar",
   },
   labs: {
     name: "Yummy Labs",
@@ -66,6 +74,7 @@ const BRANDS: Record<
     logo: "/images/logos/yummy-labs.png",
     site: YUMMY_URL,
     siteLabel: "Visit website",
+    siteIcon: "globe",
   },
 };
 
@@ -88,7 +97,28 @@ function GlobeIcon() {
   );
 }
 
-function VisitPill({ href, label, stacked }: { href: string; label: string; stacked?: boolean }) {
+function CalendarIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
+function VisitPill({
+  href,
+  label,
+  icon = "globe",
+  stacked,
+}: {
+  href: string;
+  label: string;
+  icon?: "globe" | "calendar";
+  stacked?: boolean;
+}) {
   const external = href.startsWith("http");
   return (
     <a
@@ -100,7 +130,7 @@ function VisitPill({ href, label, stacked }: { href: string; label: string; stac
       }`}
     >
       {label}
-      <GlobeIcon />
+      {icon === "calendar" ? <CalendarIcon /> : <GlobeIcon />}
     </a>
   );
 }
@@ -312,9 +342,9 @@ const HOW_WE_WORK = [
 
 const WHAT_WE_FIX = [
   "Users land on your product and get it in seconds",
-  "Shipping every sprint and the UX getting sharper. AI speed without the design debt",
-  "Senior design thinking in your first week, not your first quarter",
-  "Senior thinking at startup speed, at a fraction of the cost",
+  "You ship every sprint and the UX gets sharper, not messier",
+  "Product judgment in the room from day one, not after a quarter of onboarding",
+  "Studio craft at startup pace, without the agency overhead",
 ];
 
 const OS_SERVICES = [
@@ -537,12 +567,19 @@ function StudioContent() {
           animate={{ x: [-10, 10, -10] }}
           transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
         />
-        <span className="mb-3 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+        <span
+          className="mb-3 inline-flex items-center rounded-md px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-100"
+          style={{ backgroundColor: "#210000" }}
+        >
           Claude Design OS
         </span>
         <h3 className="max-w-[520px] font-brand text-[20px] font-bold leading-tight text-sand-100">
           The machinery behind the speed
         </h3>
+        <p className="mt-2 max-w-[560px] text-[15px] font-semibold leading-snug text-sand-100/90">
+          Your team has ideas. They just can&apos;t build them like your
+          product yet. The OS fixes that.
+        </p>
         <p className="mt-2 max-w-[620px] text-[14px] leading-relaxed text-sand-100/75">
           Design systems structured so AI can read them, plus the skills,
           agents, and evals that make speed safe instead of a source of design
@@ -1555,7 +1592,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                       className="relative flex min-h-[68vh] flex-col items-center justify-center gap-12 px-8 py-11 lg:min-h-full"
                     >
                       <DoorGlow />
-                      <VisitPill href={b.site} label={b.siteLabel} />
+                      <VisitPill href={b.site} label={b.siteLabel} icon={b.siteIcon} />
                       <div className="relative text-center">
                         <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
                         <p className="mx-auto mt-2 max-w-[420px] text-[16px] text-neutral-600">{b.desc}</p>
@@ -1572,7 +1609,7 @@ export function YummyLabsPage({ assets, sprintDays }: YummyLabsPageProps) {
                       className="relative flex flex-col gap-6 px-5 py-7 sm:px-8 lg:gap-8 lg:px-10 lg:py-9"
                     >
                       <OpenHeader side={s} />
-                      <VisitPill href={b.site} label={b.siteLabel} stacked />
+                      <VisitPill href={b.site} label={b.siteLabel} icon={b.siteIcon} stacked />
                       {s === "studio" ? (
                         <StudioContent />
                       ) : (
