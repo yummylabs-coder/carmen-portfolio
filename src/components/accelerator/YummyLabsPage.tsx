@@ -406,6 +406,9 @@ const STAGE_CLIENTS = [
 
 const STUDIO_URL = "https://www.yummy-labs.com/studio";
 
+/* Parked: the interactive sprint scrubber. Set true to show it again. */
+const SHOW_SPRINT_SCRUBBER = false;
+
 /* Scrubbable sprint: drag through the two weeks, see what exists when */
 const SPRINT_STOPS = [
   {
@@ -652,10 +655,14 @@ function StudioContent() {
             </div>
           ))}
         </div>
+        <p className="mt-4 text-[13px] leading-relaxed text-neutral-500">
+          No two sprints look the same. The rhythm stays, but the focus shifts
+          with what your client and your product actually need.
+        </p>
       </div>
 
-      {/* Option B, same story as a scrubbable sprint - pick one, delete the other */}
-      <SprintScrubber />
+      {/* Sprint scrubber parked for now - flip to true to iterate on it */}
+      {SHOW_SPRINT_SCRUBBER && <SprintScrubber />}
 
       {/* What we fix */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
