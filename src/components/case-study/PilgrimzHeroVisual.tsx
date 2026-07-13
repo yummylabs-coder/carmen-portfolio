@@ -81,12 +81,14 @@ function PlayingGlow() {
 /* Small floating UI satellite — white card, pops in after the phone lands */
 function Satellite({
   className = "",
+  innerClassName = "flex items-center gap-2 px-3 py-2",
   delay,
   floatDur,
   reduce,
   children,
 }: {
   className?: string;
+  innerClassName?: string;
   delay: number;
   floatDur: number;
   reduce: boolean;
@@ -100,7 +102,7 @@ function Satellite({
       transition={{ duration: 0.5, delay, ease: smooth }}
     >
       <motion.div
-        className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2"
+        className={`rounded-xl border bg-white ${innerClassName}`}
         style={{
           borderColor: "#E8E6E1",
           boxShadow: "0 0 1px rgba(28,27,25,0.08), 0 12px 32px rgba(14,53,56,0.30)",
@@ -202,19 +204,28 @@ export function PilgrimzHeroVisual() {
         </div>
 
         {/* UI satellites — small real-product moments orbiting the screen */}
-        <Satellite className="-left-8 top-[10%] sm:-left-12" delay={0.9} floatDur={5.2} reduce={reduce}>
-          <span
-            className="flex h-6 w-6 items-center justify-center rounded-full"
-            style={{ backgroundColor: "#D9F0EC" }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-          </span>
-          <span className="whitespace-nowrap text-[12px] font-semibold text-[#1C1B19]">
-            Next stop · 200 m
-          </span>
+        <Satellite
+          className="-left-9 top-[8%] sm:-left-14"
+          innerClassName="p-1.5"
+          delay={0.9}
+          floatDur={5.2}
+          reduce={reduce}
+        >
+          <div className="relative h-[92px] w-[92px] overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/pilgrimz/hero-photo-square.avif"
+              alt="A stop along a Pilgrimz cultural walking tour"
+              className="h-full w-full object-cover"
+            />
+            <span className="absolute bottom-1 left-1 flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Next stop
+            </span>
+          </div>
         </Satellite>
 
         <Satellite className="-right-6 top-[58%] sm:-right-10" delay={1.15} floatDur={6.1} reduce={reduce}>
