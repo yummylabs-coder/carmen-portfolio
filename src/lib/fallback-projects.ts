@@ -11,7 +11,7 @@ export const staticCoverMap: Record<string, string> = {
   "learn-xyz": "/covers/learn-xyz.png",
   "ausventure": "/covers/ausventure.svg",
   "klasse": "/covers/klasse.svg",
-  "pilgrimz": "/covers/pilgrimz-cover.svg",
+  "pilgrimz": "/covers/pilgrimz-cover.png",
 };
 
 /** Get the static cover path for a slug, or a placeholder if unknown. */
