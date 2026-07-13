@@ -206,17 +206,17 @@ export function PilgrimzHeroVisual() {
         {/* UI satellites — small real-product moments orbiting the screen */}
         <Satellite
           className="-left-9 top-[8%] sm:-left-14"
-          innerClassName="p-1.5"
+          innerClassName="p-[3px]"
           delay={0.9}
           floatDur={5.2}
           reduce={reduce}
         >
-          <div className="relative h-[92px] w-[92px] overflow-hidden rounded-lg">
+          <div className="relative h-[100px] w-[100px] overflow-hidden rounded-[10px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/pilgrimz/hero-photo-square.avif"
               alt="A stop along a Pilgrimz cultural walking tour"
-              className="h-full w-full object-cover"
+              className="h-full w-full scale-[1.25] object-cover"
             />
             <span className="absolute bottom-1 left-1 flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
