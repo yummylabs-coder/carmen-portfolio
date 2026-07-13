@@ -12,9 +12,9 @@
 export const pilgrimzContent = {
   title: "Pilgrimz",
   partner: "Pilgrimz",
-  headline: "Ending Pilgrimz's AI design debt, then designing what's next",
+  headline: "From AI design debt to a system the whole team runs",
   summary:
-    "Pilgrimz is a cultural travel app with GPS audio guides and early traction across Europe. Designing straight in Claude meant every screen drifted a little further off-brand, so we built the missing foundation and a Claude Design OS on top of it, then redesigned the core flows around trust, retention, and the business.",
+    "A cultural travel app growing fast across Europe, held back by invisible AI design debt. We built the system underneath it, then redesigned the flows that turn first-time users into returning ones.",
   websiteUrl: "https://apps.apple.com/us/app/pilgrimz-social-audio-guide/id6739208380",
   overview:
     "We joined Pilgrimz as their full stack design partner: product strategy, the design system, and the AI enablement behind both. The real problem was trust, retention, and a small team designing straight in Claude with nothing but a few guidelines.\n\nPilgrimz had traction, with early users across Europe and growing. But every screen built without a real foundation added AI design debt: small inconsistencies that users feel without being able to name. People cannot always say why something feels off, or why they do not come back, and very often the answer is inconsistency. It stays invisible until you fix it.\n\nAs a small team that cannot hire its way out, Pilgrimz needed great output from the first pass. So the system was never cosmetic. It was the way out of debt that compounds with every new feature, and the prerequisite for everything the founders wanted next, like gamification, social sharing, and better discovery.",
