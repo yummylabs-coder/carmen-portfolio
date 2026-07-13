@@ -59,9 +59,9 @@ const transitionConfigs: Record<string, TransitionConfig> = {
     textColor: "#FFFFFF",
   },
 
-  /* Pilgrimz — Deep teal, white-knocked wordmark */
+  /* Pilgrimz — Lighter teal, white-knocked wordmark */
   pilgrimz: {
-    color: "#0A5C61",
+    color: "#24A0A8",
     textColor: "#FFFFFF",
     logoUrl: "/images/pilgrimz/logo.png",
     logoInvert: true,
