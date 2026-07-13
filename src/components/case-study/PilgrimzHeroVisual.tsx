@@ -218,12 +218,11 @@ export function PilgrimzHeroVisual() {
               alt="A stop along a Pilgrimz cultural walking tour"
               className="h-full w-full scale-[1.25] object-cover"
             />
-            <span className="absolute bottom-1 left-1 flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              Next stop
+            <span
+              className="absolute left-1.5 top-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+              style={{ backgroundColor: "#FDEBCC", color: "#8A5B10" }}
+            >
+              Hidden gem
             </span>
           </div>
         </Satellite>
