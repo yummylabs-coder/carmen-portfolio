@@ -70,7 +70,7 @@ const BRANDS: Record<
   },
   labs: {
     name: "Yummy Labs",
-    desc: "An AI design accelerator I co-founded, where designers upskill on real product work, not concept projects",
+    desc: "An AI design accelerator I co-founded, where designers upskill on real, tested AI workflows through real product work, not concept projects",
     logo: "/images/logos/yummy-labs.png",
     site: YUMMY_URL,
     siteLabel: "Visit website",
