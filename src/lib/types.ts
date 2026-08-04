@@ -183,10 +183,11 @@ export interface YummyAsset {
 
 export interface FeaturedWorkItem {
   name: string;
-  imageUrl: string;
+  imageUrls: string[];
   avatarUrl: string;
   industry: string;
   startup: string;
+  tag: string;
 }
 
 export interface YummyAssetsMap {

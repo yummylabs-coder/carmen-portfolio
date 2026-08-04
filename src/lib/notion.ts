@@ -567,9 +567,11 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
 
     const assets: (YummyAsset & {
       videoUrl?: string;
+      imageUrls?: string[];
       avatarUrl?: string;
       industry?: string;
       startup?: string;
+      tag?: string;
     })[] = response.results
       .filter((p): p is PageObjectResponse => "properties" in p)
       .map((page) => {
@@ -580,10 +582,12 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           slug: getPlainText(props.Slug, "rich_text"),
           category: getSelect(props.Category) as YummyAsset["category"],
           imageUrl: getFiles(props.Image),
+          imageUrls: getAllFiles(props.Image),
           videoUrl: getUrl(props["Video URL"]) || undefined,
           avatarUrl: getFiles(props.Avatar) || undefined,
           industry: getPlainText(props.Industry, "rich_text"),
           startup: getPlainText(props.Startup, "rich_text"),
+          tag: getPlainText(props.Tag, "rich_text"),
           order: getNumber(props.Order),
         };
       });
@@ -613,13 +617,14 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           result.gallery.push({ slug: asset.slug, imageUrl: asset.imageUrl, name: asset.name });
           break;
         case "Featured Work":
-          if (asset.imageUrl) {
+          if (asset.imageUrls && asset.imageUrls.length > 0) {
             result.featuredWork.push({
               name: asset.name,
-              imageUrl: asset.imageUrl,
+              imageUrls: asset.imageUrls,
               avatarUrl: asset.avatarUrl || "",
               industry: asset.industry || "",
               startup: asset.startup || "",
+              tag: asset.tag || "",
             });
           }
           break;
