@@ -1562,36 +1562,79 @@ function Testimonials({ assets }: { assets: YummyAssetsMap }) {
 }
 
 /* ═══════════════════════════════════
-   Section 7 - Gallery
+   Section 7 - Featured work
    ═══════════════════════════════════ */
-const tiltClasses = [
-  "-rotate-1",
-  "rotate-[1.5deg]",
-  "-rotate-[0.5deg]",
-  "rotate-1",
-  "-rotate-[1.5deg]",
-  "rotate-[0.5deg]",
-];
 
-function Gallery({ assets }: { assets: YummyAssetsMap }) {
-  // Render directly from Notion - no hardcoded list needed
-  const items = assets.gallery.filter((g) => g.imageUrl);
+function FeaturedWork({ assets }: { assets: YummyAssetsMap }) {
+  const items = assets.featuredWork.filter((w) => w.imageUrl);
+  const scroller = useRef<HTMLDivElement>(null);
+
+  const scrollBy = (dir: 1 | -1) => {
+    const el = scroller.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.min(el.clientWidth * 0.8, 520), behavior: "smooth" });
+  };
 
   if (items.length === 0) return null;
 
   return (
     <div className="mt-2">
-      <span className="mb-5 inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
-        Behind the scenes
-      </span>
+      <div className="mb-5 flex items-center justify-between">
+        <span className="inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+          Featured work
+        </span>
+        {/* Desktop arrows */}
+        <div className="hidden gap-2 lg:flex">
+          {([-1, 1] as const).map((dir) => (
+            <button
+              key={dir}
+              type="button"
+              onClick={() => scrollBy(dir)}
+              aria-label={dir === -1 ? "Previous" : "Next"}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-sand-300 bg-white text-brand-ink transition-colors hover:bg-sand-100"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {dir === -1 ? <polyline points="15 18 9 12 15 6" /> : <polyline points="9 18 15 12 9 6" />}
+              </svg>
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-        {items.map((item, idx) => (
-          <div
-            key={item.slug}
-            className={`mb-4 overflow-hidden rounded-2xl border border-sand-300 bg-neutral-50 break-inside-avoid transition-all hover:scale-[1.02] hover:border-[#2216ff] hover:rotate-0 ${tiltClasses[idx % tiltClasses.length] || ""}`}
-          >
-            <Img src={item.imageUrl} alt={item.name} className="w-full rounded-2xl" />
+      <div
+        ref={scroller}
+        className="-mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((item, i) => (
+          <div key={`${item.name}-${i}`} className="shrink-0 snap-start">
+            {/* Fixed height, width follows the image — portrait and landscape both work */}
+            <div className="h-[300px] overflow-hidden rounded-2xl border border-sand-300 bg-neutral-50 sm:h-[360px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.imageUrl}
+                alt={`${item.name}'s sprint work`}
+                className="h-full w-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="mt-3 flex items-center gap-2.5">
+              {item.avatarUrl && (
+                <Img
+                  src={item.avatarUrl}
+                  alt={item.name}
+                  className="h-8 w-8 shrink-0 rounded-full object-cover"
+                />
+              )}
+              <div className="min-w-0 text-[13px] leading-tight">
+                <span className="font-body font-bold text-brand-ink">{item.name}</span>
+                {(item.industry || item.startup) && (
+                  <span className="text-neutral-500">
+                    {" · "}
+                    {[item.industry, item.startup].filter(Boolean).join(" · ")}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -1604,17 +1647,28 @@ function Gallery({ assets }: { assets: YummyAssetsMap }) {
    ═══════════════════════════════════ */
 function CtaSection() {
   return (
-    <div className="mt-6 text-center">
-      <a
-        href={YUMMY_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 rounded-lg bg-[#2216ff] px-6 py-3 font-body text-[14px] font-semibold text-white shadow-[0_4px_16px_rgba(34,22,255,0.25)] transition-colors hover:bg-[#1a11cc]"
-      >
-        Visit yummy-labs.com
-        <ExternalArrow />
-      </a>
-    </div>
+    <a
+      href={RESERVE_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative mt-2 flex items-center gap-4 overflow-hidden rounded-2xl bg-[#2216ff] px-6 py-5 transition-colors hover:bg-[#1a11cc] sm:px-8 sm:py-6"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(124,58,237,0.3),transparent_60%)]" />
+      <div className="relative flex-1">
+        <div className="text-[11px] font-bold uppercase tracking-[0.06em] text-white/60">
+          Applications open
+        </div>
+        <div className="mt-1 font-brand text-[18px] font-extrabold leading-tight text-white sm:text-[22px]">
+          Apply for the AI Design Sprint in September
+        </div>
+      </div>
+      <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#2216ff] transition-transform group-hover:translate-x-0.5">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
+      </span>
+    </a>
   );
 }
 
@@ -1629,7 +1683,7 @@ function LabsContent({ assets, sprintDays }: YummyLabsPageProps) {
       <SprintCalendar days={sprintDays ?? []} />
       <Partners assets={assets} />
       <Testimonials assets={assets} />
-      <Gallery assets={assets} />
+      <FeaturedWork assets={assets} />
       <CtaSection />
     </div>
   );

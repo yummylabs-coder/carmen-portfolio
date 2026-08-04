@@ -553,6 +553,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
     avatars: {},
     videos: {},
     gallery: [],
+    featuredWork: [],
   };
 
   if (!yummyAssetsDbId) return empty;
@@ -564,7 +565,12 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
       page_size: 50,
     });
 
-    const assets: (YummyAsset & { videoUrl?: string })[] = response.results
+    const assets: (YummyAsset & {
+      videoUrl?: string;
+      avatarUrl?: string;
+      industry?: string;
+      startup?: string;
+    })[] = response.results
       .filter((p): p is PageObjectResponse => "properties" in p)
       .map((page) => {
         const props = page.properties as Record<string, Record<string, unknown>>;
@@ -575,6 +581,9 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           category: getSelect(props.Category) as YummyAsset["category"],
           imageUrl: getFiles(props.Image),
           videoUrl: getUrl(props["Video URL"]) || undefined,
+          avatarUrl: getFiles(props.Avatar) || undefined,
+          industry: getPlainText(props.Industry, "rich_text"),
+          startup: getPlainText(props.Startup, "rich_text"),
           order: getNumber(props.Order),
         };
       });
@@ -602,6 +611,17 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           break;
         case "Gallery":
           result.gallery.push({ slug: asset.slug, imageUrl: asset.imageUrl, name: asset.name });
+          break;
+        case "Featured Work":
+          if (asset.imageUrl) {
+            result.featuredWork.push({
+              name: asset.name,
+              imageUrl: asset.imageUrl,
+              avatarUrl: asset.avatarUrl || "",
+              industry: asset.industry || "",
+              startup: asset.startup || "",
+            });
+          }
           break;
       }
     }

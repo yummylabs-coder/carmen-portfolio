@@ -169,9 +169,24 @@ export interface YummyAsset {
   id: string;
   name: string;
   slug: string;
-  category: "Branding" | "Partner Logo" | "Tool Logo" | "Designer Avatar" | "Gallery" | "Video";
+  category:
+    | "Branding"
+    | "Partner Logo"
+    | "Tool Logo"
+    | "Designer Avatar"
+    | "Gallery"
+    | "Video"
+    | "Featured Work";
   imageUrl: string;
   order: number;
+}
+
+export interface FeaturedWorkItem {
+  name: string;
+  imageUrl: string;
+  avatarUrl: string;
+  industry: string;
+  startup: string;
 }
 
 export interface YummyAssetsMap {
@@ -181,6 +196,7 @@ export interface YummyAssetsMap {
   avatars: Record<string, string>;
   videos: Record<string, string>;
   gallery: { slug: string; imageUrl: string; name: string }[];
+  featuredWork: FeaturedWorkItem[];
 }
 
 /** Maps process phase key to its image URL */
