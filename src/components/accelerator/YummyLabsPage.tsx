@@ -1648,7 +1648,7 @@ function FeaturedWork({ assets }: { assets: YummyAssetsMap }) {
 function CtaSection() {
   return (
     <a
-      href={RESERVE_URL}
+      href={YUMMY_URL}
       target="_blank"
       rel="noopener noreferrer"
       className="group relative mt-2 flex items-center gap-4 overflow-hidden rounded-2xl bg-[#2216ff] px-6 py-5 transition-colors hover:bg-[#1a11cc] sm:px-8 sm:py-6"
