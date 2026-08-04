@@ -1630,22 +1630,23 @@ function FeaturedWork({ assets }: { assets: YummyAssetsMap }) {
               <div className="font-body text-[15px] font-bold text-brand-ink">{w.name}</div>
               {subtitle && <div className="text-[13px] text-neutral-500">{subtitle}</div>}
             </div>
-            {w.tag &&
-              (w.link ? (
-                <a
-                  href={w.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-auto flex h-[50px] w-fit shrink-0 items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)] transition-transform hover:scale-[1.03]"
-                >
-                  {w.tag}
-                  <GlobeIcon />
-                </a>
-              ) : (
+            {w.link ? (
+              <a
+                href={w.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto flex h-[50px] w-fit shrink-0 items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)] transition-transform hover:scale-[1.03]"
+              >
+                {w.tag || "View prototype"}
+                <GlobeIcon />
+              </a>
+            ) : (
+              w.tag && (
                 <span className="ml-auto flex h-[50px] w-fit shrink-0 items-center rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)]">
                   {w.tag}
                 </span>
-              ))}
+              )
+            )}
           </div>
 
           {/* Work screens — fill the container on desktop, swipe on mobile */}
