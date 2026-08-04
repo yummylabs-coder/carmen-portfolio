@@ -312,7 +312,7 @@ function OpenHeader({ side }: { side: Side }) {
       <Img src={b.logo} alt={`${b.name} logo`} className="h-[82px] w-[82px] rounded-2xl object-contain" />
       <div>
         <h2 className="font-brand text-22 font-bold text-brand-ink">{b.name}</h2>
-        <p className="mt-1 text-14 text-neutral-600">{b.desc}</p>
+        <p className="mt-1 max-w-[520px] text-14 text-neutral-600">{b.desc}</p>
       </div>
     </div>
   );
