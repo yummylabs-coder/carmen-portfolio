@@ -188,6 +188,7 @@ export interface FeaturedWorkItem {
   industry: string;
   startup: string;
   tag: string;
+  link: string;
 }
 
 export interface YummyAssetsMap {

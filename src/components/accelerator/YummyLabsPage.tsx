@@ -1603,37 +1603,51 @@ function FeaturedWork({ assets }: { assets: YummyAssetsMap }) {
 
   return (
     <div className="mt-2">
-      <div className="mb-5 flex items-center gap-1.5">
-        <span className="inline-flex items-center rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
+      <div className="mb-5">
+        <span className="inline-flex items-center gap-1.5 rounded-md bg-sand-100 px-[10px] py-1 text-[11px] font-bold uppercase tracking-[0.05em] text-sand-600">
           Featured work
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#E89B24" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
         </span>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="#E89B24" aria-hidden="true">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
       </div>
 
       <div className="flex items-stretch gap-3">
         {many && <FeaturedArrow dir={-1} onClick={() => go(-1)} className="hidden self-center sm:flex" />}
 
-        <div className="min-w-0 flex-1 rounded-2xl border border-[#F1E9E4] bg-[#FAF7F5] p-5 lg:p-6">
+        <div className="min-w-0 flex-1 rounded-2xl border border-[#E7DECF] bg-[#F1E9E4] p-5 lg:p-6">
           {/* Student header */}
-          <div className="mb-4 flex items-center gap-3">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             {w.avatarUrl && (
-              <Img
-                src={w.avatarUrl}
-                alt={w.name}
-                className="h-10 w-10 shrink-0 rounded-full object-cover"
-              />
+              <span
+                className="flex shrink-0 rounded-full border-2 bg-white p-[2px]"
+                style={{ borderColor: "#FBBF24" }}
+              >
+                <Img src={w.avatarUrl} alt={w.name} className="h-10 w-10 rounded-full object-cover" />
+              </span>
             )}
             <div className="min-w-0">
               <div className="font-body text-[15px] font-bold text-brand-ink">{w.name}</div>
               {subtitle && <div className="text-[13px] text-neutral-500">{subtitle}</div>}
             </div>
-            {w.tag && (
-              <span className="ml-auto hidden shrink-0 rounded-full border border-sand-300 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-brand-ink sm:inline-block">
-                {w.tag}
-              </span>
-            )}
+            {w.tag &&
+              (w.link ? (
+                <a
+                  href={w.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-sand-300 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-brand-ink transition-transform hover:scale-[1.03]"
+                >
+                  {w.tag}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7V17" />
+                  </svg>
+                </a>
+              ) : (
+                <span className="ml-auto inline-flex shrink-0 rounded-full border border-sand-300 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-brand-ink">
+                  {w.tag}
+                </span>
+              ))}
           </div>
 
           {/* Work screens — swipeable strip */}

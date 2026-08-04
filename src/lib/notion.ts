@@ -572,6 +572,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
       industry?: string;
       startup?: string;
       tag?: string;
+      link?: string;
     })[] = response.results
       .filter((p): p is PageObjectResponse => "properties" in p)
       .map((page) => {
@@ -588,6 +589,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
           industry: getPlainText(props.Industry, "rich_text"),
           startup: getPlainText(props.Startup, "rich_text"),
           tag: getPlainText(props.Tag, "rich_text"),
+          link: getUrl(props.Link) || undefined,
           order: getNumber(props.Order),
         };
       });
@@ -625,6 +627,7 @@ export async function getYummyAssets(): Promise<YummyAssetsMap> {
               industry: asset.industry || "",
               startup: asset.startup || "",
               tag: asset.tag || "",
+              link: asset.link || "",
             });
           }
           break;
