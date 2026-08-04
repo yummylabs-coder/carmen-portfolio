@@ -1636,32 +1636,31 @@ function FeaturedWork({ assets }: { assets: YummyAssetsMap }) {
                   href={w.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full border border-sand-300 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-brand-ink transition-transform hover:scale-[1.03]"
+                  className="ml-auto flex h-[50px] w-fit shrink-0 items-center gap-1.5 rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)] transition-transform hover:scale-[1.03]"
                 >
                   {w.tag}
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
+                  <GlobeIcon />
                 </a>
               ) : (
-                <span className="ml-auto inline-flex shrink-0 rounded-full border border-sand-300 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-brand-ink">
+                <span className="ml-auto flex h-[50px] w-fit shrink-0 items-center rounded-full bg-[#FFFEFC] px-4 text-[13px] font-bold text-black shadow-[0_1px_4px_rgba(48,1,1,0.06)]">
                   {w.tag}
                 </span>
               ))}
           </div>
 
-          {/* Work screens — swipeable strip */}
-          <div className="-mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {/* Work screens — fill the container on desktop, swipe on mobile */}
+          <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-1 sm:overflow-visible [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {w.imageUrls.map((src, i) => (
               <div
                 key={i}
-                className="h-[320px] shrink-0 snap-start overflow-hidden rounded-xl border border-sand-300 bg-neutral-900 sm:h-[400px]"
+                className="w-[58%] shrink-0 overflow-hidden rounded-xl border border-sand-300 bg-neutral-900 sm:w-auto sm:flex-1 sm:shrink"
+                style={{ aspectRatio: "9 / 19" }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
                   alt={`${w.name}'s work, screen ${i + 1}`}
-                  className="h-full w-auto object-cover"
+                  className="h-full w-full object-cover"
                   loading="lazy"
                 />
               </div>
